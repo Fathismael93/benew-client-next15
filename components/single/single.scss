@@ -1,4 +1,4 @@
-@import '@/app/app.scss';
+@use '@/app/app.scss' as *;
 
 .container {
   display: flex;

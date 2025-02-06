@@ -1,4 +1,4 @@
-@import "@/app/app.scss";
+@use "@/app/app.scss" as *;
 
 .portfolio {
   position: relative;
