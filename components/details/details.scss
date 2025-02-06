@@ -1,0 +1,143 @@
+@import "@/app/app.scss";
+
+.wrapper {
+  width: 90%;
+  height: 100%;
+  margin: auto;
+
+  @include small {
+    margin: unset;
+    width: 100%;
+  }
+
+  @include mobile {
+    margin: unset;
+    width: 100%;
+  }
+
+  @include tablet {
+    margin: unset;
+    width: 100%;
+  }
+
+  .description {
+    width: 100%;
+    padding: 1.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  .cards-container-details {
+    display: flex;
+    width: 100%;
+    height: 100%;
+
+    @include small {
+      width: fit-content;
+      height: fit-content;
+    }
+
+    @include mobile {
+      width: fit-content;
+      height: fit-content;
+    }
+
+    @include tablet {
+      width: fit-content;
+      height: fit-content;
+    }
+
+    @include laptop {
+      width: fit-content;
+      height: fit-content;
+    }
+
+    .card-details {
+      width: 15rem;
+      height: 5rem;
+      margin: 0 auto;
+      border: 1px solid rgb(255, 247, 214);
+      border-radius: 0.938rem;
+      margin-top: 1.875rem;
+      box-shadow:
+        0 4px 8px 0 rgba(250, 250, 250, 0.1),
+        0 6px 20px 0 rgba(250, 249, 249, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      @include small {
+        width: fit-content;
+        height: fit-content;
+        padding: 0.4rem;
+        border: none;
+        box-shadow: none;
+        border-radius: unset;
+        margin-top: 0.4rem;
+      }
+
+      @include mobile {
+        width: fit-content;
+        height: fit-content;
+        padding: 0.4rem;
+        border: none;
+        box-shadow: none;
+        border-radius: unset;
+        margin-top: 0.4rem;
+      }
+
+      @include tablet {
+        width: fit-content;
+        height: fit-content;
+        padding: 0.4rem;
+        border: none;
+        box-shadow: none;
+        border-radius: unset;
+        margin-top: 0.4rem;
+      }
+
+      @include laptop {
+        width: fit-content;
+        height: fit-content;
+        margin-right: 1rem;
+        padding: 1rem;
+        border: 1px solid rgb(255, 247, 214);
+        border-radius: 0.938rem;
+        box-shadow:
+          0 4px 8px 0 rgba(250, 250, 250, 0.1),
+          0 6px 20px 0 rgba(250, 249, 249, 0.1);
+        margin-top: 0.4rem;
+      }
+
+      &:hover {
+        background-color: orange;
+      }
+
+      h4 {
+        color: rgb(255, 247, 214);
+
+        @include small {
+          font-size: 0.8rem;
+          border-bottom: 1px solid orange;
+        }
+
+        @include mobile {
+          font-size: 1rem;
+          border-bottom: 1px solid orange;
+        }
+
+        @include tablet {
+          font-size: 1rem;
+          border-bottom: 1px solid orange;
+        }
+      }
+    }
+  }
+}
