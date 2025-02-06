@@ -1,0 +1,344 @@
+@import "@/app/app.scss";
+
+.contact {
+  height: 100%;
+  max-width: 70rem;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+
+  @include small {
+    width: 70%;
+    flex-direction: column;
+    gap: 0.1rem;
+    max-width: 30rem;
+  }
+
+  @include mobile {
+    width: 70%;
+    flex-direction: column;
+    gap: 0.1rem;
+    max-width: 30rem;
+  }
+
+  @include tablet {
+    width: 70%;
+    flex-direction: column;
+    gap: 0.1rem;
+    max-width: 30rem;
+  }
+
+  @include laptop {
+    width: 70%;
+    flex-direction: column;
+    gap: 0.1rem;
+    max-width: 30rem;
+  }
+
+  .textContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 0.625rem;
+
+    @include small {
+      gap: 1rem;
+      text-align: center;
+      align-items: center;
+      margin-top: 3rem;
+    }
+
+    @include mobile {
+      gap: 1rem;
+      text-align: center;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+
+    @include tablet {
+      gap: 1rem;
+      text-align: center;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+
+    @include laptop {
+      gap: 1rem;
+      text-align: center;
+      align-items: center;
+      margin-top: 2.5rem;
+    }
+
+    h1 {
+      font-size: 4rem;
+
+      @include small {
+        display: none;
+      }
+
+      @include mobile {
+        display: none;
+      }
+
+      @include tablet {
+        display: none;
+      }
+
+      @include laptop {
+        display: none;
+      }
+    }
+
+    .item {
+      display: flex;
+      justify-content: flex-start;
+      font-size: 1rem;
+      gap: 1.875rem;
+
+      @include small {
+        gap: 1rem;
+      }
+
+      @include mobile {
+        gap: 1rem;
+      }
+
+      @include tablet {
+        gap: 1rem;
+      }
+
+      @include laptop {
+        gap: 1rem;
+      }
+
+      .icon {
+        color: orange;
+      }
+
+      p {
+        letter-spacing: 2px;
+
+        @include small {
+          font-size: 0.85rem;
+          font-weight: 250;
+        }
+
+        @include mobile {
+          font-size: 0.85rem;
+          font-weight: 350;
+        }
+
+        @include tablet {
+          font-size: 1rem;
+          font-weight: 350;
+        }
+
+        @include laptop {
+          font-size: 1rem;
+          font-weight: 350;
+        }
+      }
+    }
+
+    h2 {
+      font-size: 2rem;
+      line-height: 1rem;
+      margin-top: 1rem;
+
+      @include small {
+        display: none;
+      }
+
+      @include mobile {
+        display: none;
+      }
+
+      @include tablet {
+        display: none;
+      }
+
+      @include laptop {
+        display: none;
+      }
+    }
+
+    .social {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1rem;
+
+      @include small {
+        margin-top: 0.6rem;
+      }
+
+      @include mobile {
+        margin-top: 0.6rem;
+      }
+
+      @include tablet {
+        margin-top: 0.6rem;
+      }
+
+      @include laptop {
+        margin-top: 0.6rem;
+      }
+
+      img {
+        width: 1.3rem;
+        height: 1.3rem;
+
+        @include small {
+          width: 1rem;
+          height: 1rem;
+        }
+
+        @include mobile {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+
+        @include tablet {
+          width: 1.6rem;
+          height: 1.6rem;
+        }
+
+        @include laptop {
+          width: 1.6rem;
+          height: 1.6rem;
+        }
+      }
+    }
+  }
+
+  .formContainer {
+    flex: 1;
+    position: relative;
+
+    @include small {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    @include mobile {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    @include tablet {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    @include laptop {
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    .phoneSvg {
+      stroke: orange;
+      position: absolute;
+      margin: auto;
+      z-index: -1;
+
+      svg {
+        @include small {
+          width: 13rem;
+          height: 13rem;
+        }
+
+        @include mobile {
+          width: 13rem;
+          height: 13rem;
+        }
+
+        @include tablet {
+          width: 15rem;
+          height: 15rem;
+        }
+
+        @include laptop {
+          width: 15rem;
+          height: 15rem;
+        }
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      @include small {
+        gap: 0.5rem;
+      }
+
+      @include mobile {
+        gap: 0.5rem;
+      }
+
+      @include tablet {
+        gap: 0.5rem;
+      }
+
+      @include laptop {
+        gap: 0.5rem;
+      }
+
+      input,
+      textarea {
+        padding: 1rem;
+        background-color: transparent;
+        border: 1px solid white;
+        color: white;
+        border-radius: 0.313rem;
+
+        @include small {
+          padding: 0.2rem;
+        }
+
+        @include mobile {
+          padding: 0.35rem;
+        }
+
+        @include tablet {
+          padding: 0.35rem;
+        }
+
+        @include laptop {
+          padding: 0.35rem;
+        }
+      }
+
+      button {
+        padding: 1rem;
+        border: none;
+        background-color: orange;
+        cursor: pointer;
+        font-weight: 300;
+        font-size: 1rem;
+
+        @include small {
+          padding: 0.2rem;
+          border-radius: 0.7rem;
+        }
+
+        @include mobile {
+          padding: 0.2rem;
+          border-radius: 0.7rem;
+        }
+
+        @include tablet {
+          padding: 0.2rem;
+          border-radius: 0.7rem;
+        }
+
+        @include laptop {
+          padding: 0.2rem;
+          border-radius: 0.7rem;
+        }
+      }
+    }
+  }
+}

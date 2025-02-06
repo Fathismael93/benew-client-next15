@@ -1,0 +1,87 @@
+@import '@/app/app.scss';
+
+article {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scroll-snap-align: center;
+  margin-bottom: 5rem;
+
+  em {
+    display: block;
+    align-self: flex-end;
+    color: gray;
+    font-style: italic;
+
+    @include small {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+  }
+
+  .post {
+    width: 40.625rem;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1.875rem;
+    border: 1px solid rgb(255, 247, 214);
+    border-radius: 10px;
+    gap: 2.5rem;
+
+    @include small {
+      border: none;
+      width: inherit;
+    }
+
+    @include mobile {
+      border: none;
+      width: inherit;
+    }
+
+    @include tablet {
+      border: none;
+      width: inherit;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+
+      @include small {
+        font-size: 1.2rem;
+        text-align: center;
+      }
+    }
+
+    .part {
+      margin-top: 1.25rem;
+
+      h2 {
+        font-size: 1.5rem;
+
+        @include small {
+          font-size: 1.3rem;
+        }
+      }
+
+      p {
+        font-size: 1rem;
+        margin-top: 0.938rem;
+
+        @include small {
+          text-align: justify;
+        }
+
+        @include mobile {
+          text-align: justify;
+        }
+      }
+    }
+  }
+}
