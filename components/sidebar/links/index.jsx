@@ -1,5 +1,12 @@
 import { motion } from 'framer-motion';
-import { MdHome, MdList, MdMenuBook, MdPerson, MdPhone } from 'react-icons/md';
+import {
+  MdHome,
+  MdList,
+  MdMenuBook,
+  MdPerson,
+  MdPhone,
+  MdQuestionMark,
+} from 'react-icons/md';
 
 const variants = {
   open: {
@@ -36,7 +43,7 @@ function Links() {
     {
       title: 'Pourquoi ?',
       path: 'pourquoi',
-      icon: <MdPerson />,
+      icon: <MdQuestionMark />,
     },
     {
       title: 'Produits',
