@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import './pourquoi.scss';
+import Parallax from '@/components/parallax';
 
 const PourquoiPage = () => {
   return (
