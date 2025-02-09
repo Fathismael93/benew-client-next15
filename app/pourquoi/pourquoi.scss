@@ -1,10 +1,4 @@
 @use "@/app/app.scss" as *;
-
-// styles/Home.module.scss
-.container {
-    min-height: 100vh;
-    width: 100%;
-  }
   
   .nav {
     display: flex;
@@ -21,15 +15,15 @@
     overflow: hidden;
     
     &:nth-child(1) .linkContent {
-      background-image: url('/images/benew-bg.jpg');
+      background-image: url('/benew-bg.jpg');
     }
     
     &:nth-child(2) .linkContent {
-      background-image: url('/images/products-bg.jpg');
+      background-image: url('/products-bg.jpg');
     }
     
     &:nth-child(3) .linkContent {
-      background-image: url('/images/team-bg.jpg');
+      background-image: url('/team-bg.jpg');
     }
   }
   

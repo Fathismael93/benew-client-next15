@@ -9,7 +9,7 @@ const PourquoiPage = () => {
       <section className="others">
         <Parallax bgColor="#0c0c1d" title="Présentation" planets="/sun.png" />
       </section>
-      <section className="container">
+      <section className="others">
         <nav className="nav">
           <Link href="/benew" className="link">
             <div className="linkContent">
