@@ -34,8 +34,8 @@ function Links() {
       icon: <MdHome />,
     },
     {
-      title: 'Présentation',
-      path: 'presentation',
+      title: 'Pourquoi ?',
+      path: 'pourquoi',
       icon: <MdPerson />,
     },
     {
@@ -52,6 +52,11 @@ function Links() {
       title: 'Contact',
       path: 'contact',
       icon: <MdPhone />,
+    },
+    {
+      title: 'Présentation',
+      path: 'presentation',
+      icon: <MdPerson />,
     },
   ];
 
