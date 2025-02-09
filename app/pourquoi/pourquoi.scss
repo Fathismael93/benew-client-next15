@@ -1,0 +1,77 @@
+@use "@/app/app.scss" as *;
+
+// styles/Home.module.scss
+.container {
+    min-height: 100vh;
+    width: 100%;
+  }
+  
+  .nav {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .link {
+    position: relative;
+    height: 33.33vh;
+    width: 100%;
+    text-decoration: none;
+    overflow: hidden;
+    
+    &:nth-child(1) .linkContent {
+      background-image: url('/images/benew-bg.jpg');
+    }
+    
+    &:nth-child(2) .linkContent {
+      background-image: url('/images/products-bg.jpg');
+    }
+    
+    &:nth-child(3) .linkContent {
+      background-image: url('/images/team-bg.jpg');
+    }
+  }
+  
+  .linkContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      background-blend-mode: darken;
+    }
+  }
+  
+  .linkText {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000;
+    transition: color 0.3s ease;
+    
+    .link:hover & {
+      color: white;
+    }
+  }
+  
+  // Media queries for responsive design
+  @media (max-width: 768px) {
+    .linkText {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .linkText {
+      font-size: 1.2rem;
+    }
+  }
