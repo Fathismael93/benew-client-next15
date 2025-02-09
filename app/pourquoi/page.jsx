@@ -11,19 +11,19 @@ const PourquoiPage = () => {
       </section>
       <section className="others">
         <nav className="nav">
-          <Link href="/benew" className="link">
+          <Link href="/benew" className="linkPresentation">
             <div className="linkContent">
               <span className="linkText">BENEW</span>
             </div>
           </Link>
 
-          <Link href="/products" className="link">
+          <Link href="/products" className="linkPresentation">
             <div className="linkContent">
               <span className="linkText">Nos Produits</span>
             </div>
           </Link>
 
-          <Link href="/team" className="link">
+          <Link href="/team" className="linkPresentation">
             <div className="linkContent">
               <span className="linkText">L'Équipe Benew</span>
             </div>
