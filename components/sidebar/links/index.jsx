@@ -38,32 +38,32 @@ function Links() {
     {
       title: 'Accueil',
       path: '',
-      icon: <MdHome />,
+      // icon: <MdHome />,
     },
     {
       title: 'Pourquoi',
       path: 'pourquoi',
-      icon: <MdQuestionMark />,
+      // icon: <MdQuestionMark />,
     },
     {
       title: 'Produits',
       path: 'products',
-      icon: <MdList />,
+      // icon: <MdList />,
     },
     {
       title: 'Blog',
       path: 'blog',
-      icon: <MdMenuBook />,
+      // icon: <MdMenuBook />,
     },
     {
       title: 'Présentation',
       path: 'presentation',
-      icon: <MdPerson />,
+      // icon: <MdPerson />,
     },
     {
       title: 'Contact',
       path: 'contact',
-      icon: <MdPhone />,
+      // icon: <MdPhone />,
     },
   ];
 
@@ -77,7 +77,7 @@ function Links() {
           whileTap={{ scale: 0.95 }}
         >
           <motion.a href={`/${item.path}`} variants={itemVariants}>
-            <motion.span className="icon">{item.icon}</motion.span>
+            {/*<motion.span className="icon">{item.icon}</motion.span>*/}
             {item.title}
           </motion.a>
         </motion.div>
