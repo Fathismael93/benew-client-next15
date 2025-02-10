@@ -98,26 +98,44 @@
         }
       }
 
-      .buttons {
-        button {
-          padding: 0.8rem;
-          border: 1px solid white;
-          border-radius: 0.625rem;
-          background-color: transparent;
-          color: white;
-          margin-right: 1.25rem;
-          cursor: pointer;
-          font-weight: 300;
+      
 
-          @include small {
-            padding: 0.4rem;
-          }
-
-          @include mobile {
-            padding: 0.6rem;
-          }
-        }
-      }
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  
+  .primaryButton, .secondaryButton {
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+    }
+  }
+  
+  .primaryButton {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+    color: #0c0c1d;
+    border: none;
+    
+    &:hover {
+      background: linear-gradient(45deg, #ffa500, #ffd700);
+    }
+  }
+  
+  .secondaryButton {
+    background: transparent;
+    color: #ffd700;
+    border: 2px solid #ffd700;
+    
+    &:hover {
+      background: rgba(255, 215, 0, 0.1);
+    }
+  }
+}
 
       img {
         width: 2.5rem;
@@ -181,9 +199,9 @@
   
     .heroImage {
       object-fit: contain;
-      max-width: 90%;
-      max-height: 90%;
-      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+      max-width: 100%;
+      max-height: 100%;
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.7));
     }
   }
 

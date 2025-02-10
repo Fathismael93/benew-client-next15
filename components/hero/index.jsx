@@ -57,9 +57,13 @@ function Hero() {
           <motion.h1 variants={textVariants}>
             Super Boutique, Super Riche
           </motion.h1>
-          <motion.div className="buttons" variants={textVariants}>
-            <motion.button variants={textVariants}>Nos Produits</motion.button>
-            <motion.button variants={textVariants}>Présentation</motion.button>
+          <motion.div className="buttonGroup" variants={textVariants}>
+            <motion.a href="/services" className="primaryButton">
+              Découvrir nos services
+            </motion.a>
+            <motion.a href="/contact" className="secondaryButton">
+              Parlons de votre projet
+            </motion.a>
           </motion.div>
           <motion.img
             src="/scroll.png"
