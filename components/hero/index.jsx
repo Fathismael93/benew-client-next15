@@ -78,7 +78,7 @@ function Hero() {
         BENEW
       </motion.div>
       <div className="imageContainer">
-        <img src="/hero.png" alt="fondateur" />
+        <img src="/hero.jpg" alt="fondateur" />
       </div>
     </div>
   );
