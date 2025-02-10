@@ -81,7 +81,7 @@ function Hero() {
       <div className="rightSection">
         <div className="imageContainer">
           <Image
-            src="/hero.jpg"
+            src=""
             alt="Ampoule brillante avec étoiles"
             width={500}
             height={500}
