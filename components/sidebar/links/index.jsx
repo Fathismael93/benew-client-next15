@@ -1,12 +1,4 @@
 import { motion } from 'framer-motion';
-import {
-  MdHome,
-  MdList,
-  MdMenuBook,
-  MdPerson,
-  MdPhone,
-  MdQuestionMark,
-} from 'react-icons/md';
 
 const variants = {
   open: {
@@ -38,32 +30,22 @@ function Links() {
     {
       title: 'Accueil',
       path: '',
-      // icon: <MdHome />,
     },
-    {
-      title: 'Pourquoi',
-      path: 'pourquoi',
-      // icon: <MdQuestionMark />,
-    },
-    {
-      title: 'Produits',
-      path: 'products',
-      // icon: <MdList />,
-    },
+    // {
+    //   title: 'Produits',
+    //   path: 'products',
+    // },
     {
       title: 'Blog',
       path: 'blog',
-      // icon: <MdMenuBook />,
     },
     {
       title: 'Présentation',
       path: 'presentation',
-      // icon: <MdPerson />,
     },
     {
       title: 'Contact',
       path: 'contact',
-      // icon: <MdPhone />,
     },
   ];
 
@@ -77,7 +59,6 @@ function Links() {
           whileTap={{ scale: 0.95 }}
         >
           <motion.a href={`/${item.path}`} variants={itemVariants}>
-            {/*<motion.span className="icon">{item.icon}</motion.span>*/}
             {item.title}
           </motion.a>
         </motion.div>
