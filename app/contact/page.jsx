@@ -67,21 +67,15 @@ function Contact() {
             <motion.h1 variants={variants}>Coordonnées</motion.h1>
             <motion.div className="item" variants={variants}>
               <div className="icon">
-                <MdOutlinePublic />
-              </div>
-              <p>www.benew.com</p>
-            </motion.div>
-            <motion.div className="item" variants={variants}>
-              <div className="icon">
                 <MdPhone />
               </div>
-              <p>+253 77.86.00.64</p>
+              <p>77.86.00.64</p>
             </motion.div>
             <motion.div className="item" variants={variants}>
               <div className="icon">
                 <MdWhatsapp />
               </div>
-              <p>+253 77.86.00.64</p>
+              <p>77.86.00.64</p>
             </motion.div>
             <motion.div className="item" variants={variants}>
               <div className="icon">
