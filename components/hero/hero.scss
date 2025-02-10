@@ -53,7 +53,7 @@
 
       h2 {
         font-size: 1.3rem;
-        color: rebeccapurple;
+        color: #ffd700;
         letter-spacing: 0.188rem;
 
         @include small {
@@ -76,6 +76,10 @@
 
       h1 {
         font-size: 4.5rem;
+        background: linear-gradient(45deg, #fff, #ffd700);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
 
         @include small {
           font-size: 1.5rem;
