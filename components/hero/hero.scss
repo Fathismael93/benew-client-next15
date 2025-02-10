@@ -157,6 +157,7 @@
     object-fit: contain;
     max-width: 90%;
     max-height: 90%;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
   }
 
   @media (max-width: 768px) {
