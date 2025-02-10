@@ -147,13 +147,14 @@
     position: absolute;
     top: 0;
     right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     @include small {
       height: 50%;
       width: 100%;
       top: unset;
-      left: 0;
-      right: 0;
       bottom: 0;
     }
 
@@ -161,8 +162,6 @@
       height: 50%;
       width: 100%;
       top: unset;
-      left: 0;
-      right: 0;
       bottom: 0;
     }
 
@@ -170,8 +169,6 @@
       height: 50%;
       width: 100%;
       top: unset;
-      left: 0;
-      right: 0;
       bottom: 0;
     }
 
@@ -179,8 +176,6 @@
       height: 50%;
       width: 100%;
       top: unset;
-      left: 0;
-      right: 0;
       bottom: 0;
     }
   
@@ -188,7 +183,7 @@
       object-fit: contain;
       max-width: 90%;
       max-height: 90%;
-      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
     }
   }
 
