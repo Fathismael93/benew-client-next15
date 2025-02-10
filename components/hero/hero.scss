@@ -103,7 +103,6 @@
 .buttonGroup {
   display: flex;
   gap: 1rem;
-  cursor: pointer;
 
   .primaryButton, .secondaryButton {
     padding: 1rem 2rem;
@@ -121,6 +120,7 @@
     background: linear-gradient(45deg, #ffd700, #ffa500);
     color: #0c0c1d;
     border: none;
+    cursor: pointer;
     
     &:hover {
       background: linear-gradient(45deg, #ffa500, #ffd700);
@@ -131,6 +131,7 @@
     background: transparent;
     color: #ffd700;
     border: 2px solid #ffd700;
+    cursor: pointer;
     
     &:hover {
       background: rgba(255, 215, 0, 0.1);
