@@ -41,7 +41,7 @@ function Links() {
       icon: <MdHome />,
     },
     {
-      title: 'Pourquoi ?',
+      title: 'Pourquoi',
       path: 'pourquoi',
       icon: <MdQuestionMark />,
     },
@@ -56,14 +56,14 @@ function Links() {
       icon: <MdMenuBook />,
     },
     {
-      title: 'Contact',
-      path: 'contact',
-      icon: <MdPhone />,
-    },
-    {
       title: 'Présentation',
       path: 'presentation',
       icon: <MdPerson />,
+    },
+    {
+      title: 'Contact',
+      path: 'contact',
+      icon: <MdPhone />,
     },
   ];
 
