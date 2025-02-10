@@ -148,20 +148,39 @@
     top: 0;
     right: 0;
 
-  }
-  
-  .heroImage {
-    object-fit: contain;
-    max-width: 90%;
-    max-height: 90%;
-    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
-  }
+    @include small {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
+    }
 
-  @media (max-width: 768px) {
-    
-    .imageContainer {
-      width: 70%;
-      margin: 0 auto;
+    @include mobile {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
+    }
+
+    @include tablet {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
+    }
+
+    @include laptop {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
+    }
+  
+    .heroImage {
+      object-fit: contain;
+      max-width: 90%;
+      max-height: 90%;
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
     }
   }
 
