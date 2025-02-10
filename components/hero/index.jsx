@@ -78,17 +78,15 @@ function Hero() {
       >
         BENEW
       </motion.div>
-      <div className="rightSection">
-        <div className="imageContainer">
-          <Image
-            src="/hero.jpg"
-            alt="Ampoule brillante avec étoiles"
-            width={500}
-            height={500}
-            className="heroImage"
-            priority
-          />
-        </div>
+      <div className="imageContainer">
+        <Image
+          src="/hero.jpg"
+          alt="Ampoule brillante avec étoiles"
+          width={500}
+          height={500}
+          className="heroImage"
+          priority
+        />
       </div>
     </div>
   );

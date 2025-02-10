@@ -140,18 +140,14 @@
       }
     }
   }
-
-  .rightSection {
-    width: 50%;
-  }
   
   .imageContainer {
-    width: 90%;
-    height: 90%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+
   }
   
   .heroImage {
@@ -162,12 +158,6 @@
   }
 
   @media (max-width: 768px) {
-
-    .rightSection {
-      width: 100%;
-      padding: 0;
-      text-align: center;
-    }
     
     .imageContainer {
       width: 70%;
