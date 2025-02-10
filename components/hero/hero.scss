@@ -137,45 +137,39 @@
     }
   }
 
-  .imageContainer {
-    height: 100%;
+  .rightSection {
     width: 50%;
-    position: absolute;
-    top: 0;
-    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .imageContainer {
+    width: 90%;
+    height: 90%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .heroImage {
+    object-fit: contain;
+    max-width: 90%;
+    max-height: 90%;
+  }
 
-    @include small {
-      height: 50%;
+  @media (max-width: 768px) {
+
+    .rightSection {
       width: 100%;
-      top: unset;
-      bottom: 0;
+      padding: 0;
+      text-align: center;
     }
-
-    @include mobile {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-    }
-
-    @include tablet {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-    }
-
-    @include laptop {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-    }
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    
+    .imageContainer {
+      width: 70%;
+      margin: 0 auto;
     }
   }
 
