@@ -1,0 +1,133 @@
+.sliderContainer {
+  width: 100vw;
+  height: 100vh;
+  background-color: #0c0c1d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  width: 100%;
+  height: 100%;
+}
+
+.slideContent {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.titleBlock, .textBlock {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.titleBlock {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(12, 12, 29, 0.7);
+  }
+
+  h2 {
+    position: relative;
+    z-index: 1;
+    color: white;
+    font-size: 3rem;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+}
+
+.textBlock {
+  background-color: #0c0c1d;
+  color: white;
+
+  p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+}
+
+.slide-1 {
+  .leftTitle {
+    order: 1;
+  }
+  .rightText {
+    order: 2;
+  }
+}
+
+.slide-2 {
+  .rightTitle {
+    order: 2;
+  }
+  .leftText {
+    order: 1;
+  }
+}
+
+.slide-3 {
+  .leftTitle {
+    order: 2;
+  }
+  .rightText {
+    order: 1;
+  }
+}
+
+:global(.swiper-button-next),
+:global(.swiper-button-prev) {
+  color: white !important;
+}
+
+:global(.swiper-pagination-bullet) {
+  background: white !important;
+}
+
+@media (max-width: 1024px) {
+  .slideContent {
+    flex-direction: column;
+  }
+
+  .titleBlock, .textBlock {
+    width: 100%;
+    height: 50%;
+  }
+
+  .titleBlock h2 {
+    font-size: 2rem;
+  }
+
+  .textBlock p {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .titleBlock h2 {
+    font-size: 1.5rem;
+  }
+}

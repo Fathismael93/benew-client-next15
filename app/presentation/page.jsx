@@ -11,7 +11,10 @@ function Presentation() {
       </section>
       <section className="others">
         <nav className="nav">
-          <Link href="/benew" className="linkPresentation">
+          <Link
+            href="/presentation/benew-presentation"
+            className="linkPresentation"
+          >
             <div className="linkContent">
               <span className="linkText">BENEW</span>
             </div>
