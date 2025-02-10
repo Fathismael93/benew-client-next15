@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import styles from '../styles/Slider.module.scss';
+import styles from './Slider.module.scss';
 
 // Importation des styles Swiper
 import 'swiper/css';
