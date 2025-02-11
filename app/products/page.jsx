@@ -28,9 +28,12 @@ const ProductsPage = () => {
   ];
 
   return (
-    <div className="portfolioContainer">
+    <div>
+      <section className="others">
+        <Parallax bgColor="#0c0c1d" title="Nos Produits" planets="/sun.png" />
+      </section>
       {projects.map((project) => (
-        <section key={project.id} className="projectSection">
+        <section key={project.id} className="others">
           <div className="imageContainer">
             <Image
               src={project.image}

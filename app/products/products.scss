@@ -1,12 +1,4 @@
-// styles/Portfolio.module.scss
-.portfolioContainer {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #fff;
-  }
+@use "@/app/app.scss" as *;
   
   .projectSection {
     width: 100%;

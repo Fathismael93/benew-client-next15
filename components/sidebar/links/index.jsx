@@ -31,10 +31,10 @@ function Links() {
       title: 'Accueil',
       path: '',
     },
-    // {
-    //   title: 'Produits',
-    //   path: 'products',
-    // },
+    {
+      title: 'Produits',
+      path: 'products',
+    },
     {
       title: 'Blog',
       path: 'blog',
