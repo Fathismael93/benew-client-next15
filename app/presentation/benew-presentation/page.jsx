@@ -3,7 +3,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import styles from './Slider.module.scss';
+import './Slider.scss';
 
 // Importation des styles Swiper
 import 'swiper/css';
@@ -50,28 +50,26 @@ const BenewPresentation = () => {
           planets="/sun.png"
         />
       </section>
-      <section className={`${styles.sliderContainer} others`}>
+      <section className="others">
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={0}
           slidesPerView={1}
           navigation
           pagination={{ clickable: true }}
-          className={styles.swiper}
+          className="swiper"
         >
           {sliderData.map((slide, index) => (
-            <SwiperSlide key={index} className={styles.slide}>
-              <div
-                className={`${styles.slideContent} ${styles[`slide-${index + 1}`]}`}
-              >
+            <SwiperSlide key={index} className="slide">
+              <div className={`slideContent ${[`slide-${index + 1}`]}`}>
                 <div
-                  className={`${styles.titleBlock} ${index % 2 === 0 ? styles.leftTitle : styles.rightTitle}`}
+                  className={`titleBlock ${index % 2 === 0 ? 'leftTitle' : 'rightTitle'}`}
                   style={{ backgroundImage: `url(${slide.backgroundImage})` }}
                 >
                   <h2>{slide.title}</h2>
                 </div>
                 <div
-                  className={`${styles.textBlock} ${index % 2 === 0 ? styles.rightText : styles.leftText}`}
+                  className={`textBlock ${index % 2 === 0 ? 'rightText' : 'leftText'}`}
                 >
                   <p>{slide.text}</p>
                 </div>
