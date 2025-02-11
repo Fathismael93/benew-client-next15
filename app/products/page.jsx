@@ -45,7 +45,7 @@ const ProductsPage = () => {
             />
           </div>
           <Link href={project.link} className="titleLink">
-            <h2 className="projectTitle">{project.title}</h2>
+            <h4 className="projectTitle">{project.title}</h4>
           </Link>
         </section>
       ))}
