@@ -1,0 +1,111 @@
+  
+  
+  .contentContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+  }
+  
+  .titleBlock {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    padding: 2rem;
+  
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(12, 12, 29, 0.5);
+    }
+  }
+  
+  .title {
+    position: relative;
+    z-index: 1;
+    color: white;
+    font-size: 4rem;
+    text-align: center;
+    font-weight: bold;
+    max-width: 80%;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .textBlock {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+  }
+  
+  .text {
+    color: white;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  
+  // Media queries pour le responsive
+  @media (max-width: 1024px) {
+    .title {
+      font-size: 3rem;
+    }
+    
+    .text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    
+    .textBlock {
+      padding: 3rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .contentContainer {
+      flex-direction: column;
+    }
+  
+    .titleBlock,
+    .textBlock {
+      width: 100%;
+      height: 50%;
+    }
+  
+    .title {
+      font-size: 2.5rem;
+    }
+  
+    .textBlock {
+      padding: 2rem;
+    }
+  
+    .text {
+      font-size: 1rem;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .title {
+      font-size: 2rem;
+    }
+    
+    .textBlock {
+      padding: 1.5rem;
+    }
+  }
