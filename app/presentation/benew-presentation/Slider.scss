@@ -16,18 +16,15 @@
   height: 100%;
 }
 
-.titleBlock, .textBlock {
+.titleBlock {
   width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-}
-
-.titleBlock {
   background-size: cover;
   background-position: center;
   position: relative;
+  padding: 2rem;
 
   &::before {
     content: '';
@@ -36,56 +33,35 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(12, 12, 29, 0.7);
+    background-color: rgba(12, 12, 29, 0.6);
   }
 
   h2 {
     position: relative;
     z-index: 1;
     color: white;
-    font-size: 3rem;
+    font-size: 3.5rem;
     text-align: center;
     font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    max-width: 80%;
+    margin: 0;
   }
 }
 
 .textBlock {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
   background-color: #0c0c1d;
-  color: white;
 
   p {
-    font-size: 1.2rem;
-    line-height: 1.6;
+    color: white;
+    font-size: 1.25rem;
+    line-height: 1.8;
     max-width: 600px;
-  }
-}
-
-.slide-1 {
-  .leftTitle {
-    order: 1;
-  }
-  .rightText {
-    order: 2;
-  }
-}
-
-.slide-2 {
-  .rightTitle {
-    order: 1;
-  }
-  .leftText {
-    order: 2;
-  }
-}
-
-.slide-3 {
-  .leftTitle {
-    order: 1;
-  }
-  .rightText {
-    order: 2;
+    margin: 0;
   }
 }
 
@@ -97,28 +73,53 @@
   background: white !important;
 }
 
+// Design responsive
 @media (max-width: 1024px) {
+  .titleBlock h2 {
+    font-size: 2.5rem;
+  }
+  
+  .textBlock p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 768px) {
   .slideContent {
     flex-direction: column;
   }
 
-  .titleBlock, .textBlock {
+  .titleBlock,
+  .textBlock {
     width: 100%;
     height: 50%;
   }
 
-  .titleBlock h2 {
-    font-size: 2rem;
+  .titleBlock {
+    padding: 1rem;
+    
+    h2 {
+      font-size: 2rem;
+    }
   }
 
-  .textBlock p {
-    font-size: 1rem;
-    text-align: center;
+  .textBlock {
+    padding: 2rem;
+    
+    p {
+      font-size: 1rem;
+      text-align: center;
+    }
   }
 }
 
 @media (max-width: 480px) {
   .titleBlock h2 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+  }
+  
+  .textBlock {
+    padding: 1.5rem;
   }
 }

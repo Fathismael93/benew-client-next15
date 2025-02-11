@@ -24,7 +24,7 @@ const BenewPresentation = () => {
       backgroundImage: '/energie.jpg',
     },
     {
-      title: 'Le Moyen',
+      title: 'Le Chemin',
       text:
         "Par la recherche, par l'analyse objective des problèmes et l'exploration de toutes les théories possibles. " +
         "C'est en poussant notre reflexion au délà de notre zone de confort et en remettant en cause l'environnement qui nous entoure et " +
@@ -33,7 +33,7 @@ const BenewPresentation = () => {
       backgroundImage: '/mission.jpg',
     },
     {
-      title: "L'Objectif",
+      title: 'Le But',
       text:
         "C'est avec cet état d'esprit que nous nous sommes donnés comme objectif de vous trouver les meilleures solutions ou " +
         'les meilleurs outils, financièrement accessible et simplement utilisable, qui faciliteront votre quotidien de djiboutien.',
@@ -61,16 +61,14 @@ const BenewPresentation = () => {
         >
           {sliderData.map((slide, index) => (
             <SwiperSlide key={index} className="slide">
-              <div className={`slideContent ${[`slide-${index + 1}`]}`}>
+              <div className="slideContent">
                 <div
-                  className={`titleBlock ${index % 2 === 0 ? 'leftTitle' : 'rightTitle'}`}
+                  className="titleBlock"
                   style={{ backgroundImage: `url(${slide.backgroundImage})` }}
                 >
                   <h2>{slide.title}</h2>
                 </div>
-                <div
-                  className={`textBlock ${index % 2 === 0 ? 'rightText' : 'leftText'}`}
-                >
+                <div className="textBlock">
                   <p>{slide.text}</p>
                 </div>
               </div>
