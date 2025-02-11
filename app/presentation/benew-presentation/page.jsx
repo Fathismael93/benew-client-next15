@@ -15,17 +15,28 @@ const BenewPresentation = () => {
   const sliderData = [
     {
       title: "L'Enérgie",
-      text: 'Nous repoussons constamment les limites de la technologie pour créer des solutions révolutionnaires qui transforment les industries et améliorent la vie quotidienne. Notre approche combine créativité, expertise technique et vision stratégique.',
+      text:
+        "Benew, c'est le résultat d'une envie. " +
+        'Celle de vouloir apporter une contribution positive et significative à notre entourage et à la société qui nous entoure. ' +
+        'Celle de trouver des solutions adaptées à nos problèmes. ' +
+        "Celle de donner accès à des outils utiles aux quotidiens pour des prix qui ne rélèvent pas l'absurdité. " +
+        "C'est cette envie, résultat d'un mélange entre la colière et l'espoir, qui représente le moteur de Benew et qui nous pousse à imaginer des solutions innovantes et adaptées à notre quotidien. Comment ?",
       backgroundImage: '/energie.jpg',
     },
     {
       title: 'Le Moyen',
-      text: 'Notre équipe de experts en transformation digitale accompagne les entreprises dans leur mutation numérique. Nous développons des stratégies sur mesure, des solutions innovantes et des écosystèmes digitaux performants qui génèrent de la valeur.',
+      text:
+        "Par la recherche, par l'analyse objective des problèmes et l'exploration de toutes les théories possibles. " +
+        "C'est en poussant notre reflexion au délà de notre zone de confort et en remettant en cause l'environnement qui nous entoure et " +
+        "les idées réçues que l'on découvre des nouvelles voies. Mais aussi grâce à la recherche de la perfection. " +
+        "La perfectiond'arriver à une solution unique pour plusieurs problèmes combinées.",
       backgroundImage: '/mission.jpg',
     },
     {
       title: "L'Objectif",
-      text: "Nous développons des approches stratégiques qui placent l'innovation au cœur de la croissance. En analysant les tendances émergentes, en anticipant les mutations du marché, nous aidons nos clients à construire des modèles économiques résilients et différenciants.",
+      text:
+        "C'est avec cet état d'esprit que nous nous sommes donnés comme objectif de vous trouver les meilleures solutions ou " +
+        'les meilleurs outils, financièrement accessible et simplement utilisable, qui faciliteront votre quotidien de djiboutien.',
       backgroundImage: '/objectif.jpg',
     },
   ];
