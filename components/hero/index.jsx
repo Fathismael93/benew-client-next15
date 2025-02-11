@@ -84,7 +84,7 @@ function Hero() {
       </motion.div>
       <div className="imageContainer">
         <Image
-          src="/hero.png"
+          src="/hero.jpg"
           alt="Ampoule brillante avec étoiles"
           width={500}
           height={500}
