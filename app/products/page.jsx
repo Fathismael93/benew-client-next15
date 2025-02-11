@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import './products.scss';
+import Parallax from '@/components/parallax';
 
 const ProductsPage = () => {
   const projects = [
