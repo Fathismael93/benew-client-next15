@@ -6,11 +6,7 @@ const ProductsPresentation = () => {
   return (
     <div>
       <section className="others">
-        <Parallax
-          bgColor="#0c0c1d"
-          title="Présentation des produits"
-          planets="/sun.png"
-        />
+        <Parallax bgColor="#0c0c1d" title="Les produits" planets="/sun.png" />
       </section>
       <section className="others">
         <div className="contentContainer">
