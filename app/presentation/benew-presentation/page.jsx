@@ -9,6 +9,7 @@ import styles from './Slider.module.scss';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Parallax from '@/components/parallax';
 
 const BenewPresentation = () => {
   const sliderData = [
