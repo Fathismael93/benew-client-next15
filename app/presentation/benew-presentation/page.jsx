@@ -13,19 +13,19 @@ import 'swiper/css/pagination';
 const BenewPresentation = () => {
   const sliderData = [
     {
-      title: 'Innovation Technologique',
+      title: "L'Enérgie",
       text: 'Nous repoussons constamment les limites de la technologie pour créer des solutions révolutionnaires qui transforment les industries et améliorent la vie quotidienne. Notre approche combine créativité, expertise technique et vision stratégique.',
-      backgroundImage: '/images/slider-bg-1.jpg',
+      backgroundImage: '/energie.jpg',
     },
     {
-      title: 'Expertise Digitale',
+      title: 'Le Moyen',
       text: 'Notre équipe de experts en transformation digitale accompagne les entreprises dans leur mutation numérique. Nous développons des stratégies sur mesure, des solutions innovantes et des écosystèmes digitaux performants qui génèrent de la valeur.',
-      backgroundImage: '/images/slider-bg-2.jpg',
+      backgroundImage: '/mission.jpg',
     },
     {
-      title: "Stratégie d'Innovation",
+      title: "L'Objectif",
       text: "Nous développons des approches stratégiques qui placent l'innovation au cœur de la croissance. En analysant les tendances émergentes, en anticipant les mutations du marché, nous aidons nos clients à construire des modèles économiques résilients et différenciants.",
-      backgroundImage: '/images/slider-bg-3.jpg',
+      backgroundImage: '/objectif.jpg',
     },
   ];
 
