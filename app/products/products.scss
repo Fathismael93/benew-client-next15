@@ -1,0 +1,90 @@
+// styles/Portfolio.module.scss
+.portfolioContainer {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+  }
+  
+  .projectSection {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+  }
+  
+  .imageContainer {
+    width: 70%;
+    height: 70%;
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  .projectImage {
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .titleLink {
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
+  .projectTitle {
+    color: #ffa500;
+    font-size: 2.5rem;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    padding: 1rem;
+    cursor: pointer;
+  }
+  
+  // Media queries pour le responsive
+  @media (max-width: 1024px) {
+    .imageContainer {
+      width: 80%;
+      height: 60%;
+    }
+  
+    .projectTitle {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .projectSection {
+      padding: 1rem;
+    }
+  
+    .imageContainer {
+      width: 90%;
+      height: 50%;
+    }
+  
+    .projectTitle {
+      font-size: 1.75rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .imageContainer {
+      width: 95%;
+      height: 40%;
+    }
+  
+    .projectTitle {
+      font-size: 1.5rem;
+    }
+  }
