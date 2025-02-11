@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import styles from './Slider.module.scss';
@@ -30,35 +30,44 @@ const BenewPresentation = () => {
   ];
 
   return (
-    <div className={styles.sliderContainer}>
-      <Swiper
-        modules={[Navigation, Pagination]}
-        spaceBetween={0}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        className={styles.swiper}
-      >
-        {sliderData.map((slide, index) => (
-          <SwiperSlide key={index} className={styles.slide}>
-            <div
-              className={`${styles.slideContent} ${styles[`slide-${index + 1}`]}`}
-            >
+    <div>
+      <section className="others">
+        <Parallax
+          bgColor="#0c0c1d"
+          title="Présentation BENEW"
+          planets="/sun.png"
+        />
+      </section>
+      <section className={`${styles.sliderContainer} others`}>
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={0}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          className={styles.swiper}
+        >
+          {sliderData.map((slide, index) => (
+            <SwiperSlide key={index} className={styles.slide}>
               <div
-                className={`${styles.titleBlock} ${index % 2 === 0 ? styles.leftTitle : styles.rightTitle}`}
-                style={{ backgroundImage: `url(${slide.backgroundImage})` }}
+                className={`${styles.slideContent} ${styles[`slide-${index + 1}`]}`}
               >
-                <h2>{slide.title}</h2>
+                <div
+                  className={`${styles.titleBlock} ${index % 2 === 0 ? styles.leftTitle : styles.rightTitle}`}
+                  style={{ backgroundImage: `url(${slide.backgroundImage})` }}
+                >
+                  <h2>{slide.title}</h2>
+                </div>
+                <div
+                  className={`${styles.textBlock} ${index % 2 === 0 ? styles.rightText : styles.leftText}`}
+                >
+                  <p>{slide.text}</p>
+                </div>
               </div>
-              <div
-                className={`${styles.textBlock} ${index % 2 === 0 ? styles.rightText : styles.leftText}`}
-              >
-                <p>{slide.text}</p>
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
     </div>
   );
 };
