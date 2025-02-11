@@ -34,7 +34,7 @@ const ProductsPage = () => {
         <Parallax bgColor="#0c0c1d" title="Nos Produits" planets="/sun.png" />
       </section>
       {projects.map((project) => (
-        <section key={project.id} className="others">
+        <section key={project.id} className="others projectSection">
           <div className="imageContainer">
             <Image
               src={project.image}
