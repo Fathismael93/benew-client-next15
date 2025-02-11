@@ -26,7 +26,7 @@ function Presentation() {
             </div>
           </Link>
 
-          <Link href="/team" className="linkPresentation">
+          <Link href="/presentation/team" className="linkPresentation">
             <div className="linkContent">
               <span className="linkText">L'Équipe Benew</span>
             </div>
