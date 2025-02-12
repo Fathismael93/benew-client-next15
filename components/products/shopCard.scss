@@ -32,7 +32,7 @@
       font-size: 1.1rem;
       
       a {
-        color: blue;
+        color: #ffd700;
         text-decoration: underline;
       }
     }
@@ -50,15 +50,15 @@
       text-decoration: none;
       
       &.orderButton {
-        background: #0070f3;
-        color: white;
+        background: #ffd700;
+        color: #0c0c1d;
         border: none;
       }
       
       &.detailsButton {
-        background: white;
-        color: #0070f3;
-        border: 1px solid #0070f3;
+        background: transparent;
+        color: #ffd700;
+        border: 1px solid #ffd700;
       }
     }
   }
