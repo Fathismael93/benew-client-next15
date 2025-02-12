@@ -1,0 +1,8 @@
+@use "@/app/app.scss" as *;
+
+.productsContainer {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
