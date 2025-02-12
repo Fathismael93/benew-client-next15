@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import ShopCard from '@/components/products';
 import OrderModal from '@/components/modal';
 import './templateShops.scss';
+import Parallax from '@/components/parallax';
 
 const TemplateShops = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
