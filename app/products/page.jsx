@@ -12,19 +12,19 @@ const ProductsPage = () => {
       id: 1,
       title: 'Transformation Digitale',
       image: '/e-commerce.jpg',
-      link: '/projects/digital-transformation',
+      link: '/products/1',
     },
     {
       id: 2,
       title: 'Innovation Technologique',
       image: '/e-commerce2.jpg',
-      link: '/projects/tech-innovation',
+      link: '/products/2',
     },
     {
       id: 3,
       title: 'Solutions Cloud',
       image: '/e-commerce3.jpg',
-      link: '/projects/cloud-solutions',
+      link: '/products/3',
     },
   ];
 

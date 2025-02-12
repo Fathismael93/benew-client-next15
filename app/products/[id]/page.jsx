@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import ProductCard from '@/components/ProductCard';
-import OrderModal from '@/components/OrderModal';
+import ShopCard from '@/components/products';
+import OrderModal from '@/components/modal';
 import './templateShops.scss';
 
 const TemplateShops = () => {
@@ -32,7 +32,7 @@ const TemplateShops = () => {
       </section>
       <section className="others productsContainer">
         {products.map((product) => (
-          <ProductCard
+          <ShopCard
             key={product.id}
             product={product}
             onOrder={() => setIsModalOpen(true)}
