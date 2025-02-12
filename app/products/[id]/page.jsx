@@ -12,7 +12,25 @@ const TemplateShops = () => {
   const products = [
     {
       id: 1,
-      image: '/product1.jpg',
+      image: '/e-commerce4.jpg',
+      title: 'Local Commercial - Centre Ville',
+      type: 'Boutique simple (BS)',
+      price: '70 000 fdj',
+      charges: '15000 fdj',
+      link: 'https://benew-client-next15.vercel.app/products',
+    },
+    {
+      id: 2,
+      image: '/e-commerce5.jpg',
+      title: 'Local Commercial - Centre Ville',
+      type: 'Boutique simple (BS)',
+      price: '70 000 fdj',
+      charges: '15000 fdj',
+      link: 'https://benew-client-next15.vercel.app/products',
+    },
+    {
+      id: 2,
+      image: '/e-commerce3.jpg',
       title: 'Local Commercial - Centre Ville',
       type: 'Boutique simple (BS)',
       price: '70 000 fdj',

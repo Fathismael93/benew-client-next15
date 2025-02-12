@@ -5,7 +5,7 @@ import './shopCard.scss';
 
 const ShopCard = ({ product, onOrder }) => {
   return (
-    <div className="card">
+    <section className="others card">
       <div className="imageContainer">
         <Image
           src={product.image}
@@ -35,7 +35,7 @@ const ShopCard = ({ product, onOrder }) => {
           Plus de détails
         </Link>
       </div>
-    </div>
+    </section>
   );
 };
 
