@@ -20,14 +20,7 @@ export async function GET(req, { params }) {
 
       const result = await client.query(query);
 
-      client.release(function (err) {
-        if (err) {
-          console.log(err);
-          throw err;
-        }
-
-        console.log('Client Connected To Aiven Postgresql Database is stopped');
-      });
+      console.log(result);
 
       return NextResponse.json(
         {

@@ -22,6 +22,7 @@ function SinglePost({ params }) {
         await axios
           .get(`/api/blog/${id}`)
           .then((response) => {
+            console.log(response.data);
             setArticle(response.data.data);
           })
           .catch(() => {
