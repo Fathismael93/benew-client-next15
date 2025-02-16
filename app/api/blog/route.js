@@ -13,7 +13,7 @@ export async function GET() {
 
     const getResult = await client.query(query);
 
-    client.end(function (err) {
+    client.release(function (err) {
       if (err) {
         console.log(err);
         throw err;
