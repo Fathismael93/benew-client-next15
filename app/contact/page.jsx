@@ -3,7 +3,7 @@
 import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { useInView, motion } from 'framer-motion';
-import { MdMail, MdOutlinePublic, MdPhone, MdWhatsapp } from 'react-icons/md';
+import { MdMail, MdPhone, MdWhatsapp } from 'react-icons/md';
 import Parallax from '@/components/parallax';
 import './contact.scss';
 

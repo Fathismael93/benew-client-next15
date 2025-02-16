@@ -22,9 +22,16 @@ export async function GET(req, { params }) {
       };
 
       console.log('Preparing the query');
-      const result = await client.query(query);
-      console.log('result of the query');
-      console.log(result);
+      await client
+        .query(query)
+        .then((result) => {
+          console.log('result of the query');
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log('error of the query');
+          console.log(err);
+        });
 
       client.release(function (err) {
         if (err) {
@@ -39,7 +46,7 @@ export async function GET(req, { params }) {
         {
           success: true,
           message: 'successfully',
-          data: result.rows[0],
+          data: [],
         },
         { status: 200 },
       );
