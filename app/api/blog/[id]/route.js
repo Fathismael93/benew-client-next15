@@ -4,7 +4,7 @@ import articleIDSchema from '@/utils/schema';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET({ params }) {
+export async function GET(req, { params }) {
   try {
     const { id } = params;
 
@@ -20,7 +20,7 @@ export async function GET({ params }) {
 
       const result = await client.query(query);
 
-      client.end(function (err) {
+      client.release(function (err) {
         if (err) {
           console.log(err);
           throw err;
