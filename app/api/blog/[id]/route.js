@@ -5,11 +5,8 @@ import articleIDSchema from '@/utils/schema';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
-  console.log('in the get single post GET API');
   try {
     const { id } = params;
-    console.log('id of post chosen');
-    console.log(id);
 
     try {
       await articleIDSchema.validate({ id });
@@ -21,17 +18,7 @@ export async function GET(req, { params }) {
         values: [id],
       };
 
-      console.log('Preparing the query');
-      await client
-        .query(query)
-        .then((result) => {
-          console.log('result of the query');
-          console.log(result);
-        })
-        .catch((err) => {
-          console.log('error of the query');
-          console.log(err);
-        });
+      const result = await client.query(query);
 
       client.release(function (err) {
         if (err) {
@@ -46,7 +33,7 @@ export async function GET(req, { params }) {
         {
           success: true,
           message: 'successfully',
-          data: [],
+          data: result.rows[0],
         },
         { status: 200 },
       );
