@@ -9,7 +9,7 @@
 }
 
 .imageContainer {
-    width: 60%;
+    width: 50%;
     height: 90%;
     position: relative;
     margin-bottom: 2rem;
@@ -43,7 +43,7 @@
 // Media queries pour le responsive
 @media (max-width: 1024px) {
     .imageContainer {
-        width: 60%;
+        width: 50%;
         height: 90%;
     }
 
