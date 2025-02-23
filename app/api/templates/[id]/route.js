@@ -29,7 +29,7 @@ export async function GET(request, { params }) {
     console.log('Applications: ');
     console.log(result);
 
-    return NextResponse.json({ applications: result }, { status: 200 });
+    return NextResponse.json({ applications: result.rows }, { status: 200 });
   } catch (error) {
     if (client) await client.cleanup();
     console.error('Error fetching template:', error);
