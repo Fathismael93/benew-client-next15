@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
   const client = await getClient();
 
   try {
-    const result = await client.query('SELECT * FROM applications', [id]);
+    const result = await client.query('SELECT * FROM applications');
 
     if (result) {
       if (client) await client.cleanup();
