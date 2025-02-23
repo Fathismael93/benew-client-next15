@@ -48,7 +48,10 @@ const TemplatesList = ({ templates }) => {
               priority
             />
           </div>
-          <Link href={`/${template.template_id}`} className="titleLink">
+          <Link
+            href={`/templates/${template.template_id}`}
+            className="titleLink"
+          >
             <h4 className="projectTitle">{template.template_name}</h4>
           </Link>
           <div className="platforms">
