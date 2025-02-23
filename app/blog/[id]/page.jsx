@@ -3,7 +3,7 @@ import axios from 'axios';
 import articleIDSchema from '@/utils/schema';
 import SinglePost from '@/components/blog/SinglePost';
 
-async function getSinglePost() {
+async function getSinglePost(id) {
   let article;
   try {
     await articleIDSchema.validate({ id });
