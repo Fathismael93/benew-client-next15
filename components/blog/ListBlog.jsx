@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import Single from '@/components/blog/single';
 import Parallax from '@/components/layouts/parallax';
-import './blog.scss';
+import './styling/blog.scss';
 
 const ListBlog = ({ posts }) => {
   const ref = useRef();
