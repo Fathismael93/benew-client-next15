@@ -9,29 +9,6 @@ import Parallax from '@/components/layouts/parallax';
 import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 
 const TemplatesList = ({ templates }) => {
-  const projects = [
-    {
-      id: 1,
-      title: 'Transformation Digitale',
-      image: '/e-commerce.jpg',
-      link: '/templates/1',
-    },
-    {
-      id: 2,
-      title: 'Innovation Technologique',
-      image: '/e-commerce2.jpg',
-      link: '/templates/2',
-    },
-    {
-      id: 3,
-      title: 'Solutions Cloud',
-      image: '/e-commerce3.jpg',
-      link: '/templates/3',
-    },
-  ];
-
-  console.log(templates);
-
   return (
     <div>
       <section className="others">
