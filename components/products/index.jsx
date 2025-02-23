@@ -9,7 +9,7 @@ const ShopCard = ({ product, onOrder }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="card-container">
+    <div className="others card-container">
       <div className="image-wrapper">
         <Image
           src={product.image}
