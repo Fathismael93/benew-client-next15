@@ -1,5 +1,4 @@
-'use client';
-
+import React from 'react';
 import axios from 'axios';
 import articleIDSchema from '@/utils/schema';
 import SinglePost from '@/components/blog/SinglePost';
