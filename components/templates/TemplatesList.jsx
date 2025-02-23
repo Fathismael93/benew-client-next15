@@ -50,6 +50,10 @@ const TemplatesList = ({ templates }) => {
           <Link href="" className="titleLink">
             <h4 className="projectTitle">{template.template_name}</h4>
           </Link>
+          <div className="platforms">
+            <MdMonitor />
+            {template.template_has_mobile && <MdPhoneIphone />}
+          </div>
         </section>
       ))}
     </div>

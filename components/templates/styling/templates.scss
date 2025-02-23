@@ -43,6 +43,10 @@
     cursor: pointer;
 }
 
+.platforms {
+    display: flex;
+}
+
 // Media queries pour le responsive
 @media (max-width: 1024px) {
     .imageContainer {
