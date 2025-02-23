@@ -5,6 +5,7 @@ import articleIDSchema from '@/utils/schema';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
+  console.log('WE ARE IN THE GET REQUEST API FOR SINGLE BLOG');
   let client;
   try {
     const { id } = await params;
