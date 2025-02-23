@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import TemplatesList from '@/components/templates/TemplatesList';
 
 async function getTemplates() {
