@@ -1,65 +1,27 @@
-'use client';
-
 import React from 'react';
-// pages/portfolio.js
-import Link from 'next/link';
-import { CldImage } from 'next-cloudinary';
-import './templateShops.scss';
-import Parallax from '@/components/layouts/parallax';
-import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
-import Image from 'next/image';
+import axios from 'axios';
+import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
 
-const SingleTemplate = ({ templates }) => {
-  const projects = [
-    {
-      id: 1,
-      title: 'Transformation Digitale',
-      image: '/e-commerce.jpg',
-      link: '/templates/1',
-    },
-    {
-      id: 2,
-      title: 'Innovation Technologique',
-      image: '/e-commerce2.jpg',
-      link: '/templates/2',
-    },
-    {
-      id: 3,
-      title: 'Solutions Cloud',
-      image: '/e-commerce3.jpg',
-      link: '/templates/3',
-    },
-  ];
+const getApplications = async (id) => {
+  let applications;
 
-  console.log(templates);
+  try {
+    const response = await axios.get(
+      `https://benew-client-next15.vercel.app/api/templates/${id}`,
+    );
 
-  return (
-    <div>
-      <section className="others">
-        <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
-      </section>
-      {projects.map((project) => (
-        <section key={project.id} className="others projectSection">
-          <div className="imageContainer">
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              className="projectImage"
-              priority
-            />
-          </div>
-          <Link href={`/templates/${project.link}`} className="titleLink">
-            <h4 className="projectTitle">{project.title}</h4>
-          </Link>
-          {/* <div className="platforms">
-            <MdMonitor />
-            {project.template_has_mobile && <MdPhoneIphone />}
-          </div> */}
-        </section>
-      ))}
-    </div>
-  );
+    console.log('Applications response in server component');
+    console.log(response);
+  } catch (error) {}
+
+  return [];
 };
 
-export default SingleTemplate;
+const ShopsPage = async ({ params }) => {
+  const { id } = await params;
+  const applications = await getApplications(id);
+
+  return <SingleTemplateShops applications={applications} />;
+};
+
+export default ShopsPage;
