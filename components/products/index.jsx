@@ -1,4 +1,5 @@
-// ShopCard.jsx
+'use client';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -7,7 +8,7 @@ const ShopCard = ({ product, onOrder }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="card-container">
+    <div className="others card-container">
       <div className="image-wrapper">
         <Image
           src={product.image}
