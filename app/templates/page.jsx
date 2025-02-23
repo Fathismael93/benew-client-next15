@@ -1,56 +1,23 @@
 import React from 'react';
+import TemplatesList from '@/components/templates/TemplatesList';
 
-// pages/portfolio.js
-import Link from 'next/link';
-import Image from 'next/image';
-import './templates.scss';
-import Parallax from '@/components/layouts/parallax';
+async function getTemplates() {
+  let templates;
 
-const TemplatesPage = () => {
-  const projects = [
-    {
-      id: 1,
-      title: 'Transformation Digitale',
-      image: '/e-commerce.jpg',
-      link: '/templates/1',
-    },
-    {
-      id: 2,
-      title: 'Innovation Technologique',
-      image: '/e-commerce2.jpg',
-      link: '/templates/2',
-    },
-    {
-      id: 3,
-      title: 'Solutions Cloud',
-      image: '/e-commerce3.jpg',
-      link: '/templates/3',
-    },
-  ];
+  await axios
+    .get('https://benew-client-next15.vercel.app/api/templates')
+    .then((response) => {
+      templates = response.data.data.rows;
+    })
+    .catch((err) => console.log(err));
 
-  return (
-    <div>
-      <section className="others">
-        <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
-      </section>
-      {projects.map((project) => (
-        <section key={project.id} className="others projectSection">
-          <div className="imageContainer">
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              className="projectImage"
-              priority
-            />
-          </div>
-          <Link href={project.link} className="titleLink">
-            <h4 className="projectTitle">{project.title}</h4>
-          </Link>
-        </section>
-      ))}
-    </div>
-  );
+  return templates;
+}
+
+const TemplatesPage = async () => {
+  const templates = await getTemplates();
+
+  return <TemplatesList templates={templates} />;
 };
 
 export default TemplatesPage;
