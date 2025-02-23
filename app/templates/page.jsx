@@ -3,28 +3,28 @@ import React from 'react';
 // pages/portfolio.js
 import Link from 'next/link';
 import Image from 'next/image';
-import './products.scss';
+import './templates.scss';
 import Parallax from '@/components/parallax';
 
-const ProductsPage = () => {
+const TemplatesPage = () => {
   const projects = [
     {
       id: 1,
       title: 'Transformation Digitale',
       image: '/e-commerce.jpg',
-      link: '/products/1',
+      link: '/templates/1',
     },
     {
       id: 2,
       title: 'Innovation Technologique',
       image: '/e-commerce2.jpg',
-      link: '/products/2',
+      link: '/templates/2',
     },
     {
       id: 3,
       title: 'Solutions Cloud',
       image: '/e-commerce3.jpg',
-      link: '/products/3',
+      link: '/templates/3',
     },
   ];
 
@@ -53,4 +53,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default TemplatesPage;

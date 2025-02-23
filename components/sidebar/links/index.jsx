@@ -32,20 +32,20 @@ function Links() {
       path: '',
     },
     {
-      title: 'Produits',
-      path: 'products',
+      title: 'Modèles',
+      path: '/templates',
     },
     {
       title: 'Blog',
-      path: 'blog',
+      path: '/blog',
     },
     {
       title: 'Présentation',
-      path: 'presentation',
+      path: '/presentation',
     },
     {
       title: 'Contact',
-      path: 'contact',
+      path: '/contact',
     },
   ];
 
