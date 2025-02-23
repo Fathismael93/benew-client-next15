@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import './styling/templates.scss';
 import Parallax from '@/components/layouts/parallax';
+import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 
 const TemplatesList = ({ templates }) => {
   const projects = [
