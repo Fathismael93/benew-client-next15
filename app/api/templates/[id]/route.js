@@ -3,13 +3,20 @@ import { NextResponse } from 'next/server';
 import { getClient } from '@/utils/dbConnect';
 
 export async function GET(request, { params }) {
+  console.log(
+    'WE ARE IN THE GET APPLICATIONS OF A SINGLE TEMPLATE REQUEST API',
+  );
   const { id } = await params;
   const client = await getClient();
 
   try {
-    const result = await client.query('SELECT * FROM applications');
+    const result = await client.query(
+      'SELECT * FROM applications WHERE application_template_id = $1',
+      [id],
+    );
 
-    if (result) {
+    if (!result) {
+      console.log('error not found');
       if (client) await client.cleanup();
       return NextResponse.json(
         { message: 'Template not found' },
