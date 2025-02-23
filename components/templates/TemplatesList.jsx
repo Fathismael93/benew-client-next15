@@ -3,7 +3,7 @@
 import React from 'react';
 // pages/portfolio.js
 import Link from 'next/link';
-import Image from 'next/image';
+import { CldImage } from 'next-cloudinary';
 import './styling/templates.scss';
 import Parallax from '@/components/layouts/parallax';
 
@@ -39,7 +39,7 @@ const TemplatesList = ({ templates }) => {
       {templates.map((template) => (
         <section key={template.template_id} className="others projectSection">
           <div className="imageContainer">
-            <Image
+            <CldImage
               src={template.template_image}
               alt={template.template_title}
               fill
@@ -48,7 +48,7 @@ const TemplatesList = ({ templates }) => {
             />
           </div>
           <Link href="" className="titleLink">
-            <h4 className="projectTitle">{template.template_title}</h4>
+            <h4 className="projectTitle">{template.template_name}</h4>
           </Link>
         </section>
       ))}
