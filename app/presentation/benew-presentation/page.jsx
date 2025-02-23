@@ -44,11 +44,7 @@ const BenewPresentation = () => {
   return (
     <div>
       <section className="others">
-        <Parallax
-          bgColor="#0c0c1d"
-          title="Présentation BENEW"
-          planets="/sun.png"
-        />
+        <Parallax bgColor="#0c0c1d" title="BENEW" planets="/sun.png" />
       </section>
       <section className="others">
         <Swiper

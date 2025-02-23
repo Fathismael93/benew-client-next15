@@ -31,7 +31,7 @@ const TemplatesPage = () => {
   return (
     <div>
       <section className="others">
-        <Parallax bgColor="#0c0c1d" title="Nos Produits" planets="/sun.png" />
+        <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
       </section>
       {projects.map((project) => (
         <section key={project.id} className="others projectSection">
