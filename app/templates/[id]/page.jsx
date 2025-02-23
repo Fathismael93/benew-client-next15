@@ -16,7 +16,7 @@ const getApplications = async (id) => {
     applications = response.data.applications;
   } catch (error) {}
 
-  return templates;
+  return applications;
 };
 
 const ShopsPage = async ({ params }) => {
