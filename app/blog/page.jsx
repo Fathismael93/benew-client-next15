@@ -6,7 +6,7 @@ async function getPosts() {
   let posts;
 
   await axios
-    .get('/api/blog')
+    .get('https://benew-client-next15.vercel.app/api/blog')
     .then((response) => {
       posts = response.data.data.rows;
     })
