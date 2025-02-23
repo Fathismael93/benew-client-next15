@@ -4,7 +4,7 @@ import React from 'react';
 // pages/portfolio.js
 import Link from 'next/link';
 import Image from 'next/image';
-import './templates.scss';
+import './styling/templates.scss';
 import Parallax from '@/components/layouts/parallax';
 
 const TemplatesList = ({ templates }) => {
