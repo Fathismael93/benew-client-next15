@@ -33,19 +33,19 @@ function Links() {
     },
     {
       title: 'Modèles',
-      path: '/templates',
+      path: 'templates',
     },
     {
       title: 'Blog',
-      path: '/blog',
+      path: 'blog',
     },
     {
       title: 'Présentation',
-      path: '/presentation',
+      path: 'presentation',
     },
     {
       title: 'Contact',
-      path: '/contact',
+      path: 'contact',
     },
   ];
 
