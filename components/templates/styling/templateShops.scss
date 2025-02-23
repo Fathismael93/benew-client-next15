@@ -12,8 +12,8 @@
 }
 
 .imageContainer {
-    width: 80%;
-    height: 80%;
+    width: 60%;
+    height: 90%;
     position: relative;
     margin-bottom: 2rem;
 }
@@ -50,8 +50,8 @@
 // Media queries pour le responsive
 @media (max-width: 1024px) {
     .imageContainer {
-        width: 80%;
-        height: 60%;
+        width: 60%;
+        height: 90%;
     }
 
     .projectTitle {
