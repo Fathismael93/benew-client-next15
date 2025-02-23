@@ -1,12 +1,14 @@
-import React from 'react';
+// ShopCard.jsx
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import './shopCard.scss';
 
 const ShopCard = ({ product, onOrder }) => {
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
-    <section className="others card">
-      <div className="imageContainer">
+    <div className="card-container">
+      <div className="image-wrapper">
         <Image
           src={product.image}
           alt={product.title}
@@ -14,28 +16,35 @@ const ShopCard = ({ product, onOrder }) => {
           style={{ objectFit: 'cover' }}
           priority
         />
+        <div className="overlay">
+          <h2 className="title">{product.title}</h2>
+          <button
+            className="info-toggle"
+            onClick={() => setShowDetails(!showDetails)}
+          >
+            {showDetails ? '− Hide Info' : '+ Show Info'}
+          </button>
+        </div>
+        <div className={`details-panel ${showDetails ? 'show' : ''}`}>
+          <ul className="details">
+            <li>Type: {product.type}</li>
+            <li>Prix: {product.price}</li>
+            <li>Charges à payer/Mois: {product.charges}</li>
+            <li>
+              <Link href={product.link}>Voir sur le site</Link>
+            </li>
+          </ul>
+          <div className="buttons">
+            <button className="orderButton" onClick={onOrder}>
+              Commander
+            </button>
+            <Link href={`/products/${product.id}`} className="detailsButton">
+              Plus de détails
+            </Link>
+          </div>
+        </div>
       </div>
-
-      <h2 className="title">{product.title}</h2>
-
-      <ul className="details">
-        <li>Type: {product.type}</li>
-        <li>Prix: {product.price}</li>
-        <li>Charges à payer/Mois: {product.charges}</li>
-        <li>
-          <Link href={product.link}>Voir sur le site</Link>
-        </li>
-      </ul>
-
-      <div className="buttons">
-        <button className="orderButton" onClick={onOrder}>
-          Commander
-        </button>
-        <Link href={`/products/${product.id}`} className="detailsButton">
-          Plus de détails
-        </Link>
-      </div>
-    </section>
+    </div>
   );
 };
 
