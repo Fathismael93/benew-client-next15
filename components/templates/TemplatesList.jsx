@@ -36,19 +36,19 @@ const TemplatesList = ({ templates }) => {
       <section className="others">
         <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
       </section>
-      {projects.map((project) => (
-        <section key={project.id} className="others projectSection">
+      {templates.map((template) => (
+        <section key={template.template_id} className="others projectSection">
           <div className="imageContainer">
             <Image
-              src={project.image}
-              alt={project.title}
+              src={template.template_image}
+              alt={template.template_title}
               fill
               className="projectImage"
               priority
             />
           </div>
-          <Link href={project.link} className="titleLink">
-            <h4 className="projectTitle">{project.title}</h4>
+          <Link href="" className="titleLink">
+            <h4 className="projectTitle">{template.template_title}</h4>
           </Link>
         </section>
       ))}
