@@ -11,10 +11,12 @@ const getApplications = async (id) => {
     );
 
     console.log('Applications response in server component');
-    console.log(response);
+    console.log(response.data.applications);
+
+    applications = response.data.applications;
   } catch (error) {}
 
-  return [];
+  return templates;
 };
 
 const ShopsPage = async ({ params }) => {

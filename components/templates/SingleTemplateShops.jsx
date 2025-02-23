@@ -37,19 +37,22 @@ const SingleTemplateShops = ({ applications }) => {
       <section className="others">
         <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
       </section>
-      {projects.map((project) => (
-        <section key={project.id} className="others projectSection">
+      {applications.map((app) => (
+        <section key={app.application_id} className="others projectSection">
           <div className="imageContainer">
             <Image
-              src={project.image}
-              alt={project.title}
+              src={app.application_image}
+              alt={app.application_name}
               fill
               className="projectImage"
               priority
             />
           </div>
-          <Link href={`/templates/${project.link}`} className="titleLink">
-            <h4 className="projectTitle">{project.title}</h4>
+          <Link
+            href={`/templates/${app.application_link}`}
+            className="titleLink"
+          >
+            <h4 className="projectTitle">{app.application_name}</h4>
           </Link>
           {/* <div className="platforms">
               <MdMonitor />
