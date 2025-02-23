@@ -42,7 +42,7 @@ const TemplatesList = ({ templates }) => {
           <div className="imageContainer">
             <CldImage
               src={template.template_image}
-              alt={template.template_title}
+              alt={template.template_name}
               fill
               className="projectImage"
               priority
