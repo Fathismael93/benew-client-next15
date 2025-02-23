@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import Single from '@/components/blog/single';
+import ArticleItem from '@/components/blog/articleItem';
 import Parallax from '@/components/layouts/parallax';
 import './styling/blog.scss';
 
@@ -34,7 +34,7 @@ const ListBlog = ({ posts }) => {
         </div>
         {posts.length > 0 ? (
           posts.map((item) => (
-            <Single
+            <ArticleItem
               article_id={item.article_id}
               article_title={item.article_title}
               article_image={item.article_image}

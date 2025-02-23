@@ -4,7 +4,7 @@ import { CldImage } from 'next-cloudinary';
 import './single.scss';
 import Link from 'next/link';
 
-function Single({ article_id, article_title, article_image, created }) {
+function ArticleItem({ article_id, article_title, article_image, created }) {
   const ref = useRef();
 
   const { scrollYProgress } = useScroll({
@@ -43,4 +43,4 @@ function Single({ article_id, article_title, article_image, created }) {
   );
 }
 
-export default Single;
+export default ArticleItem;
