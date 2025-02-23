@@ -41,7 +41,7 @@ const SingleTemplateShops = ({ applications }) => {
         <section key={app.application_id} className="others projectSection">
           <div className="imageContainer">
             <Image
-              src={app.application_image}
+              src={app.application_images[0]}
               alt={app.application_name}
               fill
               className="projectImage"
