@@ -1,20 +1,14 @@
 // shopCard.scss
-.card-container {
+.fullscreen-card {
+  height: 100vh;
   width: 100%;
-  height: 90vh;
+  scroll-snap-align: start;
   position: relative;
-  margin-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    height: 70vh;
-  }
-
-  .image-wrapper {
+  
+  .image-container {
     width: 100%;
     height: 100%;
     position: relative;
-    border-radius: 1rem;
-    overflow: hidden;
   }
 
   .overlay {
@@ -22,18 +16,23 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 1.5rem;
+    padding: 2rem;
     background: linear-gradient(transparent, rgba(12, 12, 29, 0.9));
     z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
   }
 
   .title {
     color: #ffa500;
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    margin: 0;
+    max-width: 70%;
     
     @media (max-width: 768px) {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      max-width: 60%;
     }
   }
 
@@ -45,6 +44,7 @@
     border-radius: 2rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 3;
 
     &:hover {
       background: rgba(255, 215, 0, 0.3);
@@ -63,11 +63,16 @@
     z-index: 3;
 
     &.show {
-      width: 300px;
+      width: 350px;
       padding: 2rem;
 
       @media (max-width: 768px) {
         width: 100%;
+        height: auto;
+        bottom: 0;
+        top: auto;
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
       }
     }
   }
@@ -80,6 +85,11 @@
       padding: 0.8rem 0;
       color: #fff;
       font-size: 1.1rem;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+      
+      &:last-child {
+        border-bottom: none;
+      }
       
       a {
         color: #ffd700;
@@ -94,22 +104,31 @@
     gap: 1rem;
     
     button, a {
-      padding: 0.8rem 1.5rem;
+      padding: 1rem 1.5rem;
       border-radius: 4px;
       font-size: 1rem;
       cursor: pointer;
       text-align: center;
+      transition: all 0.3s ease;
       
       &.orderButton {
         background: #ffd700;
         color: #0c0c1d;
         border: none;
+        
+        &:hover {
+          background: #ffc700;
+        }
       }
       
       &.detailsButton {
         background: transparent;
         color: #ffd700;
         border: 1px solid #ffd700;
+        
+        &:hover {
+          background: rgba(255, 215, 0, 0.1);
+        }
       }
     }
   }
