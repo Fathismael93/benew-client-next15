@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import './templates.scss';
-import Parallax from '@/components/parallax';
+import Parallax from '@/components/layouts/parallax';
 
 const TemplatesPage = () => {
   const projects = [

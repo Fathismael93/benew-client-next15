@@ -1,5 +1,5 @@
-import Parallax from '../components/parallax';
-import Hero from '../components/hero';
+import Parallax from '../components/layouts/parallax';
+import Hero from '../components/layouts/hero';
 
 export default function Home() {
   return (

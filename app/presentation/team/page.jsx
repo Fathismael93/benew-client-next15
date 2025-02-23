@@ -1,6 +1,6 @@
 import React from 'react';
 import './team.scss';
-import Parallax from '@/components/parallax';
+import Parallax from '@/components/layouts/parallax';
 
 const TeamPresentation = () => {
   return (

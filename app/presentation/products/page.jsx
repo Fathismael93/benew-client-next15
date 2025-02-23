@@ -1,6 +1,6 @@
 import React from 'react';
 import './products-presentation.scss';
-import Parallax from '@/components/parallax';
+import Parallax from '@/components/layouts/parallax';
 
 const ProductsPresentation = () => {
   return (

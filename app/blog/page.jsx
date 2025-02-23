@@ -1,72 +1,24 @@
-'use client';
-
-import { motion, useScroll, useSpring } from 'framer-motion';
-import { React, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import axios from 'axios';
-import Single from '@/components/single';
-import Parallax from '@/components/parallax';
-import './blog.scss';
+import ListBlog from '@/components/blog/ListBlog';
 
-function Blog() {
-  const ref = useRef();
-  const [posts, setPosts] = useState('');
-  const [errorMessage, setErrorMessage] = useState(
-    'Aucun contenu pour le moment, désolé !',
-  );
+async function getPosts() {
+  let posts;
 
-  useEffect(() => {
-    async function getPosts() {
-      await axios
-        .get('/api/blog')
-        .then((response) => {
-          setPosts(response.data.data.rows);
-        })
-        .catch(() => setErrorMessage('Aucun contenu pour le moment, désolé !'));
-    }
+  await axios
+    .get('/api/blog')
+    .then((response) => {
+      posts = response.data.data.rows;
+    })
+    .catch((err) => console.log(err));
 
-    getPosts();
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['end end', 'start start'],
-  });
-
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-  });
-
-  return (
-    <div>
-      <section className="first">
-        <Parallax bgColor="#0c0c1d" title="Notre Blog" planets="/planets.png" />
-      </section>
-      <div className="portfolio" ref={ref}>
-        <div className="progress">
-          <h1>Les Articles</h1>
-          <motion.div style={{ scaleX }} className="progressBar" />
-        </div>
-        {posts.length > 0 ? (
-          posts.map((item) => (
-            <Single
-              article_id={item.article_id}
-              article_title={item.article_title}
-              article_image={item.article_image}
-              created={item.created}
-              key={item.article_id}
-            />
-          ))
-        ) : (
-          <section className="others">
-            <div className="no-content">
-              <p className="no-content-text">{errorMessage}</p>
-            </div>
-          </section>
-        )}
-      </div>
-    </div>
-  );
+  return posts;
 }
 
-export default Blog;
+async function BlogPage() {
+  const posts = await getPosts();
+
+  return <ListBlog posts={posts} />;
+}
+
+export default BlogPage;

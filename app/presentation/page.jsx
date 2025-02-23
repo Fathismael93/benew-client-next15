@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import './presentation.scss';
-import Parallax from '@/components/parallax';
+import Parallax from '@/components/layouts/parallax';
 
 function Presentation() {
   return (
