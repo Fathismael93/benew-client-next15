@@ -3,9 +3,9 @@
 import React from 'react';
 // pages/portfolio.js
 import Link from 'next/link';
+import { CldImage } from 'next-cloudinary';
 import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
-import Image from 'next/image';
 
 const SingleTemplateShops = ({ applications }) => {
   const projects = [
@@ -40,7 +40,7 @@ const SingleTemplateShops = ({ applications }) => {
       {applications.map((app) => (
         <section key={app.application_id} className="others projectSection">
           <div className="imageContainer">
-            <Image
+            <CldImage
               src={app.application_images[0]}
               alt={app.application_name}
               fill
