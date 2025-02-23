@@ -8,30 +8,6 @@ import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 
 const SingleTemplateShops = ({ applications }) => {
-  const projects = [
-    {
-      id: 1,
-      title: 'Transformation Digitale',
-      image: '/e-commerce.jpg',
-      link: '/templates/1',
-    },
-    {
-      id: 2,
-      title: 'Innovation Technologique',
-      image: '/e-commerce2.jpg',
-      link: '/templates/2',
-    },
-    {
-      id: 3,
-      title: 'Solutions Cloud',
-      image: '/e-commerce3.jpg',
-      link: '/templates/3',
-    },
-  ];
-
-  console.log('Applications response in client component');
-  console.log(applications);
-
   return (
     <div>
       <section className="others">
