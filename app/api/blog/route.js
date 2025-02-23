@@ -1,15 +1,18 @@
 import { NextResponse } from 'next/server';
-import client from '@/utils/dbConnect';
+import { getClient } from '@/utils/dbConnect';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
+  let client;
   try {
     const query = {
       // give the query a unique name
       name: 'get-article',
       text: "SELECT article_id, article_title, article_image, TO_CHAR(article_created,'dd/MM/yyyy') as created FROM articles ORDER BY created DESC, article_id DESC",
     };
+
+    client = await getClient();
 
     const getResult = await client.query(query);
 
@@ -22,6 +25,10 @@ export async function GET() {
     //   console.log('Client Connected To Aiven Postgresql Database is stopped');
     // });
 
+    if (getResult) {
+      if (client) await client.cleanup();
+    }
+
     return NextResponse.json(
       {
         success: true,
@@ -30,6 +37,7 @@ export async function GET() {
       { status: 200 },
     );
   } catch (e) {
+    if (client) await client.cleanup();
     return NextResponse.json(
       {
         success: false,

@@ -1,15 +1,18 @@
 import { NextResponse } from 'next/server';
-import client from '@/utils/dbConnect';
+import { getClient } from '@/utils/dbConnect';
 import articleIDSchema from '@/utils/schema';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
+  let client;
   try {
-    const { id } = params;
+    const { id } = await params;
 
     try {
       await articleIDSchema.validate({ id });
+
+      client = await getClient();
 
       const query = {
         // give the query a unique name
@@ -22,6 +25,10 @@ export async function GET(req, { params }) {
 
       console.log(result);
 
+      if (result) {
+        if (client) await client.cleanup();
+      }
+
       return NextResponse.json(
         {
           success: true,
@@ -31,6 +38,7 @@ export async function GET(req, { params }) {
         { status: 200 },
       );
     } catch (error) {
+      if (client) await client.cleanup();
       return NextResponse.json(
         {
           success: false,
@@ -40,6 +48,7 @@ export async function GET(req, { params }) {
       );
     }
   } catch (e) {
+    if (client) await client.cleanup();
     return NextResponse.json({
       success: false,
       message: 'Something goes wrong !Please try again',
