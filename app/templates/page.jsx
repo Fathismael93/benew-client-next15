@@ -9,10 +9,12 @@ async function getTemplates() {
     .get('https://benew-client-next15.vercel.app/api/templates')
     .then((response) => {
       templates = response.data.data;
+      console.log('response: ');
+      console.log(response);
     })
     .catch((err) => console.log(err));
 
-  return templates;
+  return [];
 }
 
 const TemplatesPage = async () => {
