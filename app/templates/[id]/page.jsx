@@ -4,7 +4,7 @@ import React from 'react';
 // pages/portfolio.js
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
-import '@/components/templates/styling/templates.scss';
+import './templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 import Image from 'next/image';
