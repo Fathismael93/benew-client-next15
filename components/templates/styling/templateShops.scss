@@ -11,16 +11,16 @@
 .imageContainer {
     width: 50%;
     height: 90%;
-    padding: 1rem;
     position: relative;
     margin-bottom: 2rem;
-    border: 1px solid white;
-    border-radius: 2px;
 }
 
 .projectImage {
+    padding: 1rem;
     object-fit: contain;
     transition: transform 0.3s ease;
+    border: 1px solid white;
+    border-radius: 1rem;
 }
 
 .titleLink {
