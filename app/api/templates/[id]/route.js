@@ -13,7 +13,9 @@ export async function GET(request, { params }) {
   try {
     await client
       .query(
-        'SELECT applications.*, templates.template_name FROM applications JOIN templates ON applications.application_template_id = templates.template_id WHERE applications.application_template_id = $1',
+        'SELECT applications.*, templates.template_name FROM applications ' +
+          'JOIN templates ON applications.application_template_id = templates.template_id ' +
+          'WHERE applications.application_template_id = $1',
         [id],
       )
       .then((result) => {
