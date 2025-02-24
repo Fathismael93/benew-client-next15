@@ -38,9 +38,9 @@ const SingleTemplateShops = ({ applications }) => {
             <div className="detailsContainer">
               <h4 className="projectTitle">{app.application_name}</h4>
               <div className="appDetails">
-                <p className="appFee">Prix: {app.app_fee}</p>
+                <p className="appFee">Prix: {app.application_fee}</p>
                 <a
-                  href={app.application_url}
+                  href={app.application_link}
                   className="appLink"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -48,18 +48,18 @@ const SingleTemplateShops = ({ applications }) => {
                   Visiter l'application
                 </a>
                 <div className="buttonGroup">
-                  <a
-                    href={`/templates/${app.application_link}`}
-                    className="primaryButton"
-                  >
-                    En savoir plus
-                  </a>
                   <button
-                    className="secondaryButton"
+                    className="primaryButton"
                     onClick={() => setIsModalOpen(true)}
                   >
                     Commander maintenant
                   </button>
+                  <a
+                    href={`/templates/${app.application_link}`}
+                    className="secondaryButton"
+                  >
+                    En savoir plus
+                  </a>
                 </div>
               </div>
             </div>
