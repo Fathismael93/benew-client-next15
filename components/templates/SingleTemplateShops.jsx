@@ -1,12 +1,14 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
+import OrderModal from './OrderModal';
 
 const SingleTemplateShops = ({ applications }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div>
       <section className="others">
@@ -34,14 +36,9 @@ const SingleTemplateShops = ({ applications }) => {
               />
             </div>
             <div className="detailsContainer">
-              <Link
-                href={`/templates/${app.application_link}`}
-                className="titleLink"
-              >
-                <h4 className="projectTitle">{app.application_name}</h4>
-              </Link>
+              <h4 className="projectTitle">{app.application_name}</h4>
               <div className="appDetails">
-                <p className="appFee">Prix: {app.application_fee}</p>
+                <p className="appFee">Prix: {app.app_fee}</p>
                 <a
                   href={app.application_url}
                   className="appLink"
@@ -50,10 +47,27 @@ const SingleTemplateShops = ({ applications }) => {
                 >
                   Visiter l'application
                 </a>
-                <button className="appButton">En savoir plus</button>
+                <div className="buttonGroup">
+                  <a
+                    href={`/templates/${app.application_link}`}
+                    className="primaryButton"
+                  >
+                    En savoir plus
+                  </a>
+                  <button
+                    className="secondaryButton"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    Commander maintenant
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+          <OrderModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
         </section>
       ))}
     </div>
