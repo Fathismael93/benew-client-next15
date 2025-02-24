@@ -8,24 +8,14 @@ export async function GET(request, { params }) {
   );
   const { id } = await params;
   const client = await getClient();
-  let result = [];
 
   try {
-    await client
-      .query(
-        'SELECT applications.*, templates.template_name FROM applications ' +
-          'JOIN templates ON applications.application_template_id = templates.template_id ' +
-          'WHERE applications.application_template_id = $1',
-        [id],
-      )
-      .then((result) => {
-        console.log('Result in the client.query: ');
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log('Errors in the client.query: ');
-        console.log(err);
-      });
+    const result = await client.query(
+      'SELECT applications.*, templates.template_name FROM applications ' +
+        'JOIN templates ON applications.application_template_id = templates.template_id ' +
+        'WHERE applications.application_template_id = $1',
+      [id],
+    );
 
     if (!result) {
       console.log('error not found');
