@@ -38,7 +38,7 @@ const SingleTemplateShops = ({ applications }) => {
             <div className="detailsContainer">
               <h4 className="projectTitle">{app.application_name}</h4>
               <div className="appDetails">
-                <p className="appFee">Prix: {app.application_fee}</p>
+                <p className="appFee">Prix: {app.application_fee} Fdj</p>
                 <a
                   href={app.application_link}
                   className="appLink"
