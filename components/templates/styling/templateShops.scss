@@ -11,8 +11,11 @@
 .imageContainer {
     width: 50%;
     height: 90%;
+    padding: 1rem;
     position: relative;
     margin-bottom: 2rem;
+    border: 1px solid white;
+    border-radius: 2px;
 }
 
 .projectImage {

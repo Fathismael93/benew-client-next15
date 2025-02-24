@@ -13,7 +13,11 @@ const SingleTemplateShops = ({ applications }) => {
       <section className="others">
         <Parallax
           bgColor="#0c0c1d"
-          title={applications !== undefined && applications[0]?.template_name}
+          title={
+            applications !== undefined
+              ? applications[0]?.template_name
+              : 'Modèle vide'
+          }
           planets="/sun.png"
         />
       </section>
@@ -34,10 +38,6 @@ const SingleTemplateShops = ({ applications }) => {
           >
             <h4 className="projectTitle">{app.application_name}</h4>
           </Link>
-          {/* <div className="platforms">
-              <MdMonitor />
-              {project.template_has_mobile && <MdPhoneIphone />}
-            </div> */}
         </section>
       ))}
     </div>
