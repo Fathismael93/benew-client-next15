@@ -11,7 +11,11 @@ const SingleTemplateShops = ({ applications }) => {
   return (
     <div>
       <section className="others">
-        <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
+        <Parallax
+          bgColor="#0c0c1d"
+          title={applications !== undefined && applications[0]?.template_name}
+          planets="/sun.png"
+        />
       </section>
       {applications.map((app) => (
         <section key={app.application_id} className="others projectSection">
