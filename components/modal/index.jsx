@@ -78,7 +78,7 @@ const OrderModal = ({ isOpen, onClose, platforms }) => {
                   <input
                     type="radio"
                     name="paymentMethod"
-                    value="evc"
+                    value={platform?.platform_id}
                     onChange={handleInputChange}
                   />
                   {platform?.platform_name}
