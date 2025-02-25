@@ -146,20 +146,20 @@ input[type="tel"] {
   margin-top: 1rem;
 }
 
-// button {
-//   padding: 0.8rem 1.5rem;
-//   border-radius: 8px;
-//   font-weight: 600;
-//   font-size: 1rem;
-//   transition: all 0.3s ease;
-//   cursor: pointer;
-//   border: none;
+button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
   
-//   &:disabled {
-//     opacity: 0.6;
-//     cursor: not-allowed;
-//   }
-// }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
 
 // .nextButton {
 //   background-color: #ffa500;
