@@ -114,18 +114,93 @@ input[type="tel"] {
   }
 }
 
-  .checkboxGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    
-    label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      cursor: pointer;
-    }
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  color: #e0e0e0;
+  cursor: pointer;
+  padding: 0.6rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(255, 165, 0, 0.1);
   }
+  
+  input[type="radio"] {
+    margin-right: 10px;
+    accent-color: #ffa500;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.nextButton {
+  background-color: #ffa500;
+  color: #0c0c1d;
+  
+  &:hover:not(:disabled) {
+    background-color: #ffd700;
+    transform: translateY(-2px);
+  }
+}
+
+.backButton, .cancelButton {
+  background-color: transparent;
+  color: #ffa500;
+  border: 1px solid #ffa500;
+  
+  &:hover {
+    background-color: rgba(255, 165, 0, 0.1);
+  }
+}
+
+.closeButton {
+  background-color: #ffa500;
+  color: #0c0c1d;
+  width: 100%;
+  margin-top: 1rem;
+  
+  &:hover {
+    background-color: #ffd700;
+  }
+}
+
+.confirmationStep {
+  text-align: center;
+  
+  p {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+}
 
 .errorMessage {
   background-color: rgba(220, 38, 38, 0.1);
