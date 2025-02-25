@@ -16,6 +16,9 @@ const OrderModal = ({ isOpen, onClose, platforms }) => {
   });
 
   const handleInputChange = (e) => {
+    console.log('Platform choosen: ');
+    console.log(e.target.name);
+    console.log(e.target.value);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
