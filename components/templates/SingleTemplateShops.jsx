@@ -5,7 +5,7 @@ import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal';
 
-const SingleTemplateShops = ({ applications }) => {
+const SingleTemplateShops = ({ applications, platforms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 
