@@ -37,6 +37,7 @@ const SingleTemplateShops = ({ applications }) => {
             </div>
             <div className="detailsContainer">
               <h4 className="projectTitle">{app.application_name}</h4>
+              <p className="appType">Type: {app.application_type}</p>
               <div className="appDetails">
                 <p className="appFee">Prix: {app.application_fee} Fdj</p>
                 <a

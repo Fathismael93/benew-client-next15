@@ -12,7 +12,7 @@ export async function GET(request, { params }) {
   try {
     const result = await client.query(
       'SELECT ' +
-        'applications.application_id, application_name, application_link, application_fee, application_images, ' +
+        'applications.application_id, application_name, application_link, application_fee, application_images, application_type, ' +
         'templates.template_name FROM applications ' +
         'JOIN templates ON applications.application_template_id = templates.template_id ' +
         'WHERE applications.application_template_id = $1',
