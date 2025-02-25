@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import './orderModal.scss';
 
-const OrderModal = ({ isOpen, onClose }) => {
+const OrderModal = ({ isOpen, onClose, platforms }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     lastName: '',
@@ -70,24 +70,17 @@ const OrderModal = ({ isOpen, onClose }) => {
           <div className="step">
             <h2>Étape 2: Méthode de paiement</h2>
             <div className="checkboxGroup">
-              <label>
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="evc"
-                  onChange={handleInputChange}
-                />
-                EVC Plus
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="zaad"
-                  onChange={handleInputChange}
-                />
-                ZAAD
-              </label>
+              {platforms?.map((platform) => (
+                <label key={platform?.platform_id}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="evc"
+                    onChange={handleInputChange}
+                  />
+                  {platform?.platform_name}
+                </label>
+              ))}
             </div>
             <input
               type="text"

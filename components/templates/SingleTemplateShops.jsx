@@ -71,6 +71,7 @@ const SingleTemplateShops = ({ applications, platforms }) => {
           <OrderModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
+            platforms={platforms}
           />
         </section>
       ))}
