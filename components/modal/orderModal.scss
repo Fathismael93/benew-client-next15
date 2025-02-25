@@ -24,14 +24,23 @@
 }
 
 .modal {
-  background: #0c0c1d;
-  border: 1px solid #ffa500;
-  padding: 2rem;
-  border-radius: 8px;
+  // background: #0c0c1d;
+  // border: 1px solid #ffa500;
+  // padding: 2rem;
+  // border-radius: 8px;
+  // width: 90%;
+  // max-width: 500px;
+  // max-height: 90vh;
+  // overflow-y: auto;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 550px;
+  overflow: hidden;
+  padding: 30px;
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  position: relative;
 }
 
 .step {
