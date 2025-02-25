@@ -1,16 +1,18 @@
 'use client';
-
 import React, { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal';
 
-const SingleTemplateShops = ({ applications, platforms }) => {
+const SingleTemplateShops = ({ applications }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedApp, setSelectedApp] = useState(null);
 
-  console.log('platforms: ');
-  console.log(platforms);
+  const handleOrderClick = (app) => {
+    setSelectedApp(app);
+    setIsModalOpen(true);
+  };
 
   return (
     <div>
@@ -54,7 +56,7 @@ const SingleTemplateShops = ({ applications, platforms }) => {
                 <div className="buttonGroup">
                   <button
                     className="primaryButton"
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => handleOrderClick(app)}
                   >
                     Commander maintenant
                   </button>
@@ -68,13 +70,21 @@ const SingleTemplateShops = ({ applications, platforms }) => {
               </div>
             </div>
           </div>
-          <OrderModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            platforms={platforms}
-          />
         </section>
       ))}
+
+      {selectedApp && (
+        <OrderModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedApp(null);
+          }}
+          platforms={platforms}
+          applicationId={selectedApp.application_id}
+          applicationFee={selectedApp.application_fee}
+        />
+      )}
     </div>
   );
 };
