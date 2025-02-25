@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
   const client = await getClient();
 
   try {
-    const result = await client.query(
+    const resultApps = await client.query(
       'SELECT ' +
         'applications.application_id, application_name, application_link, application_fee, application_images, application_type, ' +
         'templates.template_name FROM applications ' +
@@ -19,7 +19,7 @@ export async function GET(request, { params }) {
       [id],
     );
 
-    if (!result) {
+    if (!resultApps) {
       console.log('error not found');
       if (client) await client.cleanup();
       return NextResponse.json(
@@ -28,12 +28,29 @@ export async function GET(request, { params }) {
       );
     }
 
+    const resultPlatforms = await client.query('SELECT * FROM platforms ');
+
+    if (!resultPlatforms) {
+      console.log('error not found');
+      if (client) await client.cleanup();
+      return NextResponse.json(
+        { message: 'Platforms not found' },
+        { status: 404 },
+      );
+    }
+
     if (client) await client.cleanup();
 
     console.log('Applications: ');
-    console.log(result);
+    console.log(resultApps);
 
-    return NextResponse.json({ applications: result.rows }, { status: 200 });
+    return NextResponse.json(
+      {
+        applications: resultApps.rows,
+        platforms: resultPlatforms.rows,
+      },
+      { status: 200 },
+    );
   } catch (error) {
     if (client) await client.cleanup();
     console.error('Error fetching template:', error);

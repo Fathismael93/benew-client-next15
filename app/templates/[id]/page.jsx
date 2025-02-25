@@ -3,7 +3,7 @@ import axios from 'axios';
 import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
 
 const getApplications = async (id) => {
-  let applications;
+  let applications, platforms;
 
   try {
     const response = await axios.get(
@@ -14,16 +14,19 @@ const getApplications = async (id) => {
     console.log(response.data.applications);
 
     applications = response.data.applications;
+    platforms = response.data.platforms;
   } catch (error) {}
 
-  return applications;
+  return { applications, platforms };
 };
 
 const ShopsPage = async ({ params }) => {
   const { id } = await params;
-  const applications = await getApplications(id);
+  const { applications, platforms } = await getApplications(id);
 
-  return <SingleTemplateShops applications={applications} />;
+  return (
+    <SingleTemplateShops applications={applications} platforms={platforms} />
+  );
 };
 
 export default ShopsPage;
