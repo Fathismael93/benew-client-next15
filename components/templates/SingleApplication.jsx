@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Parallax from '../layouts/parallax';
+import OrderModal from './OrderModal'; // Import the OrderModal component
 import './styling/application.scss';
 
 const SingleApplication = ({ application, platforms }) => {
@@ -18,6 +19,9 @@ const SingleApplication = ({ application, platforms }) => {
   // State to track the currently selected image
   const [selectedImage, setSelectedImage] = useState(images[0] || '');
 
+  // State for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // Function to handle image selection
   const handleImageSelect = (image) => {
     setSelectedImage(image);
@@ -29,6 +33,16 @@ const SingleApplication = ({ application, platforms }) => {
   // Format currency with the $ symbol
   const formatCurrency = (value) => {
     return `$${parseFloat(value).toFixed(2)}`;
+  };
+
+  // Function to open modal
+  const openOrderModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to close modal
+  const closeOrderModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -109,7 +123,7 @@ const SingleApplication = ({ application, platforms }) => {
               <div className="details-grid">
                 <div className="details-description">
                   <h3>Description</h3>
-                  <p>
+                  <p className="description-text">
                     {appDetails.application_description ||
                       'No description available.'}
                   </p>
@@ -117,13 +131,20 @@ const SingleApplication = ({ application, platforms }) => {
                   <div className="details-actions">
                     <a
                       href={appDetails.application_link}
-                      className="details-button primary"
+                      className="details-button secondary"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <span className="button-icon">🚀</span>
                       Visit Application
                     </a>
+                    <button
+                      onClick={openOrderModal}
+                      className="details-button primary"
+                    >
+                      <span className="button-icon">💳</span>
+                      Commander
+                    </button>
                   </div>
                 </div>
 
@@ -154,12 +175,18 @@ const SingleApplication = ({ application, platforms }) => {
                         {formatCurrency(appDetails.application_rent)}
                       </span>
                     </li>
-                    <li>
-                      <span className="details-label">Template ID</span>
-                      <span className="details-value">
-                        {appDetails.application_template_id}
-                      </span>
-                    </li>
+                    {platforms && platforms.length > 0 && (
+                      <li className="platforms-list-item">
+                        <span className="details-label">Platforms</span>
+                        <div className="platform-badges-small">
+                          {platforms.map((platform, index) => (
+                            <span key={index} className="platform-badge-small">
+                              {platform.platform_name}
+                            </span>
+                          ))}
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </div>
@@ -185,19 +212,6 @@ const SingleApplication = ({ application, platforms }) => {
                     </div>
                   </div>
                 )}
-
-              {platforms && platforms.length > 0 && (
-                <div className="details-platforms">
-                  <h3>Available Platforms</h3>
-                  <div className="platform-badges">
-                    {platforms.map((platform, index) => (
-                      <span key={index} className="platform-badge">
-                        {platform.platform_name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         ) : (
@@ -206,6 +220,17 @@ const SingleApplication = ({ application, platforms }) => {
           </div>
         )}
       </section>
+
+      {/* Order Modal */}
+      {appDetails && (
+        <OrderModal
+          isOpen={isModalOpen}
+          onClose={closeOrderModal}
+          platforms={platforms}
+          applicationId={appDetails.application_id}
+          applicationFee={appDetails.application_fee}
+        />
+      )}
     </div>
   );
 };
