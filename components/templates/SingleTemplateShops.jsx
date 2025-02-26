@@ -5,7 +5,7 @@ import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal';
 
-const SingleTemplateShops = ({ applications, platforms }) => {
+const SingleTemplateShops = ({ templateID, applications, platforms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 
@@ -61,7 +61,7 @@ const SingleTemplateShops = ({ applications, platforms }) => {
                     Commander maintenant
                   </button>
                   <a
-                    href={`/templates/${app.application_link}`}
+                    href={`/templates/${templateID}/applications/${app.application_id}`}
                     className="secondaryButton"
                   >
                     En savoir plus

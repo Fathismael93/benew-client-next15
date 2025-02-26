@@ -25,7 +25,11 @@ const ShopsPage = async ({ params }) => {
   const { applications, platforms } = await getApplications(id);
 
   return (
-    <SingleTemplateShops applications={applications} platforms={platforms} />
+    <SingleTemplateShops
+      templateID={id}
+      applications={applications}
+      platforms={platforms}
+    />
   );
 };
 
