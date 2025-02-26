@@ -61,7 +61,7 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
                     Commander maintenant
                   </button>
                   <a
-                    href={`/applications/${app.application_id}`}
+                    href={`/templates/${templateID}/applications/${app.application_id}`}
                     className="secondaryButton"
                   >
                     En savoir plus

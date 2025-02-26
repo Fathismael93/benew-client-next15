@@ -1,4 +1,3 @@
-// app/api/dashboard/templates/[id]/route.js
 import { NextResponse } from 'next/server';
 import { getClient } from '@/utils/dbConnect';
 
