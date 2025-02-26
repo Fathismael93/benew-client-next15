@@ -43,12 +43,12 @@ const SingleApplication = ({ application, platforms }) => {
                 {selectedImage && (
                   <CldImage
                     src={selectedImage}
-                    width={1000}
+                    width={1200}
                     height={800}
                     alt="Featured application view"
                     className="gallery-main-image"
-                    crop="fill"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    crop="fit"
+                    sizes="(max-width: 768px) 100vw, 90vw"
                     placeholder="blur"
                     blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
                   />
