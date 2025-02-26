@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Parallax from '../layouts/parallax';
-import OrderModal from './OrderModal';
+import OrderModal from '../modal';
 import './styling/application.scss';
 
 const SingleApplication = ({ application, platforms }) => {
