@@ -4,11 +4,11 @@ import { getClient } from '@/utils/dbConnect';
 
 export async function GET(request, { params }) {
   console.log('WE ARE IN THE GET SINGLE APPLICATION REQUEST API');
+
+  console.log('params of the application : ');
+  console.log(await params);
   const { id } = await params;
   const client = await getClient();
-
-  console.log('ID of the application : ');
-  console.log(id);
 
   try {
     const resultApp = await client.query(
