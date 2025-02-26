@@ -3,14 +3,13 @@
 // Gallery section styling
 .gallery-section {
   width: 100%;
-  min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
   position: relative;
   background: linear-gradient(to bottom, #0c0c1d, #151528);
-  margin: 1rem 0;
+  margin: 0;
+  padding: 0;
 }
 
 .gallery-container {
@@ -18,6 +17,7 @@
   height: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 2rem;
 }
 
 .gallery-content-wrapper {
@@ -44,11 +44,11 @@
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(255, 165, 0, 0.1);
   
-  @media (max-width: 768px) {
+  @include mobile {
     height: 350px;
   }
 
-  @media (max-width: 480px) {
+  @include small {
     height: 250px;
   }
 }
@@ -103,12 +103,12 @@
   transition: all 0.3s ease;
   border: 2px solid transparent;
   
-  @media (max-width: 768px) {
+  @include mobile {
     width: 80px;
     height: 80px;
   }
   
-  @media (max-width: 480px) {
+  @include small {
     width: 70px;
     height: 70px;
   }
@@ -155,21 +155,6 @@
   padding: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
-}
-
-// Make sure other sections maintain their styling
-section.others {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  
-  @media (max-width: 768px) {
-    padding: 1.5rem;
-  }
-  
-  @media (max-width: 480px) {
-    padding: 1rem;
-  }
 }
 
 // Larger screen adjustment for gallery
