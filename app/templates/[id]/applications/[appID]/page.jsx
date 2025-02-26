@@ -21,7 +21,11 @@ const getApplication = async (id) => {
 };
 
 const SingleAppPage = async ({ params }) => {
+  console.log('Params in SINGLE APP PAGE');
+  console.log(await params);
+
   const { id } = await params;
+
   const { application, platforms } = await getApplication(id);
 
   return <SingleApplication application={application} platforms={platforms} />;
