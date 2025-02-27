@@ -414,6 +414,10 @@
   @include mobile {
     flex-direction: column;
   }
+  
+  @include small {
+    flex-direction: column;
+  }
 }
 
 .details-button {

@@ -5,6 +5,7 @@ import { CldImage } from 'next-cloudinary';
 import Parallax from '../layouts/parallax';
 import OrderModal from '../modal'; // Import the OrderModal component
 import './styling/application.scss';
+import Link from 'next/link';
 
 const SingleApplication = ({ application, platforms }) => {
   console.log('Single application data: ');
@@ -129,7 +130,7 @@ const SingleApplication = ({ application, platforms }) => {
                   </p>
 
                   <div className="details-actions">
-                    <a
+                    <Link
                       href={appDetails.application_link}
                       className="details-button secondary"
                       target="_blank"
@@ -137,7 +138,7 @@ const SingleApplication = ({ application, platforms }) => {
                     >
                       <span className="button-icon">🚀</span>
                       Visit Application
-                    </a>
+                    </Link>
                     <button
                       onClick={openOrderModal}
                       className="details-button primary"
