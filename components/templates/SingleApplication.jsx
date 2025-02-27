@@ -3,10 +3,16 @@
 import React, { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Parallax from '../layouts/parallax';
-import OrderModal from '../modal';
+import OrderModal from '../modal'; // Import the OrderModal component
 import './styling/application.scss';
 
 const SingleApplication = ({ application, platforms }) => {
+  console.log('Single application data: ');
+  console.log(application);
+
+  console.log('platforms data: ');
+  console.log(platforms);
+
   // Get the images from the first application
   const images = (application && application[0]?.application_images) || [];
 
@@ -40,7 +46,7 @@ const SingleApplication = ({ application, platforms }) => {
   };
 
   return (
-    <div className="single-application-container">
+    <div>
       <section className="others">
         <Parallax
           bgColor="#0c0c1d"
@@ -64,7 +70,7 @@ const SingleApplication = ({ application, platforms }) => {
                     alt="Featured application view"
                     className="gallery-main-image"
                     crop="fit"
-                    sizes="(max-width: 480px) 100vw, (max-width: 768px) 90vw, (max-width: 1200px) 80vw, 1200px"
+                    sizes="(max-width: 768px) 100vw, 90vw"
                     placeholder="blur"
                     blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
                   />
@@ -97,7 +103,7 @@ const SingleApplication = ({ application, platforms }) => {
           </div>
         )}
       </section>
-      
+
       <section className="others details-section">
         {appDetails ? (
           <div className="details-container">
@@ -105,46 +111,69 @@ const SingleApplication = ({ application, platforms }) => {
               <div className="details-header">
                 <h2>{appDetails.application_name}</h2>
                 <div className="details-badges">
-                  <span className="details-badge type-badge">{appDetails.application_type}</span>
-                  <span className="details-badge category-badge">{appDetails.application_category}</span>
+                  <span className="details-badge type-badge">
+                    {appDetails.application_type}
+                  </span>
+                  <span className="details-badge category-badge">
+                    {appDetails.application_category}
+                  </span>
                 </div>
               </div>
-              
+
               <div className="details-grid">
                 <div className="details-description">
                   <h3>Description</h3>
-                  <p className="description-text">{appDetails.application_description || "No description available."}</p>
-                  
+                  <p className="description-text">
+                    {appDetails.application_description ||
+                      'No description available.'}
+                  </p>
+
                   <div className="details-actions">
-                    <a href={appDetails.application_link} className="details-button secondary" target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={appDetails.application_link}
+                      className="details-button secondary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <span className="button-icon">🚀</span>
                       Visit Application
                     </a>
-                    <button onClick={openOrderModal} className="details-button primary">
+                    <button
+                      onClick={openOrderModal}
+                      className="details-button primary"
+                    >
                       <span className="button-icon">💳</span>
                       Commander
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="details-info-card">
                   <h3>Application Details</h3>
                   <ul className="details-list">
                     <li>
                       <span className="details-label">Type</span>
-                      <span className="details-value">{appDetails.application_type}</span>
+                      <span className="details-value">
+                        {appDetails.application_type}
+                      </span>
                     </li>
                     <li>
                       <span className="details-label">Category</span>
-                      <span className="details-value">{appDetails.application_category}</span>
+                      <span className="details-value">
+                        {appDetails.application_category}
+                      </span>
                     </li>
                     <li>
                       <span className="details-label">Fee</span>
-                      <span className="details-value">{formatCurrency(appDetails.application_fee)}</span>
+                      <span className="details-value">
+                        {formatCurrency(appDetails.application_fee)}
+                      </span>
                     </li>
                     <li>
                       <span className="details-label">Rent</span>
-                      <span className="details-value">{formatCurrency(appDetails.application_rent)}</span>
+                      <span className="details-value">
+                        {formatCurrency(appDetails.application_rent)}
+                      </span>
                     </li>
                     {platforms && platforms.length > 0 && (
                       <li className="platforms-list-item">
@@ -161,19 +190,28 @@ const SingleApplication = ({ application, platforms }) => {
                   </ul>
                 </div>
               </div>
-              
-              {appDetails.application_other_versions && appDetails.application_other_versions.length > 0 && (
-                <div className="details-other-versions">
-                  <h3>Other Versions</h3>
-                  <div className="version-links">
-                    {appDetails.application_other_versions.map((version, index) => (
-                      <a key={index} href={version} className="version-link" target="_blank" rel="noopener noreferrer">
-                        Version {index + 1}
-                      </a>
-                    ))}
+
+              {appDetails.application_other_versions &&
+                appDetails.application_other_versions.length > 0 && (
+                  <div className="details-other-versions">
+                    <h3>Other Versions</h3>
+                    <div className="version-links">
+                      {appDetails.application_other_versions.map(
+                        (version, index) => (
+                          <a
+                            key={index}
+                            href={version}
+                            className="version-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Version {index + 1}
+                          </a>
+                        ),
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         ) : (
@@ -182,7 +220,7 @@ const SingleApplication = ({ application, platforms }) => {
           </div>
         )}
       </section>
-      
+
       {/* Order Modal */}
       {appDetails && (
         <OrderModal
