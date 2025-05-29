@@ -22,7 +22,7 @@ function Navbar() {
               priority={true}
               src="/logo.png"
               height={48}
-              width={120}
+              width={100}
               alt="BuyItNow"
               className="h-10 w-auto"
             />
