@@ -21,7 +21,7 @@ function Navbar() {
             <Image
               priority={true}
               src="/logo.png"
-              height={40}
+              height={48}
               width={120}
               alt="BuyItNow"
               className="h-10 w-auto"
