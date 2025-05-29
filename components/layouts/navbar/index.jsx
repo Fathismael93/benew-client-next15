@@ -16,7 +16,16 @@ function Navbar() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <Link href="/">Benew</Link>
+          <Link href="/">
+            <Image
+              priority={true}
+              src="/logo.png"
+              height={40}
+              width={120}
+              alt="BuyItNow"
+              className="h-10 w-auto"
+            />
+          </Link>
         </motion.span>
         <div className="social">
           <a href="#">
