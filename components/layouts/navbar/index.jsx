@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import './navbar.scss';
 import Sidebar from '../sidebar';
+import Image from 'next/image';
 
 function Navbar() {
   return (
