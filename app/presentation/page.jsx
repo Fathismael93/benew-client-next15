@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+// import { motion, useScroll, useTransform } from 'framer-motion';
 import './presentation.scss';
 import Parallax from '@/components/layouts/parallax';
 
@@ -53,18 +53,18 @@ function Presentation() {
             </div>
           </div>
         </div>
-        <motion.div
+        <div
           className="planets"
-          style={{
-            y: yBg,
-            backgroundImage: `url(${
-              planets /*
-              type === "services" ? "/planets.png" : "/sun.png"
-            */
-            })`,
-          }}
+          // style={{
+          //   y: yBg,
+          //   backgroundImage: `url(${
+          //     planets /*
+          //     type === "services" ? "/planets.png" : "/sun.png"
+          //   */
+          //   })`,
+          // }}
         />
-        <motion.div style={{ x: yBg }} className="stars" />
+        <div /*style={{ x: yBg }}*/ className="stars" />
       </section>
     </div>
   );
