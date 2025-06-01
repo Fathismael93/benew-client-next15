@@ -19,13 +19,13 @@ function Presentation() {
         <Parallax bgColor="#0c0c1d" title="Présentation" planets="/sun.png" />
       </section>
       <section className="others">
-        {/* <div
+        <div
           className="planets"
           style={{
             // y: yBg,
             backgroundImage: `url(/planets.png)`,
           }}
-        /> */}
+        />
         <div /*style={{ x: yBg }}*/ className="stars" />
         <div className="banner">
           <div className="slider" style={{ '--quantity': 10 }}>
