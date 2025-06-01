@@ -1,5 +1,33 @@
 @use '@/app/app.scss' as *;
 
+.planets {
+  background-size: cover;
+  background-position: bottom;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+
+  @include small {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  @include mobile {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
+.stars {
+  background-image: url('/stars.png');
+  background-size: cover;
+  background-position: bottom;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
 .banner {
   width: 100%;
   height: 100vh;
