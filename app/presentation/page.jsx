@@ -1,18 +1,8 @@
 import React from 'react';
-// import { motion, useScroll, useTransform } from 'framer-motion';
 import './presentation.scss';
 import Parallax from '@/components/layouts/parallax';
 
 function Presentation() {
-  // const ref = useRef();
-
-  // const { scrollYProgress } = useScroll({
-  //   target: ref,
-  //   offset: ['start start', 'end start'],
-  // });
-
-  // const yBg = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-
   return (
     <div>
       <section className="others">
@@ -22,11 +12,10 @@ function Presentation() {
         <div
           className="planets"
           style={{
-            // y: yBg,
             backgroundImage: `url(/planets.png)`,
           }}
         />
-        <div /*style={{ x: yBg }}*/ className="stars" />
+        <div className="stars" />
         <div className="banner">
           <div className="slider" style={{ '--quantity': 10 }}>
             <div className="item" style={{ '--position': 1 }}>
