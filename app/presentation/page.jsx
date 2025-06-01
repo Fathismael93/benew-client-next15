@@ -19,6 +19,14 @@ function Presentation() {
         <Parallax bgColor="#0c0c1d" title="Présentation" planets="/sun.png" />
       </section>
       <section className="others">
+        <div
+          className="planets"
+          style={{
+            y: yBg,
+            backgroundImage: `url(/planets.png)`,
+          }}
+        />
+        <div /*style={{ x: yBg }}*/ className="stars" />
         <div className="banner">
           <div className="slider" style={{ '--quantity': 10 }}>
             <div className="item" style={{ '--position': 1 }}>
@@ -53,18 +61,6 @@ function Presentation() {
             </div>
           </div>
         </div>
-        <div
-          className="planets"
-          // style={{
-          //   y: yBg,
-          //   backgroundImage: `url(${
-          //     planets /*
-          //     type === "services" ? "/planets.png" : "/sun.png"
-          //   */
-          //   })`,
-          // }}
-        />
-        <div /*style={{ x: yBg }}*/ className="stars" />
       </section>
     </div>
   );
