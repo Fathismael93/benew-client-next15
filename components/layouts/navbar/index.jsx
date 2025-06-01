@@ -12,7 +12,7 @@ function Navbar() {
       {/* Sidebar */}
       <Sidebar />
       <div className="wrapper">
-        <motion.span
+        <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -27,7 +27,7 @@ function Navbar() {
               className="h-10 w-auto"
             />
           </Link>
-        </motion.span>
+        </motion.div>
         <div className="social">
           <a href="#">
             <img src="/facebook.png" alt="Facebook logo" />
