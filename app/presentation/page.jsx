@@ -22,7 +22,7 @@ function Presentation() {
         <div
           className="planets"
           style={{
-            y: yBg,
+            // y: yBg,
             backgroundImage: `url(/planets.png)`,
           }}
         />
