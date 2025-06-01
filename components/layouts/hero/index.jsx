@@ -85,7 +85,7 @@ function Hero() {
       <div className="imageContainer">
         <Image
           src="/hero.png"
-          alt="Ampoule brillante avec étoiles"
+          alt="Ordinateur avec des etoiles et du dollar"
           width={500}
           height={500}
           className="heroImage"
