@@ -1,4 +1,4 @@
-@use "@/app/app.scss" as *;
+@use '@/app/app.scss' as *;
 
 .navbar {
   height: 6.25rem;
@@ -40,8 +40,8 @@
       max-width: 37rem;
     }
 
-    span {
-      font-weight: bold;
+    div {
+      margin-left: 4px;
 
       @include small {
         display: none;
