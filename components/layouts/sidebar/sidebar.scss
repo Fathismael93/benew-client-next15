@@ -1,12 +1,12 @@
-@use "@/app/app.scss" as *;
+@use '@/app/app.scss' as *;
 
 .sidebar {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  color: #0c0c1d;
+  background-color: $text-color;
+  color: $background-color;
 
   .bg {
     z-index: 999;
@@ -15,7 +15,8 @@
     left: 0;
     bottom: 0;
     width: 20rem;
-    background: rgb(255, 247, 214);
+    background: linear-gradient(135deg, $text-color, lighten($text-color, 5%));
+    box-shadow: 2px 0 10px rgba($background-color, 0.3);
 
     @include small {
       width: 12.5rem;
@@ -52,14 +53,38 @@
       @include laptop {
         font-size: 1.7rem;
       }
+
       .link {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 1.25rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($primary-color, 0.1),
+            rgba($secondary-color, 0.1)
+          );
+          transform: translateX(10px);
+        }
+
+        a {
+          color: $background-color;
+          text-decoration: none;
+          font-weight: 500;
+          transition: all 0.3s ease;
+
+          &:hover {
+            color: $primary-color;
+          }
+        }
 
         .icon {
-          color: orange;
+          color: $primary-color;
           margin-right: 1rem;
         }
       }
@@ -77,5 +102,22 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba($primary-color, 0.1);
+      transform: scale(1.1);
+    }
+
+    svg {
+      path {
+        stroke: $background-color;
+        transition: all 0.3s ease;
+      }
+
+      &:hover path {
+        stroke: $primary-color;
+      }
+    }
   }
 }

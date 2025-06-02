@@ -60,9 +60,23 @@
       display: flex;
       gap: 1rem;
 
+      a {
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1) rotate(5deg);
+        }
+      }
+
       img {
         width: 1rem;
         height: 1rem;
+        transition: all 0.3s ease;
+        filter: grayscale(0.3);
+
+        &:hover {
+          filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
+        }
 
         @include small {
           width: 1rem;
