@@ -20,12 +20,15 @@ function Presentation() {
           <div className="slider" style={{ '--quantity': 3 }}>
             <div className="item" style={{ '--position': 1 }}>
               <img src="/images/the_announcer.png" alt="" />
+              <h4>Présentation</h4>
             </div>
             <div className="item" style={{ '--position': 2 }}>
               <img src="/images/the_product.png" alt="" />
+              <h4>Le produit</h4>
             </div>
             <div className="item" style={{ '--position': 3 }}>
               <img src="/images/maitre_kaio.png" alt="" />
+              <h4>Fondateur</h4>
             </div>
           </div>
         </div>
