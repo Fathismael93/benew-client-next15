@@ -1,4 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+// Couleurs principales extraites du logo
+
+$color-dark: #0c0c1a; // Couleur 1
+$color-orange: #f6a037; // Couleur 2
+$color-pink: #f266b0; // Couleur 3
+$color-light: #fae6d1; // Couleur 4
+$color-purple: #9e1f9d; // Couleur 5
+
+// Thèmes
+$primary-color: $color-orange;
+$secondary-color: $color-pink;
+$accent-color: $color-purple;
+$background-color: $color-dark;
+$text-color: $color-light;
 
 @mixin small {
   @media (min-width: 320px) and (max-width: 479px) {
@@ -33,7 +48,7 @@ html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
