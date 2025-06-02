@@ -23,7 +23,7 @@ function Presentation() {
               <img src="/images/the_announcer.png" alt="" />
             </div>
             <div className="item" style={{ '--position': 2 }}>
-              <h2>Le produit</h2>
+              <h2>Produit</h2>
               <img src="/images/the_product.png" alt="" />
             </div>
             <div className="item" style={{ '--position': 3 }}>

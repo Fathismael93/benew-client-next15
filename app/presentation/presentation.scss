@@ -64,6 +64,8 @@
       calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)
     )
     translateZ(250px);
+
+  cursor: pointer;
 }
 
 .banner .slider .item img {
