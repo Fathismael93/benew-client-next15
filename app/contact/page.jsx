@@ -100,7 +100,6 @@ function Contact() {
             </motion.div>
           </motion.div>
           <div className="formContainer">
-            // Dans votre composant Contact, remplacez la section phoneSvg par :
             <motion.div
               className="phoneSvg"
               initial={{ opacity: 1 }}
