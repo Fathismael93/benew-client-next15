@@ -1,9 +1,13 @@
-@use "@/app/app.scss" as *;
+@use '@/app/app.scss' as *;
 
 .hero {
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #0c0c1d, #111132);
+  background: linear-gradient(
+    180deg,
+    $background-color,
+    darken($background-color, 3%)
+  );
   position: relative;
 
   .wrapper {
@@ -53,7 +57,7 @@
 
       h2 {
         font-size: 1.3rem;
-        color: #ffd700;
+        color: $secondary-color;
         letter-spacing: 0.188rem;
 
         @include small {
@@ -76,10 +80,16 @@
 
       h1 {
         font-size: 4.5rem;
-        background: linear-gradient(45deg, #fff, #ffd700);
+        background: linear-gradient(
+          45deg,
+          $text-color,
+          $primary-color,
+          $secondary-color
+        );
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+        font-weight: 700;
 
         @include small {
           font-size: 1.5rem;
@@ -98,68 +108,74 @@
         }
       }
 
-      
+      .buttonGroup {
+        display: flex;
+        gap: 1rem;
 
-.buttonGroup {
-  display: flex;
-  gap: 1rem;
+        .primaryButton,
+        .secondaryButton {
+          padding: 1rem 2rem;
+          border-radius: 30px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          text-decoration: none;
 
-  .primaryButton, .secondaryButton {
-    padding: 1rem 2rem;
-    border-radius: 30px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
-    }
-  }
-  
-  .primaryButton {
-    background: linear-gradient(45deg, #ffd700, #ffa500);
-    color: #0c0c1d;
-    border: none;
-    cursor: pointer;
-    
-    &:hover {
-      background: linear-gradient(45deg, #ffa500, #ffd700);
-    }
-  }
-  
-  .secondaryButton {
-    background: transparent;
-    color: #ffd700;
-    border: 2px solid #ffd700;
-    cursor: pointer;
-    
-    &:hover {
-      background: rgba(255, 215, 0, 0.1);
-    }
-  }
-}
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+          }
+        }
 
+        .primaryButton {
+          background: linear-gradient(
+            45deg,
+            $primary-color,
+            lighten($primary-color, 10%)
+          );
+          color: $background-color;
+          border: none;
+          cursor: pointer;
 
-@media (max-width: 768px) {
-  .buttonGroup {
-    justify-content: center;
-  }
-}
+          &:hover {
+            background: linear-gradient(
+              45deg,
+              lighten($primary-color, 5%),
+              $secondary-color
+            );
+          }
+        }
 
-@media (max-width: 480px) {
-  .buttonGroup {
-    flex-direction: column;
-  }
-  
-  .primaryButton,
-  .secondaryButton {
-    width: 100%;
-    text-align: center;
-  }
-}
+        .secondaryButton {
+          background: transparent;
+          color: $primary-color;
+          border: 2px solid $primary-color;
+          cursor: pointer;
+
+          &:hover {
+            background: rgba($primary-color, 0.1);
+            border-color: $secondary-color;
+            color: $secondary-color;
+          }
+        }
+
+        @media (max-width: 768px) {
+          justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+          flex-direction: column;
+
+          .primaryButton,
+          .secondaryButton {
+            width: 100%;
+            text-align: center;
+          }
+        }
+      }
 
       img {
         width: 2.5rem;
+        filter: hue-rotate(20deg) brightness(1.2);
 
         @include small {
           width: 1.2rem;
@@ -179,7 +195,7 @@
       }
     }
   }
-  
+
   .imageContainer {
     height: 100%;
     width: 50%;
@@ -217,7 +233,7 @@
       top: unset;
       bottom: 0;
     }
-  
+
     .heroImage {
       object-fit: contain;
       max-width: 100%;
@@ -230,32 +246,32 @@
     font-size: 20rem;
     bottom: -90px;
     white-space: nowrap;
-    color: #ffffff02;
+    color: rgba($text-color, 0.02);
     width: 100%;
     font-weight: bold;
 
     @include small {
       font-size: 8rem;
       bottom: -40px;
-      color: #ffffff03;
+      color: rgba($text-color, 0.03);
     }
 
     @include mobile {
       font-size: 8rem;
       bottom: -40px;
-      color: #ffffff03;
+      color: rgba($text-color, 0.03);
     }
 
     @include tablet {
       font-size: 11rem;
       bottom: -50px;
-      color: #ffffff02;
+      color: rgba($text-color, 0.02);
     }
 
     @include laptop {
       font-size: 12rem;
       bottom: -50px;
-      color: #ffffff02;
+      color: rgba($text-color, 0.02);
     }
   }
 }
