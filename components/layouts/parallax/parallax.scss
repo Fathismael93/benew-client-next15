@@ -1,4 +1,4 @@
-@use "@/app/app.scss" as *;
+@use '@/app/app.scss' as *;
 
 .parallax {
   width: 100%;
@@ -11,10 +11,18 @@
 
   h1 {
     font-size: 4.5rem;
-    background: -webkit-linear-gradient(45deg, #fff, #ffa500);
+    background: linear-gradient(
+      45deg,
+      $text-color,
+      $primary-color,
+      $secondary-color
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 8px rgba($background-color, 0.3);
+    font-weight: 700;
+    letter-spacing: 0.02em;
 
     @include small {
       font-size: 2.5rem;
@@ -33,7 +41,7 @@
   }
 
   .mountains {
-    background-image: url("/mountains.png");
+    background-image: url('/mountains.png');
     background-size: cover;
     background-position: bottom;
     width: 100%;
@@ -61,6 +69,7 @@
       background-repeat: no-repeat;
     }
   }
+
   .planets {
     background-size: cover;
     background-position: bottom;
@@ -79,8 +88,9 @@
       background-repeat: no-repeat;
     }
   }
+
   .stars {
-    background-image: url("/stars.png");
+    background-image: url('/stars.png');
     background-size: cover;
     background-position: bottom;
     width: 100%;
