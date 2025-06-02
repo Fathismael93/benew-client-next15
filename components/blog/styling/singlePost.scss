@@ -10,6 +10,7 @@ article {
   scroll-behavior: smooth;
   scroll-snap-align: center;
   margin-bottom: 5rem;
+  background-image: url('/stars.png');
 
   em {
     display: block;
@@ -31,7 +32,6 @@ article {
     align-items: center;
     flex-direction: column;
     padding: 1.875rem;
-    border: 1px solid rgba($primary-color, 0.3);
     border-radius: 10px;
     gap: 2.5rem;
     background: linear-gradient(
@@ -41,6 +41,29 @@ article {
     );
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 16px rgba($background-color, 0.4);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      background: linear-gradient(
+        135deg,
+        $primary-color,
+        $secondary-color,
+        $accent-color
+      );
+      border-radius: inherit;
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: xor;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
 
     @include small {
       border: none;
