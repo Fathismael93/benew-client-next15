@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
-import OrderModal from '../modal';
+import OrderModal from '../modal/OrderModal';
 
 const SingleTemplateShops = ({ templateID, applications, platforms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
