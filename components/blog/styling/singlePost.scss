@@ -14,7 +14,7 @@ article {
   em {
     display: block;
     align-self: flex-end;
-    color: gray;
+    color: rgba($text-color, 0.7);
     font-style: italic;
 
     @include small {
@@ -31,27 +31,45 @@ article {
     align-items: center;
     flex-direction: column;
     padding: 1.875rem;
-    border: 1px solid rgb(255, 247, 214);
+    border: 1px solid rgba($primary-color, 0.3);
     border-radius: 10px;
     gap: 2.5rem;
+    background: linear-gradient(
+      135deg,
+      rgba($background-color, 0.8),
+      rgba(lighten($background-color, 5%), 0.8)
+    );
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 16px rgba($background-color, 0.4);
 
     @include small {
       border: none;
       width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
     @include mobile {
       border: none;
       width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
     @include tablet {
       border: none;
       width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
     h1 {
       font-size: 2.5rem;
+      color: $text-color;
+      text-align: center;
 
       @include small {
         font-size: 1.2rem;
@@ -64,15 +82,24 @@ article {
 
       h2 {
         font-size: 1.5rem;
+        color: $primary-color;
+        margin-bottom: 1rem;
 
         @include small {
           font-size: 1.3rem;
         }
       }
 
+      h3 {
+        color: $secondary-color;
+        margin-bottom: 0.5rem;
+      }
+
       p {
         font-size: 1rem;
         margin-top: 0.938rem;
+        color: $text-color;
+        line-height: 1.6;
 
         @include small {
           text-align: justify;
@@ -88,8 +115,46 @@ article {
         display: block;
         max-width: 100%;
         height: auto;
-        margin: 1.5rem auto; /* This centers the image horizontally */
-        border-radius: 4px; /* Optional: adds rounded corners */
+        margin: 1.5rem auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba($background-color, 0.3);
+        border: 2px solid rgba($primary-color, 0.1);
+      }
+
+      /* Style for links in parsed content */
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        border-bottom: 1px solid rgba($primary-color, 0.3);
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: $secondary-color;
+          border-bottom-color: $secondary-color;
+        }
+      }
+
+      /* Style for lists in parsed content */
+      ul,
+      ol {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+
+        li {
+          color: $text-color;
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      /* Style for blockquotes in parsed content */
+      blockquote {
+        border-left: 4px solid $primary-color;
+        margin: 1.5rem 0;
+        padding: 1rem 1.5rem;
+        background: rgba($primary-color, 0.05);
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        color: rgba($text-color, 0.9);
       }
     }
   }
