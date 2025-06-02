@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 // Couleurs principales extraites du logo
-
 $color-dark: #0c0c1a; // Couleur 1
 $color-orange: #f6a037; // Couleur 2
 $color-pink: #f266b0; // Couleur 3
@@ -14,6 +13,10 @@ $secondary-color: $color-pink;
 $accent-color: $color-purple;
 $background-color: $color-dark;
 $text-color: $color-light;
+
+// Couleurs dérivées pour les variations
+$text-color-muted: rgba($text-color, 0.7);
+$background-color-light: lighten($background-color, 10%);
 
 @mixin small {
   @media (min-width: 320px) and (max-width: 479px) {
@@ -54,8 +57,8 @@ html {
 }
 
 body {
-  background-color: #0c0c1d;
-  color: lightgray;
+  background-color: $background-color;
+  color: $text-color-muted;
 }
 
 a {
@@ -78,11 +81,11 @@ a {
 
     p {
       font-size: 2.25rem;
-      color: orange;
+      color: $primary-color;
       font-weight: 500;
 
       a {
-        color: rgb(255, 247, 214);
+        color: $text-color;
       }
     }
   }

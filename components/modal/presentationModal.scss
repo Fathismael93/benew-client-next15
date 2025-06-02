@@ -6,7 +6,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba($background-color, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,14 +15,35 @@
 }
 
 .modal {
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  background: linear-gradient(
+    135deg,
+    darken($background-color, 5%),
+    lighten($background-color, 8%)
+  );
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 10px 30px rgba($background-color, 0.6),
+    0 0 20px rgba($primary-color, 0.1);
   width: 90%;
   max-width: 600px;
   overflow: hidden;
-  border: 1px solid rgba(255, 165, 0, 0.2);
+  border: 1px solid rgba($primary-color, 0.3);
   position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      $primary-color,
+      $secondary-color,
+      $accent-color
+    );
+  }
 }
 
 .modalContent {
@@ -33,12 +54,13 @@
 }
 
 h2 {
-  color: #ffa500;
+  color: $primary-color;
   font-size: 1.8rem;
   text-align: center;
-  border-bottom: 1px solid rgba(255, 165, 0, 0.3);
+  border-bottom: 1px solid rgba($primary-color, 0.4);
   padding-bottom: 1rem;
   margin: 0;
+  text-shadow: 0 2px 4px rgba($background-color, 0.5);
 }
 
 .modalText {
@@ -47,17 +69,22 @@ h2 {
   gap: 1rem;
 
   p {
-    color: #e0e0e0;
+    color: $text-color;
     line-height: 1.6;
     font-size: 1rem;
     margin: 0;
     text-align: justify;
+    opacity: 0.9;
   }
 }
 
 .closeButton {
-  background-color: #ffa500;
-  color: #0c0c1d;
+  background: linear-gradient(
+    135deg,
+    $primary-color,
+    lighten($primary-color, 10%)
+  );
+  color: $background-color;
   border: none;
   border-radius: 8px;
   padding: 0.8rem 2rem;
@@ -66,10 +93,20 @@ h2 {
   cursor: pointer;
   transition: all 0.3s ease;
   align-self: center;
+  box-shadow: 0 4px 8px rgba($primary-color, 0.3);
 
   &:hover {
-    background-color: #ffd700;
+    background: linear-gradient(
+      135deg,
+      lighten($primary-color, 5%),
+      $secondary-color
+    );
     transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba($primary-color, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
