@@ -36,6 +36,9 @@
     .imageContainer {
       flex: 1;
       height: 50%;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba($background-color, 0.3);
 
       @include small {
         width: 80%;
@@ -89,6 +92,7 @@
       h2 {
         font-size: 2rem;
         cursor: pointer;
+        color: $text-color;
 
         a {
           cursor: pointer;
@@ -111,20 +115,41 @@
 
         .dateCreated {
           font-size: 0.8rem;
-          color: gray;
+          color: rgba($text-color, 0.7);
           font-style: italic;
           font-weight: normal;
         }
       }
 
       button {
-        background-color: orange;
+        background: linear-gradient(
+          135deg,
+          $primary-color,
+          lighten($primary-color, 10%)
+        );
+        color: $background-color;
         border: none;
         border-radius: 0.625rem;
         padding: 0.625rem;
         width: 20.5rem;
-        font-weight: 900;
+        font-weight: 600;
         cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba($primary-color, 0.3);
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            lighten($primary-color, 5%),
+            $secondary-color
+          );
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba($primary-color, 0.4);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
 
         @include small {
           width: 10rem;
