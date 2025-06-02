@@ -246,11 +246,6 @@
     }
 
     .phoneSvg {
-      stroke: linear-gradient(
-        135deg,
-        lighten($primary-color, 5%),
-        $secondary-color
-      );
       position: absolute;
       margin: auto;
       z-index: -1;
