@@ -72,6 +72,21 @@
       transform: scale(1.05);
     }
   }
+
+  // Style pour l'item actif (au centre)
+  &.active {
+    h2 {
+      color: $primary-color;
+      transform: scale(1.1);
+      text-shadow: 2px 2px 8px rgba($primary-color, 0.3);
+    }
+
+    img {
+      border: 3px solid $primary-color;
+      box-shadow: 0 0 20px rgba($primary-color, 0.4);
+      filter: brightness(1.1);
+    }
+  }
 }
 
 .banner .slider .item img {
