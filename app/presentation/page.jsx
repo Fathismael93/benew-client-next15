@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue } from 'framer-motion';
 import './presentation.scss';
 import Parallax from '@/components/layouts/parallax';
 import PresentationModal from '@/components/modal/PresentationModal';
@@ -9,6 +9,9 @@ import PresentationModal from '@/components/modal/PresentationModal';
 function Presentation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+
+  // Valeur pour contrôler la rotation avec le drag
+  const rotationY = useMotionValue(0);
 
   // Contenu pour chaque section
   const contentData = {
@@ -61,15 +64,35 @@ function Presentation() {
         <div className="banner">
           <motion.div
             className="slider"
-            style={{ '--quantity': 3 }}
+            style={{
+              '--quantity': 3,
+              rotateY: rotationY,
+              rotateX: -26,
+            }}
+            // Animation de base qui continue
             animate={{
               rotateY: 360,
-              rotateX: -26,
             }}
             transition={{
               duration: 20,
               repeat: Infinity,
               ease: 'linear',
+            }}
+            // Contrôles de drag
+            drag="x"
+            dragConstraints={{ left: -200, right: 200 }}
+            onDrag={(event, info) => {
+              // Convertit le mouvement horizontal en rotation
+              // Plus on va à droite, plus ça tourne dans le sens positif
+              const dragRotation = info.offset.x * 0.5;
+              rotationY.set(dragRotation);
+            }}
+            onDragEnd={() => {
+              // Revient à l'animation normale après le drag
+              rotationY.set(0);
+            }}
+            whileDrag={{
+              cursor: 'grabbing',
             }}
           >
             <div
