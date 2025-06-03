@@ -44,18 +44,8 @@
   top: 15%;
   left: calc(50% - 100px);
   transform-style: preserve-3d;
-  transform: perspective(1000px);
-  animation: autoRun 20s infinite linear;
+  perspective: 1000px;
   z-index: 3;
-}
-
-@keyframes autoRun {
-  from {
-    transform: perspective(1000px) rotateX(-26deg) rotateY(0deg);
-  }
-  to {
-    transform: perspective(1000px) rotateX(-26deg) rotateY(360deg);
-  }
 }
 
 .banner .slider .item {

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import './presentation.scss';
 import Parallax from '@/components/layouts/parallax';
 import PresentationModal from '@/components/modal/PresentationModal';
@@ -58,7 +59,19 @@ function Presentation() {
         />
         <div className="stars" />
         <div className="banner">
-          <div className="slider" style={{ '--quantity': 3 }}>
+          <motion.div
+            className="slider"
+            style={{ '--quantity': 3 }}
+            animate={{
+              rotateY: 360,
+              rotateX: -26,
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: 'linear',
+            }}
+          >
             <div
               className="item"
               style={{ '--position': 1 }}
@@ -83,7 +96,7 @@ function Presentation() {
               <h2>Fondateur</h2>
               <img src="/images/maitre_kaio.png" alt="Fondateur" />
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
