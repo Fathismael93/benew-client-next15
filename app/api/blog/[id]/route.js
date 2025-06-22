@@ -5,7 +5,6 @@ import articleIDSchema from '@/utils/schema';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
-  console.log('WE ARE IN THE GET REQUEST API FOR SINGLE BLOG');
   let client;
   try {
     const { id } = await params;
@@ -18,13 +17,11 @@ export async function GET(req, { params }) {
       const query = {
         // give the query a unique name
         name: 'get-single-article',
-        text: "SELECT article_id, article_title, article_text, article_image, TO_CHAR(article_created,'dd/MM/yyyy') as created FROM articles WHERE article_id=$1",
+        text: "SELECT article_id, article_title, article_text, article_image, TO_CHAR(article_created,'dd/MM/yyyy') as created FROM admin.articles WHERE article_id=$1 AND is_active = true",
         values: [id],
       };
 
       const result = await client.query(query);
-
-      console.log(result);
 
       if (result) {
         if (client) await client.cleanup();

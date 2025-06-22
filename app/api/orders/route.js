@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 import { getClient } from '@/utils/dbConnect';
 
 export async function POST(request) {
-  console.log('CREATING NEW ORDER');
   const client = await getClient();
 
   try {
@@ -46,7 +45,7 @@ export async function POST(request) {
 
     // Insert order into database
     const result = await client.query(
-      `INSERT INTO orders (
+      `INSERT INTO admin.orders (
         order_client, 
         order_platform_id, 
         order_payment_name, 

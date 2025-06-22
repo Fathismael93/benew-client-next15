@@ -2,21 +2,16 @@ import { NextResponse } from 'next/server';
 import { getClient } from '@/utils/dbConnect';
 
 export async function GET(request, { params }) {
-  console.log('WE ARE IN THE GET SINGLE APPLICATION REQUEST API');
-
-  console.log('params of the application : ');
-  console.log(await params);
   const { id } = await params;
   const client = await getClient();
 
   try {
     const resultApp = await client.query(
-      'SELECT * FROM applications WHERE application_id = $1',
+      'SELECT * FROM catalog.applications WHERE application_id = $1 AND is_active = true',
       [id],
     );
 
     if (!resultApp) {
-      console.log('error not found');
       if (client) await client.cleanup();
       return NextResponse.json(
         { message: 'Application not found' },
@@ -24,10 +19,11 @@ export async function GET(request, { params }) {
       );
     }
 
-    const resultPlatforms = await client.query('SELECT * FROM platforms ');
+    const resultPlatforms = await client.query(
+      'SELECT * FROM admin.platforms WHERE is_active = true',
+    );
 
     if (!resultPlatforms) {
-      console.log('error not found');
       if (client) await client.cleanup();
       return NextResponse.json(
         { message: 'Platforms not found' },
@@ -36,9 +32,6 @@ export async function GET(request, { params }) {
     }
 
     if (client) await client.cleanup();
-
-    console.log('Application: ');
-    console.log(resultApp);
 
     return NextResponse.json(
       {

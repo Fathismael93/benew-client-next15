@@ -3,24 +3,20 @@ import { NextResponse } from 'next/server';
 import { getClient } from '@/utils/dbConnect';
 
 export async function GET(request, { params }) {
-  console.log(
-    'WE ARE IN THE GET APPLICATIONS OF A SINGLE TEMPLATE REQUEST API',
-  );
   const { id } = await params;
   const client = await getClient();
 
   try {
     const resultApps = await client.query(
       'SELECT ' +
-        'applications.application_id, application_name, application_link, application_fee, application_images, application_type, ' +
-        'templates.template_name FROM applications ' +
-        'JOIN templates ON applications.application_template_id = templates.template_id ' +
-        'WHERE applications.application_template_id = $1',
+        'catalog.applications.application_id, application_name, application_link, application_fee, application_images, application_level, ' +
+        'catalog.templates.template_name FROM catalog.applications' +
+        'JOIN catalog.templates ON catalog.applications.application_template_id = catalog.templates.template_id ' +
+        'WHERE catalog.applications.application_template_id = $1 AND catalog.applications.is_active = true AND catalog.templates.is_active = true',
       [id],
     );
 
     if (!resultApps) {
-      console.log('error not found');
       if (client) await client.cleanup();
       return NextResponse.json(
         { message: 'Template not found' },
@@ -28,10 +24,11 @@ export async function GET(request, { params }) {
       );
     }
 
-    const resultPlatforms = await client.query('SELECT * FROM platforms ');
+    const resultPlatforms = await client.query(
+      'SELECT * FROM admin.platforms WHERE is_active = true',
+    );
 
     if (!resultPlatforms) {
-      console.log('error not found');
       if (client) await client.cleanup();
       return NextResponse.json(
         { message: 'Platforms not found' },
@@ -40,9 +37,6 @@ export async function GET(request, { params }) {
     }
 
     if (client) await client.cleanup();
-
-    console.log('Applications: ');
-    console.log(resultApps);
 
     return NextResponse.json(
       {
