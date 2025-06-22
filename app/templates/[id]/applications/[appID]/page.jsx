@@ -10,8 +10,8 @@ const getApplication = async (id) => {
       `https://benew-client-next15.vercel.app/api/applications/${id}`,
     );
 
-    application = response.data.application;
-    platforms = response.data.platforms;
+    application = response.data.application || {};
+    platforms = response.data.platforms || [];
   } catch (error) {}
 
   return { application, platforms };

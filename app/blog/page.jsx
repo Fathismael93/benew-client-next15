@@ -8,7 +8,7 @@ async function getPosts() {
   await axios
     .get('https://benew-client-next15.vercel.app/api/blog')
     .then((response) => {
-      posts = response.data.data.rows;
+      posts = response.data.data.rows || [];
     })
     .catch((err) => console.log(err));
 
