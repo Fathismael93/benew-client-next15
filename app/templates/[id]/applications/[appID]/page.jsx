@@ -3,16 +3,17 @@ import axios from 'axios';
 import SingleApplication from '@/components/templates/SingleApplication';
 
 const getApplication = async (id) => {
-  let application, platforms;
+  let application = {},
+    platforms = [];
 
-  try {
-    const response = await axios.get(
-      `https://benew-client-next15.vercel.app/api/applications/${id}`,
-    );
+  // try {
+  //   const response = await axios.get(
+  //     `https://benew-client-next15.vercel.app/api/applications/${id}`,
+  //   );
 
-    application = response.data.application || {};
-    platforms = response.data.platforms || [];
-  } catch (error) {}
+  //   application = response.data.application || {};
+  //   platforms = response.data.platforms || [];
+  // } catch (error) {}
 
   return { application, platforms };
 };
