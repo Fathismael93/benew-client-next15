@@ -6,7 +6,7 @@ async function getTemplates() {
   const client = await getClient();
   try {
     const result = await client.query(
-      'SELECT template_id, template_name, template_image, template_has_web, template_has_mobile FROM catalog.templates ORDER BY template_added DESC AND is_active = t',
+      'SELECT template_id, template_name, template_image, template_has_web, template_has_mobile FROM catalog.templates WHERE is_active=true ORDER BY template_added DESC',
     );
     return result.rows;
   } catch (error) {
