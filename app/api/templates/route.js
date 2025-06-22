@@ -2,16 +2,12 @@ import { NextResponse } from 'next/server';
 import { getClient } from '@/utils/dbConnect';
 
 export async function GET() {
-  console.log('we are in the GET REQUEST of the templates api');
   const client = await getClient();
   try {
     try {
       const result = await client.query(
-        'SELECT template_id, template_name, template_image, template_has_web, template_has_mobile FROM templates ORDER BY template_added DESC',
+        'SELECT template_id, template_name, template_image, template_has_web, template_has_mobile FROM catalog.templates ORDER BY template_added DESC AND is_active = true',
       );
-
-      console.log('result: ');
-      console.log(result);
 
       return NextResponse.json({ templates: result.rows }, { status: 200 });
     } finally {
