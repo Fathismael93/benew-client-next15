@@ -11,6 +11,7 @@ async function getSinglePost(id) {
     await axios
       .get(`https://benew-client-next15.vercel.app/api/blog/${id}`)
       .then((response) => {
+        console.log('Response from API:', response.data);
         article = response.data.data || {};
       })
       .catch((err) => {
