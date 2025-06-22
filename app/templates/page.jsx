@@ -6,8 +6,9 @@ async function getTemplates() {
   let templates;
 
   await axios
-    .get('https://benew-client-next15.vercel.app/api/templates')
+    .get('/api/templates')
     .then((response) => {
+      console.log('Response from API:', response.data);
       templates = response.data.templates || [];
     })
     .catch((err) => console.log(err));
