@@ -6,7 +6,7 @@ async function getTemplates() {
   let templates;
 
   await axios
-    .get('/api/templates')
+    .get('api/templates')
     .then((response) => {
       console.log('Response from API:', response.data);
       templates = response.data.templates || [];
