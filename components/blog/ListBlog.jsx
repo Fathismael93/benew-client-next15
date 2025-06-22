@@ -32,7 +32,7 @@ const ListBlog = ({ posts }) => {
           <h1>Les Articles</h1>
           <motion.div style={{ scaleX }} className="progressBar" />
         </div>
-        {posts.length > 0 ? (
+        {posts.length !== undefined && posts.length > 0 ? (
           posts.map((item) => (
             <ArticleItem
               article_id={item.article_id}

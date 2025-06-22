@@ -6,11 +6,7 @@ import parse from 'html-react-parser';
 import './styling/singlePost.scss';
 
 const SinglePost = ({ article }) => {
-  // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState('');
-
-  console.log('Article: ');
-  console.log(article);
 
   return (
     <article>

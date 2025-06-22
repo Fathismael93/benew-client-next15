@@ -27,51 +27,52 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
           planets="/sun.png"
         />
       </section>
-      {applications.map((app) => (
-        <section key={app.application_id} className="others projectSection">
-          <div className="contentWrapper">
-            <div className="imageContainer">
-              <CldImage
-                src={app.application_images[0]}
-                alt={app.application_name}
-                width={800}
-                height={1000}
-                className="projectImage"
-                priority
-              />
-            </div>
-            <div className="detailsContainer">
-              <h4 className="projectTitle">{app.application_name}</h4>
-              <p className="appType">Type: {app.application_type}</p>
-              <div className="appDetails">
-                <p className="appFee">Prix: {app.application_fee} Fdj</p>
-                <a
-                  href={app.application_link}
-                  className="appLink"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visiter l'application
-                </a>
-                <div className="buttonGroup">
-                  <button
-                    className="primaryButton"
-                    onClick={() => handleOrderClick(app)}
-                  >
-                    Commander maintenant
-                  </button>
+      {applications.length !== undefined &&
+        applications.map((app) => (
+          <section key={app.application_id} className="others projectSection">
+            <div className="contentWrapper">
+              <div className="imageContainer">
+                <CldImage
+                  src={app.application_images[0]}
+                  alt={app.application_name}
+                  width={800}
+                  height={1000}
+                  className="projectImage"
+                  priority
+                />
+              </div>
+              <div className="detailsContainer">
+                <h4 className="projectTitle">{app.application_name}</h4>
+                <p className="appType">Type: {app.application_type}</p>
+                <div className="appDetails">
+                  <p className="appFee">Prix: {app.application_fee} Fdj</p>
                   <a
-                    href={`/templates/${templateID}/applications/${app.application_id}`}
-                    className="secondaryButton"
+                    href={app.application_link}
+                    className="appLink"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    En savoir plus
+                    Visiter l'application
                   </a>
+                  <div className="buttonGroup">
+                    <button
+                      className="primaryButton"
+                      onClick={() => handleOrderClick(app)}
+                    >
+                      Commander maintenant
+                    </button>
+                    <a
+                      href={`/templates/${templateID}/applications/${app.application_id}`}
+                      className="secondaryButton"
+                    >
+                      En savoir plus
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      ))}
+          </section>
+        ))}
 
       {selectedApp && (
         <OrderModal

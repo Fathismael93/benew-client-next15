@@ -8,12 +8,6 @@ import './styling/application.scss';
 import Link from 'next/link';
 
 const SingleApplication = ({ application, platforms }) => {
-  console.log('Single application data: ');
-  console.log(application);
-
-  console.log('platforms data: ');
-  console.log(platforms);
-
   // Get the images from the first application
   const images = (application && application[0]?.application_images) || [];
 
