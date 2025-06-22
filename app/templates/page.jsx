@@ -1,19 +1,20 @@
 import React from 'react';
-import axios from 'axios';
 import TemplatesList from '@/components/templates/TemplatesList';
+import { getClient } from '@/utils/dbConnect';
 
 async function getTemplates() {
-  let templates;
-
-  await axios
-    .get('https://benew-client-next15.vercel.app/api/templates')
-    .then((response) => {
-      console.log('Response from API:', response.data);
-      templates = response.data.templates || [];
-    })
-    .catch((err) => console.log(err));
-
-  return templates;
+  const client = await getClient();
+  try {
+    const result = await client.query(
+      'SELECT template_id, template_name, template_image, template_has_web, template_has_mobile FROM catalog.templates ORDER BY template_added DESC',
+    );
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching templates:', error);
+    return [];
+  } finally {
+    await client.cleanup();
+  }
 }
 
 const TemplatesPage = async () => {
