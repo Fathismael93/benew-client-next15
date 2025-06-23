@@ -1,21 +1,48 @@
+// app/templates/[id]/page.jsx
 import React from 'react';
-import axios from 'axios';
+import { getClient } from '@/utils/dbConnect';
 import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
 
 const getApplications = async (id) => {
-  let applications = [],
-    platforms = [];
+  const client = await getClient();
 
-  // try {
-  //   const response = await axios.get(
-  //     `https://benew-client-next15.vercel.app/api/templates/${id}`,
-  //   );
+  try {
+    // Récupérer les applications liées au template
+    const resultApps = await client.query(
+      `SELECT 
+        catalog.applications.application_id, 
+        application_name, 
+        application_link, 
+        application_fee, 
+        application_images, 
+        application_level,
+        catalog.templates.template_name 
+      FROM catalog.applications
+      JOIN catalog.templates ON catalog.applications.application_template_id = catalog.templates.template_id 
+      WHERE catalog.applications.application_template_id = $1 
+        AND catalog.applications.is_active = true 
+        AND catalog.templates.is_active = true`,
+      [id],
+    );
 
-  //   applications = response.data.applications;
-  //   platforms = response.data.platforms;
-  // } catch (error) {}
+    // Récupérer les plateformes actives
+    const resultPlatforms = await client.query(
+      'SELECT * FROM admin.platforms WHERE is_active = true',
+    );
 
-  return { applications, platforms };
+    return {
+      applications: resultApps.rows || [],
+      platforms: resultPlatforms.rows || [],
+    };
+  } catch (error) {
+    console.error('Error fetching template data:', error);
+    return {
+      applications: [],
+      platforms: [],
+    };
+  } finally {
+    await client.cleanup();
+  }
 };
 
 const ShopsPage = async ({ params }) => {

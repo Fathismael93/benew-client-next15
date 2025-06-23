@@ -1,26 +1,40 @@
+// app/templates/[id]/applications/[appID]/page.jsx
 import React from 'react';
-import axios from 'axios';
+import { getClient } from '@/utils/dbConnect';
 import SingleApplication from '@/components/templates/SingleApplication';
 
 const getApplication = async (id) => {
-  let application = {},
-    platforms = [];
+  const client = await getClient();
 
-  // try {
-  //   const response = await axios.get(
-  //     `https://benew-client-next15.vercel.app/api/applications/${id}`,
-  //   );
+  try {
+    // Récupérer l'application spécifique
+    const resultApp = await client.query(
+      'SELECT * FROM catalog.applications WHERE application_id = $1 AND is_active = true',
+      [id],
+    );
 
-  //   application = response.data.application || {};
-  //   platforms = response.data.platforms || [];
-  // } catch (error) {}
+    // Récupérer les plateformes actives
+    const resultPlatforms = await client.query(
+      'SELECT * FROM admin.platforms WHERE is_active = true',
+    );
 
-  return { application, platforms };
+    return {
+      application: resultApp.rows || [],
+      platforms: resultPlatforms.rows || [],
+    };
+  } catch (error) {
+    console.error('Error fetching application data:', error);
+    return {
+      application: [],
+      platforms: [],
+    };
+  } finally {
+    await client.cleanup();
+  }
 };
 
 const SingleAppPage = async ({ params }) => {
   const { appID } = await params;
-
   const { application, platforms } = await getApplication(appID);
 
   return <SingleApplication application={application} platforms={platforms} />;
