@@ -9,7 +9,7 @@ export async function GET() {
     const query = {
       // give the query a unique name
       name: 'get-article',
-      text: "SELECT article_id, article_title, article_image, TO_CHAR(article_created,'dd/MM/yyyy') as created FROM admin.articles ORDER BY created DESC, article_id DESC AND is_active = true",
+      text: "SELECT article_id, article_title, article_image, TO_CHAR(article_created,'dd/MM/yyyy') as created FROM admin.articles WHERE is_active = true ORDER BY created DESC, article_id DESC",
     };
 
     client = await getClient();
