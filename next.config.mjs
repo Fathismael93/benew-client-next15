@@ -88,8 +88,8 @@ const nextConfig = {
     ],
     gzipSize: true,
 
-    // Nouveau: Optimisation des CSS
-    optimizeCss: true,
+    // Nouveau: Parallélisation des builds
+    workerThreads: true,
   },
 
   // ===== OPTIMISATION DU COMPILATEUR =====
