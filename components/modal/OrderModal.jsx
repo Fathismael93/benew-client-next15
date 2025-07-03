@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { createOrder } from './actions/orderActions';
+import { createOrder } from '../../actions/orderActions';
 import './orderModal.scss';
 
 const OrderModal = ({
