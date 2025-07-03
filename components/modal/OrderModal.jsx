@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { createOrder } from './actions/orderActions';
 import './orderModal.scss';
 
 const OrderModal = ({
@@ -89,23 +90,26 @@ const OrderModal = ({
     setError('');
 
     try {
-      const response = await fetch('/api/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          applicationId: applicationId,
-          applicationFee: applicationFee,
-        }),
-      });
+      // Créer un objet FormData avec toutes les données
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append('lastName', formData.lastName);
+      formDataToSubmit.append('firstName', formData.firstName);
+      formDataToSubmit.append('email', formData.email);
+      formDataToSubmit.append('phone', formData.phone);
+      formDataToSubmit.append('paymentMethod', formData.paymentMethod);
+      formDataToSubmit.append('accountName', formData.accountName);
+      formDataToSubmit.append('accountNumber', formData.accountNumber);
 
-      const data = await response.json();
+      // Appeler le server action
+      const result = await createOrder(
+        formDataToSubmit,
+        applicationId,
+        applicationFee,
+      );
 
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(
-          data.message || 'Erreur lors de la création de la commande',
+          result.message || 'Erreur lors de la création de la commande',
         );
       }
 
