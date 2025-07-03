@@ -75,61 +75,31 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // ===== OPTIMISATIONS EXPERIMENTALES AVANCÉES =====
+  // Fonctionnalités expérimentales pour les performances
   experimental: {
-    // Packages optimisés pour ton projet
     optimizePackageImports: [
       'react-icons',
       'next-cloudinary',
       'yup',
       'html-react-parser',
-      'framer-motion', // Ajouté
-      '@emailjs/browser', // Si tu le gardes temporairement
     ],
-
-    // Optimisations avancées
     gzipSize: true,
-
-    // Nouveau: Optimisation des CSS
-    optimizeCss: true,
-
-    // Nouveau: Parallélisation des builds
-    workerThreads: true,
-
-    // Nouveau: Optimisation des fonts
-    optimizeServerReact: true,
-
-    // Compilation plus rapide
-    turbo: {
-      rules: {
-        '*.scss': {
-          loaders: ['sass-loader'],
-          as: '*.css',
-        },
-      },
-    },
   },
 
-  // ===== OPTIMISATION DU COMPILATEUR =====
+  // Configuration du compilateur pour la production
   compiler: {
-    // Suppression des console.log en production (amélioré)
     removeConsole:
       process.env.NODE_ENV === 'production'
         ? {
-            exclude: ['error', 'warn', 'info'], // Garde plus de logs pour debugging
+            exclude: ['log', 'error', 'warn'],
           }
         : false,
-
-    // Suppression des props de test en production
     reactRemoveProperties:
       process.env.NODE_ENV === 'production'
         ? {
-            properties: ['^data-testid$', '^data-test$', '^data-cy$'],
+            properties: ['^data-testid$'],
           }
         : false,
-
-    // Optimisation React en production
-    emotion: process.env.NODE_ENV === 'production',
   },
 
   // Timeout pour la génération de pages statiques
