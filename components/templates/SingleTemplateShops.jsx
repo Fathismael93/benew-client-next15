@@ -52,7 +52,7 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Visiter l'application
+                    Visiter l&apos;application
                   </a>
                   <div className="buttonGroup">
                     <button

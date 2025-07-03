@@ -235,7 +235,7 @@ const OrderModal = ({
               Merci pour votre commande. Nous avons bien reçu vos informations
               et nous vous contacterons dans les plus brefs délais pour
               finaliser votre commande. Un email de confirmation vous sera
-              envoyé à l'adresse fournie.
+              envoyé à l&apos;adresse fournie.
             </p>
             <button onClick={onClose} className="closeButton">
               Fermer

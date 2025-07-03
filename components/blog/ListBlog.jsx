@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import ArticleItem from '@/components/blog/articleItem';
 import Parallax from '@/components/layouts/parallax';

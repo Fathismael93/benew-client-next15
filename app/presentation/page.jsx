@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useAnimation } from 'framer-motion';
 import './presentation.scss';
 import Parallax from '@/components/layouts/parallax';

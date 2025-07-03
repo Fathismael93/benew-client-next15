@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import parse from 'html-react-parser';
 import './styling/singlePost.scss';

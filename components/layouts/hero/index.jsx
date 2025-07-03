@@ -52,7 +52,7 @@ function Hero() {
           animate="animate"
         >
           <motion.h2 variants={textVariants}>
-            Un nouveau moyen de gagner de l'argent
+            Un nouveau moyen de gagner de l&apos;argent
           </motion.h2>
           <motion.h1 variants={textVariants}>
             Super Boutique, Super Riche
