@@ -87,9 +87,6 @@ const nextConfig = {
       '@emailjs/browser', // Si tu le gardes temporairement
     ],
     gzipSize: true,
-
-    // Nouveau: Parallélisation des builds
-    workerThreads: true,
   },
 
   // ===== OPTIMISATION DU COMPILATEUR =====
