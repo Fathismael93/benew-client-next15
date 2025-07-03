@@ -77,29 +77,38 @@ const nextConfig = {
 
   // Fonctionnalités expérimentales pour les performances
   experimental: {
+    // Packages optimisés pour ton projet
     optimizePackageImports: [
       'react-icons',
       'next-cloudinary',
       'yup',
       'html-react-parser',
+      'framer-motion', // Ajouté
+      '@emailjs/browser', // Si tu le gardes temporairement
     ],
     gzipSize: true,
   },
 
-  // Configuration du compilateur pour la production
+  // ===== OPTIMISATION DU COMPILATEUR =====
   compiler: {
+    // Suppression des console.log en production (amélioré)
     removeConsole:
       process.env.NODE_ENV === 'production'
         ? {
-            exclude: ['log', 'error', 'warn'],
+            exclude: ['error', 'warn', 'info'], // Garde plus de logs pour debugging
           }
         : false,
+
+    // Suppression des props de test en production
     reactRemoveProperties:
       process.env.NODE_ENV === 'production'
         ? {
-            properties: ['^data-testid$'],
+            properties: ['^data-testid$', '^data-test$', '^data-cy$'],
           }
         : false,
+
+    // Optimisation React en production
+    emotion: process.env.NODE_ENV === 'production',
   },
 
   // Timeout pour la génération de pages statiques
