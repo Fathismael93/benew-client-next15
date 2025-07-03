@@ -75,61 +75,31 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // ===== OPTIMISATIONS EXPERIMENTALES AVANCÉES =====
+  // Fonctionnalités expérimentales pour les performances
   experimental: {
-    // Packages optimisés pour ton projet
     optimizePackageImports: [
       'react-icons',
       'next-cloudinary',
       'yup',
       'html-react-parser',
-      'framer-motion', // Ajouté
-      '@emailjs/browser', // Si tu le gardes temporairement
     ],
-
-    // Optimisations avancées
     gzipSize: true,
-
-    // Nouveau: Optimisation des CSS
-    optimizeCss: true,
-
-    // Nouveau: Parallélisation des builds
-    workerThreads: true,
-
-    // Nouveau: Optimisation des fonts
-    optimizeServerReact: true,
-
-    // Compilation plus rapide
-    turbo: {
-      rules: {
-        '*.scss': {
-          loaders: ['sass-loader'],
-          as: '*.css',
-        },
-      },
-    },
   },
 
-  // ===== OPTIMISATION DU COMPILATEUR =====
+  // Configuration du compilateur pour la production
   compiler: {
-    // Suppression des console.log en production (amélioré)
     removeConsole:
       process.env.NODE_ENV === 'production'
         ? {
-            exclude: ['error', 'warn', 'info'], // Garde plus de logs pour debugging
+            exclude: ['log', 'error', 'warn'],
           }
         : false,
-
-    // Suppression des props de test en production
     reactRemoveProperties:
       process.env.NODE_ENV === 'production'
         ? {
-            properties: ['^data-testid$', '^data-test$', '^data-cy$'],
+            properties: ['^data-testid$'],
           }
         : false,
-
-    // Optimisation React en production
-    emotion: process.env.NODE_ENV === 'production',
   },
 
   // Timeout pour la génération de pages statiques
@@ -630,19 +600,89 @@ const nextConfig = {
     ];
   },
 
-  // ===== WEBPACK CONFIG MINIMALE - ÉTAPE 1 =====
+  // Configuration Webpack optimisée
   webpack: (config, { dev, isServer, buildId }) => {
-    // ===== ALIAS SEULEMENT (sûr à 100%) =====
+    // Optimisations webpack pour la production
+    if (!dev) {
+      config.optimization = {
+        ...config.optimization,
+        moduleIds: 'deterministic',
+        runtimeChunk: 'single',
+        splitChunks: {
+          chunks: 'all',
+          minSize: 20000,
+          maxSize: 244000,
+          minChunks: 1,
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
+          automaticNameDelimiter: '~',
+          cacheGroups: {
+            framework: {
+              chunks: 'all',
+              name: 'framework',
+              test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
+              priority: 40,
+              enforce: true,
+            },
+            lib: {
+              test(module) {
+                return (
+                  module.size() > 160000 &&
+                  /node_modules[/\\]/.test(module.identifier())
+                );
+              },
+              name(module) {
+                const hash = createHash('sha1');
+                hash.update(module.identifier());
+                return hash.digest('hex').substring(0, 8);
+              },
+              priority: 30,
+              minChunks: 1,
+              reuseExistingChunk: true,
+            },
+            commons: {
+              name: 'commons',
+              minChunks: 2,
+              priority: 20,
+            },
+            shared: {
+              name(module, chunks) {
+                return `shared-${chunks.map((c) => c.name).join('~')}.${buildId}`;
+              },
+              priority: 10,
+              minChunks: 2,
+              reuseExistingChunk: true,
+            },
+          },
+        },
+      };
+
+      // Configuration du cache pour de meilleures performances de build
+      config.cache = {
+        type: 'filesystem',
+        buildDependencies: {
+          config: [__dirname],
+        },
+        cacheDirectory: path.resolve(__dirname, '.next/cache/webpack'),
+      };
+
+      // Réduire les logs en production
+      config.infrastructureLogging = {
+        level: 'error',
+      };
+
+      // Optimisations supplémentaires pour la production
+      config.optimization.usedExports = true;
+      config.optimization.sideEffects = false;
+    }
+
+    // Alias pour améliorer les performances de résolution
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname),
-      '@components': path.resolve(__dirname, 'components'),
-      '@utils': path.resolve(__dirname, 'utils'),
-      '@actions': path.resolve(__dirname, 'actions'),
-      '@app': path.resolve(__dirname, 'app'),
     };
 
-    // ===== EXTERNALS POUR SERVER (sûr à 100%) =====
+    // Optimisation pour les bibliothèques externes
     if (isServer) {
       config.externals = [...config.externals, 'pg-native'];
     }
