@@ -1,19 +1,33 @@
 import React from 'react';
-// import axios from 'axios';
+import { getClient } from '@/utils/dbConnect';
 import ListBlog from '@/components/blog/ListBlog';
 
 async function getPosts() {
-  let posts = [];
+  let client;
+  let posts;
 
-  // await axios
-  //   .get('https://benew-client-next15.vercel.app/api/blog')
-  //   .then((response) => {
-  //     console.log('Response from API:', response.data);
-  //     posts = response.data.data.rows || [];
-  //   })
-  //   .catch((err) => console.log(err));
+  try {
+    const query = {
+      // give the query a unique name
+      name: 'get-article',
+      text: "SELECT article_id, article_title, article_image, TO_CHAR(article_created,'dd/MM/yyyy') as created FROM admin.articles WHERE is_active = true ORDER BY created DESC, article_id DESC",
+    };
 
-  return posts;
+    client = await getClient();
+
+    const getResult = await client.query(query);
+
+    if (getResult) {
+      posts = getResult.rows || [];
+      if (client) await client.cleanup();
+    }
+
+    return posts;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    if (client) await client.cleanup();
+    return [];
+  }
 }
 
 async function BlogPage() {
