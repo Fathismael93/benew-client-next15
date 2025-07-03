@@ -105,9 +105,370 @@ const nextConfig = {
   // Timeout pour la génération de pages statiques
   staticPageGenerationTimeout: 180,
 
-  // Configuration des en-têtes HTTP
+  // Configuration des en-têtes HTTP - Phase 1
   async headers() {
-    return [];
+    return [
+      // ===== HEADERS GLOBAUX DE SÉCURITÉ =====
+      {
+        source: '/(.*)',
+        headers: [
+          // Protection XSS et injections
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          // Politique de référent
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          // Isolation cross-origin
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'same-site',
+          },
+          // Permissions limitées
+          {
+            key: 'Permissions-Policy',
+            value:
+              'geolocation=(), microphone=(), camera=(), payment=(), usb=()',
+          },
+          // CSP global adapté à ton stack
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline'", // Framer Motion + React
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", // SCSS + Google Fonts
+              "img-src 'self' https://res.cloudinary.com data:", // Cloudinary + data URLs
+              "font-src 'self' https://fonts.gstatic.com", // Google Fonts
+              "connect-src 'self'", // Server Actions uniquement
+              "form-action 'self'", // Formulaires sécurisés
+              "frame-ancestors 'none'", // Pas d'iframes
+              "base-uri 'self'",
+            ].join('; '),
+          },
+        ],
+      },
+
+      // ===== HTTPS STRICT (si en production) =====
+      {
+        source: '/(.*)',
+        headers: [
+          ...(process.env.NODE_ENV === 'production'
+            ? [
+                {
+                  key: 'Strict-Transport-Security',
+                  value: 'max-age=31536000; includeSubDomains; preload',
+                },
+              ]
+            : []),
+        ],
+      },
+
+      // ===== SERVER ACTIONS - SÉCURITÉ CRITIQUE =====
+      {
+        source: '/_next/static/chunks/:path*',
+        headers: [
+          // Anti-cache strict pour Server Actions
+          {
+            key: 'Cache-Control',
+            value:
+              'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
+          },
+          // Sécurité renforcée
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          // CSP ultra-restrictif pour les actions
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'none'; script-src 'self'; connect-src 'self'",
+          },
+        ],
+      },
+
+      // ===== ROUTES SERVER ACTIONS NEXT.JS =====
+      {
+        source: '/_next/action/:path*',
+        headers: [
+          // Anti-cache ultra-strict
+          {
+            key: 'Cache-Control',
+            value:
+              'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
+          },
+          // Sécurité maximale pour les actions
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          // CSP spécifique aux actions
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'none'; connect-src 'self'; form-action 'self'",
+          },
+          // Rate limiting hints
+          {
+            key: 'X-RateLimit-Window',
+            value: '60', // 1 minute
+          },
+          {
+            key: 'X-RateLimit-Limit',
+            value: '10', // 10 actions par minute
+          },
+        ],
+      },
+
+      // ===== PAGES AVEC FORMULAIRES SPÉCIFIQUES =====
+      {
+        source: '/contact',
+        headers: [
+          // Cache page contact
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, must-revalidate',
+          },
+          // CSP adapté pour formulaire (sans EmailJS)
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline'", // Framer Motion
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' data:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self'", // Server Actions seulement
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+            ].join('; '),
+          },
+        ],
+      },
+
+      // ===== CACHE OPTIMISÉ - ASSETS NEXT.JS =====
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          // Cache maximal pour les assets avec hash
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable', // 1 an
+          },
+          // Sécurité
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'cross-origin', // Permet CDN
+          },
+          // Performance
+          {
+            key: 'Vary',
+            value: 'Accept-Encoding',
+          },
+        ],
+      },
+
+      // ===== CACHE - IMAGES STATIQUES =====
+      {
+        source: '/images/:path*',
+        headers: [
+          // Cache optimisé pour images statiques
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=3600', // 1 jour + SWR 1h
+          },
+          // Sécurité
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'cross-origin',
+          },
+          // Performance
+          {
+            key: 'Vary',
+            value: 'Accept, Accept-Encoding',
+          },
+        ],
+      },
+
+      // ===== CACHE - FONTS ET SVG =====
+      {
+        source: '/:path*\\.(woff|woff2|eot|ttf|otf)$',
+        headers: [
+          // Cache long pour fonts
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable', // 1 an
+          },
+          // CORS pour fonts
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'cross-origin',
+          },
+        ],
+      },
+
+      {
+        source: '/:path*\\.(svg)$',
+        headers: [
+          // Cache modéré pour SVG
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=3600', // 1 jour
+          },
+          // Sécurité renforcée pour SVG (risque XSS)
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "default-src 'none'; style-src 'unsafe-inline'; script-src 'none';",
+          },
+        ],
+      },
+
+      // ===== CACHE - ASSETS DIVERS =====
+      {
+        source: '/:path*\\.(css|js|json|xml|txt|ico|manifest)$',
+        headers: [
+          // Cache modéré pour assets divers
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=3600', // 1 jour
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'same-site',
+          },
+        ],
+      },
+
+      // ===== CACHE - FAVICON ET ICÔNES =====
+      {
+        source:
+          '/:path*(favicon|apple-touch-icon|android-chrome|mstile)\\.(ico|png)$',
+        headers: [
+          // Cache long pour icônes
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, stale-while-revalidate=86400', // 30 jours
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'cross-origin',
+          },
+        ],
+      },
+
+      // ===== BLOG - CACHE INTELLIGENT =====
+      {
+        source: '/blog/:path*',
+        headers: [
+          // Cache court pour contenu dynamique
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, stale-while-revalidate=600', // 5min + SWR 10min
+          },
+          // CSP pour contenu HTML parsé
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' https://res.cloudinary.com data:", // Images d'articles
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self'",
+              "frame-ancestors 'none'",
+            ].join('; '),
+          },
+        ],
+      },
+
+      // ===== TEMPLATES - CACHE MODÉRÉ =====
+      {
+        source: '/templates/:path*',
+        headers: [
+          // Cache modéré pour pages templates
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=600, stale-while-revalidate=1200', // 10min + SWR 20min
+          },
+          // CSP pour OrderModal et Server Actions
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline'", // Framer Motion dans modals
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' https://res.cloudinary.com data:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self'", // Server Actions pour commandes
+              "form-action 'self'", // OrderModal
+              "frame-ancestors 'none'",
+            ].join('; '),
+          },
+        ],
+      },
+    ];
   },
 
   // Configuration du runtime côté serveur
@@ -120,6 +481,123 @@ const nextConfig = {
     SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
     CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  },
+
+  // ===== REDIRECTIONS SEO =====
+  async redirects() {
+    return [
+      // ===== CANONICALISATION DES URLS =====
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true, // 301
+      },
+      {
+        source: '/index',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/blog/',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/templates/',
+        destination: '/templates',
+        permanent: true,
+      },
+      {
+        source: '/contact/',
+        destination: '/contact',
+        permanent: true,
+      },
+      {
+        source: '/presentation/',
+        destination: '/presentation',
+        permanent: true,
+      },
+
+      // ===== URLS AVEC VARIANTES COURANTES =====
+      {
+        source: '/template/:id',
+        destination: '/templates/:id',
+        permanent: true,
+      },
+      {
+        source: '/article/:id',
+        destination: '/blog/:id',
+        permanent: true,
+      },
+      {
+        source: '/post/:id',
+        destination: '/blog/:id',
+        permanent: true,
+      },
+
+      // ===== NETTOYAGE DES PARAMETRES UTM =====
+      {
+        source: '/blog/:path*',
+        has: [
+          {
+            type: 'query',
+            key: 'utm_source',
+          },
+        ],
+        destination: '/blog/:path*',
+        permanent: false, // 302 pour préserver analytics
+      },
+      {
+        source: '/templates/:path*',
+        has: [
+          {
+            type: 'query',
+            key: 'utm_source',
+          },
+        ],
+        destination: '/templates/:path*',
+        permanent: false,
+      },
+
+      // ===== REDIRECTIONS BUSINESS LOGIQUES =====
+      {
+        source: '/commande',
+        destination: '/templates',
+        permanent: true,
+      },
+      {
+        source: '/order',
+        destination: '/templates',
+        permanent: true,
+      },
+      {
+        source: '/boutique',
+        destination: '/templates',
+        permanent: true,
+      },
+      {
+        source: '/apps',
+        destination: '/templates',
+        permanent: true,
+      },
+      {
+        source: '/applications',
+        destination: '/templates',
+        permanent: true,
+      },
+
+      // ===== GESTION DES ERREURS COURANTES =====
+      {
+        source: '/templates/:id/app/:appId',
+        destination: '/templates/:id/applications/:appId',
+        permanent: true,
+      },
+      {
+        source: '/template/:id/applications/:appId',
+        destination: '/templates/:id/applications/:appId',
+        permanent: true,
+      },
+    ];
   },
 
   // Configuration Webpack optimisée
