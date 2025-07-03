@@ -75,31 +75,61 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // Fonctionnalités expérimentales pour les performances
+  // ===== OPTIMISATIONS EXPERIMENTALES AVANCÉES =====
   experimental: {
+    // Packages optimisés pour ton projet
     optimizePackageImports: [
       'react-icons',
       'next-cloudinary',
       'yup',
       'html-react-parser',
+      'framer-motion', // Ajouté
+      '@emailjs/browser', // Si tu le gardes temporairement
     ],
+
+    // Optimisations avancées
     gzipSize: true,
+
+    // Nouveau: Optimisation des CSS
+    optimizeCss: true,
+
+    // Nouveau: Parallélisation des builds
+    workerThreads: true,
+
+    // Nouveau: Optimisation des fonts
+    optimizeServerReact: true,
+
+    // Compilation plus rapide
+    turbo: {
+      rules: {
+        '*.scss': {
+          loaders: ['sass-loader'],
+          as: '*.css',
+        },
+      },
+    },
   },
 
-  // Configuration du compilateur pour la production
+  // ===== OPTIMISATION DU COMPILATEUR =====
   compiler: {
+    // Suppression des console.log en production (amélioré)
     removeConsole:
       process.env.NODE_ENV === 'production'
         ? {
-            exclude: ['log', 'error', 'warn'],
+            exclude: ['error', 'warn', 'info'], // Garde plus de logs pour debugging
           }
         : false,
+
+    // Suppression des props de test en production
     reactRemoveProperties:
       process.env.NODE_ENV === 'production'
         ? {
-            properties: ['^data-testid$'],
+            properties: ['^data-testid$', '^data-test$', '^data-cy$'],
           }
         : false,
+
+    // Optimisation React en production
+    emotion: process.env.NODE_ENV === 'production',
   },
 
   // Timeout pour la génération de pages statiques
@@ -600,174 +630,9 @@ const nextConfig = {
     ];
   },
 
-  // ===== OPTIMISATIONS WEBPACK AVANCÉES =====
+  // ===== WEBPACK CONFIG MINIMALE - ÉTAPE 1 =====
   webpack: (config, { dev, isServer, buildId }) => {
-    // ===== OPTIMISATIONS POUR LA PRODUCTION =====
-    if (!dev) {
-      // Configuration du cache filesystem améliorée
-      config.cache = {
-        type: 'filesystem',
-        buildDependencies: {
-          config: [__dirname],
-        },
-        cacheDirectory: path.resolve(__dirname, '.next/cache/webpack'),
-        // Nouvelle: compression du cache
-        compression: 'gzip',
-        // Nouvelle: versioning du cache
-        version: buildId,
-      };
-
-      // Split chunks optimisé pour ton projet
-      config.optimization = {
-        ...config.optimization,
-        moduleIds: 'deterministic',
-        runtimeChunk: 'single',
-        splitChunks: {
-          chunks: 'all',
-          minSize: 20000,
-          maxSize: 244000,
-          minChunks: 1,
-          maxAsyncRequests: 30,
-          maxInitialRequests: 30,
-          automaticNameDelimiter: '~',
-          cacheGroups: {
-            // Framework React optimisé
-            framework: {
-              chunks: 'all',
-              name: 'framework',
-              test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-              priority: 40,
-              enforce: true,
-            },
-
-            // Framer Motion séparé (gros package)
-            framerMotion: {
-              name: 'framer-motion',
-              test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-              chunks: 'all',
-              priority: 35,
-              enforce: true,
-            },
-
-            // React Icons optimisé
-            reactIcons: {
-              name: 'react-icons',
-              test: /[\\/]node_modules[\\/]react-icons[\\/]/,
-              chunks: 'all',
-              priority: 34,
-              enforce: true,
-            },
-
-            // Next Cloudinary
-            cloudinary: {
-              name: 'cloudinary',
-              test: /[\\/]node_modules[\\/]next-cloudinary[\\/]/,
-              chunks: 'all',
-              priority: 33,
-              enforce: true,
-            },
-
-            // SASS et CSS
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss|sass)$/,
-              chunks: 'all',
-              priority: 32,
-              enforce: true,
-            },
-
-            // Librairies volumineuses
-            lib: {
-              test(module) {
-                return (
-                  module.size() > 160000 &&
-                  /node_modules[/\\]/.test(module.identifier())
-                );
-              },
-              name(module) {
-                const hash = createHash('sha1');
-                hash.update(module.identifier());
-                return `lib-${hash.digest('hex').substring(0, 8)}`;
-              },
-              priority: 30,
-              minChunks: 1,
-              reuseExistingChunk: true,
-            },
-
-            // Vendor commun
-            vendor: {
-              name: 'vendor',
-              test: /[\\/]node_modules[\\/]/,
-              chunks: 'all',
-              priority: 20,
-              minChunks: 2,
-              reuseExistingChunk: true,
-            },
-
-            // Code partagé de ton app
-            common: {
-              name: 'common',
-              minChunks: 2,
-              priority: 10,
-              chunks: 'all',
-              reuseExistingChunk: true,
-            },
-
-            // Pages spécifiques lourdes
-            blogPages: {
-              name: 'blog-pages',
-              test: /[\\/](blog|article)[\\/]/,
-              chunks: 'all',
-              priority: 15,
-              minChunks: 1,
-            },
-
-            templatesPages: {
-              name: 'templates-pages',
-              test: /[\\/]templates[\\/]/,
-              chunks: 'all',
-              priority: 15,
-              minChunks: 1,
-            },
-          },
-        },
-
-        // Tree shaking amélioré
-        usedExports: true,
-        sideEffects: false,
-
-        // Optimisation des modules
-        providedExports: true,
-
-        // Minimizer optimisé
-        minimize: true,
-        minimizer: [
-          // Garde les minimizers par défaut de Next.js
-          '...',
-        ],
-      };
-
-      // Logging réduit en production
-      config.infrastructureLogging = {
-        level: 'error',
-      };
-
-      // Stats optimisés
-      config.stats = {
-        cached: false,
-        cachedAssets: false,
-        chunks: false,
-        chunkModules: false,
-        colors: true,
-        hash: false,
-        modules: false,
-        reasons: false,
-        timings: true,
-        version: false,
-      };
-    }
-
-    // ===== ALIAS POUR PERFORMANCE =====
+    // ===== ALIAS SEULEMENT (sûr à 100%) =====
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname),
@@ -777,104 +642,9 @@ const nextConfig = {
       '@app': path.resolve(__dirname, 'app'),
     };
 
-    // ===== OPTIMISATIONS POUR LES IMAGES =====
-    config.module.rules.push({
-      test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            publicPath: '/_next/static/images/',
-            outputPath: 'static/images/',
-            name: '[name].[hash].[ext]',
-          },
-        },
-      ],
-    });
-
-    // ===== OPTIMISATIONS POUR SASS =====
-    config.module.rules.push({
-      test: /\.scss$/,
-      use: [
-        'style-loader',
-        {
-          loader: 'css-loader',
-          options: {
-            modules: {
-              localIdentName: dev
-                ? '[local]__[hash:base64:5]'
-                : '[hash:base64:8]',
-            },
-          },
-        },
-        {
-          loader: 'sass-loader',
-          options: {
-            sassOptions: {
-              includePaths: [path.resolve(__dirname, 'app')],
-              // Optimisation SASS
-              outputStyle: dev ? 'expanded' : 'compressed',
-            },
-          },
-        },
-      ],
-    });
-
-    // ===== OPTIMISATIONS SERVER =====
+    // ===== EXTERNALS POUR SERVER (sûr à 100%) =====
     if (isServer) {
-      // Externalize database drivers
       config.externals = [...config.externals, 'pg-native'];
-
-      // Optimisation pour Server Actions
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-
-    // ===== PLUGIN POUR BUNDLE ANALYSIS =====
-    if (process.env.ANALYZE === 'true') {
-      config.plugins.push(
-        new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
-          analyzerMode: 'static',
-          openAnalyzer: false,
-          generateStatsFile: true,
-          statsOptions: {
-            source: false,
-          },
-        }),
-      );
-    }
-
-    // ===== OPTIMISATION DES PERFORMANCES =====
-    if (!dev) {
-      // Préchargement des modules critiques
-      config.plugins.push({
-        apply: (compiler) => {
-          compiler.hooks.compilation.tap(
-            'PreloadCriticalChunks',
-            (compilation) => {
-              compilation.hooks.htmlWebpackPluginBeforeHtmlGeneration.tapAsync(
-                'PreloadCriticalChunks',
-                (data, cb) => {
-                  // Précharge les chunks critiques
-                  const criticalChunks = ['framework', 'main', 'commons'];
-                  criticalChunks.forEach((chunk) => {
-                    if (compilation.chunks.find((c) => c.name === chunk)) {
-                      data.assets.js.unshift(
-                        `/_next/static/chunks/${chunk}.js`,
-                      );
-                    }
-                  });
-                  cb(null, data);
-                },
-              );
-            },
-          );
-        },
-      });
     }
 
     return config;
