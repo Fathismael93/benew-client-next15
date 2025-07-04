@@ -63,7 +63,7 @@ const nextConfig = {
   compress: true,
 
   // ✅ Optimisations production
-  swcMinify: true, // Par défaut dans 15, mais explicite
+  // swcMinify: true, // Par défaut dans 15, mais explicite
 
   images: {
     remotePatterns: [
@@ -83,14 +83,14 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     loader: 'default',
     unoptimized: false,
-    priority: false,
-    placeholder: 'blur', // ✅ Amélioration UX
+    // priority: false,
+    // placeholder: 'blur', // ✅ Amélioration UX
   },
 
   // Fonctionnalités expérimentales pour les performances
-  experimental: {
-    instrumentationHook: true, // ✅ AJOUTÉ
-  },
+  // experimental: {
+  //   instrumentationHook: true, // ✅ AJOUTÉ
+  // },
 
   // ===== OPTIMISATION DU COMPILATEUR =====
   compiler: {
