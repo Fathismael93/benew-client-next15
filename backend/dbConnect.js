@@ -5,8 +5,8 @@
 /***************** ********************/
 
 import { Pool } from 'pg';
-import logger from '@/utils/loggecaptureException';
-import { captureException, captureMessage } from '@/instrumentation';
+import logger from '@utils/logger';
+import { captureException, captureMessage } from 'instrumentation';
 
 const MAX_RETRIES = 5; // Max reconnection attempts
 const RETRY_DELAY = 5000; // Delay between retries (in ms)
