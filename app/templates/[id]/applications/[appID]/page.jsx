@@ -1,7 +1,6 @@
 // app/templates/[id]/applications/[appID]/page.jsx
-import React from 'react';
-import { getClient } from '@/utils/dbConnect';
 import SingleApplication from '@/components/templates/SingleApplication';
+import { getClient } from 'backend/dbConnect';
 
 const getApplication = async (id) => {
   const client = await getClient();
@@ -29,7 +28,7 @@ const getApplication = async (id) => {
       platforms: [],
     };
   } finally {
-    await client.cleanup();
+    await client.release();
   }
 };
 

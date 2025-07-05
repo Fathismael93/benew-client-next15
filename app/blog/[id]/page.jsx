@@ -1,7 +1,6 @@
-import React from 'react';
-import { getClient } from '@/utils/dbConnect';
-import articleIDSchema from '@/utils/schema';
 import SinglePost from '@/components/blog/SinglePost';
+import articleIDSchema from '@utils/schemas/schema';
+import { getClient } from 'backend/dbConnect';
 
 async function getSinglePost(id) {
   let client;
@@ -26,12 +25,12 @@ async function getSinglePost(id) {
       article = result.rows[0];
     }
 
-    if (client) await client.cleanup();
+    if (client) await client.release();
 
     return article;
   } catch (error) {
     console.error('Error fetching single post:', error);
-    if (client) await client.cleanup();
+    if (client) await client.release();
     return null;
   }
 }

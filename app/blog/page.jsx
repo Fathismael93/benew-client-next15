@@ -1,6 +1,5 @@
-import React from 'react';
-import { getClient } from '@/utils/dbConnect';
 import ListBlog from '@/components/blog/ListBlog';
+import { getClient } from 'backend/dbConnect';
 
 async function getPosts() {
   let client;
@@ -19,13 +18,13 @@ async function getPosts() {
 
     if (getResult) {
       posts = getResult.rows || [];
-      if (client) await client.cleanup();
+      if (client) await client.release();
     }
 
     return posts;
   } catch (error) {
     console.error('Error fetching posts:', error);
-    if (client) await client.cleanup();
+    if (client) await client.release();
     return [];
   }
 }

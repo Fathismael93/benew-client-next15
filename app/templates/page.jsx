@@ -1,6 +1,5 @@
-import React from 'react';
 import TemplatesList from '@/components/templates/TemplatesList';
-import { getClient } from '@/utils/dbConnect';
+import { getClient } from 'backend/dbConnect';
 
 async function getTemplates() {
   const client = await getClient();
@@ -13,7 +12,7 @@ async function getTemplates() {
     console.error('Error fetching templates:', error);
     return [];
   } finally {
-    await client.cleanup();
+    await client.release();
   }
 }
 

@@ -1,7 +1,7 @@
 // app/actions/createOrder.js
 'use server';
 
-import { getClient } from '@/utils/dbConnect';
+import { getClient } from 'backend/dbConnect';
 
 export async function createOrder(formData, applicationId, applicationFee) {
   const client = await getClient();
@@ -31,7 +31,7 @@ export async function createOrder(formData, applicationId, applicationFee) {
       !applicationId ||
       !applicationFee
     ) {
-      if (client) await client.cleanup();
+      if (client) await client.release();
       return {
         success: false,
         message: 'Missing required fields',
@@ -60,7 +60,7 @@ export async function createOrder(formData, applicationId, applicationFee) {
 
     const newOrderId = result.rows[0].order_id;
 
-    if (client) await client.cleanup();
+    if (client) await client.release();
 
     return {
       success: true,
@@ -68,7 +68,7 @@ export async function createOrder(formData, applicationId, applicationFee) {
       orderId: newOrderId,
     };
   } catch (error) {
-    if (client) await client.cleanup();
+    if (client) await client.release();
     console.error('Error creating order:', error);
     return {
       success: false,
@@ -76,7 +76,7 @@ export async function createOrder(formData, applicationId, applicationFee) {
       error: error.message,
     };
   } finally {
-    await client.cleanup();
+    if (client) await client.release();
   }
 }
 
@@ -113,7 +113,7 @@ export async function createOrderFromObject(data) {
       !applicationId ||
       !applicationFee
     ) {
-      if (client) await client.cleanup();
+      if (client) await client.release();
       return {
         success: false,
         message: 'Missing required fields',
@@ -142,7 +142,7 @@ export async function createOrderFromObject(data) {
 
     const newOrderId = result.rows[0].order_id;
 
-    if (client) await client.cleanup();
+    if (client) await client.release();
 
     return {
       success: true,
@@ -150,7 +150,7 @@ export async function createOrderFromObject(data) {
       orderId: newOrderId,
     };
   } catch (error) {
-    if (client) await client.cleanup();
+    if (client) await client.release();
     console.error('Error creating order:', error);
     return {
       success: false,
@@ -158,6 +158,6 @@ export async function createOrderFromObject(data) {
       error: error.message,
     };
   } finally {
-    await client.cleanup();
+    if (client) await client.release();
   }
 }
