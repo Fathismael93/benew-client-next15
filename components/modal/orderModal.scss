@@ -1,4 +1,5 @@
-@use '@/app/app.scss' as *;
+@use "sass:color";
+@use '../../app/app.scss' as *;
 
 .modalOverlay {
   position: fixed;
@@ -17,8 +18,8 @@
 .modal {
   background: linear-gradient(
     135deg,
-    darken($background-color, 5%),
-    lighten($background-color, 8%)
+    color.adjust($background-color, $lightness: -5%),
+    color.adjust($background-color, $lightness: 8%)
   );
   border-radius: 12px;
   box-shadow:
@@ -139,7 +140,7 @@ button {
   background: linear-gradient(
     135deg,
     $primary-color,
-    lighten($primary-color, 10%)
+    color.adjust($primary-color, $lightness: 10%)
   );
   color: $background-color;
   box-shadow: 0 4px 8px rgba($primary-color, 0.3);
@@ -147,7 +148,7 @@ button {
   &:hover:not(:disabled) {
     background: linear-gradient(
       135deg,
-      lighten($primary-color, 5%),
+      color.adjust($primary-color, $lightness: 5%),
       $secondary-color
     );
     transform: translateY(-2px);
@@ -167,7 +168,7 @@ button {
 
   &:hover {
     background-color: rgba($primary-color, 0.1);
-    border-color: lighten($primary-color, 10%);
+    border-color: color.adjust($primary-color, $lightness: 10%);
   }
 }
 
@@ -175,7 +176,7 @@ button {
   background: linear-gradient(
     135deg,
     $primary-color,
-    lighten($primary-color, 10%)
+    color.adjust($primary-color, $lightness: 10%)
   );
   color: $background-color;
   width: 100%;
@@ -185,7 +186,7 @@ button {
   &:hover {
     background: linear-gradient(
       135deg,
-      lighten($primary-color, 5%),
+      color.adjust($primary-color, $lightness: 5%),
       $secondary-color
     );
     transform: translateY(-2px);
@@ -210,7 +211,7 @@ button {
 
 .errorMessage {
   background-color: rgba(220, 38, 38, 0.15);
-  color: lighten(#ef4444, 10%);
+  color: color.adjust(#ef4444, $lightness: 10%);
   padding: 0.8rem;
   border-radius: 6px;
   margin-bottom: 1rem;

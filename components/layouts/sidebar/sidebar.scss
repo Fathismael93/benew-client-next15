@@ -1,4 +1,5 @@
-@use '@/app/app.scss' as *;
+@use "sass:color";
+@use '../../../app/app.scss' as *;
 
 .sidebar {
   display: flex;
@@ -15,7 +16,7 @@
     left: 0;
     bottom: 0;
     width: 20rem;
-    background: linear-gradient(135deg, $text-color, lighten($text-color, 5%));
+    background: linear-gradient(135deg, $text-color, color.adjust($text-color, $lightness: 5%));
     box-shadow: 2px 0 10px rgba($background-color, 0.3);
 
     @include small {

@@ -1,11 +1,12 @@
-@use '@/app/app.scss' as *;
+@use "sass:color";
+@use '../../../app/app.scss' as *;
 
 .templatesContainer {
   min-height: 100vh;
   background: linear-gradient(
     to bottom,
     $background-color,
-    darken($background-color, 3%)
+    color.adjust($background-color, $lightness: -3%)
   );
 }
 

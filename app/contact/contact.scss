@@ -1,4 +1,5 @@
-@use '@/app/app.scss' as *;
+@use "sass:color";
+@use '../app.scss' as *;
 
 .contact {
   height: 100%;
@@ -381,7 +382,7 @@
         background: linear-gradient(
           135deg,
           $primary-color,
-          lighten($primary-color, 10%)
+          color.adjust($primary-color, $lightness: 10%)
         );
         color: $background-color;
         cursor: pointer;
@@ -394,7 +395,7 @@
         &:hover {
           background: linear-gradient(
             135deg,
-            lighten($primary-color, 5%),
+            color.adjust($primary-color, $lightness: 5%),
             $secondary-color
           );
           transform: translateY(-2px);
