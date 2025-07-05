@@ -16,7 +16,7 @@ $text-color: $color-light;
 
 // Couleurs dérivées pour les variations
 $text-color-muted: rgba($text-color, 0.7);
-$background-color-light: color.adjust($background-color, $lightness, 10%);
+$background-color-light: lighten($background-color, 10%);
 
 @mixin small {
   @media (min-width: 320px) and (max-width: 479px) {
