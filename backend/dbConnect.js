@@ -5,6 +5,8 @@
 /***************** ********************/
 
 import { Pool } from 'pg';
+import logger from '@/utils/loggecaptureException';
+import { captureException, captureMessage } from '@/instrumentation';
 
 const MAX_RETRIES = 5; // Max reconnection attempts
 const RETRY_DELAY = 5000; // Delay between retries (in ms)
@@ -30,9 +32,12 @@ const requiredEnvVars = [
 // Warn if any environment variables are missing
 requiredEnvVars.forEach((envVar) => {
   if (!process.env[envVar]) {
-    console.warn(
-      `[${getTimestamp()}] ⚠️ Warning: Missing environment variable: ${envVar}`,
-    );
+    logger.warn('Missing environment variable', {
+      timestamp: getTimestamp(),
+      variable: envVar,
+      component: 'database_pool',
+      action: 'env_validation',
+    });
   }
 });
 
@@ -265,7 +270,7 @@ function logPoolMetrics() {
 
     // Send critical alerts as Sentry events
     if (health.status === 'critical') {
-      global.Sentry.captureMessage(
+      captureMessage(
         `Critical Pool Issue: ${health.alerts.map((a) => a.message).join(', ')}`,
         {
           level: 'error',
@@ -318,7 +323,7 @@ async function performHealthCheck() {
     console.error(`[${getTimestamp()}] 🚨 Health Check Failed:`, error.message);
 
     if (typeof global !== 'undefined' && global.Sentry) {
-      global.Sentry.captureException(error, {
+      captureException(error, {
         tags: {
           component: 'database_pool',
           issue_type: 'health_check_failed',
@@ -382,7 +387,7 @@ const createPool = () => {
 
     // Send to monitoring without attempting reconnection
     if (typeof global !== 'undefined' && global.Sentry) {
-      global.Sentry.captureException(err, {
+      captureException(err, {
         tags: {
           component: 'database_pool',
           issue_type: 'pool_error',
@@ -514,20 +519,17 @@ const reconnectPool = async (attempt = 1) => {
       );
 
       if (typeof global !== 'undefined' && global.Sentry) {
-        global.Sentry.captureMessage(
-          'Database pool reconnection failed after max retries',
-          {
-            level: 'error',
-            tags: {
-              component: 'database_pool',
-              issue_type: 'reconnection_failed',
-            },
-            extra: {
-              maxRetries: MAX_RETRIES,
-              lastAttempt: attempt,
-            },
+        captureMessage('Database pool reconnection failed after max retries', {
+          level: 'error',
+          tags: {
+            component: 'database_pool',
+            issue_type: 'reconnection_failed',
           },
-        );
+          extra: {
+            maxRetries: MAX_RETRIES,
+            lastAttempt: attempt,
+          },
+        });
       }
     }
   }
@@ -578,7 +580,7 @@ export const getClient = async () => {
     }
 
     if (typeof global !== 'undefined' && global.Sentry) {
-      global.Sentry.captureException(err, {
+      captureException(err, {
         tags: {
           component: 'database_pool',
           issue_type: 'client_acquisition_failed',
