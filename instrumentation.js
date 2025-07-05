@@ -371,18 +371,18 @@ export async function register() {
         profilesSampleRate: isProduction ? 0.1 : 1.0,
 
         // Intégrations spécifiques
-        integrations: [
-          new Sentry.Replay({
-            maskAllText: true,
-            blockAllMedia: true,
-            maskAllInputs: true,
-            blockClass: 'sentry-block',
-            maskClass: 'sentry-mask',
-            // Masquer les éléments sensibles du site
-            blockSelector:
-              '.payment-input, .contact-form, .order-form, .sensitive-data',
-          }),
-        ],
+        // integrations: [
+        //   new Sentry.Replay({
+        //     maskAllText: true,
+        //     blockAllMedia: true,
+        //     maskAllInputs: true,
+        //     blockClass: 'sentry-block',
+        //     maskClass: 'sentry-mask',
+        //     // Masquer les éléments sensibles du site
+        //     blockSelector:
+        //       '.payment-input, .contact-form, .order-form, .sensitive-data',
+        //   }),
+        // ],
 
         // Erreurs à ignorer spécifiques à votre stack
         ignoreErrors: [
