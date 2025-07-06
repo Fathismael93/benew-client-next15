@@ -26,6 +26,7 @@ const validateEnv = () => {
     'SENTRY_ORG',
     'SENTRY_URL',
     'SENTRY_RELEASE',
+    'SENTRY_DEBUG',
     'ANALYZE',
     'CLIENT_EXISTENCE',
     'CONNECTION_TIMEOUT',
@@ -61,6 +62,9 @@ const nextConfig = {
   // ✅ Configurations manquantes critiques
   reactStrictMode: true,
   compress: true,
+  sentry: {
+    transpileClientSDK: true,
+  },
 
   // ✅ Optimisations production
   // swcMinify: true, // Par défaut dans 15, mais explicite
@@ -187,6 +191,18 @@ const nextConfig = {
                 },
               ]
             : []),
+        ],
+      },
+
+      // ===== MONITORING SENTRY - TUNNEL =====
+      {
+        source: '/monitoring', // Votre tunnel route
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "default-src 'self'; connect-src 'self' https://*.sentry.io;",
+          },
         ],
       },
 
@@ -724,9 +740,8 @@ const sentryWebpackPluginOptions = {
 
   // Optimisations pour la production
   silent: process.env.NODE_ENV === 'production',
-  hideSourceMaps: process.env.NODE_ENV === 'production',
   widenClientFileUpload: true,
-  transpileClientSDK: true,
+  // transpileClientSDK: true,
   tunnelRoute: '/monitoring',
 
   // Configuration pour les builds
@@ -743,6 +758,11 @@ const sentryWebpackPluginOptions = {
   deploy: {
     env: process.env.NODE_ENV,
   },
+  reactComponentAnnotation: {
+    enabled: process.env.NODE_ENV === 'production',
+  },
+  // Optimisation v9
+  disableLogger: process.env.NODE_ENV === 'production',
 };
 
 // Appliquer les configurations dans l'ordre : bundleAnalyzer puis Sentry
