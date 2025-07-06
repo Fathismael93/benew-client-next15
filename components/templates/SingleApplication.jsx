@@ -7,7 +7,15 @@ import OrderModal from '../modal/OrderModal'; // Import the OrderModal component
 import './styling/application.scss';
 import Link from 'next/link';
 
-const SingleApplication = ({ application, platforms }) => {
+const SingleApplication = ({
+  application,
+  template,
+  relatedApplications,
+  platforms,
+  adaptiveConfig,
+  performanceMetrics,
+  context,
+}) => {
   // Get the images from the first application
   const images = (application && application[0]?.application_images) || [];
 
