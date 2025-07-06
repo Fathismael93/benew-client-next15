@@ -2,7 +2,7 @@ import winston from 'winston';
 
 // Création d'un logger structuré pour BENEW
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info', // Niveau par défaut : info
+  level: process.env.LOG_LEVEL || 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.json(),
@@ -21,31 +21,5 @@ const logger = winston.createLogger({
     }),
   ],
 });
-
-// Ajouter des transports supplémentaires en production
-if (process.env.NODE_ENV === 'production') {
-  // Log des erreurs dans un fichier séparé
-  logger.add(
-    new winston.transports.File({
-      filename: 'logs/error.log',
-      level: 'error',
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json(),
-      ),
-    }),
-  );
-
-  // Log général combiné
-  logger.add(
-    new winston.transports.File({
-      filename: 'logs/combined.log',
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json(),
-      ),
-    }),
-  );
-}
 
 export default logger;
