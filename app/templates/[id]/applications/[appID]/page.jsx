@@ -452,6 +452,10 @@ async function getSingleApplicationWithOptimizations(
       const relatedApplications = relatedAppsResult.rows;
       const platforms = platformsResult.rows;
 
+      console.log('Main Data', mainData);
+      console.log('Related Applications', relatedApplications);
+      console.log('Platforms', platforms);
+
       // Séparer les données application et template
       const application = {
         application_id: mainData.application_id,
