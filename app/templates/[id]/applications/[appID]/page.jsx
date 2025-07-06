@@ -1428,9 +1428,9 @@ export async function generateStaticParams() {
       },
     });
 
-    results=[];
+    results = [];
   }
-  
+
   return results;
 }
 
