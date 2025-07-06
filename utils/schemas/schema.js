@@ -64,3 +64,19 @@ export const templateIdSchema = yup.object().shape({
     })
     .transform((value) => value?.toLowerCase().trim()),
 });
+
+/**
+ * Schema de validation pour l'ID d'une application
+ */
+export const applicationIdSchema = yup.object().shape({
+  id: yup
+    .string()
+    .required('Application ID is required')
+    .matches(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+      'Application ID must be a valid UUID format',
+    )
+    .min(36, 'Application ID must be exactly 36 characters')
+    .max(36, 'Application ID must be exactly 36 characters')
+    .trim(),
+});

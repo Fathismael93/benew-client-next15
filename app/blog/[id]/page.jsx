@@ -1,5 +1,5 @@
 import SinglePost from '@/components/blog/SinglePost';
-import articleIDSchema from '@utils/schemas/schema';
+import { articleIDSchema } from '@utils/schemas/schema';
 import { getClient } from 'backend/dbConnect';
 
 async function getSinglePost(id) {
