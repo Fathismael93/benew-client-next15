@@ -153,7 +153,6 @@ function getTemplateDataQuery(templateId) {
           a.created_at,
           t.template_name,
           t.template_image,
-          t.template_description,
           t.template_has_web,
           t.template_has_mobile
         FROM catalog.applications a
