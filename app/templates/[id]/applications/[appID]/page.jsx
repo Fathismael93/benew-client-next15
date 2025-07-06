@@ -693,7 +693,7 @@ async function SingleApplicationPage({ params }) {
 
     // 2. Rate Limiting (protection contre l'abus)
     if (SINGLE_APPLICATION_CONFIG.rateLimiting.enabled) {
-      const headersList = headers();
+      const headersList = await headers();
       const rateLimitCheck = await limitBenewAPI('templates')({
         headers: headersList,
         url: `/templates/${templateId}/applications/${applicationId}`,
