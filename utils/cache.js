@@ -13,8 +13,6 @@
  * - Gestion Cloudinary avancée
  */
 
-'use server'; // Pour compatibility Next.js 15 Server Actions
-
 import { captureException } from 'instrumentation';
 import { LRUCache } from 'lru-cache';
 import { compress, decompress } from 'lz-string';
