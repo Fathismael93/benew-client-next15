@@ -1404,34 +1404,34 @@ export async function getApplicationUsageStats(applicationId, templateId) {
  * Fonction pour générer des paramètres statiques (si nécessaire)
  * Utile pour pré-générer les pages les plus populaires
  */
-export async function generateStaticParams() {
-  let results = [];
-  // En production, on pourrait récupérer les applications les plus populaires
-  // pour les pré-générer statiquement
-  if (process.env.NODE_ENV !== 'production') {
-    return results;
-  }
+// export async function generateStaticParams() {
+//   let results = [];
+//   // En production, on pourrait récupérer les applications les plus populaires
+//   // pour les pré-générer statiquement
+//   if (process.env.NODE_ENV !== 'production') {
+//     return results;
+//   }
 
-  try {
-    // Cette fonction pourrait récupérer les top applications depuis la DB
-    // const popularApps = await getPopularApplications();
-    // return popularApps.map(app => ({
-    //   id: app.template_id,
-    //   appID: app.application_id
-    // }));
-    // return [];
-  } catch (error) {
-    captureException(error, {
-      tags: {
-        component: 'single_application_page',
-        action: 'generate_static_params_error',
-      },
-    });
+//   try {
+//     // Cette fonction pourrait récupérer les top applications depuis la DB
+//     // const popularApps = await getPopularApplications();
+//     // return popularApps.map(app => ({
+//     //   id: app.template_id,
+//     //   appID: app.application_id
+//     // }));
+//     // return [];
+//   } catch (error) {
+//     captureException(error, {
+//       tags: {
+//         component: 'single_application_page',
+//         action: 'generate_static_params_error',
+//       },
+//     });
 
-    results = [];
-  }
+//     results = [];
+//   }
 
-  return results;
-}
+//   return results;
+// }
 
 export default SingleApplicationPage;
