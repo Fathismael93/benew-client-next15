@@ -152,6 +152,9 @@ async function validateApplicationAndTemplateIds(appId, templateId) {
  * @returns {Object} Requêtes SQL optimisées
  */
 function getApplicationDataQuery(applicationId, templateId) {
+  console.log(
+    `Generating queries for applicationId: ${applicationId}, templateId: ${templateId}`,
+  );
   return {
     // Requête principale avec JOIN enrichi pour récupérer application + template + autres apps du template
     applicationWithContextQuery: {
@@ -283,6 +286,7 @@ async function getSingleApplicationWithOptimizations(
   applicationId,
   templateId,
 ) {
+  console.log('We are in the getSingleApplicationWithOptimizations method');
   const startTime = performance.now();
   const cacheKey = generateCacheKey('single_application', {
     applicationId,
@@ -322,8 +326,11 @@ async function getSingleApplicationWithOptimizations(
     let applicationData = null;
 
     try {
+      console.log('Getting Queries');
       const queries = getApplicationDataQuery(applicationId, templateId);
       const queryStartTime = performance.now();
+
+      console.log('Queries', queries);
 
       // Exécuter toutes les requêtes en parallèle pour optimiser les performances
       const [
@@ -669,12 +676,19 @@ async function SingleApplicationPage({ params }) {
   const requestStartTime = performance.now();
   const { id: rawTemplateId, appID: rawAppId } = await params;
 
+  console.log(`[Single Application Page] Params:`, {
+    rawTemplateId,
+    rawAppId,
+  });
+
   try {
     // 1. Validation stricte des IDs de l'application et du template
     const validationResult = await validateApplicationAndTemplateIds(
       rawAppId,
       rawTemplateId,
     );
+
+    console.log('Validation Result', validationResult);
 
     if (!validationResult.isValid) {
       captureMessage('Single application page: Invalid IDs', {
@@ -712,6 +726,8 @@ async function SingleApplicationPage({ params }) {
 
     // 3. Configuration adaptative selon les performances réseau
     const adaptiveConfig = getAdaptiveSiteConfig();
+
+    console.log('Starting to get data');
 
     // 4. Récupération des données avec toutes les optimisations
     const applicationData = await getOptimizedSingleApplication(
