@@ -673,6 +673,7 @@ const getOptimizedSingleApplication = optimizeApiCall(
  * Production-ready avec validation, cache et monitoring
  */
 async function SingleApplicationPage({ params }) {
+  console.log('[Single Application Page] Rendering...');
   const requestStartTime = performance.now();
   const { id: rawTemplateId, appID: rawAppId } = await params;
 
