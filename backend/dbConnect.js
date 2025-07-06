@@ -1,12 +1,13 @@
 /**************** *********************/
 
-// CONNECTION POOLING WITH MONITORING
+// CONNECTION POOLING WITH MONITORING - SENTRY V9
 
 /***************** ********************/
 
 import { Pool } from 'pg';
 import logger from '@utils/logger';
-import { captureException, captureMessage } from 'instrumentation';
+import { captureMessage, captureDatabaseError } from '../instrumentation.js';
+import * as Sentry from '@sentry/nextjs';
 
 const MAX_RETRIES = 5; // Max reconnection attempts
 const RETRY_DELAY = 5000; // Delay between retries (in ms)
@@ -37,6 +38,16 @@ requiredEnvVars.forEach((envVar) => {
       variable: envVar,
       component: 'database_pool',
       action: 'env_validation',
+    });
+
+    // Capture missing env vars in Sentry
+    captureMessage(`Missing database environment variable: ${envVar}`, {
+      level: 'warning',
+      tags: {
+        component: 'database_pool',
+        issue_type: 'missing_env_var',
+        env_var: envVar,
+      },
     });
   }
 });
@@ -259,29 +270,44 @@ function logPoolMetrics() {
   // Export metrics for external monitoring
   const exportedMetrics = poolMetrics.exportMetrics(metrics, health);
 
-  // Send to Sentry if available (optional integration)
-  if (typeof global !== 'undefined' && global.Sentry) {
-    global.Sentry.addBreadcrumb({
-      category: 'db.pool.metrics',
-      message: 'Pool metrics collected',
-      level: health.status === 'healthy' ? 'info' : 'warning',
-      data: exportedMetrics,
-    });
+  // ✅ SENTRY V9 - Send breadcrumb with pool metrics
+  Sentry.addBreadcrumb({
+    category: 'db.pool.metrics',
+    message: 'Pool metrics collected',
+    level: health.status === 'healthy' ? 'info' : 'warning',
+    data: exportedMetrics,
+  });
 
-    // Send critical alerts as Sentry events
-    if (health.status === 'critical') {
-      captureMessage(
-        `Critical Pool Issue: ${health.alerts.map((a) => a.message).join(', ')}`,
-        {
-          level: 'error',
-          tags: {
-            component: 'database_pool',
-            issue_type: 'pool_critical',
-          },
-          extra: exportedMetrics,
+  // ✅ SENTRY V9 - Send critical alerts as Sentry events
+  if (health.status === 'critical') {
+    captureMessage(
+      `Critical Database Pool Issue: ${health.alerts.map((a) => a.message).join(', ')}`,
+      {
+        level: 'error',
+        tags: {
+          component: 'database_pool',
+          issue_type: 'pool_critical',
+          pool_status: health.status,
         },
-      );
-    }
+        extra: exportedMetrics,
+      },
+    );
+  }
+
+  // ✅ SENTRY V9 - Send performance metrics to Sentry
+  if (metrics.avgAcquisitionTime > 2000) {
+    // If avg > 2s, it's very slow
+    captureMessage(
+      `Slow database pool performance: ${metrics.avgAcquisitionTime.toFixed(0)}ms average acquisition time`,
+      {
+        level: 'warning',
+        tags: {
+          component: 'database_pool',
+          issue_type: 'performance_degradation',
+        },
+        extra: exportedMetrics,
+      },
+    );
   }
 }
 
@@ -311,6 +337,18 @@ async function performHealthCheck() {
     // Record successful health check timing
     poolMetrics.recordAcquisitionTime(responseTime);
 
+    // ✅ SENTRY V9 - Log successful health check
+    Sentry.addBreadcrumb({
+      category: 'db.health_check',
+      message: 'Health check successful',
+      level: 'info',
+      data: {
+        responseTime,
+        poolStatus: health.status,
+        postgresqlVersion: queryResult.rows[0].pg_version.split(' ')[0],
+      },
+    });
+
     return {
       status: 'healthy',
       responseTime,
@@ -322,18 +360,19 @@ async function performHealthCheck() {
   } catch (error) {
     console.error(`[${getTimestamp()}] 🚨 Health Check Failed:`, error.message);
 
-    if (typeof global !== 'undefined' && global.Sentry) {
-      captureException(error, {
-        tags: {
-          component: 'database_pool',
-          issue_type: 'health_check_failed',
-        },
-        extra: {
-          responseTime: Date.now() - startTime,
-          poolMetrics: poolMetrics.collectMetrics(),
-        },
-      });
-    }
+    // ✅ SENTRY V9 - Capture health check failure with context
+    captureDatabaseError(error, {
+      tags: {
+        issue_type: 'health_check_failed',
+        operation: 'health_check',
+      },
+      extra: {
+        responseTime: Date.now() - startTime,
+        poolMetrics: poolMetrics.collectMetrics(),
+        healthCheckQuery:
+          'SELECT NOW() as current_time, version() as pg_version',
+      },
+    });
 
     return {
       status: 'unhealthy',
@@ -369,7 +408,7 @@ const createPool = () => {
       : false,
   });
 
-  // ✅ Improved error handling following official documentation
+  // ✅ SENTRY V9 - Improved error handling
   pool.on('error', (err, client) => {
     console.error(
       `[${getTimestamp()}] 🚨 Unexpected database pool error:`,
@@ -385,30 +424,47 @@ const createPool = () => {
       );
     }
 
-    // Send to monitoring without attempting reconnection
-    if (typeof global !== 'undefined' && global.Sentry) {
-      captureException(err, {
-        tags: {
-          component: 'database_pool',
-          issue_type: 'pool_error',
+    // ✅ SENTRY V9 - Send pool error to monitoring
+    captureDatabaseError(err, {
+      tags: {
+        issue_type: 'pool_error',
+        operation: 'pool_event',
+      },
+      extra: {
+        poolMetrics: metrics,
+        clientInfo: client ? 'client_provided' : 'no_client',
+        poolConfig: {
+          maxConnections: Number(process.env.MAXIMUM_CLIENTS) || 10,
+          connectionTimeout: Number(process.env.CONNECTION_TIMEOUT) || 5000,
+          idleTimeout: Number(process.env.CLIENT_EXISTENCE) || 30000,
         },
-        extra: {
-          poolMetrics: metrics,
-          clientInfo: client ? 'client_provided' : 'no_client',
-        },
-      });
-    }
+      },
+    });
 
     // Let the pool handle recovery naturally - don't force reconnection
   });
 
-  // Pool event monitoring
+  // Pool event monitoring with Sentry breadcrumbs
   pool.on('connect', (client) => {
     console.log(`[${getTimestamp()}] 🔗 New client connected to pool`);
+
+    Sentry.addBreadcrumb({
+      category: 'db.pool.event',
+      message: 'New client connected to pool',
+      level: 'info',
+      data: { event: 'connect' },
+    });
   });
 
   pool.on('acquire', (client) => {
     console.log(`[${getTimestamp()}] 📤 Client acquired from pool`);
+
+    Sentry.addBreadcrumb({
+      category: 'db.pool.event',
+      message: 'Client acquired from pool',
+      level: 'debug',
+      data: { event: 'acquire' },
+    });
   });
 
   pool.on('release', (err, client) => {
@@ -417,13 +473,38 @@ const createPool = () => {
         `[${getTimestamp()}] ❌ Client release error:`,
         err.message,
       );
+
+      // ✅ SENTRY V9 - Log client release errors
+      captureDatabaseError(err, {
+        tags: {
+          issue_type: 'client_release_error',
+          operation: 'pool_release',
+        },
+        extra: {
+          poolMetrics: poolMetrics.collectMetrics(),
+        },
+      });
     } else {
       console.log(`[${getTimestamp()}] 📥 Client released back to pool`);
+
+      Sentry.addBreadcrumb({
+        category: 'db.pool.event',
+        message: 'Client released back to pool',
+        level: 'debug',
+        data: { event: 'release' },
+      });
     }
   });
 
   pool.on('remove', (client) => {
     console.log(`[${getTimestamp()}] 🗑️ Client removed from pool`);
+
+    Sentry.addBreadcrumb({
+      category: 'db.pool.event',
+      message: 'Client removed from pool',
+      level: 'info',
+      data: { event: 'remove' },
+    });
   });
 
   return pool;
@@ -452,6 +533,17 @@ function startMonitoring() {
   console.log(
     `[${getTimestamp()}] 📊 Pool monitoring started (metrics: ${METRICS_INTERVAL / 1000}s, health: ${HEALTH_CHECK_INTERVAL / 1000}s)`,
   );
+
+  // ✅ SENTRY V9 - Log monitoring start
+  Sentry.addBreadcrumb({
+    category: 'db.monitoring',
+    message: 'Database pool monitoring started',
+    level: 'info',
+    data: {
+      metricsInterval: METRICS_INTERVAL / 1000,
+      healthCheckInterval: HEALTH_CHECK_INTERVAL / 1000,
+    },
+  });
 }
 
 /**
@@ -467,6 +559,13 @@ function stopMonitoring() {
     healthCheckInterval = null;
   }
   console.log(`[${getTimestamp()}] 📊 Pool monitoring stopped`);
+
+  // ✅ SENTRY V9 - Log monitoring stop
+  Sentry.addBreadcrumb({
+    category: 'db.monitoring',
+    message: 'Database pool monitoring stopped',
+    level: 'info',
+  });
 }
 
 // =============================================
@@ -478,6 +577,14 @@ const reconnectPool = async (attempt = 1) => {
   console.log(
     `[${getTimestamp()}] 🔄 Attempting to reconnect pool... (Attempt ${attempt}/${MAX_RETRIES})`,
   );
+
+  // ✅ SENTRY V9 - Log reconnection attempt
+  Sentry.addBreadcrumb({
+    category: 'db.reconnection',
+    message: `Pool reconnection attempt ${attempt}/${MAX_RETRIES}`,
+    level: 'warning',
+    data: { attempt, maxRetries: MAX_RETRIES },
+  });
 
   // Stop monitoring during reconnection
   stopMonitoring();
@@ -499,6 +606,22 @@ const reconnectPool = async (attempt = 1) => {
     );
     client.release();
 
+    // ✅ SENTRY V9 - Log successful reconnection
+    captureMessage(
+      `Database pool reconnected successfully on attempt ${attempt}`,
+      {
+        level: 'info',
+        tags: {
+          component: 'database_pool',
+          issue_type: 'reconnection_success',
+        },
+        extra: {
+          attempt,
+          maxRetries: MAX_RETRIES,
+        },
+      },
+    );
+
     // Restart monitoring after successful reconnection
     startMonitoring();
 
@@ -511,6 +634,20 @@ const reconnectPool = async (attempt = 1) => {
       `[${getTimestamp()}] ❌ Pool reconnection attempt ${attempt} failed:`,
       err.message,
     );
+
+    // ✅ SENTRY V9 - Log failed reconnection attempt
+    captureDatabaseError(err, {
+      tags: {
+        issue_type: 'reconnection_attempt_failed',
+        operation: 'pool_reconnect',
+      },
+      extra: {
+        attempt,
+        maxRetries: MAX_RETRIES,
+        remainingAttempts: MAX_RETRIES - attempt,
+      },
+    });
+
     if (attempt < MAX_RETRIES) {
       setTimeout(() => reconnectPool(attempt + 1), RETRY_DELAY);
     } else {
@@ -518,19 +655,19 @@ const reconnectPool = async (attempt = 1) => {
         `[${getTimestamp()}] 🚨 Maximum reconnection attempts reached. Pool is unavailable.`,
       );
 
-      if (typeof global !== 'undefined' && global.Sentry) {
-        captureMessage('Database pool reconnection failed after max retries', {
-          level: 'error',
-          tags: {
-            component: 'database_pool',
-            issue_type: 'reconnection_failed',
-          },
-          extra: {
-            maxRetries: MAX_RETRIES,
-            lastAttempt: attempt,
-          },
-        });
-      }
+      // ✅ SENTRY V9 - Log complete reconnection failure
+      captureMessage('Database pool reconnection failed after max retries', {
+        level: 'error',
+        tags: {
+          component: 'database_pool',
+          issue_type: 'reconnection_failed_final',
+        },
+        extra: {
+          maxRetries: MAX_RETRIES,
+          lastAttempt: attempt,
+          retryDelay: RETRY_DELAY,
+        },
+      });
     }
   }
 };
@@ -554,11 +691,33 @@ export const getClient = async () => {
       `[${getTimestamp()}] ✅ Database client acquired in ${acquisitionTime}ms`,
     );
 
+    // ✅ SENTRY V9 - Log successful client acquisition
+    Sentry.addBreadcrumb({
+      category: 'db.client',
+      message: 'Database client acquired',
+      level: 'debug',
+      data: { acquisitionTime },
+    });
+
     // Log performance warning if acquisition was slow
     if (acquisitionTime > 500) {
       console.warn(
         `[${getTimestamp()}] ⚠️ Slow client acquisition: ${acquisitionTime}ms`,
       );
+
+      // ✅ SENTRY V9 - Capture slow acquisition warning
+      captureMessage(`Slow database client acquisition: ${acquisitionTime}ms`, {
+        level: 'warning',
+        tags: {
+          component: 'database_pool',
+          issue_type: 'slow_client_acquisition',
+        },
+        extra: {
+          acquisitionTime,
+          threshold: 500,
+          poolMetrics: poolMetrics.collectMetrics(),
+        },
+      });
     }
 
     return client;
@@ -579,18 +738,18 @@ export const getClient = async () => {
       );
     }
 
-    if (typeof global !== 'undefined' && global.Sentry) {
-      captureException(err, {
-        tags: {
-          component: 'database_pool',
-          issue_type: 'client_acquisition_failed',
-        },
-        extra: {
-          acquisitionTime,
-          poolMetrics: metrics,
-        },
-      });
-    }
+    // ✅ SENTRY V9 - Capture client acquisition failure
+    captureDatabaseError(err, {
+      tags: {
+        issue_type: 'client_acquisition_failed',
+        operation: 'get_client',
+      },
+      extra: {
+        acquisitionTime,
+        poolMetrics: metrics,
+        attemptedOperation: 'pool.connect()',
+      },
+    });
 
     throw new Error('Database connection error');
   }
@@ -624,6 +783,23 @@ export const getClient = async () => {
 
     client.release();
 
+    // ✅ SENTRY V9 - Log successful initialization
+    captureMessage('Database pool initialized successfully', {
+      level: 'info',
+      tags: {
+        component: 'database_pool',
+        issue_type: 'initialization_success',
+      },
+      extra: {
+        postgresqlVersion: testResult.rows[0].pg_version.split(' ')[0],
+        serverTime: testResult.rows[0].startup_time,
+        poolConfig: {
+          maxConnections: Number(process.env.MAXIMUM_CLIENTS) || 10,
+          connectionTimeout: Number(process.env.CONNECTION_TIMEOUT) || 5000,
+        },
+      },
+    });
+
     // Start monitoring after successful initialization
     setTimeout(() => {
       startMonitoring();
@@ -636,6 +812,18 @@ export const getClient = async () => {
       `[${getTimestamp()}] ❌ Initial database connection test failed. Attempting to reconnect...`,
     );
     console.error(err);
+
+    // ✅ SENTRY V9 - Log initialization failure
+    captureDatabaseError(err, {
+      tags: {
+        issue_type: 'initialization_failed',
+        operation: 'startup_test',
+      },
+      extra: {
+        retryAction: 'attempting_reconnection',
+      },
+    });
+
     reconnectPool();
   }
 })();
@@ -645,6 +833,13 @@ const shutdown = async () => {
   console.log(
     `[${getTimestamp()}] 🛑 Initiating graceful database pool shutdown...`,
   );
+
+  // ✅ SENTRY V9 - Log shutdown initiation
+  Sentry.addBreadcrumb({
+    category: 'db.shutdown',
+    message: 'Graceful database pool shutdown initiated',
+    level: 'info',
+  });
 
   // Stop monitoring first
   stopMonitoring();
@@ -656,16 +851,41 @@ const shutdown = async () => {
       `[${getTimestamp()}] 📊 Final pool metrics: ` +
         `Total=${finalMetrics.totalCount}, Idle=${finalMetrics.idleCount}, Waiting=${finalMetrics.waitingCount}`,
     );
+
+    // ✅ SENTRY V9 - Log final metrics
+    Sentry.addBreadcrumb({
+      category: 'db.shutdown',
+      message: 'Final pool metrics recorded',
+      level: 'info',
+      data: finalMetrics,
+    });
   }
 
   try {
     await pool.end();
     console.log(`[${getTimestamp()}] ✅ Database pool closed gracefully`);
+
+    // ✅ SENTRY V9 - Log successful shutdown
+    captureMessage('Database pool shutdown completed successfully', {
+      level: 'info',
+      tags: {
+        component: 'database_pool',
+        issue_type: 'shutdown_success',
+      },
+    });
   } catch (err) {
     console.error(
       `[${getTimestamp()}] ❌ Error closing database pool:`,
       err.message,
     );
+
+    // ✅ SENTRY V9 - Log shutdown error
+    captureDatabaseError(err, {
+      tags: {
+        issue_type: 'shutdown_error',
+        operation: 'pool_end',
+      },
+    });
   }
 };
 
