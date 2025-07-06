@@ -1,5 +1,5 @@
 import SinglePost from '@/components/blog/SinglePost';
-import { articleIDSchema } from '@utils/schemas/schema';
+import { articleIdSchema } from '@utils/schemas/schema';
 import { getClient } from 'backend/dbConnect';
 
 async function getSinglePost(id) {
@@ -8,7 +8,7 @@ async function getSinglePost(id) {
 
   try {
     // Valider l'ID avec le schéma
-    await articleIDSchema.validate({ id });
+    await articleIdSchema.validate({ id });
 
     client = await getClient();
 
