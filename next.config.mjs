@@ -62,9 +62,9 @@ const nextConfig = {
   // ✅ Configurations manquantes critiques
   reactStrictMode: true,
   compress: true,
-  sentry: {
-    transpileClientSDK: true,
-  },
+  // sentry: {
+  //   transpileClientSDK: true,
+  // },
 
   // ✅ Optimisations production
   // swcMinify: true, // Par défaut dans 15, mais explicite
