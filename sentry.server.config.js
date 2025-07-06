@@ -10,7 +10,7 @@ import {
   anonymizeUrl,
   anonymizeHeaders,
   filterRequestBody,
-} from './lib/sentry-utils.js';
+} from './utils/sentry-utils.js';
 
 function isValidDSN(dsn) {
   if (!dsn) return false;

@@ -92,9 +92,9 @@ const nextConfig = {
   },
 
   // Fonctionnalités expérimentales pour les performances
-  // experimental: {
-  //   instrumentationHook: true, // ✅ AJOUTÉ
-  // },
+  experimental: {
+    instrumentationHook: true, // ✅ AJOUTÉ
+  },
 
   // ===== OPTIMISATION DU COMPILATEUR =====
   compiler: {
