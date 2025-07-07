@@ -7,7 +7,16 @@ import ArticleItem from '@/components/blog/articleItem';
 import Parallax from '@/components/layouts/parallax';
 import './styling/blog.scss';
 
-const ListBlog = ({ posts }) => {
+const ListBlog = ({
+  posts,
+  adaptiveConfig,
+  performanceMetrics,
+  blogMetrics,
+}) => {
+  console.log('Posts:', posts);
+  console.log('Adaptive Config:', adaptiveConfig);
+  console.log('Performance Metrics:', performanceMetrics);
+  console.log('Blog Metrics:', blogMetrics);
   const ref = useRef();
   const [errorMessage, setErrorMessage] = useState(
     'Aucun contenu pour le moment, désolé !',
