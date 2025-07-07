@@ -835,10 +835,10 @@ async function SingleApplicationPage({ params }) {
     return (
       <Suspense fallback={<SingleApplicationPageSkeleton />}>
         <SingleApplication
-          application={[applicationData.application]}
+          application={applicationData.application}
           template={applicationData.template}
           relatedApplications={applicationData.relatedApplications}
-          platforms={[applicationData.platforms]}
+          platforms={applicationData.platforms}
           adaptiveConfig={adaptiveConfig}
           performanceMetrics={{
             loadTime: totalDuration,
