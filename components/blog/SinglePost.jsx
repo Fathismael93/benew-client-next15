@@ -6,7 +6,20 @@ import { CldImage } from 'next-cloudinary';
 import parse from 'html-react-parser';
 import './styling/singlePost.scss';
 
-const SinglePost = ({ article }) => {
+const SinglePost = ({
+  article,
+  relatedArticles,
+  contextStats,
+  adaptiveConfig,
+  performanceMetrics,
+  context,
+}) => {
+  console.log('Article:', article);
+  console.log('Related Articles:', relatedArticles);
+  console.log('Context Stats:', contextStats);
+  console.log('Adaptive Config:', adaptiveConfig);
+  console.log('Performance Metrics:', performanceMetrics);
+  console.log('Context:', context);
   const [errorMessage, setErrorMessage] = useState('');
 
   return (
