@@ -102,7 +102,7 @@ const nextConfig = {
     removeConsole:
       process.env.NODE_ENV === 'production'
         ? {
-            exclude: ['error', 'warn', 'info'], // Garde plus de logs pour debugging
+            exclude: ['error', 'warn', 'log'], // Garde plus de logs pour debugging
           }
         : false,
 
