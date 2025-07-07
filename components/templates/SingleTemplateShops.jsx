@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
@@ -9,7 +9,13 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 
+  // Remplacer la fonction handleOrderClick
   const handleOrderClick = (app) => {
+    // Vérifier si platforms existe et n'est pas vide
+    if (!platforms || !Array.isArray(platforms) || platforms.length === 0) {
+      alert('Aucune méthode de paiement disponible pour le moment');
+      return;
+    }
     setSelectedApp(app);
     setIsModalOpen(true);
   };
@@ -56,10 +62,13 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
                   </a>
                   <div className="buttonGroup">
                     <button
-                      className="primaryButton"
+                      className={`primaryButton ${!platforms || platforms.length === 0 ? 'disabled' : ''}`}
                       onClick={() => handleOrderClick(app)}
+                      disabled={!platforms || platforms.length === 0}
                     >
-                      Commander maintenant
+                      {!platforms || platforms.length === 0
+                        ? 'Paiement indisponible'
+                        : 'Commander maintenant'}
                     </button>
                     <a
                       href={`/templates/${templateID}/applications/${app.application_id}`}

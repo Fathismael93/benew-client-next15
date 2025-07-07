@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Parallax from '../layouts/parallax';
 import OrderModal from '../modal/OrderModal'; // Import the OrderModal component
@@ -45,8 +45,13 @@ const SingleApplication = ({
     return `$${parseFloat(value).toFixed(2)}`;
   };
 
-  // Function to open modal
+  // Remplacer la fonction openOrderModal
   const openOrderModal = () => {
+    // Vérifier si platforms existe et n'est pas vide
+    if (!platforms || !Array.isArray(platforms) || platforms.length === 0) {
+      alert('Aucune méthode de paiement disponible pour le moment');
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -150,10 +155,13 @@ const SingleApplication = ({
                     </Link>
                     <button
                       onClick={openOrderModal}
-                      className="details-button primary"
+                      className={`details-button primary ${!platforms || platforms.length === 0 ? 'disabled' : ''}`}
+                      disabled={!platforms || platforms.length === 0}
                     >
                       <span className="button-icon">💳</span>
-                      Commander
+                      {!platforms || platforms.length === 0
+                        ? 'Paiement indisponible'
+                        : 'Commander'}
                     </button>
                   </div>
                 </div>
