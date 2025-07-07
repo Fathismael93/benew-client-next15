@@ -173,7 +173,9 @@ function getTemplateDataQuery(templateId) {
           platform_name, 
           platform_number, 
           is_active
-        FROM admin.platforms 
+        FROM admin.platforms
+        WHERE is_active = true
+        ORDER BY platform_name ASC
       `,
       params: [],
     },
