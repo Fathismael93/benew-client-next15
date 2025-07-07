@@ -1552,21 +1552,3 @@ export async function getOrderPerformanceMetrics() {
     };
   }
 }
-
-// =============================
-// EXPORTS PAR DÉFAUT
-// =============================
-
-export default {
-  createOrder,
-  createOrderFromObject,
-  getOrderDetails,
-  updateOrderPaymentStatus,
-  getOrderStatistics,
-  searchOrders,
-  invalidateOrderCache,
-  getOrderPerformanceMetrics,
-
-  // Configuration
-  ORDER_CONFIG,
-};
