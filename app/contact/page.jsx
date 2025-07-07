@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
+import { useRef, useState } from 'react';
 import { useInView, motion } from 'framer-motion';
 import { MdMail, MdPhone, MdWhatsapp } from 'react-icons/md';
 import Parallax from '@/components/layouts/parallax';
+import { sendContactEmail } from '@/actions/sendContactEmail'; // Ajuste le chemin selon ton dossier
 import './contact.scss';
 
 const variants = {
@@ -27,27 +27,33 @@ function Contact() {
   const formRef = useRef();
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const isInView = useInView(ref, { margin: '-100px' });
 
-  const sendEmail = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(false);
+    setSuccess(false);
 
-    emailjs
-      .sendForm(
-        'service_94y20xo',
-        'template_v10u2oh',
-        formRef.current,
-        'pX_2hasGmGcuvjXIW',
-      )
-      .then(
-        () => {
-          setSuccess(true);
-        },
-        () => {
-          setError(true);
-        },
-      );
+    try {
+      const formData = new FormData(formRef.current);
+      const result = await sendContactEmail(formData);
+
+      if (result.success) {
+        setSuccess(true);
+        formRef.current.reset(); // Reset le formulaire
+      } else {
+        setError(true);
+        console.error('Erreur:', result.error);
+      }
+    } catch (err) {
+      setError(true);
+      console.error("Erreur lors de l'envoi:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -145,7 +151,7 @@ function Contact() {
             </motion.div>
             <motion.form
               ref={formRef}
-              onSubmit={sendEmail}
+              onSubmit={handleSubmit}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 4, duration: 1 }}
@@ -155,13 +161,42 @@ function Contact() {
                 required
                 placeholder="Nom complet"
                 name="name"
+                disabled={loading}
               />
-              <input type="email" required placeholder="Email" name="email" />
-              <input type="text" required placeholder="Sujet" name="subject" />
-              <textarea rows={8} placeholder="Message" name="message" />
-              <button type="submit">Submit</button>
-              {error && 'Error'}
-              {success && 'Success'}
+              <input
+                type="email"
+                required
+                placeholder="Email"
+                name="email"
+                disabled={loading}
+              />
+              <input
+                type="text"
+                required
+                placeholder="Sujet"
+                name="subject"
+                disabled={loading}
+              />
+              <textarea
+                rows={8}
+                placeholder="Message"
+                name="message"
+                required
+                disabled={loading}
+              />
+              <button type="submit" disabled={loading}>
+                {loading ? 'Envoi en cours...' : 'Envoyer'}
+              </button>
+              {error && (
+                <div style={{ color: 'red', marginTop: '10px' }}>
+                  Erreur lors de l&apos;envoi du message
+                </div>
+              )}
+              {success && (
+                <div style={{ color: 'green', marginTop: '10px' }}>
+                  Message envoyé avec succès !
+                </div>
+              )}
             </motion.form>
           </div>
         </motion.div>
