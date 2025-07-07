@@ -11,6 +11,7 @@ const OrderModal = ({
   applicationId,
   applicationFee,
 }) => {
+  console.log('Platforms:', platforms);
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
