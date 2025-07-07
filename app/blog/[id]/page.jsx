@@ -250,7 +250,7 @@ function getArticleDataQuery(articleId) {
  * @param {Object} contextStats - Statistiques de contexte
  * @returns {Object} Article enrichi
  */
-function enrichArticleData(article, relatedArticles, contextStats) {
+function enrichArticleData(article, _relatedArticles, _contextStats) {
   if (!article) return null;
 
   // Sanitiser le contenu
