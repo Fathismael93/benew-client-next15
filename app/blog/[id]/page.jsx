@@ -250,7 +250,7 @@ function getArticleDataQuery(articleId) {
  * @param {Object} contextStats - Statistiques de contexte
  * @returns {Object} Article enrichi
  */
-function enrichArticleData(article, _relatedArticles, _contextStats) {
+function enrichArticleData(article) {
   if (!article) return null;
 
   // Sanitiser le contenu
@@ -466,11 +466,7 @@ async function getSingleArticleWithOptimizations(articleId) {
       const contextStats = contextStatsResult.rows[0];
 
       // Enrichir l'article avec métadonnées
-      const enrichedArticle = enrichArticleData(
-        rawArticle,
-        relatedArticles,
-        contextStats,
-      );
+      const enrichedArticle = enrichArticleData(rawArticle);
 
       // Log des requêtes lentes
       if (
