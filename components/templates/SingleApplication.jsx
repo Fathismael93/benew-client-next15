@@ -23,8 +23,9 @@ const SingleApplication = ({
   console.log('Adaptive Config:', adaptiveConfig);
   console.log('Performance Metrics:', performanceMetrics);
   console.log('Context:', context);
-  // Get the images from the first application
-  const images = (application && application[0]?.application_images) || [];
+
+  // Get the images from the application object
+  const images = (application && application.application_images) || [];
 
   // State to track the currently selected image
   const [selectedImage, setSelectedImage] = useState(images[0] || '');
@@ -38,7 +39,7 @@ const SingleApplication = ({
   };
 
   // Get app details
-  const appDetails = application && application[0];
+  const appDetails = application;
 
   // Format currency with the $ symbol
   const formatCurrency = (value) => {
@@ -47,8 +48,12 @@ const SingleApplication = ({
 
   // Remplacer la fonction openOrderModal
   const openOrderModal = () => {
-    // Vérifier si platforms existe et n'est pas vide
-    if (!platforms || !Array.isArray(platforms) || platforms.length === 0) {
+    // Vérifier si platforms existe et n'est pas un objet vide
+    if (
+      !platforms ||
+      typeof platforms !== 'object' ||
+      Object.keys(platforms).length === 0
+    ) {
       alert('Aucune méthode de paiement disponible pour le moment');
       return;
     }
@@ -66,7 +71,11 @@ const SingleApplication = ({
         <Parallax
           bgColor="#0c0c1d"
           title={
-            application !== undefined ? application[0]?.application_name : ''
+            application &&
+            typeof application === 'object' &&
+            Object.keys(application).length > 0
+              ? application.application_name
+              : ''
           }
           planets="/sun.png"
         />
@@ -120,7 +129,9 @@ const SingleApplication = ({
       </section>
 
       <section className="others details-section">
-        {appDetails ? (
+        {appDetails &&
+        typeof appDetails === 'object' &&
+        Object.keys(appDetails).length > 0 ? (
           <div className="details-container">
             <div className="details-content-wrapper">
               <div className="details-header">
@@ -155,11 +166,17 @@ const SingleApplication = ({
                     </Link>
                     <button
                       onClick={openOrderModal}
-                      className={`details-button primary ${!platforms || platforms.length === 0 ? 'disabled' : ''}`}
-                      disabled={!platforms || platforms.length === 0}
+                      className={`details-button primary ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
+                      disabled={
+                        !platforms ||
+                        typeof platforms !== 'object' ||
+                        Object.keys(platforms).length === 0
+                      }
                     >
                       <span className="button-icon">💳</span>
-                      {!platforms || platforms.length === 0
+                      {!platforms ||
+                      typeof platforms !== 'object' ||
+                      Object.keys(platforms).length === 0
                         ? 'Paiement indisponible'
                         : 'Commander'}
                     </button>
@@ -193,18 +210,23 @@ const SingleApplication = ({
                         {formatCurrency(appDetails.application_rent)}
                       </span>
                     </li>
-                    {platforms && platforms.length > 0 && (
-                      <li className="platforms-list-item">
-                        <span className="details-label">Platforms</span>
-                        <div className="platform-badges-small">
-                          {platforms.map((platform, index) => (
-                            <span key={index} className="platform-badge-small">
-                              {platform.platform_name}
-                            </span>
-                          ))}
-                        </div>
-                      </li>
-                    )}
+                    {platforms &&
+                      typeof platforms === 'object' &&
+                      Object.keys(platforms).length > 0 && (
+                        <li className="platforms-list-item">
+                          <span className="details-label">Platforms</span>
+                          <div className="platform-badges-small">
+                            {Object.values(platforms).map((platform, index) => (
+                              <span
+                                key={index}
+                                className="platform-badge-small"
+                              >
+                                {platform.platform_name}
+                              </span>
+                            ))}
+                          </div>
+                        </li>
+                      )}
                   </ul>
                 </div>
               </div>
@@ -240,15 +262,17 @@ const SingleApplication = ({
       </section>
 
       {/* Order Modal */}
-      {appDetails && (
-        <OrderModal
-          isOpen={isModalOpen}
-          onClose={closeOrderModal}
-          platforms={platforms}
-          applicationId={appDetails.application_id}
-          applicationFee={appDetails.application_fee}
-        />
-      )}
+      {appDetails &&
+        typeof appDetails === 'object' &&
+        Object.keys(appDetails).length > 0 && (
+          <OrderModal
+            isOpen={isModalOpen}
+            onClose={closeOrderModal}
+            platforms={platforms}
+            applicationId={appDetails.application_id}
+            applicationFee={appDetails.application_fee}
+          />
+        )}
     </div>
   );
 };
