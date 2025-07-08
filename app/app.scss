@@ -630,10 +630,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-
-  @media (max-width: 768px) {
-    scroll-snap-type: none; // ✅ Désactiver sur mobile
-  }
 }
 
 * {
@@ -1021,6 +1017,11 @@ a {
   > * {
     position: relative;
     z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    min-height: 100vh; // ✅ min-height au lieu de height
+    height: auto;
   }
 }
 
