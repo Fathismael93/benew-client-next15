@@ -391,18 +391,32 @@ $breakpoint-desktop-large: 1920px; // Full HD
     display: none !important;
   }
 }
+// Ligne ~199
 .show-sm {
-  @include xs-only, md-up {
+  @include xs-only {
+    display: none !important;
+  }
+  @include md-up {
     display: none !important;
   }
 }
+
+// Ligne ~200
 .show-md {
-  @include sm-down, lg-up {
+  @include sm-down {
+    display: none !important;
+  }
+  @include lg-up {
     display: none !important;
   }
 }
+
+// Ligne ~201
 .show-lg {
-  @include md-down, xl-up {
+  @include md-down {
+    display: none !important;
+  }
+  @include xl-up {
     display: none !important;
   }
 }
