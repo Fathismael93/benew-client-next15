@@ -41,14 +41,15 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: clamp(1.5rem, 4vw, 3rem); // ✅ Réduit de 6vw à 4vw
+    gap: clamp(2rem, 5vw, 3.5rem); // ✅ Augmenté de 4vw à 5vw
 
     // Layout responsive fluide
     @include lg-down {
       grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr;
-      gap: clamp(1rem, 4vw, 2rem);
+      grid-template-rows: auto auto; // ✅ Changé de "auto 1fr" à "auto auto"
+      gap: clamp(1.5rem, 5vw, 2.5rem); // ✅ Augmenté le gap mobile
       text-align: center;
+      padding: clamp(1rem, 3vw, 1.5rem); // ✅ Ajouter du padding mobile
     }
 
     .textContainer {
@@ -56,25 +57,25 @@
       flex-direction: column;
       justify-content: center;
       gap: clamp(
-        1rem,
-        3vw,
-        1.8rem
-      ); // ✅ Réduit de 4vw à 3vw et de 2.5rem à 1.8rem
+        1.5rem,
+        5vw,
+        2.2rem
+      ); // ✅ Augmenté de 3vw à 5vw et de 1.8rem à 2.2rem
       order: 1;
 
       @include lg-down {
         order: 2;
         align-items: center;
-        padding: 0;
+        padding: clamp(1rem, 4vw, 2rem) 0; // ✅ Ajouter du padding vertical
       }
 
       h2 {
-        font-size: clamp(0.9rem, 2vw, 1.2rem); // ✅ Réduit de 2.5vw à 2vw
+        font-size: clamp(1.2rem, 4vw, 1.6rem); // ✅ Augmenté de 2vw à 4vw
         letter-spacing: clamp(
-          0.05rem,
-          0.3vw,
-          0.15rem
-        ); // ✅ Réduit l'espacement
+          0.1rem,
+          0.5vw,
+          0.2rem
+        ); // ✅ Augmenté l'espacement
         color: $secondary-color;
         font-weight: 500;
         position: relative;
@@ -88,10 +89,10 @@
 
       h1 {
         font-size: clamp(
-          2rem,
-          6vw,
-          4rem
-        ); // ✅ Réduit de 8vw à 6vw et de 5rem à 4rem
+          2.8rem,
+          10vw,
+          4.5rem
+        ); // ✅ Augmenté de 6vw à 10vw et de 4rem à 4.5rem
         background: linear-gradient(
           135deg,
           $text-color 0%,
@@ -150,27 +151,28 @@
 
       .buttonGroup {
         display: flex;
-        gap: clamp(0.8rem, 2vw, 1.2rem); // ✅ Réduit de 1rem à 0.8rem
-        margin-top: clamp(0.3rem, 1vw, 0.5rem); // ✅ Réduit margin-top
+        gap: clamp(1rem, 3vw, 1.5rem); // ✅ Augmenté de 2vw à 3vw
+        margin-top: clamp(0.8rem, 2vw, 1rem); // ✅ Augmenté margin-top
         flex-wrap: wrap;
 
         @include sm-down {
           flex-direction: column;
           align-items: center;
           width: 100%;
-          max-width: 280px; // ✅ Réduit de 300px à 280px
+          gap: clamp(1rem, 3vw, 1.5rem); // ✅ Augmenté le gap sur mobile
+          max-width: none; // ✅ Supprimer la limitation de largeur
         }
 
         .primaryButton,
         .secondaryButton {
-          padding: clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 2rem); // ✅ Réduit le padding
+          padding: clamp(1rem, 3vw, 1.2rem) clamp(1.8rem, 5vw, 2.5rem); // ✅ Augmenté le padding
           border-radius: $border-radius-pill;
           font-weight: 600; // ✅ Réduit de 700 à 600
           font-size: clamp(
-            0.85rem,
-            1.8vw,
-            0.95rem
-          ); // ✅ Réduit la taille de police
+            1rem,
+            3vw,
+            1.1rem
+          ); // ✅ Augmenté la taille de police
           transition: all $transition-elastic;
           text-decoration: none;
           position: relative;
@@ -253,8 +255,13 @@
           @include sm-down {
             width: 100%;
             text-align: center;
-            padding: clamp(0.8rem, 3vw, 1rem) clamp(1.5rem, 5vw, 2rem);
-            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            padding: clamp(1.2rem, 4vw, 1.5rem) clamp(2rem, 6vw, 2.5rem); // ✅ Encore plus grand sur mobile
+            font-size: clamp(
+              1.1rem,
+              3.5vw,
+              1.2rem
+            ); // ✅ Police plus grande sur mobile
+            max-width: 100%; // ✅ Supprimer la limite de 280px
           }
         }
 
@@ -317,31 +324,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: clamp(300px, 40vh, 500px);
-
+    min-height: clamp(350px, 45vh, 500px); // ✅ Augmenté de 40vh à 45vh
     // ✅ AJOUTER pour forcer la visibilité
     z-index: 2;
 
     @include lg-down {
       order: 1;
-      min-height: clamp(250px, 35vh, 400px);
+      min-height: clamp(300px, 40vh, 450px); // ✅ Augmenté la hauteur mobile
     }
 
     .heroImage {
       object-fit: contain;
       max-width: 100%;
       max-height: 100%;
-      width: clamp(300px, 40vw, 500px);
+      width: clamp(350px, 45vw, 500px); // ✅ Augmenté de 40vw à 45vw
       height: auto;
       filter: drop-shadow(0 20px 40px rgba($primary-color, 0.3));
       animation: float 6s ease-in-out infinite;
 
       @include lg-down {
-        width: clamp(250px, 50vw, 400px);
+        width: clamp(300px, 60vw, 450px); // ✅ Augmenté de 50vw à 60vw
       }
 
       @include sm-down {
-        width: clamp(200px, 60vw, 300px);
+        width: clamp(250px, 75vw, 350px); // ✅ Augmenté de 60vw à 75vw
       }
 
       @include reduced-motion {
@@ -497,28 +503,41 @@
 @include xs-only {
   .hero {
     .wrapper {
-      gap: 1rem;
+      gap: 1.5rem; // ✅ Augmenté de 1rem à 1.5rem
+      padding: 1rem;
     }
 
     .textContainer {
-      gap: 1rem;
+      gap: 1.5rem; // ✅ Augmenté de 1rem à 1.5rem
+
+      h1 {
+        font-size: clamp(
+          2.5rem,
+          12vw,
+          3.5rem
+        ); // ✅ Police encore plus grande sur très petits écrans
+      }
+
+      h2 {
+        font-size: clamp(1.1rem, 4.5vw, 1.4rem); // ✅ h2 plus grand aussi
+      }
 
       .buttonGroup {
-        gap: 0.8rem;
+        gap: 1.2rem; // ✅ Augmenté de 0.8rem à 1.2rem
 
         .primaryButton,
         .secondaryButton {
-          padding: 0.7rem 1.5rem;
-          font-size: 0.8rem;
+          padding: 1rem 2rem; // ✅ Augmenté le padding
+          font-size: 1rem; // ✅ Augmenté de 0.8rem à 1rem
         }
       }
     }
 
     .imageContainer {
-      min-height: 200px;
+      min-height: 250px; // ✅ Augmenté de 200px à 250px
 
       .heroImage {
-        width: clamp(150px, 70vw, 250px);
+        width: clamp(200px, 80vw, 300px); // ✅ Augmenté de 70vw à 80vw
       }
     }
   }
