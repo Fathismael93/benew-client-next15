@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Links from './links';
 import './sidebar.scss';
@@ -10,6 +10,7 @@ const variants = {
     transition: {
       type: 'spring',
       stiffness: 20,
+      restDelta: 2,
     },
   },
   closed: {
@@ -27,11 +28,15 @@ function Sidebar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <motion.div className="sidebar" animate={open ? 'open' : 'closed'}>
+    <motion.div
+      className="sidebar"
+      animate={open ? 'open' : 'closed'}
+      data-state={open ? 'open' : 'closed'} // ✅ Pour le CSS
+    >
       <motion.div className="bg" variants={variants}>
         <Links />
       </motion.div>
-      <ToggleButton setOpen={setOpen} />
+      <ToggleButton setOpen={setOpen} isOpen={open} />
     </motion.div>
   );
 }

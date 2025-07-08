@@ -1,10 +1,14 @@
-@use '@/app/app.scss' as *;
+@use '../../../app/app.scss' as *;
 
 .navbar {
   height: 6.25rem;
   scroll-snap-align: start;
-  z-index: 999;
-  position: relative;
+  z-index: $z-navbar;
+  position: fixed; // ✅ Amélioré pour une navbar moderne
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: all $transition-smooth; // ✅ Variable du système
 
   // Effet glassmorphism avec backdrop
   &::before {
@@ -18,9 +22,10 @@
     backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid rgba($primary-color, 0.1);
     z-index: -1;
+    transition: all $transition-smooth; // ✅ Variable du système
   }
 
-  // Effet de lueur subtile en haut
+  // Effet de lueur subtile en haut (amélioré avec gradient système)
   &::after {
     content: '';
     position: absolute;
@@ -28,19 +33,19 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba($primary-color, 0.5) 25%,
-      rgba($secondary-color, 0.5) 50%,
-      rgba($accent-color, 0.5) 75%,
-      transparent 100%
-    );
-    animation: navbarGlow 4s ease-in-out infinite;
+    background: $gradient-rainbow; // ✅ Gradient du système
+    background-size: 200% 100%;
+    animation: gradientFlow 4s ease-in-out infinite;
     z-index: 1;
+
+    @include reduced-motion {
+      animation: none;
+      background: $primary-color;
+    }
   }
 
-  @include small {
+  // ✅ Mixins du système au lieu de @include small/mobile
+  @include sm-down {
     height: 5rem;
 
     &::before {
@@ -48,7 +53,7 @@
     }
   }
 
-  @include mobile {
+  @include md-down {
     height: 5rem;
 
     &::before {
@@ -57,96 +62,110 @@
   }
 
   .wrapper {
-    max-width: 70rem;
+    @include fluid-container(
+      70rem,
+      clamp(1rem, 4vw, 2rem)
+    ); // ✅ Mixin du système
     height: 100%;
-    margin: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
     position: relative;
     z-index: 2;
 
-    // Container avec effet glassmorphism
-    background: rgba($text-color, 0.02);
-    border-radius: 0 0 24px 24px;
+    // Container avec effet glassmorphism (amélioré)
+    @include glassmorphism(0.02, 15px); // ✅ Mixin du système
+    border-radius: 0 0 $border-radius-xlarge $border-radius-xlarge; // ✅ Variable du système
     border: 1px solid rgba($primary-color, 0.08);
     border-top: none;
-    box-shadow:
-      0 8px 32px rgba($background-color, 0.2),
-      inset 0 1px 0 rgba($text-color, 0.1);
+    box-shadow: $box-shadow-soft; // ✅ Variable du système
 
     // Animation d'apparition
-    animation: wrapperSlideDown 0.8s ease-out;
+    animation: wrapperSlideDown 0.8s $transition-elastic; // ✅ Variable du système
 
-    @include small {
+    @include sm-down {
       justify-content: flex-end;
-      padding: 1rem;
-      border-radius: 0 0 16px 16px;
-      background: rgba($text-color, 0.03);
+      padding: $spacing-md; // ✅ Variable du système
+      border-radius: 0 0 $border-radius-medium $border-radius-medium;
+      @include glassmorphism(0.03, 12px);
     }
 
-    @include mobile {
+    @include md-down {
       justify-content: flex-end;
-      padding: 1.25rem;
-      border-radius: 0 0 16px 16px;
-      background: rgba($text-color, 0.03);
+      padding: $spacing-lg; // ✅ Variable du système
+      border-radius: 0 0 $border-radius-medium $border-radius-medium;
+      @include glassmorphism(0.03, 12px);
     }
 
-    @include tablet {
+    @include lg-only {
       max-width: 43rem;
       justify-content: flex-end;
-      padding: 0 1.5rem;
-      border-radius: 0 0 20px 20px;
+      padding: 0 $spacing-lg;
+      border-radius: 0 0 $border-radius-large $border-radius-large;
     }
 
-    @include laptop {
+    @include xl-only {
       max-width: 37rem;
-      padding: 0 1.5rem;
-      border-radius: 0 0 20px 20px;
+      padding: 0 $spacing-lg;
+      border-radius: 0 0 $border-radius-large $border-radius-large;
     }
 
-    // Logo container avec effets
+    // Logo container avec effets (amélioré)
     > div:first-child {
-      margin-left: 1rem;
+      margin-left: $spacing-md; // ✅ Variable du système
       position: relative;
 
-      // Effet de glow autour du logo
+      // Effet de glow autour du logo (amélioré)
       &::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 120%;
-        height: 120%;
+        width: 140%; // ✅ Légèrement plus grand
+        height: 140%;
         background: radial-gradient(
           circle,
-          rgba($primary-color, 0.2) 0%,
+          rgba($primary-color, 0.15) 0%,
+          // ✅ Plus subtil
+          rgba($secondary-color, 0.1) 50%,
+          // ✅ Ajout secondary
           transparent 70%
         );
         transform: translate(-50%, -50%);
         z-index: -1;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: all $transition-elastic; // ✅ Variable du système
         border-radius: 50%;
       }
 
       &:hover::after {
         opacity: 1;
-        animation: logoGlow 1.5s ease-in-out;
+        animation: logoGlow 1.5s ease-in-out infinite alternate;
+
+        @include reduced-motion {
+          animation: none;
+          opacity: 0.7;
+        }
       }
 
       a {
         display: block;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all $transition-elastic; // ✅ Variable du système
+        border-radius: $border-radius-small; // ✅ Variable du système
+        padding: $spacing-xs; // ✅ Variable du système
 
         &:hover {
-          transform: scale(1.1) rotate(2deg);
+          transform: scale(1.08) rotate(1deg); // ✅ Plus subtil
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: $box-shadow-focus; // ✅ Variable du système
         }
 
         img {
           filter: drop-shadow(0 4px 8px rgba($primary-color, 0.3));
-          transition: filter 0.3s ease;
+          transition: filter $transition-smooth; // ✅ Variable du système
 
           &:hover {
             filter: drop-shadow(0 6px 12px rgba($primary-color, 0.5));
@@ -154,36 +173,34 @@
         }
       }
 
-      @include small {
-        display: none;
-      }
-
-      @include mobile {
-        display: none;
-      }
-
-      @include tablet {
+      // Masquer sur les bons breakpoints
+      @include lg-down {
         display: none;
       }
     }
 
     .social {
       display: flex;
-      gap: 1.5rem;
+      gap: $spacing-lg; // ✅ Variable du système
       align-items: center;
 
-      // Container avec fond subtil
+      // Container avec fond subtil (amélioré)
+      @include glassmorphism(0.08, 15px); // ✅ Mixin du système
       background: rgba($primary-color, 0.05);
-      padding: 0.75rem 1.25rem;
-      border-radius: 50px;
+      padding: $spacing-sm $spacing-md; // ✅ Variables du système
+      border-radius: $border-radius-pill; // ✅ Variable du système
       border: 1px solid rgba($primary-color, 0.15);
-      backdrop-filter: blur(10px);
       box-shadow:
-        0 4px 16px rgba($primary-color, 0.1),
+        $box-shadow-soft,
+        // ✅ Variable du système
         inset 0 1px 0 rgba($text-color, 0.1);
 
       // Animation d'apparition décalée
-      animation: socialSlideIn 1s ease-out 0.3s both;
+      animation: socialSlideIn 1s $transition-elastic 0.3s both; // ✅ Variable du système
+
+      @include reduced-motion {
+        animation: fadeIn 0.6s ease-out 0.3s both;
+      }
 
       a {
         display: flex;
@@ -192,63 +209,46 @@
         width: 42px;
         height: 42px;
         border-radius: 50%;
+        @include glassmorphism(0.05, 10px); // ✅ Mixin du système
         background: rgba($text-color, 0.05);
         border: 1px solid rgba($primary-color, 0.2);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: all $transition-elastic; // ✅ Variable du système
         position: relative;
         overflow: hidden;
 
-        // Effet de vague au hover
-        &::before {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0;
-          height: 0;
-          background: rgba($primary-color, 0.2);
-          border-radius: 50%;
-          transform: translate(-50%, -50%);
-          transition:
-            width 0.6s ease,
-            height 0.6s ease;
-          z-index: 0;
-        }
+        // Effet de vague au hover (amélioré)
+        @include button-hover-effect(60px); // ✅ Mixin du système
 
-        // Effet de brillance
+        // Effet de brillance (amélioré)
         &::after {
           content: '';
           position: absolute;
           top: -2px;
           left: -50%;
           width: 20px;
-          height: 100%;
+          height: calc(100% + 4px);
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.4),
+            rgba(255, 255, 255, 0.3),
             transparent
           );
-          transform: skewX(-20deg);
-          transition: left 0.6s ease;
+          transform: skewX(-15deg); // ✅ Angle plus naturel
+          transition: left 0.8s $transition-smooth; // ✅ Variable du système
           z-index: 2;
         }
 
         &:hover {
           transform: translateY(-8px) scale(1.15);
-          background: linear-gradient(135deg, $primary-color, $secondary-color);
+          background: $gradient-primary; // ✅ Gradient du système
           border-color: $secondary-color;
           box-shadow:
-            0 12px 25px rgba($primary-color, 0.4),
+            $box-shadow-primary,
+            // ✅ Variable du système
             0 0 20px rgba($secondary-color, 0.3);
 
-          &::before {
-            width: 60px;
-            height: 60px;
-          }
-
           &::after {
-            left: 100%;
+            left: 120%;
           }
         }
 
@@ -256,17 +256,28 @@
           transform: translateY(-4px) scale(1.1);
         }
 
-        // Animation de rebond au focus
         &:focus {
           outline: none;
-          animation: socialBounce 0.6s ease;
+          box-shadow:
+            $box-shadow-primary,
+            // ✅ Variable du système
+            $box-shadow-focus; // ✅ Variable du système
+        }
+
+        // Animation de rebond au focus
+        &:focus-visible {
+          animation: socialBounce 0.6s $transition-elastic;
+
+          @include reduced-motion {
+            animation: none;
+          }
         }
       }
 
       img {
         width: 22px;
         height: 22px;
-        transition: all 0.3s ease;
+        transition: all $transition-smooth; // ✅ Variable du système
         position: relative;
         z-index: 1;
         filter: invert(0.7);
@@ -277,31 +288,31 @@
           transform: scale(1.1);
         }
 
-        @include small {
+        @include sm-down {
           width: 18px;
           height: 18px;
         }
 
-        @include mobile {
+        @include md-down {
           width: 20px;
           height: 20px;
         }
 
-        @include tablet {
+        @include lg-only {
           width: 20px;
           height: 20px;
         }
 
-        @include laptop {
+        @include xl-only {
           width: 21px;
           height: 21px;
         }
       }
 
-      // Responsive adjustments
-      @include small {
-        gap: 1rem;
-        padding: 0.5rem 1rem;
+      // Responsive adjustments (avec variables système)
+      @include sm-down {
+        gap: $spacing-md;
+        padding: $spacing-xs $spacing-sm;
 
         a {
           width: 36px;
@@ -309,9 +320,9 @@
         }
       }
 
-      @include mobile {
-        gap: 1.2rem;
-        padding: 0.6rem 1.1rem;
+      @include md-down {
+        gap: $spacing-lg;
+        padding: $spacing-sm $spacing-md;
 
         a {
           width: 38px;
@@ -319,9 +330,9 @@
         }
       }
 
-      @include tablet {
-        gap: 1.3rem;
-        padding: 0.65rem 1.15rem;
+      @include lg-only {
+        gap: $spacing-lg;
+        padding: $spacing-sm $spacing-md;
 
         a {
           width: 40px;
@@ -329,9 +340,9 @@
         }
       }
 
-      @include laptop {
-        gap: 1.4rem;
-        padding: 0.7rem 1.2rem;
+      @include xl-only {
+        gap: $spacing-lg;
+        padding: $spacing-sm $spacing-lg;
 
         a {
           width: 41px;
@@ -342,17 +353,14 @@
   }
 }
 
-// ===== ANIMATIONS NAVBAR =====
+// ===== ANIMATIONS NAVBAR (améliorées) =====
 
-@keyframes navbarGlow {
-  0%,
-  100% {
-    opacity: 0.6;
-    transform: scaleX(1);
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
   }
-  50% {
-    opacity: 1;
-    transform: scaleX(1.02);
+  100% {
+    background-position: 200% 50%;
   }
 }
 
@@ -379,17 +387,13 @@
 }
 
 @keyframes logoGlow {
-  0% {
+  from {
+    opacity: 0.15;
     transform: translate(-50%, -50%) scale(1);
-    opacity: 0.5;
   }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.5;
+  to {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(1.05);
   }
 }
 
@@ -409,11 +413,10 @@
   }
 }
 
-// ===== EFFETS AU SCROLL =====
+// ===== EFFETS AU SCROLL (améliorés) =====
 
-// Navbar qui se réduit au scroll (optionnel avec JS)
 .navbar.scrolled {
-  height: 4.5rem;
+  height: clamp(4rem, 8vw, 4.5rem); // ✅ Plus fluide
 
   &::before {
     background: rgba($background-color, 0.95);
@@ -421,12 +424,12 @@
   }
 
   .wrapper {
-    border-radius: 0 0 16px 16px;
-    padding: 0 1.5rem;
+    border-radius: 0 0 $border-radius-medium $border-radius-medium;
+    padding: 0 $spacing-lg;
 
     .social {
-      gap: 1.2rem;
-      padding: 0.6rem 1rem;
+      gap: $spacing-md;
+      padding: $spacing-xs $spacing-sm;
 
       a {
         width: 36px;
@@ -440,18 +443,17 @@
     }
   }
 
-  @include small {
+  @include sm-down {
     height: 4rem;
   }
 
-  @include mobile {
+  @include md-down {
     height: 4rem;
   }
 }
 
 // ===== ÉTATS INTERACTIFS AVANCÉS =====
 
-// Effet au hover de la navbar entière
 .navbar:hover {
   &::after {
     animation-duration: 2s;
@@ -459,14 +461,30 @@
 
   .wrapper {
     border-color: rgba($primary-color, 0.15);
-    box-shadow:
-      0 12px 40px rgba($background-color, 0.3),
-      inset 0 1px 0 rgba($text-color, 0.15);
+    box-shadow: $box-shadow-medium; // ✅ Variable du système
+  }
+}
+
+// ===== SUPPORT ACCESSIBILITÉ =====
+
+@include reduced-motion {
+  .navbar {
+    &,
+    &::before,
+    &::after,
+    .wrapper,
+    .social,
+    .social a {
+      animation: none !important;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease !important;
+    }
   }
 }
 
 // ===== SUPPORT DARK MODE =====
-@media (prefers-color-scheme: dark) {
+@include dark-mode {
   .navbar {
     &::before {
       background: rgba($background-color, 0.9);
@@ -474,17 +492,17 @@
     }
 
     .wrapper {
-      background: rgba($text-color, 0.03);
+      @include glassmorphism(0.03, 18px);
       border-color: rgba($primary-color, 0.12);
-    }
 
-    .social {
-      background: rgba($primary-color, 0.08);
-      border-color: rgba($primary-color, 0.2);
+      .social {
+        background: rgba($primary-color, 0.08);
+        border-color: rgba($primary-color, 0.2);
 
-      a {
-        background: rgba($text-color, 0.08);
-        border-color: rgba($primary-color, 0.25);
+        a {
+          @include glassmorphism(0.08, 8px);
+          border-color: rgba($primary-color, 0.25);
+        }
       }
     }
   }
@@ -492,8 +510,7 @@
 
 // ===== OPTIMISATIONS PERFORMANCE =====
 
-// Réduire les animations sur mobile pour les performances
-@media (max-width: 768px) {
+@include touch-device {
   .navbar {
     &::after {
       animation-duration: 6s;
@@ -508,56 +525,8 @@
   }
 }
 
-// Support pour les préférences de mouvement réduit
-@media (prefers-reduced-motion: reduce) {
-  .navbar {
-    &::after {
-      animation: none;
-    }
+// ===== VARIANTES (améliorées) =====
 
-    .wrapper {
-      animation: none;
-    }
-
-    .social {
-      animation: none;
-
-      a {
-        transition-duration: 0.1s;
-
-        &::before,
-        &::after {
-          transition: none;
-        }
-
-        &:hover {
-          transform: scale(1.05);
-        }
-      }
-    }
-  }
-}
-
-// ===== EFFETS POUR HAUTE RÉSOLUTION =====
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .navbar {
-    .wrapper {
-      border-width: 0.5px;
-    }
-
-    .social {
-      border-width: 0.5px;
-
-      a {
-        border-width: 0.5px;
-      }
-    }
-  }
-}
-
-// ===== VARIANTES DE NAVBAR =====
-
-// Navbar transparente (pour certaines pages)
 .navbar.transparent {
   &::before {
     background: rgba($background-color, 0.3);
@@ -565,21 +534,15 @@
   }
 
   .wrapper {
-    background: rgba($text-color, 0.01);
+    @include glassmorphism(0.01, 10px);
     border-color: rgba($primary-color, 0.05);
   }
 }
 
-// Navbar avec accent coloré
 .navbar.accent {
   &::after {
     height: 3px;
-    background: linear-gradient(
-      90deg,
-      $primary-color 0%,
-      $secondary-color 50%,
-      $accent-color 100%
-    );
+    background: $gradient-accent; // ✅ Gradient du système
   }
 
   .wrapper {
@@ -587,24 +550,25 @@
   }
 }
 
-// ===== BREAKPOINT PERSONNALISÉS =====
-@media (min-width: 1400px) {
+// ===== BREAKPOINTS PERSONNALISÉS =====
+
+@include xxl-up {
   .navbar .wrapper {
     max-width: 80rem;
-    padding: 0 3rem;
+    padding: 0 $spacing-3xl;
   }
 }
 
-@media (max-width: 320px) {
+@include xs-only {
   .navbar {
     height: 4.5rem;
 
     .wrapper {
-      padding: 0.8rem;
+      padding: $spacing-sm;
 
       .social {
-        gap: 0.8rem;
-        padding: 0.4rem 0.8rem;
+        gap: $spacing-sm;
+        padding: $spacing-xs;
 
         a {
           width: 32px;
