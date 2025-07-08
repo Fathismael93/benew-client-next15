@@ -66,17 +66,17 @@
 
     @include lg-down {
       align-items: center;
-      margin-top: $spacing-2xl;
+      margin-bottom: $spacing-lg; // ✅ Marge en bas pour séparer du formulaire
       width: 100%;
     }
 
     @include md-down {
-      margin-top: $spacing-xl;
+      margin-bottom: $spacing-md;
       gap: $spacing-md;
     }
 
     @include sm-down {
-      margin-top: $spacing-lg;
+      margin-bottom: $spacing-sm;
       gap: $spacing-sm;
     }
 
@@ -310,16 +310,15 @@
 
     @include lg-down {
       width: 100%;
-      margin-bottom: $spacing-xl;
-      order: -1; // ✅ Formulaire en premier sur mobile
+      margin-top: $spacing-lg; // ✅ Marge en haut au lieu de order: -1
     }
 
     @include md-down {
-      margin-bottom: $spacing-lg;
+      margin-top: $spacing-md;
     }
 
     @include sm-down {
-      margin-bottom: $spacing-md;
+      margin-top: $spacing-sm;
     }
 
     .phoneSvg {
