@@ -1,222 +1,268 @@
-@use "sass:color";
+@use 'sass:color';
 @use '../app.scss' as *;
 
 .contact {
   height: 100%;
-  max-width: 70rem;
-  margin: auto;
+  @include fluid-container(70rem, clamp(1rem, 4vw, 2rem));
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: clamp(2rem, 6vw, 4rem); // ✅ Gap fluide
+  position: relative;
+  padding: $spacing-2xl 0; // ✅ Variable du système
 
-  @include small {
-    width: 70%;
-    flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+  // ✅ Effet de fond décoratif
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 30% 70%,
+        rgba($primary-color, 0.03) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 30%,
+        rgba($secondary-color, 0.03) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: 0;
   }
 
-  @include mobile {
-    width: 70%;
+  // ✅ Mixins du système au lieu des anciens
+  @include lg-down {
     flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    max-width: 32rem;
+    text-align: center;
   }
 
-  @include tablet {
-    width: 70%;
-    flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+  @include md-down {
+    gap: clamp(1rem, 3vw, 2rem);
+    max-width: 28rem;
+    padding: $spacing-xl 0;
   }
 
-  @include laptop {
-    width: 70%;
-    flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+  @include sm-down {
+    gap: clamp(0.8rem, 3vw, 1.5rem);
+    max-width: 24rem;
+    padding: $spacing-lg 0;
   }
 
   .textContainer {
     flex: 1;
     display: flex;
     flex-direction: column;
-    width: 50%;
-    gap: 0.625rem;
+    gap: $spacing-lg; // ✅ Variable du système
+    position: relative;
+    z-index: 1;
 
-    @include small {
-      gap: 1rem;
-      text-align: center;
+    @include lg-down {
       align-items: center;
-      margin-top: 3rem;
+      margin-top: $spacing-2xl;
+      width: 100%;
     }
 
-    @include mobile {
-      gap: 1rem;
-      text-align: center;
-      align-items: center;
-      margin-top: 2.5rem;
+    @include md-down {
+      margin-top: $spacing-xl;
+      gap: $spacing-md;
     }
 
-    @include tablet {
-      gap: 1rem;
-      text-align: center;
-      align-items: center;
-      margin-top: 2.5rem;
-    }
-
-    @include laptop {
-      gap: 1rem;
-      text-align: center;
-      align-items: center;
-      margin-top: 2.5rem;
+    @include sm-down {
+      margin-top: $spacing-lg;
+      gap: $spacing-sm;
     }
 
     h1 {
-      font-size: 4rem;
+      font-size: clamp(2.5rem, 6vw, 4rem); // ✅ Responsive fluide
       color: $text-color;
+      font-weight: 800;
+      position: relative;
 
-      @include small {
-        display: none;
-      }
+      // ✅ Effet gradient moderne
+      background: linear-gradient(
+        135deg,
+        $text-color 0%,
+        $primary-color 50%,
+        $secondary-color 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
 
-      @include mobile {
-        display: none;
-      }
+      // ✅ Effet de glow
+      @include text-shadow-glow($primary-color, 0.3);
 
-      @include tablet {
-        display: none;
-      }
-
-      @include laptop {
-        display: none;
+      @include lg-down {
+        display: none; // Masquer sur mobile comme avant
       }
     }
 
     .item {
       display: flex;
-      justify-content: flex-start;
-      font-size: 1rem;
-      gap: 1.875rem;
+      align-items: center;
+      gap: $spacing-lg; // ✅ Variable du système
+      padding: $spacing-md; // ✅ Ajout de padding
+      @include glassmorphism(0.03, 12px); // ✅ Glassmorphism moderne
+      border-radius: $border-radius-medium; // ✅ Variable du système
+      transition: all $transition-elastic; // ✅ Variable du système
+      border: 1px solid rgba($primary-color, 0.1);
 
-      @include small {
-        gap: 1rem;
+      &:hover {
+        @include glassmorphism(0.06, 15px);
+        transform: translateX($spacing-xs) scale(1.02);
+        border-color: rgba($primary-color, 0.2);
+        box-shadow: 0 8px 25px rgba($primary-color, 0.15);
       }
 
-      @include mobile {
-        gap: 1rem;
+      @include lg-down {
+        justify-content: center;
       }
 
-      @include tablet {
-        gap: 1rem;
+      @include md-down {
+        gap: $spacing-md;
+        padding: $spacing-sm;
       }
 
-      @include laptop {
-        gap: 1rem;
+      @include sm-down {
+        gap: $spacing-sm;
+        padding: $spacing-xs;
       }
 
       .icon {
         color: $primary-color;
+        font-size: clamp(1.2rem, 3vw, 1.5rem); // ✅ Responsive
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: clamp(2.5rem, 5vw, 3rem);
+        height: clamp(2.5rem, 5vw, 3rem);
+        background: rgba($primary-color, 0.1);
+        border-radius: 50%;
+        transition: all $transition-elastic;
+
+        // ✅ Effet de glow sur l'icône
+        box-shadow: 0 0 15px rgba($primary-color, 0.3);
+
+        .item:hover & {
+          transform: scale(1.1) rotate(5deg);
+          background: rgba($primary-color, 0.2);
+          box-shadow: 0 0 20px rgba($primary-color, 0.5);
+        }
       }
 
       p {
-        letter-spacing: 2px;
+        letter-spacing: 1px; // ✅ Réduit de 2px
         color: $text-color;
+        font-weight: 500; // ✅ Plus lisible
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem); // ✅ Responsive fluide
+        transition: color $transition-smooth;
 
-        @include small {
-          font-size: 0.85rem;
-          font-weight: 250;
-        }
-
-        @include mobile {
-          font-size: 0.85rem;
-          font-weight: 350;
-        }
-
-        @include tablet {
-          font-size: 1rem;
-          font-weight: 350;
-        }
-
-        @include laptop {
-          font-size: 1rem;
-          font-weight: 350;
+        .item:hover & {
+          color: $primary-color;
         }
       }
     }
 
     h2 {
-      font-size: 2rem;
-      line-height: 1rem;
-      margin-top: 1rem;
+      font-size: clamp(1.5rem, 4vw, 2rem); // ✅ Responsive fluide
+      line-height: 1.3; // ✅ Amélioration lisibilité
+      margin-top: $spacing-lg; // ✅ Variable du système
       color: $text-color;
+      font-weight: 700;
+      position: relative;
 
-      @include small {
-        display: none;
+      // ✅ Effet moderne
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 50%;
+        height: 2px;
+        background: $gradient-primary;
+        border-radius: 1px;
       }
 
-      @include mobile {
-        display: none;
-      }
-
-      @include tablet {
-        display: none;
-      }
-
-      @include laptop {
-        display: none;
+      @include lg-down {
+        display: none; // Masquer sur mobile comme avant
       }
     }
 
     .social {
       display: flex;
-      gap: 1.25rem;
-      margin-top: 1rem;
+      gap: $spacing-md; // ✅ Variable du système
+      margin-top: $spacing-lg; // ✅ Variable du système
 
-      @include small {
-        margin-top: 0.6rem;
+      // ✅ Container avec glassmorphism
+      padding: $spacing-sm;
+      @include glassmorphism(0.05, 15px);
+      border-radius: $border-radius-pill;
+      border: 1px solid rgba($primary-color, 0.1);
+      width: fit-content;
+
+      @include lg-down {
+        justify-content: center;
+        width: 100%;
       }
 
-      @include mobile {
-        margin-top: 0.6rem;
+      @include md-down {
+        margin-top: $spacing-md;
+        padding: $spacing-xs;
+        gap: $spacing-sm;
       }
 
-      @include tablet {
-        margin-top: 0.6rem;
-      }
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: clamp(2.8rem, 5vw, 3.2rem);
+        height: clamp(2.8rem, 5vw, 3.2rem);
+        border-radius: 50%;
+        @include glassmorphism(0.08, 10px);
+        background: rgba($primary-color, 0.05);
+        border: 1px solid rgba($primary-color, 0.15);
+        transition: all $transition-elastic;
+        position: relative;
+        overflow: hidden;
 
-      @include laptop {
-        margin-top: 0.6rem;
-      }
-
-      img {
-        width: 1.3rem;
-        height: 1.3rem;
-        transition: all 0.3s ease;
+        // ✅ Effet de vague au hover
+        @include button-hover-effect(60px);
 
         &:hover {
-          transform: scale(1.1);
-          filter: hue-rotate(20deg) brightness(1.2);
+          transform: translateY(-4px) scale(1.1);
+          background: $gradient-primary;
+          border-color: $secondary-color;
+          box-shadow:
+            0 12px 25px rgba($primary-color, 0.3),
+            0 0 20px rgba($secondary-color, 0.2);
         }
 
-        @include small {
-          width: 1rem;
-          height: 1rem;
+        &:active {
+          transform: translateY(-2px) scale(1.05);
         }
 
-        @include mobile {
-          width: 1.5rem;
-          height: 1.5rem;
+        &:focus {
+          outline: none;
+          box-shadow: $box-shadow-focus;
         }
 
-        @include tablet {
-          width: 1.6rem;
-          height: 1.6rem;
-        }
+        img {
+          width: clamp(1.2rem, 3vw, 1.6rem);
+          height: clamp(1.2rem, 3vw, 1.6rem);
+          transition: all $transition-smooth;
+          position: relative;
+          z-index: 2;
+          filter: brightness(0.8);
 
-        @include laptop {
-          width: 1.6rem;
-          height: 1.6rem;
+          &:hover {
+            filter: brightness(0) invert(1);
+            transform: scale(1.1) rotate(5deg);
+          }
         }
       }
     }
@@ -225,51 +271,38 @@
   .formContainer {
     flex: 1;
     position: relative;
+    z-index: 1;
 
-    @include small {
+    @include lg-down {
       width: 100%;
-      margin-bottom: 2rem;
+      margin-bottom: $spacing-xl;
+      order: -1; // ✅ Formulaire en premier sur mobile
     }
 
-    @include mobile {
-      width: 100%;
-      margin-bottom: 2rem;
+    @include md-down {
+      margin-bottom: $spacing-lg;
     }
 
-    @include tablet {
-      width: 100%;
-      margin-bottom: 2rem;
-    }
-
-    @include laptop {
-      width: 100%;
-      margin-bottom: 2rem;
+    @include sm-down {
+      margin-bottom: $spacing-md;
     }
 
     .phoneSvg {
       position: absolute;
-      margin: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       z-index: -1;
+      opacity: 0.1; // ✅ Plus subtil
 
       svg {
-        @include small {
-          width: 13rem;
-          height: 13rem;
-        }
+        width: clamp(12rem, 25vw, 18rem); // ✅ Responsive fluide
+        height: clamp(12rem, 25vw, 18rem);
+        filter: drop-shadow(0 0 20px rgba($primary-color, 0.2));
 
-        @include mobile {
-          width: 13rem;
-          height: 13rem;
-        }
-
-        @include tablet {
-          width: 15rem;
-          height: 15rem;
-        }
-
-        @include laptop {
-          width: 15rem;
-          height: 15rem;
+        @include sm-down {
+          width: clamp(10rem, 30vw, 14rem);
+          height: clamp(10rem, 30vw, 14rem);
         }
       }
     }
@@ -277,120 +310,106 @@
     form {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: $spacing-lg; // ✅ Variable du système
+      position: relative;
+      z-index: 2;
 
-      @include small {
-        gap: 1.2rem;
+      @include md-down {
+        gap: $spacing-md;
       }
 
-      @include mobile {
-        gap: 1.3rem;
-      }
-
-      @include tablet {
-        gap: 1.4rem;
-      }
-
-      @include laptop {
-        gap: 1.4rem;
+      @include sm-down {
+        gap: $spacing-sm;
       }
 
       input,
       textarea {
-        padding: 1.2rem 1.5rem;
+        padding: clamp(1rem, 3vw, 1.3rem) clamp(1.2rem, 4vw, 1.6rem); // ✅ Responsive
+        @include glassmorphism(0.06, 15px); // ✅ Glassmorphism moderne
         background: linear-gradient(
           135deg,
-          rgba($text-color, 0.05),
-          rgba($text-color, 0.08)
+          rgba($text-color, 0.04),
+          rgba($primary-color, 0.02)
         );
-        border: 2px solid rgba($text-color, 0.3);
+        border: 2px solid rgba($primary-color, 0.15);
         color: $text-color;
-        border-radius: 12px;
-        transition: all 0.4s ease;
-        font-size: 1rem;
+        border-radius: $border-radius-medium; // ✅ Variable du système
+        transition: all $transition-elastic; // ✅ Variable du système
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
         font-weight: 400;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 2px 8px rgba($background-color, 0.2);
+        font-family: inherit;
+        box-shadow: $box-shadow-soft; // ✅ Variable du système
 
         &:focus {
           border-color: $primary-color;
           box-shadow:
-            0 0 0 3px rgba($primary-color, 0.2),
-            0 4px 12px rgba($primary-color, 0.15);
+            $box-shadow-focus,
+            // ✅ Variable du système
+            0 8px 25px rgba($primary-color, 0.15);
+          @include glassmorphism(0.1, 20px);
           background: linear-gradient(
             135deg,
-            rgba($primary-color, 0.08),
-            rgba($secondary-color, 0.05)
+            rgba($primary-color, 0.06),
+            rgba($secondary-color, 0.03)
           );
           outline: none;
-          transform: translateY(-2px);
+          transform: translateY(-2px) scale(1.01);
         }
 
         &::placeholder {
           color: rgba($text-color, 0.6);
-          font-weight: 300;
+          font-weight: 400;
         }
 
         &:hover {
-          border-color: rgba($primary-color, 0.5);
+          border-color: rgba($primary-color, 0.3);
           transform: translateY(-1px);
+          @include glassmorphism(0.08, 18px);
         }
 
-        @include small {
-          padding: 1rem 1.2rem;
-          font-size: 0.95rem;
-          border-radius: 10px;
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
         }
 
-        @include mobile {
-          padding: 1.1rem 1.3rem;
-          font-size: 1rem;
-          border-radius: 10px;
-        }
-
-        @include tablet {
-          padding: 1.1rem 1.4rem;
-          font-size: 1rem;
-          border-radius: 11px;
-        }
-
-        @include laptop {
-          padding: 1.1rem 1.4rem;
-          font-size: 1rem;
-          border-radius: 11px;
+        // ✅ Support dark mode
+        @include dark-mode {
+          background: linear-gradient(
+            135deg,
+            rgba($text-color, 0.08),
+            rgba($primary-color, 0.04)
+          );
         }
       }
 
       textarea {
         resize: vertical;
-        min-height: 120px;
+        min-height: clamp(100px, 20vh, 140px); // ✅ Responsive
         font-family: inherit;
-        line-height: 1.5;
+        line-height: 1.6; // ✅ Meilleure lisibilité
 
-        @include small {
-          min-height: 100px;
-        }
-
-        @include mobile {
-          min-height: 110px;
+        @include sm-down {
+          min-height: clamp(80px, 15vh, 100px);
         }
       }
 
       button {
-        padding: 1rem;
+        padding: clamp(1rem, 3vw, 1.3rem) $spacing-xl; // ✅ Variables système
         border: none;
-        background: linear-gradient(
-          135deg,
-          $primary-color,
-          color.adjust($primary-color, $lightness: 10%)
-        );
+        background: $gradient-primary; // ✅ Gradient du système
         color: $background-color;
         cursor: pointer;
         font-weight: 600;
-        font-size: 1rem;
-        border-radius: 0.313rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 8px rgba($primary-color, 0.3);
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        border-radius: $border-radius-medium; // ✅ Variable du système
+        transition: all $transition-elastic; // ✅ Variable du système
+        box-shadow: $box-shadow-primary; // ✅ Variable du système
+        position: relative;
+        overflow: hidden;
+
+        // ✅ Effet de vague au hover
+        @include button-hover-effect(200px);
 
         &:hover {
           background: linear-gradient(
@@ -398,32 +417,249 @@
             color.adjust($primary-color, $lightness: 5%),
             $secondary-color
           );
-          transform: translateY(-2px);
-          box-shadow: 0 6px 12px rgba($primary-color, 0.4);
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: $box-shadow-hover; // ✅ Variable du système
         }
 
         &:active {
-          transform: translateY(0);
+          transform: translateY(-1px) scale(0.98);
         }
 
-        @include small {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
+        &:focus {
+          outline: none;
+          box-shadow: $box-shadow-primary, $box-shadow-focus;
         }
 
-        @include mobile {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
+        &:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+          transform: none;
+          background: rgba($primary-color, 0.5);
+
+          &:hover {
+            transform: none;
+            box-shadow: $box-shadow-primary;
+          }
         }
 
-        @include tablet {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
+        // ✅ Contenu du bouton au-dessus de l'effet
+        span {
+          position: relative;
+          z-index: 2;
+        }
+      }
+
+      // ✅ Messages de statut améliorés
+      .status-message {
+        padding: $spacing-sm $spacing-md;
+        border-radius: $border-radius-small;
+        font-weight: 500;
+        text-align: center;
+        @include glassmorphism(0.08, 12px);
+        animation: fadeInUp 0.5s ease-out;
+
+        &.error {
+          color: $error-color;
+          border: 1px solid rgba($error-color, 0.3);
+          background: rgba($error-color, 0.05);
         }
 
-        @include laptop {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
+        &.success {
+          color: $success-color;
+          border: 1px solid rgba($success-color, 0.3);
+          background: rgba($success-color, 0.05);
+        }
+      }
+    }
+  }
+}
+
+// ===== ANIMATIONS =====
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ===== SUPPORT ACCESSIBILITÉ =====
+
+@include reduced-motion {
+  .contact {
+    .textContainer .item,
+    .textContainer .social a,
+    .formContainer form input,
+    .formContainer form textarea,
+    .formContainer form button {
+      transition:
+        opacity $transition-fast,
+        background-color $transition-fast !important;
+
+      &:hover {
+        transform: none !important;
+      }
+    }
+
+    .textContainer h1 {
+      text-shadow: none;
+    }
+
+    .formContainer .phoneSvg svg {
+      filter: none;
+    }
+  }
+}
+
+// ===== SUPPORT DARK MODE =====
+
+@include dark-mode {
+  .contact {
+    &::before {
+      background:
+        radial-gradient(
+          circle at 30% 70%,
+          rgba($primary-color, 0.05) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          circle at 70% 30%,
+          rgba($secondary-color, 0.05) 0%,
+          transparent 50%
+        );
+    }
+
+    .textContainer {
+      .item {
+        border-color: rgba($primary-color, 0.15);
+        @include glassmorphism(0.05, 15px);
+      }
+
+      .social {
+        border-color: rgba($primary-color, 0.15);
+        @include glassmorphism(0.08, 18px);
+
+        a {
+          background: rgba($primary-color, 0.08);
+          border-color: rgba($primary-color, 0.2);
+        }
+      }
+    }
+
+    .formContainer .phoneSvg svg {
+      filter: drop-shadow(0 0 15px rgba($primary-color, 0.3));
+    }
+  }
+}
+
+// ===== OPTIMISATIONS PERFORMANCE =====
+
+@include touch-device {
+  .contact {
+    .textContainer .item,
+    .textContainer .social a,
+    .formContainer form button {
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+// ===== BREAKPOINTS PERSONNALISÉS =====
+
+// Très grands écrans
+@include xxl-up {
+  .contact {
+    gap: clamp(3rem, 8vw, 5rem);
+    padding: $spacing-3xl 0;
+
+    .textContainer {
+      gap: $spacing-xl;
+
+      h1 {
+        font-size: clamp(3rem, 5vw, 4.5rem);
+      }
+
+      .item {
+        padding: $spacing-lg;
+        gap: $spacing-xl;
+      }
+    }
+
+    .formContainer form {
+      gap: $spacing-xl;
+
+      input,
+      textarea,
+      button {
+        padding: $spacing-lg $spacing-xl;
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+// Très petits écrans
+@include xs-only {
+  .contact {
+    gap: clamp(0.5rem, 2vw, 1rem);
+    padding: $spacing-md 0;
+
+    .textContainer {
+      margin-top: $spacing-md;
+      gap: $spacing-xs;
+
+      .item {
+        padding: $spacing-xs;
+        gap: $spacing-xs;
+
+        .icon {
+          width: 2rem;
+          height: 2rem;
+          font-size: 1rem;
+        }
+
+        p {
+          font-size: 0.85rem;
+        }
+      }
+
+      .social {
+        padding: $spacing-xs;
+        gap: $spacing-xs;
+
+        a {
+          width: 2.2rem;
+          height: 2.2rem;
+
+          img {
+            width: 1rem;
+            height: 1rem;
+          }
+        }
+      }
+    }
+
+    .formContainer {
+      margin-bottom: $spacing-sm;
+
+      form {
+        gap: $spacing-xs;
+
+        input,
+        textarea {
+          padding: $spacing-sm;
+          font-size: 0.85rem;
+        }
+
+        button {
+          padding: $spacing-sm $spacing-md;
+          font-size: 0.9rem;
         }
       }
     }

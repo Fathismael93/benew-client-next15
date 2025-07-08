@@ -188,12 +188,12 @@ function Contact() {
                 {loading ? 'Envoi en cours...' : 'Envoyer'}
               </button>
               {error && (
-                <div style={{ color: 'red', marginTop: '10px' }}>
+                <div className="status-message error">
                   Erreur lors de l&apos;envoi du message
                 </div>
               )}
               {success && (
-                <div style={{ color: 'green', marginTop: '10px' }}>
+                <div className="status-message success">
                   Message envoyé avec succès !
                 </div>
               )}
