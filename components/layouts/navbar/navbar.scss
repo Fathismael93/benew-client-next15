@@ -61,8 +61,8 @@
   .wrapper {
     @include fluid-container(
       70rem,
-      clamp(1rem, 4vw, 2rem)
-    ); // ✅ Mixin du système
+      clamp(0.5rem, 2vw, 1rem)
+    ); // ✅ Au lieu de clamp(1rem, 4vw, 2rem)
     height: 100%;
     display: flex;
     align-items: center;
@@ -178,13 +178,13 @@
 
     .social {
       display: flex;
-      gap: $spacing-lg; // ✅ Variable du système
+      gap: $spacing-md; // ✅ Variable du système
       align-items: center;
 
       // Container avec fond subtil (amélioré)
       @include glassmorphism(0.08, 15px); // ✅ Mixin du système
       background: rgba($primary-color, 0.05);
-      padding: $spacing-sm $spacing-md; // ✅ Variables du système
+      padding: $spacing-xs $spacing-sm; // ✅ Variables du système
       border-radius: $border-radius-pill; // ✅ Variable du système
       border: 1px solid rgba($primary-color, 0.15);
       box-shadow:
@@ -203,8 +203,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         @include glassmorphism(0.05, 10px); // ✅ Mixin du système
         background: rgba($text-color, 0.05);
@@ -236,7 +236,7 @@
         }
 
         &:hover {
-          transform: translateY(-8px) scale(1.15);
+          transform: translateY(-4px) scale(1.08);
           background: $gradient-primary; // ✅ Gradient du système
           border-color: $secondary-color;
           box-shadow:
@@ -250,7 +250,7 @@
         }
 
         &:active {
-          transform: translateY(-4px) scale(1.1);
+          transform: translateY(-4px) scale(1.08);
         }
 
         &:focus {
@@ -272,8 +272,8 @@
       }
 
       img {
-        width: 22px;
-        height: 22px;
+        width: 18px;
+        height: 18px;
         transition: all $transition-smooth; // ✅ Variable du système
         position: relative;
         z-index: 1;
@@ -308,12 +308,12 @@
 
       // Responsive adjustments (avec variables système)
       @include sm-down {
-        gap: $spacing-md;
-        padding: $spacing-xs $spacing-sm;
+        gap: $spacing-sm;
+        padding: $spacing-xs;
 
         a {
-          width: 36px;
-          height: 36px;
+          width: 32px;
+          height: 32px;
         }
       }
 
