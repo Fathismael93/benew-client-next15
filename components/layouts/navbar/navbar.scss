@@ -4,11 +4,8 @@
   height: 6.25rem;
   scroll-snap-align: start;
   z-index: $z-navbar;
-  position: fixed; // ✅ Amélioré pour une navbar moderne
-  top: 0;
-  left: 0;
-  right: 0;
-  transition: all $transition-smooth; // ✅ Variable du système
+  position: relative; // ✅ Remettre en relative
+  transition: all $transition-smooth;
 
   // Effet glassmorphism avec backdrop
   &::before {
