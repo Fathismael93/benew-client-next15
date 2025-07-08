@@ -2,9 +2,9 @@
 
 import { useRef, useState } from 'react';
 import { useInView, motion } from 'framer-motion';
-import { MdMail, MdPhone, MdWhatsapp } from 'react-icons/md';
+import { MdMail, MdPhone, MdWhatsapp, MdLanguage } from 'react-icons/md'; // ✅ Ajout MdLanguage
 import Parallax from '@/components/layouts/parallax';
-import { sendContactEmail } from '@/actions/sendContactEmail'; // Ajuste le chemin selon ton dossier
+import { sendContactEmail } from '@/actions/sendContactEmail';
 import './contact.scss';
 
 const variants = {
@@ -43,7 +43,7 @@ function Contact() {
 
       if (result.success) {
         setSuccess(true);
-        formRef.current.reset(); // Reset le formulaire
+        formRef.current.reset();
       } else {
         setError(true);
         console.error('Erreur:', result.error);
@@ -71,24 +71,45 @@ function Contact() {
         >
           <motion.div className="textContainer" variants={variants}>
             <motion.h1 variants={variants}>Coordonnées</motion.h1>
+
             <motion.div className="item" variants={variants}>
               <div className="icon">
                 <MdPhone />
               </div>
               <p>77.86.00.64</p>
             </motion.div>
+
             <motion.div className="item" variants={variants}>
               <div className="icon">
                 <MdWhatsapp />
               </div>
               <p>77.86.00.64</p>
             </motion.div>
+
             <motion.div className="item" variants={variants}>
               <div className="icon">
                 <MdMail />
               </div>
               <p>benew@gmail.com</p>
             </motion.div>
+
+            {/* ✅ Nouveau : Coordonnées du site */}
+            <motion.div className="item" variants={variants}>
+              <div className="icon">
+                <MdLanguage />
+              </div>
+              <p>
+                <a
+                  href="https://benew.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="site-link"
+                >
+                  benew.vercel.app
+                </a>
+              </p>
+            </motion.div>
+
             <motion.h2 variants={variants}>Comptes Sociaux</motion.h2>
             <motion.div className="social" variants={variants}>
               <motion.a href="#" variants={variants} title="Social link">
@@ -105,6 +126,7 @@ function Contact() {
               </motion.a>
             </motion.div>
           </motion.div>
+
           <div className="formContainer">
             <motion.div
               className="phoneSvg"
@@ -149,6 +171,7 @@ function Contact() {
                 />
               </svg>
             </motion.div>
+
             <motion.form
               ref={formRef}
               onSubmit={handleSubmit}

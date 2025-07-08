@@ -3,12 +3,15 @@
 
 .contact {
   height: 100%;
-  @include fluid-container(70rem, clamp(1rem, 4vw, 2rem));
+  @include fluid-container(
+    60rem,
+    clamp(1rem, 3vw, 1.5rem)
+  ); // ✅ Réduit de 70rem à 60rem
   display: flex;
   align-items: center;
-  gap: clamp(2rem, 6vw, 4rem); // ✅ Gap fluide
+  gap: clamp(1.5rem, 4vw, 2.5rem); // ✅ Réduit le gap
   position: relative;
-  padding: $spacing-2xl 0; // ✅ Variable du système
+  padding: $spacing-xl 0; // ✅ Réduit de 2xl à xl
 
   // ✅ Effet de fond décoratif
   &::before {
@@ -57,7 +60,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: $spacing-lg; // ✅ Variable du système
+    gap: $spacing-md; // ✅ Réduit de lg à md
     position: relative;
     z-index: 1;
 
@@ -78,7 +81,7 @@
     }
 
     h1 {
-      font-size: clamp(2.5rem, 6vw, 4rem); // ✅ Responsive fluide
+      font-size: clamp(2rem, 4vw, 2.8rem); // ✅ Réduit les tailles
       color: $text-color;
       font-weight: 800;
       position: relative;
@@ -105,8 +108,8 @@
     .item {
       display: flex;
       align-items: center;
-      gap: $spacing-lg; // ✅ Variable du système
-      padding: $spacing-md; // ✅ Ajout de padding
+      gap: $spacing-md; // ✅ Réduit de lg à md
+      padding: $spacing-sm; // ✅ Réduit le padding
       @include glassmorphism(0.03, 12px); // ✅ Glassmorphism moderne
       border-radius: $border-radius-medium; // ✅ Variable du système
       transition: all $transition-elastic; // ✅ Variable du système
@@ -135,12 +138,12 @@
 
       .icon {
         color: $primary-color;
-        font-size: clamp(1.2rem, 3vw, 1.5rem); // ✅ Responsive
+        font-size: clamp(1rem, 2.5vw, 1.2rem); // ✅ Réduit la taille
         display: flex;
         align-items: center;
         justify-content: center;
-        width: clamp(2.5rem, 5vw, 3rem);
-        height: clamp(2.5rem, 5vw, 3rem);
+        width: clamp(2rem, 4vw, 2.5rem); // ✅ Réduit la taille
+        height: clamp(2rem, 4vw, 2.5rem);
         background: rgba($primary-color, 0.1);
         border-radius: 50%;
         transition: all $transition-elastic;
@@ -159,19 +162,51 @@
         letter-spacing: 1px; // ✅ Réduit de 2px
         color: $text-color;
         font-weight: 500; // ✅ Plus lisible
-        font-size: clamp(0.9rem, 2.5vw, 1.1rem); // ✅ Responsive fluide
+        font-size: clamp(0.85rem, 2vw, 0.95rem); // ✅ Réduit la taille
         transition: color $transition-smooth;
 
         .item:hover & {
           color: $primary-color;
         }
+
+        // ✅ Style pour le lien du site
+        .site-link {
+          color: inherit;
+          text-decoration: none;
+          position: relative;
+          transition: all $transition-smooth;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: $gradient-primary;
+            transition: width $transition-smooth;
+          }
+
+          &:hover {
+            color: $primary-color;
+
+            &::after {
+              width: 100%;
+            }
+          }
+
+          &:focus {
+            outline: none;
+            color: $secondary-color;
+          }
+        }
       }
     }
 
     h2 {
-      font-size: clamp(1.5rem, 4vw, 2rem); // ✅ Responsive fluide
+      font-size: clamp(1.2rem, 3vw, 1.5rem); // ✅ Réduit la taille
       line-height: 1.3; // ✅ Amélioration lisibilité
-      margin-top: $spacing-lg; // ✅ Variable du système
+      margin-top: $spacing-md; // ✅ Réduit de lg à md
       color: $text-color;
       font-weight: 700;
       position: relative;
@@ -195,8 +230,8 @@
 
     .social {
       display: flex;
-      gap: $spacing-md; // ✅ Variable du système
-      margin-top: $spacing-lg; // ✅ Variable du système
+      gap: $spacing-sm; // ✅ Réduit de md à sm
+      margin-top: $spacing-md; // ✅ Variable du système
 
       // ✅ Container avec glassmorphism
       padding: $spacing-sm;
@@ -220,8 +255,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: clamp(2.8rem, 5vw, 3.2rem);
-        height: clamp(2.8rem, 5vw, 3.2rem);
+        width: clamp(2.2rem, 4vw, 2.6rem); // ✅ Réduit la taille
+        height: clamp(2.2rem, 4vw, 2.6rem);
         border-radius: 50%;
         @include glassmorphism(0.08, 10px);
         background: rgba($primary-color, 0.05);
@@ -252,8 +287,8 @@
         }
 
         img {
-          width: clamp(1.2rem, 3vw, 1.6rem);
-          height: clamp(1.2rem, 3vw, 1.6rem);
+          width: clamp(1rem, 2.5vw, 1.3rem); // ✅ Réduit la taille
+          height: clamp(1rem, 2.5vw, 1.3rem);
           transition: all $transition-smooth;
           position: relative;
           z-index: 2;
@@ -296,13 +331,13 @@
       opacity: 0.1; // ✅ Plus subtil
 
       svg {
-        width: clamp(12rem, 25vw, 18rem); // ✅ Responsive fluide
-        height: clamp(12rem, 25vw, 18rem);
+        width: clamp(10rem, 20vw, 14rem); // ✅ Réduit la taille du SVG
+        height: clamp(10rem, 20vw, 14rem);
         filter: drop-shadow(0 0 20px rgba($primary-color, 0.2));
 
         @include sm-down {
-          width: clamp(10rem, 30vw, 14rem);
-          height: clamp(10rem, 30vw, 14rem);
+          width: clamp(8rem, 25vw, 12rem); // ✅ Réduit sur mobile aussi
+          height: clamp(8rem, 25vw, 12rem);
         }
       }
     }
@@ -310,7 +345,7 @@
     form {
       display: flex;
       flex-direction: column;
-      gap: $spacing-lg; // ✅ Variable du système
+      gap: $spacing-md; // ✅ Réduit de lg à md
       position: relative;
       z-index: 2;
 
@@ -324,7 +359,7 @@
 
       input,
       textarea {
-        padding: clamp(1rem, 3vw, 1.3rem) clamp(1.2rem, 4vw, 1.6rem); // ✅ Responsive
+        padding: clamp(0.8rem, 2.5vw, 1rem) clamp(1rem, 3vw, 1.3rem); // ✅ Réduit le padding
         @include glassmorphism(0.06, 15px); // ✅ Glassmorphism moderne
         background: linear-gradient(
           135deg,
@@ -385,7 +420,7 @@
 
       textarea {
         resize: vertical;
-        min-height: clamp(100px, 20vh, 140px); // ✅ Responsive
+        min-height: clamp(80px, 15vh, 110px); // ✅ Réduit la hauteur
         font-family: inherit;
         line-height: 1.6; // ✅ Meilleure lisibilité
 
@@ -395,7 +430,7 @@
       }
 
       button {
-        padding: clamp(1rem, 3vw, 1.3rem) $spacing-xl; // ✅ Variables système
+        padding: clamp(0.8rem, 2.5vw, 1rem) $spacing-lg; // ✅ Réduit le padding
         border: none;
         background: $gradient-primary; // ✅ Gradient du système
         color: $background-color;
