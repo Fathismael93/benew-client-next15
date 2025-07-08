@@ -59,10 +59,10 @@ function Hero() {
           </motion.h1>
           <motion.div className="buttonGroup" variants={textVariants}>
             <motion.a href="/services" className="primaryButton">
-              Découvrir nos services
+              <span>Découvrir nos services</span>
             </motion.a>
             <motion.a href="/contact" className="secondaryButton">
-              Parlons de votre projet
+              <span>Parlons de votre projet</span>
             </motion.a>
           </motion.div>
           <motion.img
@@ -73,7 +73,20 @@ function Hero() {
             animate="scrollButton"
           />
         </motion.div>
+
+        {/* ✅ Déplacer l'image DANS le wrapper */}
+        <div className="imageContainer">
+          <Image
+            src="/hero.png"
+            alt="Ordinateur avec des etoiles et du dollar"
+            width={500}
+            height={500}
+            className="heroImage"
+            priority
+          />
+        </div>
       </div>
+
       <motion.div
         className="slidingTextContainer"
         variants={sliderVariants}
@@ -82,16 +95,6 @@ function Hero() {
       >
         BENEW
       </motion.div>
-      <div className="imageContainer">
-        <Image
-          src="/hero.png"
-          alt="Ordinateur avec des etoiles et du dollar"
-          width={500}
-          height={500}
-          className="heroImage"
-          priority
-        />
-      </div>
     </div>
   );
 }
