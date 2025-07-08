@@ -11,7 +11,7 @@
   );
   position: relative;
 
-  // Ajouter des éléments décoratifs en arrière-plan
+  // Éléments décoratifs en arrière-plan
   &::before {
     content: '';
     position: absolute;
@@ -34,61 +34,40 @@
   }
 
   .wrapper {
-    max-width: 70rem;
+    @include fluid-container(70rem, clamp(1rem, 4vw, 2rem));
     height: 100%;
-    margin: auto;
     position: relative;
     z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(2rem, 6vw, 4rem);
+
+    // Layout responsive fluide
+    @include lg-down {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+      gap: clamp(1rem, 4vw, 2rem);
+      text-align: center;
+    }
 
     .textContainer {
-      width: 50%;
-      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 2rem;
-      padding-left: 2rem;
+      gap: clamp(1.5rem, 4vw, 2.5rem);
+      order: 1;
 
-      @include small {
-        width: 100%;
-        height: 50%;
-        gap: 1.5rem;
+      @include lg-down {
+        order: 2;
         align-items: center;
-        text-align: center;
-        padding: 0 1rem;
-      }
-
-      @include mobile {
-        width: 100%;
-        height: 50%;
-        gap: 1.5rem;
-        align-items: center;
-        text-align: center;
-        padding: 0 1rem;
-      }
-
-      @include tablet {
-        width: 100%;
-        height: 50%;
-        gap: 1.75rem;
-        align-items: center;
-        text-align: center;
-        padding: 0 1.5rem;
-      }
-
-      @include laptop {
-        width: 100%;
-        height: 50%;
-        gap: 1.75rem;
-        align-items: center;
-        text-align: center;
-        padding: 0 1.5rem;
+        padding: 0;
       }
 
       h2 {
-        font-size: 1.4rem;
+        font-size: clamp(1rem, 2.5vw, 1.4rem);
         color: $secondary-color;
-        letter-spacing: 0.2rem;
+        letter-spacing: clamp(0.1rem, 0.5vw, 0.2rem);
         font-weight: 500;
         position: relative;
 
@@ -97,27 +76,6 @@
 
         // Animation d'apparition
         animation: fadeInUp 0.8s ease-out;
-
-        @include small {
-          font-size: 1rem;
-          margin-top: 10px;
-          letter-spacing: 0.1rem;
-        }
-
-        @include mobile {
-          font-size: 1.1rem;
-          letter-spacing: 0.15rem;
-        }
-
-        @include tablet {
-          font-size: 1.2rem;
-          letter-spacing: 0.15rem;
-        }
-
-        @include laptop {
-          font-size: 1.3rem;
-          letter-spacing: 0.18rem;
-        }
       }
 
       h1 {
@@ -162,46 +120,48 @@
           opacity: 0.2;
           z-index: -1;
           animation: pulseGlow 3s ease-in-out infinite alternate;
+
+          @include reduced-motion {
+            animation: none;
+            opacity: 0.1;
+          }
         }
 
-        @include small {
-          font-size: clamp(1.8rem, 10vw, 2.5rem);
-          line-height: 1.2;
-        }
-
-        @include mobile {
-          font-size: clamp(2rem, 10vw, 3rem);
-          line-height: 1.15;
-        }
-
-        @include tablet {
-          font-size: clamp(2.2rem, 8vw, 3.5rem);
-          line-height: 1.1;
-        }
-
-        @include laptop {
-          font-size: clamp(2.5rem, 8vw, 4rem);
-          line-height: 1.1;
+        @include reduced-motion {
+          animation: fadeInScale 0.5s ease-out;
+          background: $primary-color;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
       }
 
       .buttonGroup {
         display: flex;
-        gap: 1.5rem;
-        margin-top: 1rem;
+        gap: clamp(1rem, 3vw, 1.5rem);
+        margin-top: clamp(0.5rem, 2vw, 1rem);
+        flex-wrap: wrap;
+
+        @include sm-down {
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+          max-width: 300px;
+        }
 
         .primaryButton,
         .secondaryButton {
-          padding: 1.2rem 2.5rem;
-          border-radius: 50px;
+          padding: clamp(1rem, 2.5vw, 1.2rem) clamp(1.5rem, 4vw, 2.5rem);
+          border-radius: $border-radius-pill;
           font-weight: 700;
-          font-size: 1rem;
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          font-size: clamp(0.9rem, 2vw, 1rem);
+          transition: all $transition-elastic;
           text-decoration: none;
           position: relative;
           overflow: hidden;
           border: none;
           cursor: pointer;
+          white-space: nowrap;
 
           // Effet de vague au hover
           &::before {
@@ -254,10 +214,31 @@
             &::after {
               left: 100%;
             }
+
+            @include reduced-motion {
+              transform: translateY(-2px);
+
+              &::before,
+              &::after {
+                transition: none;
+              }
+            }
           }
 
           &:active {
             transform: translateY(-2px) scale(1.02);
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: $box-shadow-focus;
+          }
+
+          @include sm-down {
+            width: 100%;
+            text-align: center;
+            padding: clamp(0.8rem, 3vw, 1rem) clamp(1.5rem, 5vw, 2rem);
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
           }
         }
 
@@ -268,7 +249,7 @@
             color.adjust($primary-color, $lightness: 15%)
           );
           color: $background-color;
-          box-shadow: 0 8px 25px rgba($primary-color, 0.4);
+          box-shadow: $box-shadow-primary;
 
           &:hover {
             background: linear-gradient(
@@ -276,7 +257,7 @@
               color.adjust($primary-color, $lightness: 10%),
               $secondary-color
             );
-            box-shadow: 0 12px 35px rgba($primary-color, 0.6);
+            box-shadow: $box-shadow-hover;
           }
         }
 
@@ -294,100 +275,59 @@
             box-shadow: 0 12px 35px rgba($secondary-color, 0.3);
           }
         }
-
-        @media (max-width: 768px) {
-          justify-content: center;
-          gap: 1rem;
-        }
-
-        @media (max-width: 480px) {
-          flex-direction: column;
-          align-items: center;
-
-          .primaryButton,
-          .secondaryButton {
-            width: 280px;
-            text-align: center;
-            padding: 1rem 2rem;
-            font-size: 0.95rem;
-          }
-        }
       }
 
       img {
-        width: 2.5rem;
+        width: clamp(1.5rem, 4vw, 2.5rem);
         filter: hue-rotate(20deg) brightness(1.2);
         animation: bounce 2s infinite;
-        margin-top: 1rem;
+        margin-top: clamp(0.5rem, 2vw, 1rem);
+        align-self: center;
 
-        @include small {
-          width: 1.5rem;
+        @include lg-up {
+          align-self: flex-start;
         }
 
-        @include mobile {
-          width: 1.8rem;
-        }
-
-        @include tablet {
-          width: 2rem;
-        }
-
-        @include laptop {
-          width: 2.2rem;
+        @include reduced-motion {
+          animation: none;
         }
       }
     }
   }
 
   .imageContainer {
-    height: 100%;
-    width: 50%;
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: relative;
+    order: 2;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    min-height: clamp(300px, 40vh, 500px);
 
-    @include small {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-      right: 0;
-    }
-
-    @include mobile {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-      right: 0;
-    }
-
-    @include tablet {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-      right: 0;
-    }
-
-    @include laptop {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-      right: 0;
+    @include lg-down {
+      order: 1;
+      min-height: clamp(250px, 35vh, 400px);
     }
 
     .heroImage {
       object-fit: contain;
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 100%;
+      max-height: 100%;
+      width: clamp(300px, 40vw, 500px);
+      height: auto;
       filter: drop-shadow(0 20px 40px rgba($primary-color, 0.3));
       animation: float 6s ease-in-out infinite;
+
+      @include lg-down {
+        width: clamp(250px, 50vw, 400px);
+      }
+
+      @include sm-down {
+        width: clamp(200px, 60vw, 300px);
+      }
+
+      @include reduced-motion {
+        animation: none;
+      }
 
       // Effet de glow autour de l'image
       &::after {
@@ -405,20 +345,26 @@
         transform: translate(-50%, -50%);
         z-index: -1;
         animation: pulseGlow 4s ease-in-out infinite alternate;
+
+        @include reduced-motion {
+          animation: none;
+          opacity: 0.1;
+        }
       }
     }
   }
 
   .slidingTextContainer {
     position: absolute;
-    font-size: clamp(8rem, 20vw, 20rem);
-    bottom: -90px;
+    font-size: clamp(4rem, 15vw, 20rem);
+    bottom: clamp(-60px, -8vw, -90px);
     white-space: nowrap;
     color: rgba($text-color, 0.03);
     width: 100%;
     font-weight: 900;
     letter-spacing: 0.1em;
     z-index: 0;
+    left: 0;
 
     // Effet de dégradé sur le texte
     background: linear-gradient(
@@ -430,28 +376,15 @@
     -webkit-background-clip: text;
     background-clip: text;
 
-    @include small {
-      font-size: clamp(4rem, 25vw, 8rem);
-      bottom: -40px;
+    @include sm-down {
+      font-size: clamp(3rem, 20vw, 6rem);
+      bottom: clamp(-30px, -6vw, -40px);
       color: rgba($text-color, 0.04);
     }
 
-    @include mobile {
-      font-size: clamp(5rem, 25vw, 8rem);
-      bottom: -40px;
-      color: rgba($text-color, 0.04);
-    }
-
-    @include tablet {
-      font-size: clamp(7rem, 20vw, 11rem);
-      bottom: -50px;
-      color: rgba($text-color, 0.03);
-    }
-
-    @include laptop {
-      font-size: clamp(8rem, 20vw, 12rem);
-      bottom: -50px;
-      color: rgba($text-color, 0.03);
+    @include md-only {
+      font-size: clamp(5rem, 18vw, 10rem);
+      bottom: clamp(-40px, -7vw, -60px);
     }
   }
 }
@@ -526,45 +459,147 @@
   }
 }
 
-// ===== EFFETS RESPONSIFS AVANCÉS =====
-@media (max-width: 1200px) {
-  .hero .wrapper .textContainer {
-    gap: 1.8rem;
-  }
-}
+// ===== OPTIMISATIONS PERFORMANCE =====
 
-@media (max-width: 992px) {
-  .hero .wrapper .textContainer {
-    padding-left: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
+// Réduire les animations sur mobile pour les performances
+@include touch-device {
   .hero {
-    &::before {
-      background: radial-gradient(
-        circle at 50% 50%,
-        rgba($primary-color, 0.08) 0%,
-        transparent 70%
+    .textContainer h1::after {
+      animation-duration: 6s;
+    }
+
+    .imageContainer .heroImage {
+      animation-duration: 8s;
+    }
+  }
+}
+
+// Optimisations pour les petits écrans
+@include xs-only {
+  .hero {
+    .wrapper {
+      gap: 1rem;
+    }
+
+    .textContainer {
+      gap: 1rem;
+
+      .buttonGroup {
+        gap: 0.8rem;
+
+        .primaryButton,
+        .secondaryButton {
+          padding: 0.7rem 1.5rem;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .imageContainer {
+      min-height: 200px;
+
+      .heroImage {
+        width: clamp(150px, 70vw, 250px);
+      }
+    }
+  }
+}
+
+// Support pour très grands écrans
+@include xxl-up {
+  .hero {
+    .wrapper {
+      max-width: 80rem;
+      gap: 5rem;
+    }
+
+    .textContainer {
+      gap: 3rem;
+
+      h2 {
+        font-size: 1.6rem;
+        letter-spacing: 0.25rem;
+      }
+
+      h1 {
+        font-size: clamp(4rem, 6vw, 6rem);
+      }
+
+      .buttonGroup {
+        gap: 2rem;
+
+        .primaryButton,
+        .secondaryButton {
+          padding: 1.4rem 3rem;
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    .imageContainer .heroImage {
+      width: clamp(400px, 35vw, 600px);
+    }
+  }
+}
+
+// ===== VARIANTES CONTEXTUELLES =====
+
+// Hero pour pages intérieures (plus compact)
+.hero.compact {
+  height: 80vh;
+
+  .wrapper {
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+
+  .textContainer {
+    gap: clamp(1rem, 3vw, 1.5rem);
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+    }
+
+    h2 {
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
+    }
+  }
+
+  .imageContainer {
+    min-height: clamp(200px, 30vh, 300px);
+
+    .heroImage {
+      width: clamp(200px, 30vw, 350px);
+    }
+  }
+
+  .slidingTextContainer {
+    font-size: clamp(3rem, 12vw, 15rem);
+  }
+}
+
+// Hero en mode dark (si nécessaire)
+.hero.dark {
+  background: linear-gradient(
+    135deg,
+    $background-color-dark,
+    color.adjust($background-color-dark, $lightness: -8%)
+  );
+
+  &::before {
+    background:
+      radial-gradient(
+        circle at 20% 80%,
+        rgba($primary-color, 0.15) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba($secondary-color, 0.15) 0%,
+        transparent 50%
       );
-    }
   }
-}
 
-// ===== ANIMATIONS AU SCROLL =====
-@media (prefers-reduced-motion: no-preference) {
-  .hero {
-    .textContainer > * {
-      animation-delay: calc(var(--animation-order, 0) * 0.1s);
-    }
-  }
-}
-
-// ===== DARK MODE SUPPORT =====
-@media (prefers-color-scheme: dark) {
-  .hero {
-    .slidingTextContainer {
-      color: rgba($text-color, 0.02);
-    }
+  .slidingTextContainer {
+    color: rgba($text-color, 0.02);
   }
 }
