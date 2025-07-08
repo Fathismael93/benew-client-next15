@@ -1,5 +1,5 @@
 @use 'sass:color';
-@use '@/app/app.scss' as *;
+@use '../../../app/app.scss' as *;
 
 .parallax {
   width: 100%;
@@ -50,7 +50,7 @@
     line-height: 1.1;
 
     // Animation du gradient de fond
-    animation: parallaxGradientFlow 8s ease-in-out infinite;
+    animation: parallaxGradientFlow 8s $transition-smooth infinite;
 
     // Effet de glow dynamique derrière le texte
     &::after {
@@ -70,7 +70,12 @@
       transform: translate(-50%, -50%);
       z-index: -1;
       filter: blur(30px);
-      animation: parallaxGlow 6s ease-in-out infinite alternate;
+      animation: parallaxGlow 6s $transition-smooth infinite alternate;
+
+      @include reduced-motion {
+        animation: none;
+        opacity: 0.3;
+      }
     }
 
     // Effet de scintillement subtil
@@ -87,30 +92,36 @@
         rgba(255, 255, 255, 0.1) 50%,
         transparent 100%
       );
-      animation: parallaxShine 4s ease-in-out infinite;
+      animation: parallaxShine 4s $transition-smooth infinite;
       z-index: 1;
+
+      @include reduced-motion {
+        animation: none;
+        opacity: 0;
+      }
     }
 
-    @include small {
+    // ✅ Mixins du système remplacés
+    @include sm-down {
       font-size: clamp(2rem, 12vw, 3rem);
       text-align: center;
       line-height: 1.2;
       letter-spacing: -0.01em;
     }
 
-    @include mobile {
+    @include md-down {
       font-size: clamp(2.5rem, 12vw, 4rem);
       text-align: center;
       line-height: 1.15;
     }
 
-    @include tablet {
+    @include lg-only {
       font-size: clamp(3rem, 10vw, 4.5rem);
       text-align: center;
       line-height: 1.1;
     }
 
-    @include laptop {
+    @include xl-only {
       font-size: clamp(3.5rem, 8vw, 5rem);
       text-align: center;
     }
@@ -125,6 +136,7 @@
     position: absolute;
     z-index: 3;
     opacity: 0.9;
+    transition: all $transition-smooth; // ✅ Variable système
 
     // Effet de parallaxe amélioré avec filtre
     filter: contrast(1.1) brightness(1.05);
@@ -144,25 +156,31 @@
         rgba($secondary-color, 0.03) 60%,
         transparent 100%
       );
-      animation: mistFlow 20s ease-in-out infinite;
+      animation: mistFlow 20s $transition-smooth infinite;
+
+      @include reduced-motion {
+        animation: none;
+        opacity: 0.5;
+      }
     }
 
-    @include small {
+    // ✅ Mixins du système remplacés
+    @include sm-down {
       background-size: cover;
       background-position: bottom center;
     }
 
-    @include mobile {
+    @include md-down {
       background-size: cover;
       background-position: bottom center;
     }
 
-    @include tablet {
+    @include lg-only {
       background-size: cover;
       background-position: bottom center;
     }
 
-    @include laptop {
+    @include xl-only {
       background-size: cover;
       background-position: bottom center;
     }
@@ -176,6 +194,7 @@
     height: 100%;
     position: absolute;
     z-index: 2;
+    transition: all $transition-smooth; // ✅ Variable système
 
     // Effet de lueur autour des planètes
     filter: drop-shadow(0 0 20px rgba($primary-color, 0.3))
@@ -200,24 +219,29 @@
       z-index: 1;
     }
 
-    @include small {
+    // ✅ Mixins du système remplacés
+    @include sm-down {
       background-size: contain;
       background-position: bottom center;
     }
 
-    @include mobile {
+    @include md-down {
       background-size: contain;
       background-position: bottom center;
     }
 
-    @include tablet {
+    @include lg-only {
       background-size: contain;
       background-position: bottom center;
     }
 
-    @include laptop {
+    @include xl-only {
       background-size: cover;
       background-position: bottom center;
+    }
+
+    @include reduced-motion {
+      animation: none;
     }
   }
 
@@ -231,7 +255,7 @@
     z-index: 1;
 
     // Animation de scintillement des étoiles
-    animation: starsTwinkle 8s ease-in-out infinite;
+    animation: starsTwinkle 8s $transition-smooth infinite;
 
     // Effet de profondeur avec opacité variable
     opacity: 0.8;
@@ -249,6 +273,10 @@
       background-position: -25% -25%;
       opacity: 0.3;
       animation: starsSlowMove 30s linear infinite;
+
+      @include reduced-motion {
+        animation: none;
+      }
     }
 
     &::after {
@@ -269,7 +297,16 @@
           rgba($secondary-color, 0.05) 0%,
           transparent 50%
         );
-      animation: nebulaFlow 25s ease-in-out infinite;
+      animation: nebulaFlow 25s $transition-smooth infinite;
+
+      @include reduced-motion {
+        animation: none;
+        opacity: 0.3;
+      }
+    }
+
+    @include reduced-motion {
+      animation: none;
     }
   }
 }
@@ -449,10 +486,61 @@
   }
 }
 
+// ===== SUPPORT ACCESSIBILITÉ =====
+
+// Support pour les préférences de mouvement réduit
+@include reduced-motion {
+  .parallax {
+    // Désactiver toutes les animations
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition:
+        opacity $transition-fast,
+        transform $transition-fast !important;
+    }
+
+    h1 {
+      // Garder le gradient mais sans animation
+      background: $gradient-primary;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      &::after {
+        opacity: 0.2;
+        filter: blur(15px);
+      }
+
+      &::before {
+        display: none;
+      }
+    }
+
+    .planets {
+      filter: drop-shadow(0 0 15px rgba($primary-color, 0.2));
+    }
+
+    .stars {
+      opacity: 0.6;
+
+      &::before,
+      &::after {
+        opacity: 0.2;
+      }
+    }
+
+    .mountains::after {
+      opacity: 0.3;
+    }
+  }
+}
+
 // ===== OPTIMISATIONS PERFORMANCE =====
 
 // Réduire les animations sur les appareils moins performants
-@media (max-width: 768px) {
+@include touch-device {
   .parallax {
     .stars::before {
       animation-duration: 45s; // Plus lent sur mobile
@@ -461,39 +549,30 @@
     .planets {
       animation-duration: 90s; // Plus lent sur mobile
     }
+
+    h1::after {
+      filter: blur(20px); // Moins de blur sur mobile
+    }
   }
 }
 
-// Support pour les préférences de mouvement réduit
-@media (prefers-reduced-motion: reduce) {
+// Optimisations pour les petits écrans
+@include sm-down {
   .parallax {
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+    // Réduire la complexité visuelle sur mobile
+    .stars::after {
+      opacity: 0.3; // Réduire l'effet de nébuleuse
     }
 
     h1::after {
-      animation: none;
-    }
-
-    .planets {
-      animation: none;
-    }
-
-    .stars {
-      animation: none;
-
-      &::before,
-      &::after {
-        animation: none;
-      }
+      filter: blur(20px); // Moins de blur
+      opacity: 0.4; // Moins intense
     }
   }
 }
 
 // ===== EFFETS POUR DARK MODE =====
-@media (prefers-color-scheme: dark) {
+@include dark-mode {
   .parallax {
     .mountains {
       filter: contrast(1.15) brightness(1.1);
@@ -506,11 +585,19 @@
     h1::after {
       opacity: 0.7;
     }
+
+    &::before {
+      background: radial-gradient(
+        circle at center,
+        transparent 0%,
+        rgba($background-color, 0.4) 100%
+      );
+    }
   }
 }
 
 // ===== AMÉLIORATIONS HAUTE RÉSOLUTION =====
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+@include retina {
   .parallax {
     .mountains,
     .planets,
@@ -523,7 +610,7 @@
 }
 
 // ===== HOVER EFFECTS POUR DESKTOP =====
-@media (hover: hover) and (pointer: fine) {
+@include mouse-device {
   .parallax {
     &:hover {
       h1 {
@@ -537,6 +624,86 @@
       .planets {
         animation-duration: 40s; // Accélère la rotation au hover
       }
+    }
+  }
+}
+
+// ===== VARIANTES AMÉLIORÉES =====
+
+// Parallax compact pour sections plus petites
+.parallax.compact {
+  h1 {
+    font-size: clamp(1.8rem, 6vw, 3.5rem);
+
+    &::after {
+      filter: blur(20px);
+      opacity: 0.3;
+    }
+  }
+
+  .planets {
+    opacity: 0.8;
+  }
+
+  .stars {
+    opacity: 0.6;
+  }
+}
+
+// Parallax intense pour sections importantes
+.parallax.intense {
+  h1 {
+    &::after {
+      filter: blur(40px);
+      opacity: 0.8;
+    }
+  }
+
+  .planets {
+    filter: drop-shadow(0 0 30px rgba($primary-color, 0.5))
+      drop-shadow(0 0 60px rgba($secondary-color, 0.3));
+  }
+
+  .stars {
+    opacity: 1;
+
+    &::after {
+      opacity: 0.4;
+    }
+  }
+}
+
+// ===== BREAKPOINTS PERSONNALISÉS =====
+
+// Très grands écrans
+@include xxl-up {
+  .parallax {
+    h1 {
+      font-size: clamp(4rem, 6vw, 7rem);
+      letter-spacing: -0.03em;
+    }
+  }
+}
+
+// Très petits écrans
+@include xs-only {
+  .parallax {
+    h1 {
+      font-size: clamp(1.8rem, 15vw, 2.5rem);
+      line-height: 1.3;
+
+      &::after {
+        filter: blur(15px);
+        opacity: 0.3;
+      }
+    }
+
+    .planets {
+      opacity: 0.7;
+    }
+
+    .stars {
+      opacity: 0.5;
     }
   }
 }
