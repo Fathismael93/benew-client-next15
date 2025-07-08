@@ -630,6 +630,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+
+  @media (max-width: 768px) {
+    scroll-snap-type: none; // ✅ Désactiver sur mobile
+  }
 }
 
 * {
