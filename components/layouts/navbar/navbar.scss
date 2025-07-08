@@ -4,13 +4,56 @@
   height: 6.25rem;
   scroll-snap-align: start;
   z-index: 999;
+  position: relative;
+
+  // Effet glassmorphism avec backdrop
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($background-color, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba($primary-color, 0.1);
+    z-index: -1;
+  }
+
+  // Effet de lueur subtile en haut
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba($primary-color, 0.5) 25%,
+      rgba($secondary-color, 0.5) 50%,
+      rgba($accent-color, 0.5) 75%,
+      transparent 100%
+    );
+    animation: navbarGlow 4s ease-in-out infinite;
+    z-index: 1;
+  }
 
   @include small {
     height: 5rem;
+
+    &::before {
+      backdrop-filter: blur(15px) saturate(150%);
+    }
   }
 
   @include mobile {
     height: 5rem;
+
+    &::before {
+      backdrop-filter: blur(15px) saturate(150%);
+    }
   }
 
   .wrapper {
@@ -20,28 +63,96 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+
+    // Container avec effet glassmorphism
+    background: rgba($text-color, 0.02);
+    border-radius: 0 0 24px 24px;
+    border: 1px solid rgba($primary-color, 0.08);
+    border-top: none;
+    box-shadow:
+      0 8px 32px rgba($background-color, 0.2),
+      inset 0 1px 0 rgba($text-color, 0.1);
+
+    // Animation d'apparition
+    animation: wrapperSlideDown 0.8s ease-out;
 
     @include small {
       justify-content: flex-end;
       padding: 1rem;
+      border-radius: 0 0 16px 16px;
+      background: rgba($text-color, 0.03);
     }
 
     @include mobile {
       justify-content: flex-end;
       padding: 1.25rem;
+      border-radius: 0 0 16px 16px;
+      background: rgba($text-color, 0.03);
     }
 
     @include tablet {
       max-width: 43rem;
       justify-content: flex-end;
+      padding: 0 1.5rem;
+      border-radius: 0 0 20px 20px;
     }
 
     @include laptop {
       max-width: 37rem;
+      padding: 0 1.5rem;
+      border-radius: 0 0 20px 20px;
     }
 
-    div {
+    // Logo container avec effets
+    > div:first-child {
       margin-left: 1rem;
+      position: relative;
+
+      // Effet de glow autour du logo
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120%;
+        height: 120%;
+        background: radial-gradient(
+          circle,
+          rgba($primary-color, 0.2) 0%,
+          transparent 70%
+        );
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 50%;
+      }
+
+      &:hover::after {
+        opacity: 1;
+        animation: logoGlow 1.5s ease-in-out;
+      }
+
+      a {
+        display: block;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        &:hover {
+          transform: scale(1.1) rotate(2deg);
+        }
+
+        img {
+          filter: drop-shadow(0 4px 8px rgba($primary-color, 0.3));
+          transition: filter 0.3s ease;
+
+          &:hover {
+            filter: drop-shadow(0 6px 12px rgba($primary-color, 0.5));
+          }
+        }
+      }
 
       @include small {
         display: none;
@@ -58,29 +169,451 @@
 
     .social {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
+      align-items: center;
+
+      // Container avec fond subtil
+      background: rgba($primary-color, 0.05);
+      padding: 0.75rem 1.25rem;
+      border-radius: 50px;
+      border: 1px solid rgba($primary-color, 0.15);
+      backdrop-filter: blur(10px);
+      box-shadow:
+        0 4px 16px rgba($primary-color, 0.1),
+        inset 0 1px 0 rgba($text-color, 0.1);
+
+      // Animation d'apparition décalée
+      animation: socialSlideIn 1s ease-out 0.3s both;
 
       a {
-        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: rgba($text-color, 0.05);
+        border: 1px solid rgba($primary-color, 0.2);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+
+        // Effet de vague au hover
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          background: rgba($primary-color, 0.2);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          transition:
+            width 0.6s ease,
+            height 0.6s ease;
+          z-index: 0;
+        }
+
+        // Effet de brillance
+        &::after {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -50%;
+          width: 20px;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.4),
+            transparent
+          );
+          transform: skewX(-20deg);
+          transition: left 0.6s ease;
+          z-index: 2;
+        }
 
         &:hover {
-          transform: scale(1.1) rotate(5deg);
+          transform: translateY(-8px) scale(1.15);
+          background: linear-gradient(135deg, $primary-color, $secondary-color);
+          border-color: $secondary-color;
+          box-shadow:
+            0 12px 25px rgba($primary-color, 0.4),
+            0 0 20px rgba($secondary-color, 0.3);
+
+          &::before {
+            width: 60px;
+            height: 60px;
+          }
+
+          &::after {
+            left: 100%;
+          }
+        }
+
+        &:active {
+          transform: translateY(-4px) scale(1.1);
+        }
+
+        // Animation de rebond au focus
+        &:focus {
+          outline: none;
+          animation: socialBounce 0.6s ease;
         }
       }
 
       img {
-        width: 1rem;
-        height: 1rem;
+        width: 22px;
+        height: 22px;
         transition: all 0.3s ease;
-        filter: grayscale(0.3);
+        position: relative;
+        z-index: 1;
+        filter: invert(0.7);
 
-        &:hover {
-          filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
+        // Effet au hover du parent
+        a:hover & {
+          filter: brightness(0) invert(1);
+          transform: scale(1.1);
         }
 
         @include small {
-          width: 1rem;
-          height: 1rem;
+          width: 18px;
+          height: 18px;
+        }
+
+        @include mobile {
+          width: 20px;
+          height: 20px;
+        }
+
+        @include tablet {
+          width: 20px;
+          height: 20px;
+        }
+
+        @include laptop {
+          width: 21px;
+          height: 21px;
+        }
+      }
+
+      // Responsive adjustments
+      @include small {
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+
+        a {
+          width: 36px;
+          height: 36px;
+        }
+      }
+
+      @include mobile {
+        gap: 1.2rem;
+        padding: 0.6rem 1.1rem;
+
+        a {
+          width: 38px;
+          height: 38px;
+        }
+      }
+
+      @include tablet {
+        gap: 1.3rem;
+        padding: 0.65rem 1.15rem;
+
+        a {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      @include laptop {
+        gap: 1.4rem;
+        padding: 0.7rem 1.2rem;
+
+        a {
+          width: 41px;
+          height: 41px;
+        }
+      }
+    }
+  }
+}
+
+// ===== ANIMATIONS NAVBAR =====
+
+@keyframes navbarGlow {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.02);
+  }
+}
+
+@keyframes wrapperSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes socialSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes logoGlow {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes socialBounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(-8px) scale(1.1);
+  }
+  60% {
+    transform: translateY(-4px) scale(1.05);
+  }
+}
+
+// ===== EFFETS AU SCROLL =====
+
+// Navbar qui se réduit au scroll (optionnel avec JS)
+.navbar.scrolled {
+  height: 4.5rem;
+
+  &::before {
+    background: rgba($background-color, 0.95);
+    backdrop-filter: blur(25px) saturate(200%);
+  }
+
+  .wrapper {
+    border-radius: 0 0 16px 16px;
+    padding: 0 1.5rem;
+
+    .social {
+      gap: 1.2rem;
+      padding: 0.6rem 1rem;
+
+      a {
+        width: 36px;
+        height: 36px;
+      }
+
+      img {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  @include small {
+    height: 4rem;
+  }
+
+  @include mobile {
+    height: 4rem;
+  }
+}
+
+// ===== ÉTATS INTERACTIFS AVANCÉS =====
+
+// Effet au hover de la navbar entière
+.navbar:hover {
+  &::after {
+    animation-duration: 2s;
+  }
+
+  .wrapper {
+    border-color: rgba($primary-color, 0.15);
+    box-shadow:
+      0 12px 40px rgba($background-color, 0.3),
+      inset 0 1px 0 rgba($text-color, 0.15);
+  }
+}
+
+// ===== SUPPORT DARK MODE =====
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    &::before {
+      background: rgba($background-color, 0.9);
+      backdrop-filter: blur(25px) saturate(200%);
+    }
+
+    .wrapper {
+      background: rgba($text-color, 0.03);
+      border-color: rgba($primary-color, 0.12);
+    }
+
+    .social {
+      background: rgba($primary-color, 0.08);
+      border-color: rgba($primary-color, 0.2);
+
+      a {
+        background: rgba($text-color, 0.08);
+        border-color: rgba($primary-color, 0.25);
+      }
+    }
+  }
+}
+
+// ===== OPTIMISATIONS PERFORMANCE =====
+
+// Réduire les animations sur mobile pour les performances
+@media (max-width: 768px) {
+  .navbar {
+    &::after {
+      animation-duration: 6s;
+    }
+
+    .social a {
+      &::before,
+      &::after {
+        transition-duration: 0.3s;
+      }
+    }
+  }
+}
+
+// Support pour les préférences de mouvement réduit
+@media (prefers-reduced-motion: reduce) {
+  .navbar {
+    &::after {
+      animation: none;
+    }
+
+    .wrapper {
+      animation: none;
+    }
+
+    .social {
+      animation: none;
+
+      a {
+        transition-duration: 0.1s;
+
+        &::before,
+        &::after {
+          transition: none;
+        }
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+}
+
+// ===== EFFETS POUR HAUTE RÉSOLUTION =====
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .navbar {
+    .wrapper {
+      border-width: 0.5px;
+    }
+
+    .social {
+      border-width: 0.5px;
+
+      a {
+        border-width: 0.5px;
+      }
+    }
+  }
+}
+
+// ===== VARIANTES DE NAVBAR =====
+
+// Navbar transparente (pour certaines pages)
+.navbar.transparent {
+  &::before {
+    background: rgba($background-color, 0.3);
+    backdrop-filter: blur(15px);
+  }
+
+  .wrapper {
+    background: rgba($text-color, 0.01);
+    border-color: rgba($primary-color, 0.05);
+  }
+}
+
+// Navbar avec accent coloré
+.navbar.accent {
+  &::after {
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      $primary-color 0%,
+      $secondary-color 50%,
+      $accent-color 100%
+    );
+  }
+
+  .wrapper {
+    border-color: rgba($primary-color, 0.2);
+  }
+}
+
+// ===== BREAKPOINT PERSONNALISÉS =====
+@media (min-width: 1400px) {
+  .navbar .wrapper {
+    max-width: 80rem;
+    padding: 0 3rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .navbar {
+    height: 4.5rem;
+
+    .wrapper {
+      padding: 0.8rem;
+
+      .social {
+        gap: 0.8rem;
+        padding: 0.4rem 0.8rem;
+
+        a {
+          width: 32px;
+          height: 32px;
+        }
+
+        img {
+          width: 16px;
+          height: 16px;
         }
       }
     }

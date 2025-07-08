@@ -9,33 +9,108 @@
   justify-content: center;
   overflow: hidden;
 
-  h1 {
-    font-size: 4.5rem;
-    background: linear-gradient(
-      45deg,
-      $text-color,
-      $primary-color,
-      $secondary-color
+  // Effet de vignette pour plus de profondeur
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba($background-color, 0.3) 100%
     );
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    background: linear-gradient(
+      135deg,
+      $text-color 0%,
+      $primary-color 20%,
+      $secondary-color 40%,
+      $accent-color 60%,
+      $primary-color 80%,
+      $text-color 100%
+    );
+    background-size: 300% 300%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 4px 8px rgba($background-color, 0.3);
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+    line-height: 1.1;
+
+    // Animation du gradient de fond
+    animation: parallaxGradientFlow 8s ease-in-out infinite;
+
+    // Effet de glow dynamique derrière le texte
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba($primary-color, 0.4) 0%,
+        rgba($secondary-color, 0.3) 25%,
+        rgba($accent-color, 0.2) 50%,
+        transparent 75%
+      );
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      filter: blur(30px);
+      animation: parallaxGlow 6s ease-in-out infinite alternate;
+    }
+
+    // Effet de scintillement subtil
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+      );
+      animation: parallaxShine 4s ease-in-out infinite;
+      z-index: 1;
+    }
 
     @include small {
-      font-size: 2.5rem;
+      font-size: clamp(2rem, 12vw, 3rem);
       text-align: center;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
     }
 
     @include mobile {
-      font-size: 4rem;
+      font-size: clamp(2.5rem, 12vw, 4rem);
       text-align: center;
+      line-height: 1.15;
     }
 
     @include tablet {
-      font-size: 4rem;
+      font-size: clamp(3rem, 10vw, 4.5rem);
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    @include laptop {
+      font-size: clamp(3.5rem, 8vw, 5rem);
       text-align: center;
     }
   }
@@ -48,54 +123,419 @@
     height: 100%;
     position: absolute;
     z-index: 3;
+    opacity: 0.9;
+
+    // Effet de parallaxe amélioré avec filtre
+    filter: contrast(1.1) brightness(1.05);
+
+    // Animation subtile de brume
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba($primary-color, 0.05) 30%,
+        rgba($secondary-color, 0.03) 60%,
+        transparent 100%
+      );
+      animation: mistFlow 20s ease-in-out infinite;
+    }
 
     @include small {
-      background-size: contain;
-      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: bottom center;
     }
 
     @include mobile {
-      background-size: contain;
-      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: bottom center;
     }
 
     @include tablet {
-      background-size: contain;
-      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: bottom center;
     }
 
     @include laptop {
       background-size: cover;
-      background-repeat: no-repeat;
+      background-position: bottom center;
     }
   }
 
   .planets {
-    background-size: cover;
-    background-position: bottom;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: 2;
 
+    // Effet de lueur autour des planètes
+    filter: drop-shadow(0 0 20px rgba($primary-color, 0.3))
+      drop-shadow(0 0 40px rgba($secondary-color, 0.2));
+
+    // Animation de rotation très lente
+    animation: planetRotation 60s linear infinite;
+
+    // Améliorer la visibilité avec un overlay subtil
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(
+        circle at 50% 80%,
+        rgba($primary-color, 0.1) 0%,
+        transparent 50%
+      );
+      z-index: 1;
+    }
+
     @include small {
       background-size: contain;
-      background-repeat: no-repeat;
+      background-position: bottom center;
     }
 
     @include mobile {
       background-size: contain;
-      background-repeat: no-repeat;
+      background-position: bottom center;
+    }
+
+    @include tablet {
+      background-size: contain;
+      background-position: bottom center;
+    }
+
+    @include laptop {
+      background-size: cover;
+      background-position: bottom center;
     }
   }
 
   .stars {
     background-image: url('/stars.png');
     background-size: cover;
-    background-position: bottom;
+    background-position: center;
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: 1;
+
+    // Animation de scintillement des étoiles
+    animation: starsTwinkle 8s ease-in-out infinite;
+
+    // Effet de profondeur avec opacité variable
+    opacity: 0.8;
+
+    // Améliorer l'effet avec plusieurs couches d'étoiles
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/stars.png');
+      background-size: 150% 150%;
+      background-position: -25% -25%;
+      opacity: 0.3;
+      animation: starsSlowMove 30s linear infinite;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(
+          circle at 30% 40%,
+          rgba($accent-color, 0.05) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          circle at 70% 60%,
+          rgba($secondary-color, 0.05) 0%,
+          transparent 50%
+        );
+      animation: nebulaFlow 25s ease-in-out infinite;
+    }
+  }
+}
+
+// ===== ANIMATIONS PARALLAX =====
+
+@keyframes parallaxGradientFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 75%;
+  }
+  50% {
+    background-position: 200% 50%;
+  }
+  75% {
+    background-position: 100% 25%;
+  }
+}
+
+@keyframes parallaxGlow {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.1) rotate(2deg);
+  }
+}
+
+@keyframes parallaxShine {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes planetRotation {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.02);
+  }
+  to {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes starsTwinkle {
+  0%,
+  100% {
+    opacity: 0.8;
+    filter: brightness(1);
+  }
+  25% {
+    opacity: 0.9;
+    filter: brightness(1.1);
+  }
+  50% {
+    opacity: 0.7;
+    filter: brightness(0.9);
+  }
+  75% {
+    opacity: 0.85;
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes starsSlowMove {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(-10px) translateY(-5px);
+  }
+  50% {
+    transform: translateX(-5px) translateY(-10px);
+  }
+  75% {
+    transform: translateX(5px) translateY(-5px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes mistFlow {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  33% {
+    opacity: 0.8;
+    transform: translateX(10px) scale(1.02);
+  }
+  66% {
+    opacity: 0.9;
+    transform: translateX(-5px) scale(0.98);
+  }
+}
+
+@keyframes nebulaFlow {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    opacity: 0.9;
+    transform: rotate(1deg) scale(1.01);
+  }
+  50% {
+    opacity: 0.7;
+    transform: rotate(-0.5deg) scale(0.99);
+  }
+  75% {
+    opacity: 0.85;
+    transform: rotate(0.5deg) scale(1.005);
+  }
+}
+
+// ===== VARIANTES SELON LE TYPE DE PARALLAX =====
+
+// Parallax pour les services (tons plus chauds)
+.parallax[data-type='services'] {
+  h1 {
+    background: linear-gradient(
+      135deg,
+      $text-color 0%,
+      $primary-color 25%,
+      color.adjust($primary-color, $lightness: 15%) 50%,
+      $secondary-color 75%,
+      $text-color 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .planets {
+    filter: drop-shadow(0 0 25px rgba($primary-color, 0.4))
+      drop-shadow(0 0 50px rgba($primary-color, 0.2));
+  }
+}
+
+// Parallax pour le portfolio (tons plus froids)
+.parallax[data-type='portfolio'] {
+  h1 {
+    background: linear-gradient(
+      135deg,
+      $text-color 0%,
+      $accent-color 25%,
+      $secondary-color 50%,
+      color.adjust($accent-color, $lightness: 10%) 75%,
+      $text-color 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .planets {
+    filter: drop-shadow(0 0 25px rgba($accent-color, 0.4))
+      drop-shadow(0 0 50px rgba($secondary-color, 0.3));
+  }
+}
+
+// ===== OPTIMISATIONS PERFORMANCE =====
+
+// Réduire les animations sur les appareils moins performants
+@media (max-width: 768px) {
+  .parallax {
+    .stars::before {
+      animation-duration: 45s; // Plus lent sur mobile
+    }
+
+    .planets {
+      animation-duration: 90s; // Plus lent sur mobile
+    }
+  }
+}
+
+// Support pour les préférences de mouvement réduit
+@media (prefers-reduced-motion: reduce) {
+  .parallax {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    h1::after {
+      animation: none;
+    }
+
+    .planets {
+      animation: none;
+    }
+
+    .stars {
+      animation: none;
+
+      &::before,
+      &::after {
+        animation: none;
+      }
+    }
+  }
+}
+
+// ===== EFFETS POUR DARK MODE =====
+@media (prefers-color-scheme: dark) {
+  .parallax {
+    .mountains {
+      filter: contrast(1.15) brightness(1.1);
+    }
+
+    .stars {
+      opacity: 0.9;
+    }
+
+    h1::after {
+      opacity: 0.7;
+    }
+  }
+}
+
+// ===== AMÉLIORATIONS HAUTE RÉSOLUTION =====
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .parallax {
+    .mountains,
+    .planets,
+    .stars {
+      background-size: cover;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+  }
+}
+
+// ===== HOVER EFFECTS POUR DESKTOP =====
+@media (hover: hover) and (pointer: fine) {
+  .parallax {
+    &:hover {
+      h1 {
+        animation-duration: 4s; // Accélère l'animation au hover
+
+        &::after {
+          opacity: 0.8;
+        }
+      }
+
+      .planets {
+        animation-duration: 40s; // Accélère la rotation au hover
+      }
+    }
   }
 }

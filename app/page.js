@@ -12,6 +12,7 @@ export default function Home() {
           bgColor="linear-gradient(180deg, #111132, #0c0c1d)"
           title="Nos Produits..."
           planets="/sun.png"
+          data-type="services"
         />
       </section>
       <section className="others">Services</section>
@@ -20,6 +21,7 @@ export default function Home() {
           bgColor="linear-gradient(180deg, #111132, #505064)"
           title="What We Did?"
           planets="/planets.png"
+          data-type="portfolio"
         />
       </section>
       <section className="others">Portfolio1</section>

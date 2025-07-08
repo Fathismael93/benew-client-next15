@@ -1,20 +1,44 @@
-@use "sass:color";
+@use 'sass:color';
 @use '../../../app/app.scss' as *;
 
 .hero {
   height: 100%;
   overflow: hidden;
   background: linear-gradient(
-    180deg,
+    135deg,
     $background-color,
-    color.adjust($background-color, $lightness: -3%)
+    color.adjust($background-color, $lightness: -5%)
   );
   position: relative;
+
+  // Ajouter des éléments décoratifs en arrière-plan
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(
+        circle at 20% 80%,
+        rgba($primary-color, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba($secondary-color, 0.1) 0%,
+        transparent 50%
+      );
+    z-index: 0;
+  }
 
   .wrapper {
     max-width: 70rem;
     height: 100%;
     margin: auto;
+    position: relative;
+    z-index: 1;
 
     .textContainer {
       width: 50%;
@@ -22,154 +46,270 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 2rem;
+      padding-left: 2rem;
 
       @include small {
         width: 100%;
         height: 50%;
-        gap: 1rem;
+        gap: 1.5rem;
         align-items: center;
         text-align: center;
+        padding: 0 1rem;
       }
 
       @include mobile {
         width: 100%;
         height: 50%;
-        gap: 1rem;
+        gap: 1.5rem;
         align-items: center;
         text-align: center;
+        padding: 0 1rem;
       }
 
       @include tablet {
         width: 100%;
         height: 50%;
-        gap: 1.25rem;
+        gap: 1.75rem;
         align-items: center;
         text-align: center;
+        padding: 0 1.5rem;
       }
 
       @include laptop {
         width: 100%;
         height: 50%;
-        gap: 1.25rem;
+        gap: 1.75rem;
         align-items: center;
         text-align: center;
+        padding: 0 1.5rem;
       }
 
       h2 {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         color: $secondary-color;
-        letter-spacing: 0.188rem;
+        letter-spacing: 0.2rem;
+        font-weight: 500;
+        position: relative;
+
+        // Effet de glow subtil
+        text-shadow: 0 0 20px rgba($secondary-color, 0.3);
+
+        // Animation d'apparition
+        animation: fadeInUp 0.8s ease-out;
 
         @include small {
           font-size: 1rem;
           margin-top: 10px;
+          letter-spacing: 0.1rem;
         }
 
         @include mobile {
-          font-size: 1rem;
+          font-size: 1.1rem;
+          letter-spacing: 0.15rem;
         }
 
         @include tablet {
-          font-size: 1.05rem;
+          font-size: 1.2rem;
+          letter-spacing: 0.15rem;
         }
 
         @include laptop {
-          font-size: 1.1rem;
+          font-size: 1.3rem;
+          letter-spacing: 0.18rem;
         }
       }
 
       h1 {
-        font-size: 4.5rem;
+        font-size: clamp(2.5rem, 8vw, 5rem);
         background: linear-gradient(
-          45deg,
-          $text-color,
-          $primary-color,
-          $secondary-color
+          135deg,
+          $text-color 0%,
+          $primary-color 25%,
+          $secondary-color 50%,
+          $accent-color 75%,
+          $primary-color 100%
         );
+        background-size: 400% 400%;
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-weight: 700;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        position: relative;
+
+        // Animation du gradient
+        animation:
+          gradientShift 4s ease-in-out infinite,
+          fadeInScale 1s ease-out;
+
+        // Effet de glow en arrière-plan
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            135deg,
+            $primary-color,
+            $secondary-color,
+            $accent-color
+          );
+          filter: blur(40px);
+          opacity: 0.2;
+          z-index: -1;
+          animation: pulseGlow 3s ease-in-out infinite alternate;
+        }
 
         @include small {
-          font-size: 1.5rem;
+          font-size: clamp(1.8rem, 10vw, 2.5rem);
+          line-height: 1.2;
         }
 
         @include mobile {
-          font-size: 2.2rem;
+          font-size: clamp(2rem, 10vw, 3rem);
+          line-height: 1.15;
         }
 
         @include tablet {
-          font-size: 2.5rem;
+          font-size: clamp(2.2rem, 8vw, 3.5rem);
+          line-height: 1.1;
         }
 
         @include laptop {
-          font-size: 2.5rem;
+          font-size: clamp(2.5rem, 8vw, 4rem);
+          line-height: 1.1;
         }
       }
 
       .buttonGroup {
         display: flex;
-        gap: 1rem;
+        gap: 1.5rem;
+        margin-top: 1rem;
 
         .primaryButton,
         .secondaryButton {
-          padding: 1rem 2rem;
-          border-radius: 30px;
-          font-weight: 600;
-          transition: all 0.3s ease;
+          padding: 1.2rem 2.5rem;
+          border-radius: 50px;
+          font-weight: 700;
+          font-size: 1rem;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           text-decoration: none;
+          position: relative;
+          overflow: hidden;
+          border: none;
+          cursor: pointer;
+
+          // Effet de vague au hover
+          &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition:
+              width 0.6s ease,
+              height 0.6s ease;
+            z-index: 0;
+          }
+
+          // Effet de brillance
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.3),
+              transparent
+            );
+            transition: left 0.6s ease;
+            z-index: 1;
+          }
+
+          span {
+            position: relative;
+            z-index: 2;
+          }
 
           &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+            transform: translateY(-4px) scale(1.05);
+
+            &::before {
+              width: 300px;
+              height: 300px;
+            }
+
+            &::after {
+              left: 100%;
+            }
+          }
+
+          &:active {
+            transform: translateY(-2px) scale(1.02);
           }
         }
 
         .primaryButton {
           background: linear-gradient(
-            45deg,
+            135deg,
             $primary-color,
-            color.adjust($primary-color, $lightness: 10%)
+            color.adjust($primary-color, $lightness: 15%)
           );
           color: $background-color;
-          border: none;
-          cursor: pointer;
+          box-shadow: 0 8px 25px rgba($primary-color, 0.4);
 
           &:hover {
             background: linear-gradient(
-              45deg,
-              color.adjust($primary-color, $lightness: 5%),
+              135deg,
+              color.adjust($primary-color, $lightness: 10%),
               $secondary-color
             );
+            box-shadow: 0 12px 35px rgba($primary-color, 0.6);
           }
         }
 
         .secondaryButton {
-          background: transparent;
+          background: rgba($text-color, 0.05);
           color: $primary-color;
           border: 2px solid $primary-color;
-          cursor: pointer;
+          backdrop-filter: blur(10px);
+          box-shadow: 0 8px 25px rgba($primary-color, 0.2);
 
           &:hover {
             background: rgba($primary-color, 0.1);
             border-color: $secondary-color;
             color: $secondary-color;
+            box-shadow: 0 12px 35px rgba($secondary-color, 0.3);
           }
         }
 
         @media (max-width: 768px) {
           justify-content: center;
+          gap: 1rem;
         }
 
         @media (max-width: 480px) {
           flex-direction: column;
+          align-items: center;
 
           .primaryButton,
           .secondaryButton {
-            width: 100%;
+            width: 280px;
             text-align: center;
+            padding: 1rem 2rem;
+            font-size: 0.95rem;
           }
         }
       }
@@ -177,21 +317,23 @@
       img {
         width: 2.5rem;
         filter: hue-rotate(20deg) brightness(1.2);
+        animation: bounce 2s infinite;
+        margin-top: 1rem;
 
         @include small {
-          width: 1.2rem;
-        }
-
-        @include mobile {
-          width: 1.2rem;
-        }
-
-        @include tablet {
           width: 1.5rem;
         }
 
-        @include laptop {
+        @include mobile {
+          width: 1.8rem;
+        }
+
+        @include tablet {
           width: 2rem;
+        }
+
+        @include laptop {
+          width: 2.2rem;
         }
       }
     }
@@ -206,12 +348,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 
     @include small {
       height: 50%;
       width: 100%;
       top: unset;
       bottom: 0;
+      right: 0;
     }
 
     @include mobile {
@@ -219,6 +363,7 @@
       width: 100%;
       top: unset;
       bottom: 0;
+      right: 0;
     }
 
     @include tablet {
@@ -226,6 +371,7 @@
       width: 100%;
       top: unset;
       bottom: 0;
+      right: 0;
     }
 
     @include laptop {
@@ -233,45 +379,191 @@
       width: 100%;
       top: unset;
       bottom: 0;
+      right: 0;
     }
 
     .heroImage {
       object-fit: contain;
-      max-width: 100%;
-      max-height: 100%;
+      max-width: 90%;
+      max-height: 90%;
+      filter: drop-shadow(0 20px 40px rgba($primary-color, 0.3));
+      animation: float 6s ease-in-out infinite;
+
+      // Effet de glow autour de l'image
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120%;
+        height: 120%;
+        background: radial-gradient(
+          circle,
+          rgba($primary-color, 0.2) 0%,
+          transparent 70%
+        );
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        animation: pulseGlow 4s ease-in-out infinite alternate;
+      }
     }
   }
 
   .slidingTextContainer {
     position: absolute;
-    font-size: 20rem;
+    font-size: clamp(8rem, 20vw, 20rem);
     bottom: -90px;
     white-space: nowrap;
-    color: rgba($text-color, 0.02);
+    color: rgba($text-color, 0.03);
     width: 100%;
-    font-weight: bold;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    z-index: 0;
+
+    // Effet de dégradé sur le texte
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($primary-color, 0.05),
+      transparent
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
 
     @include small {
-      font-size: 8rem;
+      font-size: clamp(4rem, 25vw, 8rem);
       bottom: -40px;
-      color: rgba($text-color, 0.03);
+      color: rgba($text-color, 0.04);
     }
 
     @include mobile {
-      font-size: 8rem;
+      font-size: clamp(5rem, 25vw, 8rem);
       bottom: -40px;
-      color: rgba($text-color, 0.03);
+      color: rgba($text-color, 0.04);
     }
 
     @include tablet {
-      font-size: 11rem;
+      font-size: clamp(7rem, 20vw, 11rem);
       bottom: -50px;
-      color: rgba($text-color, 0.02);
+      color: rgba($text-color, 0.03);
     }
 
     @include laptop {
-      font-size: 12rem;
+      font-size: clamp(8rem, 20vw, 12rem);
       bottom: -50px;
+      color: rgba($text-color, 0.03);
+    }
+  }
+}
+
+// ===== ANIMATIONS =====
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+// ===== EFFETS RESPONSIFS AVANCÉS =====
+@media (max-width: 1200px) {
+  .hero .wrapper .textContainer {
+    gap: 1.8rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero .wrapper .textContainer {
+    padding-left: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    &::before {
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba($primary-color, 0.08) 0%,
+        transparent 70%
+      );
+    }
+  }
+}
+
+// ===== ANIMATIONS AU SCROLL =====
+@media (prefers-reduced-motion: no-preference) {
+  .hero {
+    .textContainer > * {
+      animation-delay: calc(var(--animation-order, 0) * 0.1s);
+    }
+  }
+}
+
+// ===== DARK MODE SUPPORT =====
+@media (prefers-color-scheme: dark) {
+  .hero {
+    .slidingTextContainer {
       color: rgba($text-color, 0.02);
     }
   }

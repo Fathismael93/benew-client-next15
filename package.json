@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@axe-core/react": "^4.10.2",
     "@next/bundle-analyzer": "^15.3.4",
     "@sentry/nextjs": "^9.34.0",
     "framer-motion": "^12.18.1",

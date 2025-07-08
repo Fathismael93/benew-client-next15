@@ -5,8 +5,24 @@ import { motion } from 'framer-motion';
 import './navbar.scss';
 import Sidebar from '../sidebar';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 function Navbar() {
+  // Dans votre composant Navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="navbar">
       {/* Sidebar */}
