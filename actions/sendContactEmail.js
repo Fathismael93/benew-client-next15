@@ -900,11 +900,3 @@ export async function checkContactEmailHealth() {
 
   return health;
 }
-
-// Export par défaut pour compatibilité
-export default {
-  sendContactEmail,
-  getContactEmailStats,
-  resetContactEmailData,
-  checkContactEmailHealth,
-};
