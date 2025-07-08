@@ -153,7 +153,7 @@
         display: flex;
         gap: clamp(1rem, 3vw, 1.5rem); // ✅ Augmenté de 2vw à 3vw
         margin-top: clamp(0.8rem, 2vw, 1rem); // ✅ Augmenté margin-top
-        flex-wrap: wrap;
+        // flex-wrap: wrap;
 
         @include sm-down {
           flex-direction: column;
