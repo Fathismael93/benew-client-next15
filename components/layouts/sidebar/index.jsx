@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 import Links from './links';
 import ToggleButton from './toggleButton';
 import './sidebar.scss';
