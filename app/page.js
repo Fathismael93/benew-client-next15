@@ -20,7 +20,7 @@ export default function Home() {
       </section>
 
       <section className="others">
-        <div className="flex items-center justify-center h-full">
+        {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-orange-500 mb-4">
               Services
@@ -29,7 +29,7 @@ export default function Home() {
               Découvrez nos services de développement web et mobile
             </p>
           </div>
-        </div>
+        </div> */}
       </section>
 
       <section className="others">
@@ -42,7 +42,7 @@ export default function Home() {
       </section>
 
       <section className="others">
-        <div className="flex items-center justify-center h-full">
+        {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-pink-500 mb-4">
               Portfolio 1
@@ -51,11 +51,11 @@ export default function Home() {
               Premier projet de notre portfolio
             </p>
           </div>
-        </div>
+        </div> */}
       </section>
 
       <section className="others">
-        <div className="flex items-center justify-center h-full">
+        {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-purple-500 mb-4">
               Portfolio 2
@@ -64,7 +64,7 @@ export default function Home() {
               Deuxième projet de notre portfolio
             </p>
           </div>
-        </div>
+        </div> */}
       </section>
 
       <section className="others">
@@ -81,7 +81,7 @@ export default function Home() {
       </section>
 
       <section className="others">
-        <div className="flex items-center justify-center h-full">
+        {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-orange-500 mb-4">Contact</h2>
             <p className="text-gray-300 text-lg">
@@ -96,7 +96,7 @@ export default function Home() {
               </a>
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
     </div>
   );
