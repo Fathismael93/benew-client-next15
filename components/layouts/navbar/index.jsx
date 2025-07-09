@@ -175,7 +175,7 @@ function Navbar() {
           initial="initial"
           animate="animate"
         >
-          {socialLinks.map((social, index) => (
+          {socialLinks.map((social) => (
             <motion.a
               key={social.name}
               href={social.href}
