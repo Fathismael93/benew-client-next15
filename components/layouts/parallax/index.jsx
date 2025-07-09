@@ -1,12 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-} from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import './parallax.scss';
 
 // Configuration des variants selon le type
@@ -64,44 +59,6 @@ function Parallax({
     setDevicePerformance(getDevicePerformance());
   }, []);
 
-  // Configuration du scroll avec options conditionnelles
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  });
-
-  // Transformations adaptatives selon les performances
-  const yText = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion || devicePerformance.reduceAnimations
-      ? ['0%', '200%']
-      : ['0%', '500%'],
-  );
-
-  const yBg = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion || devicePerformance.reduceAnimations
-      ? ['0%', '50%']
-      : ['0%', '100%'],
-  );
-
-  const xStars = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion || devicePerformance.reduceAnimations
-      ? ['0%', '25%']
-      : ['0%', '100%'],
-  );
-
-  // Rotation conditionnelle des planètes
-  const planetsRotation = useTransform(
-    scrollYProgress,
-    [0, 1],
-    shouldReduceMotion || devicePerformance.reduceAnimations ? [0, 5] : [0, 15],
-  );
-
   // Configuration selon le type
   const config = parallaxConfig[type] || parallaxConfig.services;
 
@@ -126,10 +83,9 @@ function Parallax({
       role="img"
       aria-label={`Section parallax: ${title}`}
     >
-      {/* Titre principal avec animation conditionnelle */}
+      {/* Titre principal - seulement animation d'entrée */}
       <motion.h1
         style={{
-          y: yText,
           background: config.textGradient,
           WebkitBackgroundClip: 'text',
           backgroundClip: 'text',
@@ -149,7 +105,7 @@ function Parallax({
         {title}
       </motion.h1>
 
-      {/* Montagnes avec animation conditionnelle */}
+      {/* Montagnes - seulement animation d'entrée */}
       <motion.div
         className="mountains"
         initial={{ opacity: 0 }}
@@ -163,12 +119,10 @@ function Parallax({
         viewport={{ once: true }}
       />
 
-      {/* Planètes avec transformations adaptatives */}
+      {/* Planètes - seulement animation d'entrée + CSS background */}
       <motion.div
         className="planets"
         style={{
-          y: yBg,
-          rotate: shouldReduceMotion ? 0 : planetsRotation,
           backgroundImage: `url(${planets})`,
           filter: config.planetFilter,
         }}
@@ -184,11 +138,8 @@ function Parallax({
         viewport={{ once: true }}
       />
 
-      {/* Étoiles avec animation conditionnelle */}
+      {/* Étoiles - seulement animation d'entrée */}
       <motion.div
-        style={{
-          x: shouldReduceMotion ? 0 : xStars,
-        }}
         className="stars"
         initial={{ opacity: 0 }}
         whileInView={{
