@@ -121,6 +121,13 @@ $breakpoint-tablet-large: 834px; // iPad Air
 $breakpoint-laptop-large: 1440px; // MacBook Pro 15"
 $breakpoint-desktop-large: 1920px; // Full HD
 
+// ===== 🚀 NOUVEAUX BREAKPOINTS HAUTEUR =====
+$height-very-short: 480px; // Écrans très courts (landscape mobile)
+$height-short: 600px; // Écrans courts
+$height-medium: 800px; // Écrans moyens
+$height-tall: 1000px; // Écrans hauts
+$height-very-tall: 1200px; // Écrans très hauts
+
 // ===== MIXINS BREAKPOINTS STANDARDS =====
 
 // Très petits mobiles (iPhone SE et moins)
@@ -209,6 +216,64 @@ $breakpoint-desktop-large: 1920px; // Full HD
 // Grands écrans / 4K
 @mixin xxl-up {
   @media (min-width: $breakpoint-2xl) {
+    @content;
+  }
+}
+
+// ===== 🚀 NOUVEAUX MIXINS HAUTEUR D'ÉCRAN =====
+
+// Écrans très courts (mobile landscape, netbooks)
+@mixin very-short-screen {
+  @media (max-height: $height-very-short) {
+    @content;
+  }
+}
+
+// Écrans courts
+@mixin short-screen {
+  @media (max-height: $height-short) {
+    @content;
+  }
+}
+
+// Écrans de hauteur moyenne
+@mixin medium-screen {
+  @media (min-height: #{$height-short + 1px}) and (max-height: $height-medium) {
+    @content;
+  }
+}
+
+// Écrans hauts
+@mixin tall-screen {
+  @media (min-height: #{$height-medium + 1px}) {
+    @content;
+  }
+}
+
+// Écrans très hauts
+@mixin very-tall-screen {
+  @media (min-height: $height-very-tall) {
+    @content;
+  }
+}
+
+// Mobile en mode paysage (problématique spécifique)
+@mixin mobile-landscape {
+  @media (max-height: 500px) and (orientation: landscape) and (max-width: 900px) {
+    @content;
+  }
+}
+
+// Écrans larges mais courts (ratio problématique)
+@mixin wide-but-short {
+  @media (min-aspect-ratio: 16/9) and (max-height: 700px) {
+    @content;
+  }
+}
+
+// Tablettes en mode paysage
+@mixin tablet-landscape {
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
     @content;
   }
 }
@@ -357,6 +422,39 @@ $breakpoint-desktop-large: 1920px; // Full HD
   }
 }
 
+// ===== 🚀 NOUVELLES VARIABLES HAUTEUR ADAPTATIVE =====
+
+// Variables CSS personnalisées pour hauteurs dynamiques
+:root {
+  --vh-actual: 100vh;
+  --vh-small: clamp(400px, 70vh, 600px);
+  --vh-medium: clamp(500px, 80vh, 800px);
+  --vh-large: clamp(600px, 90vh, 1000px);
+  --vh-full: clamp(600px, 100vh, 1200px);
+
+  // Adaptation selon la hauteur d'écran
+  @include very-short-screen {
+    --vh-full: clamp(400px, 100vh, 600px);
+    --vh-large: clamp(350px, 90vh, 500px);
+    --vh-medium: clamp(300px, 80vh, 450px);
+    --vh-small: clamp(250px, 70vh, 400px);
+  }
+
+  @include short-screen {
+    --vh-full: clamp(500px, 100vh, 700px);
+    --vh-large: clamp(450px, 90vh, 650px);
+    --vh-medium: clamp(400px, 80vh, 600px);
+    --vh-small: clamp(350px, 70vh, 550px);
+  }
+
+  @include tall-screen {
+    --vh-full: clamp(800px, 100vh, 1400px);
+    --vh-large: clamp(700px, 90vh, 1200px);
+    --vh-medium: clamp(600px, 80vh, 1000px);
+    --vh-small: clamp(500px, 70vh, 800px);
+  }
+}
+
 // ===== CLASSES UTILITAIRES RESPONSIVE =====
 
 // Visibilité responsive
@@ -391,7 +489,6 @@ $breakpoint-desktop-large: 1920px; // Full HD
     display: none !important;
   }
 }
-// Ligne ~199
 .show-sm {
   @include xs-only {
     display: none !important;
@@ -401,7 +498,6 @@ $breakpoint-desktop-large: 1920px; // Full HD
   }
 }
 
-// Ligne ~200
 .show-md {
   @include sm-down {
     display: none !important;
@@ -411,7 +507,6 @@ $breakpoint-desktop-large: 1920px; // Full HD
   }
 }
 
-// Ligne ~201
 .show-lg {
   @include md-down {
     display: none !important;
@@ -423,6 +518,52 @@ $breakpoint-desktop-large: 1920px; // Full HD
 .show-xl {
   @include lg-down {
     display: none !important;
+  }
+}
+
+// ===== 🚀 NOUVELLES CLASSES UTILITAIRES HAUTEUR =====
+
+// Classes de hauteur adaptative
+.min-vh-100 {
+  min-height: var(--vh-full);
+  height: auto;
+}
+
+.vh-adaptive {
+  min-height: var(--vh-medium);
+  height: auto;
+}
+
+.vh-small {
+  min-height: var(--vh-small);
+  height: auto;
+}
+
+.vh-large {
+  min-height: var(--vh-large);
+  height: auto;
+}
+
+// Classes de hauteur responsive selon l'écran
+.vh-responsive {
+  min-height: 100vh;
+  height: auto;
+
+  @include very-short-screen {
+    min-height: auto;
+    height: auto;
+    padding: $spacing-md 0;
+  }
+
+  @include short-screen {
+    min-height: 80vh;
+  }
+
+  @include mobile-landscape {
+    min-height: auto;
+    padding: $spacing-lg 0;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -558,6 +699,32 @@ $breakpoint-desktop-large: 1920px; // Full HD
   }
 }
 
+// 🚀 NOUVEAU MIXIN - Section adaptative
+@mixin section-adaptive($min-height: 100vh) {
+  min-height: $min-height;
+  height: auto;
+
+  @include very-short-screen {
+    min-height: auto;
+    padding: $spacing-lg 0;
+  }
+
+  @include short-screen {
+    min-height: clamp(400px, 80vh, 600px);
+  }
+
+  @include mobile-landscape {
+    min-height: auto;
+    padding: $spacing-xl 0;
+    display: flex;
+    align-items: center;
+  }
+
+  @include wide-but-short {
+    min-height: 90vh;
+  }
+}
+
 // Nouveau mixin pour les conteneurs fluides
 @mixin fluid-container($max-width: 1200px, $padding: clamp(1rem, 4vw, 2rem)) {
   width: 100%;
@@ -630,6 +797,11 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+
+  // 🚀 Fix pour 100vh sur mobile
+  @supports (-webkit-touch-callout: none) {
+    height: -webkit-fill-available;
+  }
 }
 
 * {
@@ -672,6 +844,11 @@ body {
 
   // Support pour les devices touch
   -webkit-overflow-scrolling: touch;
+
+  // 🚀 Fix pour viewport mobile
+  @supports (-webkit-touch-callout: none) {
+    min-height: -webkit-fill-available;
+  }
 }
 
 a {
@@ -942,11 +1119,24 @@ a {
   @include aspect-ratio(3/4);
 }
 
-// ===== SECTIONS PRINCIPALES AMÉLIORÉES =====
+// ===== 🚀 SECTIONS PRINCIPALES CORRIGÉES =====
 .first {
-  height: calc(100vh - 6.25rem);
+  // ❌ ANCIEN: height: calc(100vh - 6.25rem);
+  // ✅ NOUVEAU: Hauteur adaptative
+  @include section-adaptive(calc(100vh - 6.25rem));
   scroll-snap-align: center;
   position: relative;
+
+  // Écrans très courts - mode compact
+  @include very-short-screen {
+    scroll-snap-align: none;
+    padding: $spacing-md 0;
+  }
+
+  // Mobile landscape - layout horizontal
+  @include mobile-landscape {
+    scroll-snap-align: none;
+  }
 
   .error {
     width: 100%;
@@ -963,12 +1153,34 @@ a {
     margin: $spacing-lg;
     padding: $spacing-2xl;
 
+    // Adaptation pour écrans courts
+    @include short-screen {
+      gap: $spacing-md;
+      margin: $spacing-md;
+      padding: $spacing-lg;
+    }
+
+    @include very-short-screen {
+      gap: $spacing-sm;
+      margin: $spacing-sm;
+      padding: $spacing-md;
+    }
+
     p {
       font-size: clamp(1.5rem, 4vw, 2.25rem);
       color: $primary-color;
       font-weight: 600;
       text-align: center;
       @include text-shadow-glow;
+
+      // Réduction sur écrans courts
+      @include short-screen {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+      }
+
+      @include very-short-screen {
+        font-size: clamp(1rem, 3vw, 1.5rem);
+      }
 
       a {
         color: $text-color;
@@ -987,9 +1199,22 @@ a {
 }
 
 .others {
-  height: 100vh;
+  // ❌ ANCIEN: height: 100vh;
+  // ✅ NOUVEAU: Hauteur adaptative avec le nouveau mixin
+  @include section-adaptive(100vh);
   scroll-snap-align: center;
   position: relative;
+
+  // Écrans très courts - mode compact
+  @include very-short-screen {
+    scroll-snap-align: none;
+  }
+
+  // Mobile landscape - adaptation spéciale
+  @include mobile-landscape {
+    scroll-snap-align: none;
+    justify-content: center;
+  }
 
   // Améliorer l'apparence générale
   &::before {
@@ -1019,8 +1244,9 @@ a {
     z-index: 1;
   }
 
+  // Legacy responsive (gardé pour compatibilité)
   @media (max-width: 768px) {
-    min-height: 100vh; // ✅ min-height au lieu de height
+    min-height: 100vh;
     height: auto;
   }
 }
@@ -1066,6 +1292,16 @@ a {
   }
   50% {
     transform: scale(1.05);
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
@@ -1133,4 +1369,168 @@ a {
   .sidebar {
     display: none !important;
   }
+}
+
+// ===== 🚀 CLASSES UTILITAIRES BONUS HAUTEUR =====
+
+// Classes pour debug des hauteurs
+.debug-height {
+  position: relative;
+
+  &::after {
+    content: 'H: ' attr(data-height);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba($primary-color, 0.8);
+    color: $background-color;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 9999;
+  }
+}
+
+// Classes d'aide pour tester les hauteurs
+.test-very-short {
+  @include very-short-screen {
+    background: rgba(red, 0.1) !important;
+    border: 2px solid red !important;
+  }
+}
+
+.test-short {
+  @include short-screen {
+    background: rgba(orange, 0.1) !important;
+    border: 2px solid orange !important;
+  }
+}
+
+.test-medium {
+  @include medium-screen {
+    background: rgba(yellow, 0.1) !important;
+    border: 2px solid yellow !important;
+  }
+}
+
+.test-tall {
+  @include tall-screen {
+    background: rgba(green, 0.1) !important;
+    border: 2px solid green !important;
+  }
+}
+
+// ===== 🚀 CLASSES SPÉCIALISÉES POUR COMPOSANTS =====
+
+// Classe pour les sections de contenu principal
+.main-section {
+  @include section-adaptive(100vh);
+
+  // Contenu centré avec padding adaptatif
+  .section-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: inherit;
+    padding: clamp($spacing-md, 4vh, $spacing-2xl) 0;
+
+    @include mobile-landscape {
+      padding: $spacing-lg 0;
+    }
+  }
+}
+
+// Classe pour les héros responsifs
+.hero-section {
+  @include section-adaptive(calc(100vh - 6.25rem));
+
+  .hero-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    @include very-short-screen {
+      height: auto;
+      min-height: 400px;
+    }
+
+    @include mobile-landscape {
+      height: auto;
+      min-height: auto;
+    }
+  }
+}
+
+// Classe pour les sections portfolio/galerie
+.portfolio-section {
+  @include section-adaptive(100vh);
+
+  .portfolio-grid {
+    min-height: inherit;
+    display: grid;
+    align-content: center;
+    gap: $spacing-lg;
+
+    @include very-short-screen {
+      min-height: auto;
+      padding: $spacing-xl 0;
+    }
+  }
+}
+
+// ===== 🚀 HELPERS POUR DÉVELOPPEMENT =====
+
+// Classes CSS pour visualiser les breakpoints en développement
+.dev-breakpoint-indicator {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: rgba($primary-color, 0.9);
+  color: $background-color;
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.75rem;
+  font-weight: bold;
+  z-index: 10000;
+
+  &::before {
+    content: 'XS';
+
+    @include sm-up {
+      content: 'SM';
+    }
+
+    @include md-up {
+      content: 'MD';
+    }
+
+    @include lg-up {
+      content: 'LG';
+    }
+
+    @include xl-up {
+      content: 'XL';
+    }
+
+    @include xxl-up {
+      content: '2XL';
+    }
+  }
+
+  &::after {
+    content: ' | ' attr(data-height);
+  }
+}
+
+// Classes pour tests rapides de hauteur
+.h-test-100vh {
+  height: 100vh;
+  background: linear-gradient(45deg, red, blue);
+  opacity: 0.3;
+}
+
+.h-test-adaptive {
+  @include section-adaptive(100vh);
+  background: linear-gradient(45deg, green, yellow);
+  opacity: 0.3;
 }
