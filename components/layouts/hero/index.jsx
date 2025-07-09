@@ -41,6 +41,22 @@ const sliderVariants = {
   },
 };
 
+// Variants pour l'image avec gestion du reduced motion
+const imageVariants = {
+  initial: {
+    opacity: 0,
+    scale: 0.8,
+  },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 1.2,
+      ease: 'easeOut',
+    },
+  },
+};
+
 function Hero() {
   return (
     <div className="hero">
@@ -54,37 +70,59 @@ function Hero() {
           <motion.h2 variants={textVariants}>
             Un nouveau moyen de gagner de l&apos;argent
           </motion.h2>
+
           <motion.h1 variants={textVariants}>
             Super Boutique, Super Riche
           </motion.h1>
+
           <motion.div className="buttonGroup" variants={textVariants}>
-            <motion.a href="/services" className="primaryButton">
+            <motion.a
+              href="/services"
+              className="primaryButton"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            >
               <span>Découvrir nos services</span>
             </motion.a>
-            <motion.a href="/contact" className="secondaryButton">
+
+            <motion.a
+              href="/contact"
+              className="secondaryButton"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            >
               <span>Parlons de votre projet</span>
             </motion.a>
           </motion.div>
+
           <motion.img
             src="/scroll.png"
             alt="Défiler vers le bas"
             title="Défiler vers le bas"
             variants={textVariants}
             animate="scrollButton"
+            className="scroll-indicator"
           />
         </motion.div>
 
-        {/* ✅ Déplacer l'image DANS le wrapper */}
-        <div className="imageContainer">
+        <motion.div
+          className="imageContainer"
+          variants={imageVariants}
+          initial="initial"
+          animate="animate"
+        >
           <Image
             src="/hero.png"
-            alt="Ordinateur avec des etoiles et du dollar"
+            alt="Ordinateur avec des étoiles et du dollar - Illustration de services numériques"
             width={500}
             height={500}
             className="heroImage"
             priority
+            sizes="(max-width: 640px) 75vw, (max-width: 1024px) 60vw, 45vw"
           />
-        </div>
+        </motion.div>
       </div>
 
       <motion.div
@@ -92,6 +130,7 @@ function Hero() {
         variants={sliderVariants}
         initial="initial"
         animate="animate"
+        aria-hidden="true"
       >
         BENEW
       </motion.div>
