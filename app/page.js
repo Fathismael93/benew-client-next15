@@ -1,4 +1,4 @@
-// import Parallax from '../components/layouts/parallax';
+import Parallax from '../components/layouts/parallax';
 import Hero from '../components/layouts/hero';
 
 export default function Home() {
@@ -11,15 +11,21 @@ export default function Home() {
 
       {/* 🚀 CORRECTION: Toutes les sections others utilisent maintenant le système adaptatif */}
       <section className="others">
-        {/* <Parallax
+        <Parallax
           bgColor="linear-gradient(180deg, #111132, #0c0c1d)"
           title="Nos Produits..."
           planets="/sun.png"
           data-type="services"
-        /> */}
+        />
       </section>
 
       <section className="others">
+        <Parallax
+          bgColor="linear-gradient(180deg, #111132, #505064)"
+          title="What We Did?"
+          planets="/planets.png"
+          data-type="portfolio"
+        />
         {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-orange-500 mb-4">
@@ -33,15 +39,21 @@ export default function Home() {
       </section>
 
       <section className="others">
-        {/* <Parallax
+        <Parallax
+          bgColor="linear-gradient(180deg, #111132, #0c0c1d)"
+          title="Nos Produits..."
+          planets="/sun.png"
+          data-type="services"
+        />
+      </section>
+
+      <section className="others">
+        <Parallax
           bgColor="linear-gradient(180deg, #111132, #505064)"
           title="What We Did?"
           planets="/planets.png"
           data-type="portfolio"
-        /> */}
-      </section>
-
-      <section className="others">
+        />
         {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-pink-500 mb-4">
@@ -55,6 +67,12 @@ export default function Home() {
       </section>
 
       <section className="others">
+        <Parallax
+          bgColor="linear-gradient(180deg, #111132, #0c0c1d)"
+          title="Nos Produits..."
+          planets="/sun.png"
+          data-type="services"
+        />
         {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-purple-500 mb-4">
@@ -68,7 +86,13 @@ export default function Home() {
       </section>
 
       <section className="others">
-        <div className="flex items-center justify-center h-full">
+        <Parallax
+          bgColor="linear-gradient(180deg, #111132, #505064)"
+          title="What We Did?"
+          planets="/planets.png"
+          data-type="portfolio"
+        />
+        {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-cyan-500 mb-4">
               Portfolio 3
@@ -77,10 +101,16 @@ export default function Home() {
               Troisième projet de notre portfolio
             </p>
           </div>
-        </div>
+        </div> */}
       </section>
 
       <section className="others">
+        <Parallax
+          bgColor="linear-gradient(180deg, #111132, #0c0c1d)"
+          title="Nos Produits..."
+          planets="/sun.png"
+          data-type="services"
+        />
         {/* <div className="flex items-center justify-center h-full">
           <div className="text-center p-8">
             <h2 className="text-4xl font-bold text-orange-500 mb-4">Contact</h2>
