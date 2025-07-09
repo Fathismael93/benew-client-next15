@@ -2,36 +2,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
-// ===== VARIABLES CSS POUR HAUTEURS =====
-:root {
-  --vh-actual: 100vh;
-  --vh-small: clamp(400px, 70vh, 600px);
-  --vh-medium: clamp(500px, 80vh, 800px);
-  --vh-large: clamp(600px, 90vh, 1000px);
-  --vh-full: clamp(600px, 100vh, 1200px);
-
-  @include very-short-screen {
-    --vh-full: clamp(400px, 100vh, 600px);
-    --vh-large: clamp(350px, 90vh, 500px);
-    --vh-medium: clamp(300px, 80vh, 450px);
-    --vh-small: clamp(250px, 70vh, 400px);
-  }
-
-  @include short-screen {
-    --vh-full: clamp(500px, 100vh, 700px);
-    --vh-large: clamp(450px, 90vh, 650px);
-    --vh-medium: clamp(400px, 80vh, 600px);
-    --vh-small: clamp(350px, 70vh, 550px);
-  }
-
-  @include tall-screen {
-    --vh-full: clamp(800px, 100vh, 1400px);
-    --vh-large: clamp(700px, 90vh, 1200px);
-    --vh-medium: clamp(600px, 80vh, 1000px);
-    --vh-small: clamp(500px, 70vh, 800px);
-  }
-}
-
 // ===== RESET DE BASE =====
 html {
   scroll-snap-type: y mandatory;

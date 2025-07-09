@@ -1,6 +1,6 @@
 // app/styles/pages/_sections.scss
 
-// ===== SECTIONS PRINCIPALES CORRIGÉES =====
+// ===== SECTIONS PRINCIPALES AVEC HAUTEUR STRICTE =====
 .first {
   @include section-adaptive(calc(100vh - 6.25rem));
   scroll-snap-align: center;
@@ -72,18 +72,40 @@
 }
 
 .others {
-  @include section-adaptive(100vh);
-  scroll-snap-align: center;
-  position: relative;
+  // ===== HAUTEUR STRICTE SUR GRANDS ÉCRANS =====
+  @include lg-up {
+    height: 100vh;
+  }
+
+  // ===== ADAPTATIONS POUR PETITS ÉCRANS UNIQUEMENT =====
+  @include lg-down {
+    min-height: 100vh;
+    height: auto;
+  }
 
   @include very-short-screen {
+    min-height: auto;
+    padding: $spacing-lg 0;
     scroll-snap-align: none;
   }
 
   @include mobile-landscape {
-    scroll-snap-align: none;
+    min-height: auto;
+    padding: $spacing-xl 0;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    scroll-snap-align: none;
   }
+
+  @include short-screen {
+    min-height: 80vh;
+  }
+
+  // ===== STYLES COMMUNS =====
+  scroll-snap-align: center;
+  position: relative;
+  overflow: hidden;
 
   &::before {
     content: '';
@@ -110,10 +132,5 @@
   > * {
     position: relative;
     z-index: 1;
-  }
-
-  @media (max-width: 768px) {
-    min-height: 100vh;
-    height: auto;
   }
 }

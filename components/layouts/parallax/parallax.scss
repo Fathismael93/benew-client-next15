@@ -3,54 +3,14 @@
 @use '../../../app/app.scss' as *;
 
 .parallax {
+  // ===== HAUTEUR HÉRITÉE DU PARENT =====
   width: 100%;
   height: 100%;
-  min-height: var(--vh-full); // ✅ Support hauteurs adaptatives
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-
-  // ===== GESTION HAUTEURS ADAPTATIVES =====
-  @include very-short-screen {
-    min-height: var(--vh-small);
-    padding: $spacing-lg 0;
-
-    // Simplifier l'affichage sur écrans très courts
-    .stars::before,
-    .stars::after {
-      display: none;
-    }
-
-    .mountains::after {
-      opacity: 0.3;
-    }
-  }
-
-  @include mobile-landscape {
-    min-height: 80vh;
-    padding: $spacing-xl 0;
-
-    // Optimiser pour mobile landscape
-    .planets {
-      background-size: contain;
-      opacity: 0.8;
-    }
-  }
-
-  @include wide-but-short {
-    min-height: 90vh;
-
-    // Ajuster l'espacement vertical
-    justify-content: center;
-    align-items: center;
-  }
-
-  @include short-screen {
-    min-height: var(--vh-medium);
-    padding: $spacing-md 0;
-  }
 
   // Effet de vignette pour plus de profondeur
   &::before {
@@ -132,32 +92,28 @@
       }
     }
 
-    // ===== RESPONSIVE AVEC GESTION HAUTEURS =====
+    // ===== ADAPTATIONS DE CONTENU (PAS DE HAUTEUR) =====
     @include sm-down {
       font-size: clamp(2rem, 12vw, 3rem);
-      text-align: center;
       line-height: 1.2;
       letter-spacing: -0.01em;
     }
 
     @include md-down {
       font-size: clamp(2.5rem, 12vw, 4rem);
-      text-align: center;
       line-height: 1.15;
     }
 
     @include lg-only {
       font-size: clamp(3rem, 10vw, 4.5rem);
-      text-align: center;
       line-height: 1.1;
     }
 
     @include xl-only {
       font-size: clamp(3.5rem, 8vw, 5rem);
-      text-align: center;
     }
 
-    // Adaptations hauteur
+    // Adaptations pour petits écrans - ajustement du contenu seulement
     @include very-short-screen {
       font-size: clamp(1.8rem, 8vw, 2.5rem);
       line-height: 1.1;
@@ -215,14 +171,8 @@
       }
     }
 
-    // Responsive adjustments
+    // Adaptations responsive - position et visibilité seulement
     @include sm-down {
-      background-size: cover;
-      background-position: bottom center;
-    }
-
-    @include md-down {
-      background-size: cover;
       background-position: bottom center;
     }
 
@@ -235,7 +185,6 @@
     }
 
     @include mobile-landscape {
-      background-size: cover;
       background-position: bottom center;
       opacity: 0.8;
     }
@@ -274,42 +223,22 @@
       z-index: 1;
     }
 
-    // Responsive adjustments
+    // Adaptations responsive - taille et visibilité seulement
     @include sm-down {
-      background-size: contain;
       background-position: bottom center;
     }
 
-    @include md-down {
-      background-size: contain;
-      background-position: bottom center;
-    }
-
-    @include lg-only {
-      background-size: contain;
-      background-position: bottom center;
-    }
-
-    @include xl-only {
-      background-size: cover;
-      background-position: bottom center;
-    }
-
-    // Adaptations hauteur
     @include very-short-screen {
       opacity: 0.6;
-      background-size: contain;
       filter: drop-shadow(0 0 15px rgba($primary-color, 0.2));
     }
 
     @include mobile-landscape {
-      background-size: contain;
       background-position: bottom center;
       opacity: 0.8;
     }
 
     @include wide-but-short {
-      background-size: contain;
       background-position: center center;
     }
 
@@ -378,13 +307,13 @@
       }
     }
 
-    // Adaptations hauteur
+    // Adaptations pour petits écrans - opacité et effets seulement
     @include very-short-screen {
       opacity: 0.5;
 
       &::before,
       &::after {
-        display: none; // Simplifier sur écrans très courts
+        opacity: 0.2;
       }
     }
 
@@ -407,7 +336,6 @@
 }
 
 // ===== ANIMATIONS SPÉCIFIQUES PARALLAX =====
-// Note: certaines animations comme gradientShift sont dans _keyframes.scss
 
 @keyframes parallaxGradientFlow {
   0%,
@@ -683,19 +611,6 @@
   }
 }
 
-// ===== AMÉLIORATIONS HAUTE RÉSOLUTION =====
-@include retina {
-  .parallax {
-    .mountains,
-    .planets,
-    .stars {
-      background-size: cover;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
-    }
-  }
-}
-
 // ===== HOVER EFFECTS POUR DESKTOP =====
 @include mouse-device {
   .parallax {
@@ -715,60 +630,7 @@
   }
 }
 
-// ===== VARIANTES AMÉLIORÉES =====
-
-// Parallax compact pour sections plus petites
-.parallax.compact {
-  min-height: var(--vh-large);
-
-  h1 {
-    font-size: clamp(1.8rem, 6vw, 3.5rem);
-
-    &::after {
-      filter: blur(20px);
-      opacity: 0.3;
-    }
-  }
-
-  .planets {
-    opacity: 0.8;
-  }
-
-  .stars {
-    opacity: 0.6;
-  }
-
-  @include very-short-screen {
-    min-height: var(--vh-medium);
-  }
-}
-
-// Parallax intense pour sections importantes
-.parallax.intense {
-  min-height: var(--vh-full);
-
-  h1 {
-    &::after {
-      filter: blur(40px);
-      opacity: 0.8;
-    }
-  }
-
-  .planets {
-    filter: drop-shadow(0 0 30px rgba($primary-color, 0.5))
-      drop-shadow(0 0 60px rgba($secondary-color, 0.3));
-  }
-
-  .stars {
-    opacity: 1;
-
-    &::after {
-      opacity: 0.4;
-    }
-  }
-}
-
-// ===== BREAKPOINTS PERSONNALISÉS =====
+// ===== BREAKPOINTS EXTRÊMES =====
 
 // Très grands écrans
 @include xxl-up {
@@ -783,9 +645,6 @@
 // Très petits écrans
 @include xs-only {
   .parallax {
-    min-height: var(--vh-small);
-    padding: $spacing-md 0;
-
     h1 {
       font-size: clamp(1.8rem, 15vw, 2.5rem);
       line-height: 1.3;
@@ -802,42 +661,6 @@
 
     .stars {
       opacity: 0.5;
-    }
-  }
-}
-
-// ===== SUPPORT PORTRAIT SUR TABLETTES =====
-@include portrait {
-  .parallax {
-    @include between(768px, 1024px) {
-      min-height: var(--vh-large);
-      padding: $spacing-lg 0;
-
-      h1 {
-        font-size: clamp(2.5rem, 8vw, 4rem);
-      }
-    }
-  }
-}
-
-// ===== GESTION DES HAUTEURS EXTRÊMES =====
-@include tall-screen {
-  .parallax {
-    min-height: var(--vh-full);
-
-    h1 {
-      font-size: clamp(3rem, 8vw, 6rem);
-    }
-  }
-}
-
-@include very-tall-screen {
-  .parallax {
-    min-height: var(--vh-full);
-    max-height: 120vh; // Limiter sur très grands écrans
-
-    h1 {
-      font-size: clamp(3.5rem, 7vw, 7rem);
     }
   }
 }

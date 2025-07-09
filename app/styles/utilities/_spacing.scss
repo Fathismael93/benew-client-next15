@@ -1,5 +1,4 @@
 // app/styles/utilities/_spacing.scss
-// Contenu extrait de votre app.scss existant
 
 // Classes d'espacement fluide
 .spacing-fluid {
@@ -24,46 +23,58 @@
   @include aspect-ratio(3/4);
 }
 
-// Classes de hauteur adaptative
-.min-vh-100 {
-  min-height: var(--vh-full);
-  height: auto;
-}
+// Classes spécialisées pour composants
+.main-section {
+  @include section-adaptive(100vh);
 
-.vh-adaptive {
-  min-height: var(--vh-medium);
-  height: auto;
-}
-
-.vh-small {
-  min-height: var(--vh-small);
-  height: auto;
-}
-
-.vh-large {
-  min-height: var(--vh-large);
-  height: auto;
-}
-
-// Classes de hauteur responsive selon l'écran
-.vh-responsive {
-  min-height: 100vh;
-  height: auto;
-
-  @include very-short-screen {
-    min-height: auto;
-    height: auto;
-    padding: $spacing-md 0;
-  }
-
-  @include short-screen {
-    min-height: 80vh;
-  }
-
-  @include mobile-landscape {
-    min-height: auto;
-    padding: $spacing-lg 0;
+  // Contenu centré avec padding adaptatif
+  .section-content {
     display: flex;
     align-items: center;
+    justify-content: center;
+    min-height: inherit;
+    padding: clamp($spacing-md, 4vh, $spacing-2xl) 0;
+
+    @include mobile-landscape {
+      padding: $spacing-lg 0;
+    }
+  }
+}
+
+// Classe pour les héros responsifs
+.hero-section {
+  @include section-adaptive(calc(100vh - 6.25rem));
+
+  .hero-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    @include very-short-screen {
+      height: auto;
+      min-height: 400px;
+    }
+
+    @include mobile-landscape {
+      height: auto;
+      min-height: auto;
+    }
+  }
+}
+
+// Classe pour les sections portfolio/galerie
+.portfolio-section {
+  @include section-adaptive(100vh);
+
+  .portfolio-grid {
+    min-height: inherit;
+    display: grid;
+    align-content: center;
+    gap: $spacing-lg;
+
+    @include very-short-screen {
+      min-height: auto;
+      padding: $spacing-xl 0;
+    }
   }
 }
