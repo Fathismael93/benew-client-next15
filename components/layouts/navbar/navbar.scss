@@ -6,11 +6,11 @@
   height: 6.25rem;
   scroll-snap-align: start;
   z-index: $z-navbar;
-  position: fixed; // ✅ Fixed pour navbar flottante
-  top: 0;
-  left: 0;
-  right: 0;
-  transition: all $transition-smooth;
+  position: relative; // ✅ Fixed pour navbar flottante
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  // transition: all $transition-smooth;
 
   // ===== GESTION HAUTEURS ADAPTATIVES =====
   @include very-short-screen {
