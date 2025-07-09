@@ -2,7 +2,8 @@
 @use '../app.scss' as *;
 
 .contact {
-  height: 100%;
+  min-height: 100vh; // Au lieu de height: 100%
+  height: auto; // Permet l'expansion
   @include fluid-container(
     60rem,
     clamp(1rem, 3vw, 1.5rem)
