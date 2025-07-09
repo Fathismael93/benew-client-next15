@@ -1,0 +1,271 @@
+// app/styles/mixins/_breakpoints.scss
+
+// ===== MIXINS BREAKPOINTS STANDARDS =====
+
+@mixin xs-only {
+  @media (max-width: #{$breakpoint-xs - 1px}) {
+    @content;
+  }
+}
+
+@mixin sm-down {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin sm-up {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin sm-only {
+  @media (min-width: $breakpoint-xs) and (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin md-down {
+  @media (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin md-up {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin md-only {
+  @media (min-width: $breakpoint-sm) and (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin lg-down {
+  @media (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin lg-up {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin lg-only {
+  @media (min-width: $breakpoint-md) and (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin xl-down {
+  @media (max-width: #{$breakpoint-xl - 1px}) {
+    @content;
+  }
+}
+
+@mixin xl-up {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+@mixin xl-only {
+  @media (min-width: $breakpoint-lg) and (max-width: #{$breakpoint-xl - 1px}) {
+    @content;
+  }
+}
+
+@mixin xxl-up {
+  @media (min-width: $breakpoint-2xl) {
+    @content;
+  }
+}
+
+// ===== MIXINS HAUTEUR D'ÉCRAN =====
+
+@mixin very-short-screen {
+  @media (max-height: $height-very-short) {
+    @content;
+  }
+}
+
+@mixin short-screen {
+  @media (max-height: $height-short) {
+    @content;
+  }
+}
+
+@mixin medium-screen {
+  @media (min-height: #{$height-short + 1px}) and (max-height: $height-medium) {
+    @content;
+  }
+}
+
+@mixin tall-screen {
+  @media (min-height: #{$height-medium + 1px}) {
+    @content;
+  }
+}
+
+@mixin very-tall-screen {
+  @media (min-height: $height-very-tall) {
+    @content;
+  }
+}
+
+@mixin mobile-landscape {
+  @media (max-height: 500px) and (orientation: landscape) and (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin wide-but-short {
+  @media (min-aspect-ratio: 16/9) and (max-height: 700px) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+// ===== MIXINS LEGACY (Rétrocompatibilité) =====
+
+@mixin extra-small {
+  @include xs-only {
+    @content;
+  }
+}
+
+@mixin small {
+  @include sm-only {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @include md-down {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @include lg-only {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @include xl-only {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @include xl-up {
+    @content;
+  }
+}
+
+// ===== MIXINS ORIENTÉS CONTENU =====
+
+@mixin nav-mobile {
+  @media (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin sidebar-collapse {
+  @media (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin hero-stack {
+  @media (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin cards-single {
+  @media (max-width: 639px) {
+    @content;
+  }
+}
+
+@mixin cards-double {
+  @media (min-width: 640px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin cards-triple {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+// ===== MIXINS AVANCÉS =====
+
+@mixin between($min, $max) {
+  @media (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi),
+    (min-resolution: 2dppx) {
+    @content;
+  }
+}
+
+@mixin touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin mouse-device {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+@mixin light-mode {
+  @media (prefers-color-scheme: light) {
+    @content;
+  }
+}

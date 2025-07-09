@@ -1,0 +1,192 @@
+// app/styles/mixins/_effects.scss
+
+// ===== MIXIN GLASSMORPHISM =====
+@mixin glassmorphism($opacity: 0.1, $blur: 20px, $saturation: 180%) {
+  background: rgba($text-color, $opacity);
+  backdrop-filter: blur($blur) saturate($saturation);
+  border: 1px solid rgba($text-color, $opacity * 2);
+
+  @include reduced-motion {
+    backdrop-filter: none;
+    background: rgba($text-color, $opacity * 2);
+  }
+}
+
+// ===== MIXIN GRADIENT TEXT =====
+@mixin gradient-text($gradient: $gradient-primary) {
+  background: $gradient;
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  @supports not (-webkit-background-clip: text) {
+    color: $primary-color;
+  }
+}
+
+// ===== MIXIN BUTTON HOVER EFFECT =====
+@mixin button-hover-effect($scale: 300px) {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.6s ease,
+      height 0.6s ease;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    width: $scale;
+    height: $scale;
+  }
+
+  @include reduced-motion {
+    &::before {
+      transition: none;
+    }
+
+    &:hover::before {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+  }
+}
+
+// ===== MIXIN TEXT SHADOW GLOW =====
+@mixin text-shadow-glow($color: $primary-color, $intensity: 0.3) {
+  text-shadow:
+    0 0 10px rgba($color, $intensity),
+    0 0 20px rgba($color, $intensity * 0.8),
+    0 0 30px rgba($color, $intensity * 0.6);
+
+  @include reduced-motion {
+    text-shadow: 0 2px 4px rgba($color, $intensity);
+  }
+}
+
+// ===== MIXIN CARD MODERNE =====
+@mixin card-modern($hover: true) {
+  background: $gradient-glass;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba($text-color, 0.1);
+  border-radius: $border-radius-large;
+  box-shadow: $box-shadow-soft;
+  transition: all $transition-smooth;
+
+  @if $hover {
+    &:hover {
+      border-color: rgba($primary-color, 0.3);
+      box-shadow: $box-shadow-hover;
+      transform: translateY(-4px);
+
+      @include reduced-motion {
+        transform: none;
+      }
+    }
+  }
+
+  @include reduced-motion {
+    transition: none;
+    backdrop-filter: none;
+    background: rgba($text-color, 0.05);
+  }
+}
+
+// ===== MIXIN SECTION ADAPTATIVE =====
+@mixin section-adaptive($min-height: 100vh) {
+  min-height: $min-height;
+  height: auto;
+
+  @include very-short-screen {
+    min-height: auto;
+    padding: $spacing-lg 0;
+  }
+
+  @include short-screen {
+    min-height: clamp(400px, 80vh, 600px);
+  }
+
+  @include mobile-landscape {
+    min-height: auto;
+    padding: $spacing-xl 0;
+    display: flex;
+    align-items: center;
+  }
+
+  @include wide-but-short {
+    min-height: 90vh;
+  }
+}
+
+// ===== MIXIN CONTENEUR FLUIDE =====
+@mixin fluid-container($max-width: 1200px, $padding: clamp(1rem, 4vw, 2rem)) {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding-left: $padding;
+  padding-right: $padding;
+}
+
+// ===== MIXIN GRILLE AUTO =====
+@mixin auto-grid($min-item-width: 300px, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min-item-width, 1fr));
+  gap: $gap;
+}
+
+// ===== MIXIN ASPECT RATIO =====
+@mixin aspect-ratio($ratio: 16/9) {
+  aspect-ratio: $ratio;
+
+  @supports not (aspect-ratio: 1) {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      display: block;
+      padding-bottom: calc(100% / #{$ratio});
+    }
+
+    > * {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+// ===== MIXIN TEXT TRUNCATE =====
+@mixin text-truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    @supports not (-webkit-line-clamp: 1) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
