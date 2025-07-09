@@ -47,7 +47,6 @@ const overlayVariants = {
 
 function Sidebar() {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
 
   // Fermer la sidebar lors de la navigation
   const handleNavigation = useCallback(() => {

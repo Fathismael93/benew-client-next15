@@ -77,7 +77,7 @@ const navigationItems = [
 function Links({ onNavigate }) {
   const pathname = usePathname();
 
-  const handleLinkClick = (path) => {
+  const handleLinkClick = () => {
     // Callback pour fermer la sidebar
     if (onNavigate) {
       onNavigate();
