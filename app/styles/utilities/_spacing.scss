@@ -1,0 +1,69 @@
+// app/styles/utilities/_spacing.scss
+// Contenu extrait de votre app.scss existant
+
+// Classes d'espacement fluide
+.spacing-fluid {
+  padding: clamp($spacing-md, 4vw, $spacing-2xl);
+}
+
+.gap-fluid {
+  gap: clamp($spacing-sm, 2vw, $spacing-lg);
+}
+
+// Classes d'aspect ratio
+.aspect-square {
+  @include aspect-ratio(1);
+}
+.aspect-video {
+  @include aspect-ratio(16/9);
+}
+.aspect-photo {
+  @include aspect-ratio(4/3);
+}
+.aspect-portrait {
+  @include aspect-ratio(3/4);
+}
+
+// Classes de hauteur adaptative
+.min-vh-100 {
+  min-height: var(--vh-full);
+  height: auto;
+}
+
+.vh-adaptive {
+  min-height: var(--vh-medium);
+  height: auto;
+}
+
+.vh-small {
+  min-height: var(--vh-small);
+  height: auto;
+}
+
+.vh-large {
+  min-height: var(--vh-large);
+  height: auto;
+}
+
+// Classes de hauteur responsive selon l'écran
+.vh-responsive {
+  min-height: 100vh;
+  height: auto;
+
+  @include very-short-screen {
+    min-height: auto;
+    height: auto;
+    padding: $spacing-md 0;
+  }
+
+  @include short-screen {
+    min-height: 80vh;
+  }
+
+  @include mobile-landscape {
+    min-height: auto;
+    padding: $spacing-lg 0;
+    display: flex;
+    align-items: center;
+  }
+}

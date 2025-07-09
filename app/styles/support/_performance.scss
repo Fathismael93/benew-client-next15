@@ -1,0 +1,101 @@
+// app/styles/support/_performance.scss
+// Contenu extrait de votre app.scss existant
+
+// ===== SUPPORT HAUTE RÉSOLUTION =====
+@include retina {
+  body {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+// ===== OPTIMISATIONS PERFORMANCE =====
+
+// Réduire les animations sur mobile pour les performances
+@include touch-device {
+  .hero {
+    .textContainer h1::after {
+      animation-duration: 6s;
+    }
+
+    .imageContainer .heroImage {
+      animation-duration: 8s;
+    }
+  }
+}
+
+// Optimisations pour les petits écrans
+@include xs-only {
+  .hero {
+    .wrapper {
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+
+    .textContainer {
+      gap: 1.5rem;
+
+      h1 {
+        font-size: clamp(2.5rem, 12vw, 3.5rem);
+      }
+
+      h2 {
+        font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+      }
+
+      .buttonGroup {
+        gap: 1.2rem;
+
+        .primaryButton,
+        .secondaryButton {
+          padding: 1rem 2rem;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .imageContainer {
+      min-height: 250px;
+
+      .heroImage {
+        width: clamp(200px, 80vw, 300px);
+      }
+    }
+  }
+}
+
+// Support pour très grands écrans
+@include xxl-up {
+  .hero {
+    .wrapper {
+      max-width: 80rem;
+      gap: 5rem;
+    }
+
+    .textContainer {
+      gap: 3rem;
+
+      h2 {
+        font-size: 1.6rem;
+        letter-spacing: 0.25rem;
+      }
+
+      h1 {
+        font-size: clamp(4rem, 6vw, 6rem);
+      }
+
+      .buttonGroup {
+        gap: 2rem;
+
+        .primaryButton,
+        .secondaryButton {
+          padding: 1.4rem 3rem;
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    .imageContainer .heroImage {
+      width: clamp(400px, 35vw, 600px);
+    }
+  }
+}

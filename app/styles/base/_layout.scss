@@ -1,0 +1,74 @@
+// app/styles/base/_layout.scss
+// Contenu extrait de votre app.scss existant
+
+// Conteneurs responsive
+.container-fluid {
+  width: 100%;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 2rem);
+
+  @include sm-up {
+    max-width: 640px;
+  }
+  @include md-up {
+    max-width: 768px;
+  }
+  @include lg-up {
+    max-width: 1024px;
+  }
+  @include xl-up {
+    max-width: 1280px;
+  }
+  @include xxl-up {
+    max-width: 1536px;
+  }
+}
+
+// Classes de layout responsive
+.flex-responsive {
+  display: flex;
+  gap: $spacing-lg;
+
+  @include md-down {
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+}
+
+.grid-responsive {
+  @include auto-grid(300px, $spacing-lg);
+
+  &.small {
+    @include auto-grid(250px, $spacing-md);
+  }
+
+  &.large {
+    @include auto-grid(350px, $spacing-xl);
+  }
+}
+
+// Classes de conteneur améliorées
+.container-xs {
+  @include fluid-container(480px);
+}
+.container-sm {
+  @include fluid-container(640px);
+}
+.container-md {
+  @include fluid-container(768px);
+}
+.container-lg {
+  @include fluid-container(1024px);
+}
+.container-xl {
+  @include fluid-container(1280px);
+}
+.container-2xl {
+  @include fluid-container(1536px);
+}

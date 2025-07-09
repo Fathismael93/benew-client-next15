@@ -3,7 +3,6 @@
 
 // 1. Configuration de base
 @import './styles/config/variables';
-@import './styles/config/functions';
 
 // 2. Mixins utilitaires
 @import './styles/mixins/breakpoints';
@@ -17,7 +16,6 @@
 
 // 4. Composants globaux
 @import './styles/components/buttons';
-@import './styles/components/forms';
 @import './styles/components/cards';
 
 // 5. Classes utilitaires

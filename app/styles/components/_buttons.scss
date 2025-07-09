@@ -1,0 +1,96 @@
+// app/styles/components/_buttons.scss
+// Contenu extrait de votre app.scss existant
+
+.button-modern {
+  @include button-hover-effect;
+  padding: $spacing-md $spacing-xl;
+  border-radius: $border-radius-pill;
+  font-weight: 600;
+  transition: all $transition-elastic;
+  cursor: pointer;
+  border: none;
+  position: relative;
+  z-index: 1;
+
+  // Contenu au-dessus de l'effet
+  span,
+  .button-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  &.primary {
+    background: $gradient-primary;
+    color: $background-color;
+    box-shadow: $box-shadow-primary;
+
+    &:hover {
+      box-shadow: $box-shadow-hover;
+      transform: translateY(-2px) scale(1.02);
+
+      @include reduced-motion {
+        transform: translateY(-1px);
+      }
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: $box-shadow-primary, $box-shadow-focus;
+    }
+  }
+
+  &.secondary {
+    background: transparent;
+    color: $primary-color;
+    border: 2px solid $primary-color;
+
+    &:hover {
+      background: rgba($primary-color, 0.1);
+      border-color: $secondary-color;
+      color: $secondary-color;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: $box-shadow-focus;
+    }
+  }
+
+  &.accent {
+    background: $gradient-accent;
+    color: $text-color;
+    box-shadow: $box-shadow-accent;
+
+    &:hover {
+      box-shadow: 0 12px 40px rgba($accent-color, 0.4);
+      transform: translateY(-2px) scale(1.02);
+    }
+  }
+
+  // Tailles
+  &.small {
+    padding: $spacing-sm $spacing-md;
+    font-size: 0.875rem;
+  }
+
+  &.large {
+    padding: $spacing-lg $spacing-2xl;
+    font-size: 1.125rem;
+  }
+
+  // États
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+}
