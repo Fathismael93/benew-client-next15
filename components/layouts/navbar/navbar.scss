@@ -1,11 +1,37 @@
+// components/layouts/navbar/navbar.scss
+// ===== IMPORTS CORRIGÉS =====
 @use '../../../app/app.scss' as *;
 
 .navbar {
   height: 6.25rem;
   scroll-snap-align: start;
   z-index: $z-navbar;
-  position: relative; // ✅ Remettre en relative
+  position: fixed; // ✅ Fixed pour navbar flottante
+  top: 0;
+  left: 0;
+  right: 0;
   transition: all $transition-smooth;
+
+  // ===== GESTION HAUTEURS ADAPTATIVES =====
+  @include very-short-screen {
+    height: 4rem;
+
+    .wrapper {
+      padding: $spacing-xs $spacing-sm;
+    }
+  }
+
+  @include mobile-landscape {
+    height: 4.5rem;
+
+    .wrapper {
+      padding: $spacing-sm $spacing-md;
+    }
+  }
+
+  @include wide-but-short {
+    height: 5rem;
+  }
 
   // Effet glassmorphism avec backdrop
   &::before {
@@ -15,14 +41,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba($background-color, 0.85);
-    backdrop-filter: blur(20px) saturate(180%);
+    @include glassmorphism(0.85, 20px, 180%);
     border-bottom: 1px solid rgba($primary-color, 0.1);
     z-index: -1;
-    transition: all $transition-smooth; // ✅ Variable du système
+    transition: all $transition-smooth;
   }
 
-  // Effet de lueur subtile en haut (amélioré avec gradient système)
+  // Effet de lueur subtile en haut
   &::after {
     content: '';
     position: absolute;
@@ -30,7 +55,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: $gradient-rainbow; // ✅ Gradient du système
+    background: $gradient-rainbow;
     background-size: 200% 100%;
     animation: gradientFlow 4s ease-in-out infinite;
     z-index: 1;
@@ -41,12 +66,12 @@
     }
   }
 
-  // ✅ Mixins du système au lieu de @include small/mobile
+  // ===== RESPONSIVE BREAKPOINTS =====
   @include sm-down {
     height: 5rem;
 
     &::before {
-      backdrop-filter: blur(15px) saturate(150%);
+      @include glassmorphism(0.9, 15px, 150%);
     }
   }
 
@@ -54,15 +79,12 @@
     height: 5rem;
 
     &::before {
-      backdrop-filter: blur(15px) saturate(150%);
+      @include glassmorphism(0.9, 15px, 150%);
     }
   }
 
   .wrapper {
-    @include fluid-container(
-      70rem,
-      clamp(0.5rem, 2vw, 1rem)
-    ); // ✅ Au lieu de clamp(1rem, 4vw, 2rem)
+    @include fluid-container(70rem, clamp($spacing-sm, 2vw, $spacing-md));
     height: 100%;
     display: flex;
     align-items: center;
@@ -70,26 +92,26 @@
     position: relative;
     z-index: 2;
 
-    // Container avec effet glassmorphism (amélioré)
-    @include glassmorphism(0.02, 15px); // ✅ Mixin du système
-    border-radius: 0 0 $border-radius-xlarge $border-radius-xlarge; // ✅ Variable du système
+    // Container avec effet glassmorphism
+    @include glassmorphism(0.02, 15px);
+    border-radius: 0 0 $border-radius-xlarge $border-radius-xlarge;
     border: 1px solid rgba($primary-color, 0.08);
     border-top: none;
-    box-shadow: $box-shadow-soft; // ✅ Variable du système
+    box-shadow: $box-shadow-soft;
 
     // Animation d'apparition
-    animation: wrapperSlideDown 0.8s $transition-elastic; // ✅ Variable du système
+    animation: wrapperSlideDown 0.8s $transition-elastic;
 
     @include sm-down {
       justify-content: flex-end;
-      padding: $spacing-md; // ✅ Variable du système
+      padding: $spacing-md;
       border-radius: 0 0 $border-radius-medium $border-radius-medium;
       @include glassmorphism(0.03, 12px);
     }
 
     @include md-down {
       justify-content: flex-end;
-      padding: $spacing-lg; // ✅ Variable du système
+      padding: $spacing-lg;
       border-radius: 0 0 $border-radius-medium $border-radius-medium;
       @include glassmorphism(0.03, 12px);
     }
@@ -107,31 +129,39 @@
       border-radius: 0 0 $border-radius-large $border-radius-large;
     }
 
-    // Logo container avec effets (amélioré)
+    @include very-short-screen {
+      padding: $spacing-xs $spacing-sm;
+      border-radius: 0 0 $border-radius-medium $border-radius-medium;
+    }
+
+    @include mobile-landscape {
+      padding: $spacing-sm $spacing-md;
+      border-radius: 0 0 $border-radius-medium $border-radius-medium;
+    }
+
+    // Logo container avec effets
     > div:first-child {
-      margin-left: $spacing-md; // ✅ Variable du système
+      margin-left: $spacing-md;
       position: relative;
 
-      // Effet de glow autour du logo (amélioré)
+      // Effet de glow autour du logo
       &::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 140%; // ✅ Légèrement plus grand
+        width: 140%;
         height: 140%;
         background: radial-gradient(
           circle,
           rgba($primary-color, 0.15) 0%,
-          // ✅ Plus subtil
           rgba($secondary-color, 0.1) 50%,
-          // ✅ Ajout secondary
           transparent 70%
         );
         transform: translate(-50%, -50%);
         z-index: -1;
         opacity: 0;
-        transition: all $transition-elastic; // ✅ Variable du système
+        transition: all $transition-elastic;
         border-radius: 50%;
       }
 
@@ -147,22 +177,22 @@
 
       a {
         display: block;
-        transition: all $transition-elastic; // ✅ Variable du système
-        border-radius: $border-radius-small; // ✅ Variable du système
-        padding: $spacing-xs; // ✅ Variable du système
+        transition: all $transition-elastic;
+        border-radius: $border-radius-small;
+        padding: $spacing-xs;
 
         &:hover {
-          transform: scale(1.08) rotate(1deg); // ✅ Plus subtil
+          transform: scale(1.08) rotate(1deg);
         }
 
         &:focus {
           outline: none;
-          box-shadow: $box-shadow-focus; // ✅ Variable du système
+          box-shadow: $box-shadow-focus;
         }
 
         img {
           filter: drop-shadow(0 4px 8px rgba($primary-color, 0.3));
-          transition: filter $transition-smooth; // ✅ Variable du système
+          transition: filter $transition-smooth;
 
           &:hover {
             filter: drop-shadow(0 6px 12px rgba($primary-color, 0.5));
@@ -174,26 +204,33 @@
       @include lg-down {
         display: none;
       }
+
+      @include very-short-screen {
+        display: none;
+      }
+
+      @include mobile-landscape {
+        display: none;
+      }
     }
 
     .social {
       display: flex;
-      gap: $spacing-md; // ✅ Variable du système
+      gap: $spacing-md;
       align-items: center;
 
-      // Container avec fond subtil (amélioré)
-      @include glassmorphism(0.08, 15px); // ✅ Mixin du système
+      // Container avec fond subtil
+      @include glassmorphism(0.08, 15px);
       background: rgba($primary-color, 0.05);
-      padding: $spacing-xs $spacing-sm; // ✅ Variables du système
-      border-radius: $border-radius-pill; // ✅ Variable du système
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-pill;
       border: 1px solid rgba($primary-color, 0.15);
       box-shadow:
         $box-shadow-soft,
-        // ✅ Variable du système
         inset 0 1px 0 rgba($text-color, 0.1);
 
       // Animation d'apparition décalée
-      animation: socialSlideIn 1s $transition-elastic 0.3s both; // ✅ Variable du système
+      animation: socialSlideIn 1s $transition-elastic 0.3s both;
 
       @include reduced-motion {
         animation: fadeIn 0.6s ease-out 0.3s both;
@@ -206,17 +243,19 @@
         width: 38px;
         height: 38px;
         border-radius: 50%;
-        @include glassmorphism(0.05, 10px); // ✅ Mixin du système
+        @include glassmorphism(0.05, 10px);
         background: rgba($text-color, 0.05);
         border: 1px solid rgba($primary-color, 0.2);
-        transition: all $transition-elastic; // ✅ Variable du système
+        transition: all $transition-elastic;
         position: relative;
         overflow: hidden;
+        min-height: 44px; // Touch minimum
+        min-width: 44px;
 
-        // Effet de vague au hover (amélioré)
-        @include button-hover-effect(60px); // ✅ Mixin du système
+        // Effet de vague au hover
+        @include button-hover-effect(60px);
 
-        // Effet de brillance (amélioré)
+        // Effet de brillance
         &::after {
           content: '';
           position: absolute;
@@ -230,18 +269,17 @@
             rgba(255, 255, 255, 0.3),
             transparent
           );
-          transform: skewX(-15deg); // ✅ Angle plus naturel
-          transition: left 0.8s $transition-smooth; // ✅ Variable du système
+          transform: skewX(-15deg);
+          transition: left 0.8s $transition-smooth;
           z-index: 2;
         }
 
         &:hover {
           transform: translateY(-4px) scale(1.08);
-          background: $gradient-primary; // ✅ Gradient du système
+          background: $gradient-primary;
           border-color: $secondary-color;
           box-shadow:
             $box-shadow-primary,
-            // ✅ Variable du système
             0 0 20px rgba($secondary-color, 0.3);
 
           &::after {
@@ -250,15 +288,12 @@
         }
 
         &:active {
-          transform: translateY(-4px) scale(1.08);
+          transform: translateY(-2px) scale(1.02);
         }
 
         &:focus {
           outline: none;
-          box-shadow:
-            $box-shadow-primary,
-            // ✅ Variable du système
-            $box-shadow-focus; // ✅ Variable du système
+          box-shadow: $box-shadow-primary, $box-shadow-focus;
         }
 
         // Animation de rebond au focus
@@ -269,12 +304,17 @@
             animation: none;
           }
         }
+
+        @include touch-device {
+          min-height: 44px;
+          min-width: 44px;
+        }
       }
 
       img {
         width: 18px;
         height: 18px;
-        transition: all $transition-smooth; // ✅ Variable du système
+        transition: all $transition-smooth;
         position: relative;
         z-index: 1;
         filter: invert(0.7);
@@ -304,16 +344,26 @@
           width: 21px;
           height: 21px;
         }
+
+        @include very-short-screen {
+          width: 16px;
+          height: 16px;
+        }
+
+        @include mobile-landscape {
+          width: 18px;
+          height: 18px;
+        }
       }
 
-      // Responsive adjustments (avec variables système)
+      // ===== RESPONSIVE ADJUSTMENTS =====
       @include sm-down {
         gap: $spacing-sm;
         padding: $spacing-xs;
 
         a {
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
         }
       }
 
@@ -342,15 +392,41 @@
         padding: $spacing-sm $spacing-lg;
 
         a {
-          width: 41px;
-          height: 41px;
+          width: 42px;
+          height: 42px;
         }
+      }
+
+      @include very-short-screen {
+        gap: $spacing-xs;
+        padding: $spacing-xs;
+
+        a {
+          width: 32px;
+          height: 32px;
+        }
+      }
+
+      @include mobile-landscape {
+        gap: $spacing-sm;
+        padding: $spacing-xs $spacing-sm;
+
+        a {
+          width: 36px;
+          height: 36px;
+        }
+      }
+
+      @include wide-but-short {
+        gap: $spacing-md;
+        padding: $spacing-sm $spacing-md;
       }
     }
   }
 }
 
-// ===== ANIMATIONS NAVBAR (améliorées) =====
+// ===== ANIMATIONS SPÉCIFIQUES NAVBAR =====
+// Note: gradientShift et fadeIn sont maintenant dans _keyframes.scss
 
 @keyframes gradientFlow {
   0% {
@@ -410,14 +486,12 @@
   }
 }
 
-// ===== EFFETS AU SCROLL (améliorés) =====
-
+// ===== EFFETS AU SCROLL =====
 .navbar.scrolled {
-  height: clamp(4rem, 8vw, 4.5rem); // ✅ Plus fluide
+  height: clamp(4rem, 8vw, 4.5rem);
 
   &::before {
-    background: rgba($background-color, 0.95);
-    backdrop-filter: blur(25px) saturate(200%);
+    @include glassmorphism(0.95, 25px, 200%);
   }
 
   .wrapper {
@@ -447,10 +521,40 @@
   @include md-down {
     height: 4rem;
   }
+
+  @include very-short-screen {
+    height: 3.5rem;
+
+    .wrapper {
+      padding: $spacing-xs;
+
+      .social {
+        gap: $spacing-xs;
+        padding: $spacing-xs;
+
+        a {
+          width: 28px;
+          height: 28px;
+        }
+
+        img {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+
+  @include mobile-landscape {
+    height: 3.5rem;
+
+    .wrapper {
+      padding: $spacing-sm;
+    }
+  }
 }
 
 // ===== ÉTATS INTERACTIFS AVANCÉS =====
-
 .navbar:hover {
   &::after {
     animation-duration: 2s;
@@ -458,12 +562,11 @@
 
   .wrapper {
     border-color: rgba($primary-color, 0.15);
-    box-shadow: $box-shadow-medium; // ✅ Variable du système
+    box-shadow: $box-shadow-medium;
   }
 }
 
 // ===== SUPPORT ACCESSIBILITÉ =====
-
 @include reduced-motion {
   .navbar {
     &,
@@ -484,8 +587,7 @@
 @include dark-mode {
   .navbar {
     &::before {
-      background: rgba($background-color, 0.9);
-      backdrop-filter: blur(25px) saturate(200%);
+      @include glassmorphism(0.9, 25px, 200%);
     }
 
     .wrapper {
@@ -506,7 +608,6 @@
 }
 
 // ===== OPTIMISATIONS PERFORMANCE =====
-
 @include touch-device {
   .navbar {
     &::after {
@@ -518,16 +619,17 @@
       &::after {
         transition-duration: 0.3s;
       }
+
+      min-height: 44px;
+      min-width: 44px;
     }
   }
 }
 
-// ===== VARIANTES (améliorées) =====
-
+// ===== VARIANTES =====
 .navbar.transparent {
   &::before {
-    background: rgba($background-color, 0.3);
-    backdrop-filter: blur(15px);
+    @include glassmorphism(0.3, 15px);
   }
 
   .wrapper {
@@ -539,16 +641,15 @@
 .navbar.accent {
   &::after {
     height: 3px;
-    background: $gradient-accent; // ✅ Gradient du système
+    background: $gradient-accent;
   }
 
   .wrapper {
-    border-color: rgba($primary-color, 0.2);
+    border-color: rgba($accent-color, 0.2);
   }
 }
 
-// ===== BREAKPOINTS PERSONNALISÉS =====
-
+// ===== BREAKPOINTS ÉTENDUS =====
 @include xxl-up {
   .navbar .wrapper {
     max-width: 80rem;
@@ -570,12 +671,45 @@
         a {
           width: 32px;
           height: 32px;
+          min-height: 44px;
+          min-width: 44px;
         }
 
         img {
           width: 16px;
           height: 16px;
         }
+      }
+    }
+  }
+}
+
+// ===== SUPPORT PORTRAIT SUR TABLETTES =====
+@include portrait {
+  .navbar .wrapper {
+    @include between(768px, 1024px) {
+      justify-content: center;
+
+      > div:first-child {
+        display: none;
+      }
+    }
+  }
+}
+
+// ===== GESTION DES HAUTEURS EXTRÊMES =====
+@include very-short-screen {
+  .navbar {
+    .wrapper > div:first-child {
+      display: none; // Masquer le logo sur écrans très courts
+    }
+
+    .social {
+      gap: $spacing-xs;
+
+      a {
+        width: 32px;
+        height: 32px;
       }
     }
   }
