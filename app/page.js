@@ -1,4 +1,4 @@
-import Parallax from '../components/layouts/parallax';
+// import Parallax from '../components/layouts/parallax';
 import Hero from '../components/layouts/hero';
 
 export default function Home() {
