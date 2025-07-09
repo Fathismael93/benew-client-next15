@@ -1,14 +1,56 @@
-@use 'sass:color';
+// components/layouts/parallax/parallax.scss
+// ===== IMPORTS CORRIGÉS =====
 @use '../../../app/app.scss' as *;
 
 .parallax {
   width: 100%;
   height: 100%;
+  min-height: var(--vh-full); // ✅ Support hauteurs adaptatives
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+
+  // ===== GESTION HAUTEURS ADAPTATIVES =====
+  @include very-short-screen {
+    min-height: var(--vh-small);
+    padding: $spacing-lg 0;
+
+    // Simplifier l'affichage sur écrans très courts
+    .stars::before,
+    .stars::after {
+      display: none;
+    }
+
+    .mountains::after {
+      opacity: 0.3;
+    }
+  }
+
+  @include mobile-landscape {
+    min-height: 80vh;
+    padding: $spacing-xl 0;
+
+    // Optimiser pour mobile landscape
+    .planets {
+      background-size: contain;
+      opacity: 0.8;
+    }
+  }
+
+  @include wide-but-short {
+    min-height: 90vh;
+
+    // Ajuster l'espacement vertical
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include short-screen {
+    min-height: var(--vh-medium);
+    padding: $spacing-md 0;
+  }
 
   // Effet de vignette pour plus de profondeur
   &::before {
@@ -29,19 +71,8 @@
 
   h1 {
     font-size: clamp(2.5rem, 8vw, 5.5rem);
-    background: linear-gradient(
-      135deg,
-      $text-color 0%,
-      $primary-color 20%,
-      $secondary-color 40%,
-      $accent-color 60%,
-      $primary-color 80%,
-      $text-color 100%
-    );
+    @include gradient-text($gradient-rainbow);
     background-size: 300% 300%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
     font-weight: 900;
     letter-spacing: -0.02em;
     text-align: center;
@@ -101,7 +132,7 @@
       }
     }
 
-    // ✅ Mixins du système remplacés
+    // ===== RESPONSIVE AVEC GESTION HAUTEURS =====
     @include sm-down {
       font-size: clamp(2rem, 12vw, 3rem);
       text-align: center;
@@ -125,6 +156,26 @@
       font-size: clamp(3.5rem, 8vw, 5rem);
       text-align: center;
     }
+
+    // Adaptations hauteur
+    @include very-short-screen {
+      font-size: clamp(1.8rem, 8vw, 2.5rem);
+      line-height: 1.1;
+
+      &::after {
+        filter: blur(20px);
+        opacity: 0.2;
+      }
+    }
+
+    @include mobile-landscape {
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      line-height: 1.1;
+    }
+
+    @include wide-but-short {
+      font-size: clamp(2.8rem, 7vw, 4rem);
+    }
   }
 
   .mountains {
@@ -136,7 +187,7 @@
     position: absolute;
     z-index: 3;
     opacity: 0.9;
-    transition: all $transition-smooth; // ✅ Variable système
+    transition: all $transition-smooth;
 
     // Effet de parallaxe amélioré avec filtre
     filter: contrast(1.1) brightness(1.05);
@@ -164,7 +215,7 @@
       }
     }
 
-    // ✅ Mixins du système remplacés
+    // Responsive adjustments
     @include sm-down {
       background-size: cover;
       background-position: bottom center;
@@ -175,14 +226,18 @@
       background-position: bottom center;
     }
 
-    @include lg-only {
-      background-size: cover;
-      background-position: bottom center;
+    @include very-short-screen {
+      opacity: 0.7;
+
+      &::after {
+        opacity: 0.3;
+      }
     }
 
-    @include xl-only {
+    @include mobile-landscape {
       background-size: cover;
       background-position: bottom center;
+      opacity: 0.8;
     }
   }
 
@@ -194,7 +249,7 @@
     height: 100%;
     position: absolute;
     z-index: 2;
-    transition: all $transition-smooth; // ✅ Variable système
+    transition: all $transition-smooth;
 
     // Effet de lueur autour des planètes
     filter: drop-shadow(0 0 20px rgba($primary-color, 0.3))
@@ -219,7 +274,7 @@
       z-index: 1;
     }
 
-    // ✅ Mixins du système remplacés
+    // Responsive adjustments
     @include sm-down {
       background-size: contain;
       background-position: bottom center;
@@ -238,6 +293,24 @@
     @include xl-only {
       background-size: cover;
       background-position: bottom center;
+    }
+
+    // Adaptations hauteur
+    @include very-short-screen {
+      opacity: 0.6;
+      background-size: contain;
+      filter: drop-shadow(0 0 15px rgba($primary-color, 0.2));
+    }
+
+    @include mobile-landscape {
+      background-size: contain;
+      background-position: bottom center;
+      opacity: 0.8;
+    }
+
+    @include wide-but-short {
+      background-size: contain;
+      background-position: center center;
     }
 
     @include reduced-motion {
@@ -305,13 +378,36 @@
       }
     }
 
+    // Adaptations hauteur
+    @include very-short-screen {
+      opacity: 0.5;
+
+      &::before,
+      &::after {
+        display: none; // Simplifier sur écrans très courts
+      }
+    }
+
+    @include mobile-landscape {
+      opacity: 0.7;
+
+      &::before {
+        opacity: 0.2;
+      }
+
+      &::after {
+        opacity: 0.2;
+      }
+    }
+
     @include reduced-motion {
       animation: none;
     }
   }
 }
 
-// ===== ANIMATIONS PARALLAX =====
+// ===== ANIMATIONS SPÉCIFIQUES PARALLAX =====
+// Note: certaines animations comme gradientShift sont dans _keyframes.scss
 
 @keyframes parallaxGradientFlow {
   0%,
@@ -445,17 +541,16 @@
 // Parallax pour les services (tons plus chauds)
 .parallax[data-type='services'] {
   h1 {
-    background: linear-gradient(
-      135deg,
-      $text-color 0%,
-      $primary-color 25%,
-      color.adjust($primary-color, $lightness: 15%) 50%,
-      $secondary-color 75%,
-      $text-color 100%
+    @include gradient-text(
+      linear-gradient(
+        135deg,
+        $text-color 0%,
+        $primary-color 25%,
+        $secondary-color 50%,
+        $primary-color 75%,
+        $text-color 100%
+      )
     );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .planets {
@@ -467,17 +562,16 @@
 // Parallax pour le portfolio (tons plus froids)
 .parallax[data-type='portfolio'] {
   h1 {
-    background: linear-gradient(
-      135deg,
-      $text-color 0%,
-      $accent-color 25%,
-      $secondary-color 50%,
-      color.adjust($accent-color, $lightness: 10%) 75%,
-      $text-color 100%
+    @include gradient-text(
+      linear-gradient(
+        135deg,
+        $text-color 0%,
+        $accent-color 25%,
+        $secondary-color 50%,
+        $accent-color 75%,
+        $text-color 100%
+      )
     );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .planets {
@@ -487,8 +581,6 @@
 }
 
 // ===== SUPPORT ACCESSIBILITÉ =====
-
-// Support pour les préférences de mouvement réduit
 @include reduced-motion {
   .parallax {
     // Désactiver toutes les animations
@@ -503,10 +595,7 @@
 
     h1 {
       // Garder le gradient mais sans animation
-      background: $gradient-primary;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+      @include gradient-text($gradient-primary);
 
       &::after {
         opacity: 0.2;
@@ -538,8 +627,6 @@
 }
 
 // ===== OPTIMISATIONS PERFORMANCE =====
-
-// Réduire les animations sur les appareils moins performants
 @include touch-device {
   .parallax {
     .stars::before {
@@ -571,7 +658,7 @@
   }
 }
 
-// ===== EFFETS POUR DARK MODE =====
+// ===== SUPPORT DARK MODE =====
 @include dark-mode {
   .parallax {
     .mountains {
@@ -632,6 +719,8 @@
 
 // Parallax compact pour sections plus petites
 .parallax.compact {
+  min-height: var(--vh-large);
+
   h1 {
     font-size: clamp(1.8rem, 6vw, 3.5rem);
 
@@ -648,10 +737,16 @@
   .stars {
     opacity: 0.6;
   }
+
+  @include very-short-screen {
+    min-height: var(--vh-medium);
+  }
 }
 
 // Parallax intense pour sections importantes
 .parallax.intense {
+  min-height: var(--vh-full);
+
   h1 {
     &::after {
       filter: blur(40px);
@@ -688,6 +783,9 @@
 // Très petits écrans
 @include xs-only {
   .parallax {
+    min-height: var(--vh-small);
+    padding: $spacing-md 0;
+
     h1 {
       font-size: clamp(1.8rem, 15vw, 2.5rem);
       line-height: 1.3;
@@ -704,6 +802,42 @@
 
     .stars {
       opacity: 0.5;
+    }
+  }
+}
+
+// ===== SUPPORT PORTRAIT SUR TABLETTES =====
+@include portrait {
+  .parallax {
+    @include between(768px, 1024px) {
+      min-height: var(--vh-large);
+      padding: $spacing-lg 0;
+
+      h1 {
+        font-size: clamp(2.5rem, 8vw, 4rem);
+      }
+    }
+  }
+}
+
+// ===== GESTION DES HAUTEURS EXTRÊMES =====
+@include tall-screen {
+  .parallax {
+    min-height: var(--vh-full);
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+    }
+  }
+}
+
+@include very-tall-screen {
+  .parallax {
+    min-height: var(--vh-full);
+    max-height: 120vh; // Limiter sur très grands écrans
+
+    h1 {
+      font-size: clamp(3.5rem, 7vw, 7rem);
     }
   }
 }
