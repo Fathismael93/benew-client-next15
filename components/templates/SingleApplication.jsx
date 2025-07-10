@@ -83,7 +83,6 @@ const SingleApplication = ({
       </section>
 
       <section className="others gallery-section">
-        <h1>A creer un autre visuel.</h1>
         {/* {images.length > 0 ? (
           <div className="gallery-container">
             <div className="gallery-content-wrapper">
@@ -131,7 +130,6 @@ const SingleApplication = ({
       </section>
 
       <section className="others details-section">
-        <h1>A creer un autre visuel.</h1>
         {/* {appDetails &&
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (

@@ -37,7 +37,6 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
       {applications.length !== undefined &&
         applications.map((app) => (
           <section key={app.application_id} className="others projectSection">
-            <h1>A creer un autre visuel.</h1>
             {/* <div className="contentWrapper">
               <div className="imageContainer">
                 <CldImage
