@@ -22,9 +22,7 @@ const TemplatesList = ({ templates }) => {
               href={`/templates/${template.template_id}`}
               className="templateCard"
               style={{
-                background:
-                  template.template_color ||
-                  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: template.template_color,
               }}
               onMouseEnter={() => setHoveredCard(template.template_id)}
               onMouseLeave={() => setHoveredCard(null)}
