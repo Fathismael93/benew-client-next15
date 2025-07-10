@@ -1,16 +1,16 @@
 @use '@/app/app.scss' as *;
 
 // Gallery section styling remains the same
-// .gallery-section {
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-//   background: linear-gradient(to bottom, #0c0c1d, #151528);
-//   margin: 0;
-//   padding: 0;
-// }
+.gallery-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(to bottom, #0c0c1d, #151528);
+  margin: 0;
+  padding: 0;
+}
 
 // .gallery-container {
 //   width: 100%;
@@ -166,16 +166,16 @@
 //   backdrop-filter: blur(10px);
 // }
 
-// // Details section styling - with improved responsiveness
-// .details-section {
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-//   background: linear-gradient(to bottom, #151528, #0c0c1d);
-//   // No padding to maximize available space
-// }
+// Details section styling - with improved responsiveness
+.details-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(to bottom, #151528, #0c0c1d);
+  // No padding to maximize available space
+}
 
 // .details-container {
 //   width: 100%;

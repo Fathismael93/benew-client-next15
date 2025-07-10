@@ -1,15 +1,15 @@
 @use '@/app/app.scss' as *;
 
-// .projectSection {
-//     width: 100%;
-//     height: 100vh;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     padding: 2rem;
-//     position: relative;
-//     background: linear-gradient(to bottom, #0c0c1d, #151528);
-// }
+.projectSection {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  background: linear-gradient(to bottom, #0c0c1d, #151528);
+}
 // .contentWrapper {
 //     width: 100%;
 //     height: 90vh;
