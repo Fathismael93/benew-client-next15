@@ -20,6 +20,158 @@
   position: relative;
 }
 
+// Nouveau style pour les cartes templates
+.templateCard {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.templateCardInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &.hovered {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.templateImageContainer {
+  position: relative;
+  height: 70%;
+  padding: 1rem 1rem 0 1rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.templateAppImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.templateImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.5s ease;
+}
+
+.gradientOverlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: 12px 12px 0 0;
+}
+
+.gradientLeft {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 40px;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: 12px 0 0 0;
+}
+
+.gradientRight {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  bottom: 0;
+  background: linear-gradient(-90deg, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
+  pointer-events: none;
+  border-radius: 0 12px 0 0;
+}
+
+.templateInfoContainer {
+  height: 30%;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.templateAppInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+.templateName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.2;
+}
+
+.templatePlatforms {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.templatePlatformIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $primary-color;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+    color: $secondary-color;
+    transform: translateY(-2px);
+  }
+}
+
+// Ancien style conservé pour compatibilité (peut être supprimé si plus utilisé)
 .contentCard {
   width: 90%;
   max-width: 1400px;
@@ -125,7 +277,17 @@
   transition: all 0.3s ease;
 }
 
+// Responsive design
 @media (max-width: 1024px) {
+  .templateCard {
+    width: 95%;
+    max-width: 500px;
+  }
+
+  .templateName {
+    font-size: 1.1rem;
+  }
+
   .contentCard {
     width: 95%;
     padding: 1.5rem;
@@ -139,6 +301,43 @@
 @media (max-width: 768px) {
   .projectSection {
     padding: 2rem;
+  }
+
+  .templateCard {
+    height: 350px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .templateImageContainer {
+    padding: 0.75rem 0.75rem 0 0.75rem;
+  }
+
+  .templateInfoContainer {
+    padding: 1rem;
+  }
+
+  .templateName {
+    font-size: 1rem;
+  }
+
+  .gradientOverlay {
+    top: 0.75rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 30px;
+  }
+
+  .gradientLeft {
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 30px;
+  }
+
+  .gradientRight {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 30px;
   }
 
   .contentCard {
@@ -159,6 +358,22 @@
 @media (max-width: 480px) {
   .projectSection {
     padding: 1rem;
+  }
+
+  .templateCard {
+    height: 300px;
+    width: 100%;
+  }
+
+  .templateName {
+    font-size: 0.9rem;
+  }
+
+  .templatePlatformIcon {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   .contentCard {
