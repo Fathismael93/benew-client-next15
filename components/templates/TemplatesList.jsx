@@ -15,7 +15,6 @@ const TemplatesList = ({ templates }) => {
       {templates.length !== undefined &&
         templates.map((template) => (
           <section key={template.template_id} className="others projectSection">
-            <h1>A creer un autre visuel.</h1>
             <div className="contentCard">
               <div className="imageContainer">
                 <CldImage
