@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 'use client';
 
 import Link from 'next/link';
@@ -17,7 +16,7 @@ const TemplatesList = ({ templates }) => {
         templates.map((template) => (
           <section key={template.template_id} className="others projectSection">
             <h1>A creer un autre visuel.</h1>
-            {/* <div className="contentCard">
+            <div className="contentCard">
               <div className="imageContainer">
                 <CldImage
                   src={template.template_image}
@@ -45,7 +44,7 @@ const TemplatesList = ({ templates }) => {
                 <h4 className="projectTitle">{template.template_name}</h4>
                 <span className="viewDetails">Voir les applications</span>
               </Link>
-            </div> */}
+            </div>
           </section>
         ))}
     </div>
