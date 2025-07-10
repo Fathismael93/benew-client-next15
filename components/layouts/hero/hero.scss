@@ -1,7 +1,7 @@
 @use 'sass:color';
 @use '../../../app/app.scss' as *;
 // Import des nouveaux mixins responsive
-@use '../../../abstracts/responsive-mixins' as *;
+// @use '../../../abstracts/responsive-mixins' as *;
 
 .hero {
   // Base: utiliser les nouvelles unités viewport
