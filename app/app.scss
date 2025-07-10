@@ -1,19 +1,12 @@
 @use 'sass:color';
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
-// ========================================
-// IMPORTS DES ABSTRACTS (NOUVEAU)
-// ========================================
-
-// Importer d'abord les nouveaux mixins responsive
-@import '../abstracts/responsive-mixins';
-
 // Couleurs principales extraites du logo
-$color-dark: #0c0c1a;
-$color-orange: #f6a037;
-$color-pink: #f266b0;
-$color-light: #fae6d1;
-$color-purple: #9e1f9d;
+$color-dark: #0c0c1a; // Couleur 1
+$color-orange: #f6a037; // Couleur 2
+$color-pink: #f266b0; // Couleur 3
+$color-light: #fae6d1; // Couleur 4
+$color-purple: #9e1f9d; // Couleur 5
 
 // Thèmes
 $primary-color: $color-orange;
@@ -26,36 +19,33 @@ $text-color: $color-light;
 $text-color-muted: rgba($text-color, 0.7);
 $background-color-light: color.adjust($background-color, $lightness: 10%);
 
-// ========================================
-// CSS CUSTOM PROPERTIES (NOUVEAU)
-// ========================================
-
-:root {
-  // Couleurs en CSS custom properties pour theming dynamique
-  --color-primary: #{$primary-color};
-  --color-secondary: #{$secondary-color};
-  --color-accent: #{$accent-color};
-  --color-background: #{$background-color};
-  --color-text: #{$text-color};
-  --color-text-muted: #{$text-color-muted};
-
-  // Variables responsive
-  --container-max-width: min(70rem, 90vw);
-  --section-padding: clamp(1rem, 4vw, 3rem);
-  --gap-small: clamp(0.5rem, 2vw, 1rem);
-  --gap-medium: clamp(1rem, 3vw, 2rem);
-  --gap-large: clamp(2rem, 5vw, 4rem);
+@mixin small {
+  @media (min-width: 320px) and (max-width: 479px) {
+    @content;
+  }
 }
 
-// ========================================
-// BASE STYLES MODERNISÉS
-// ========================================
+@mixin mobile {
+  @media (min-width: 480px) and (max-width: 737px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 738px) and (max-width: 799px) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: 800px) and (max-width: 1024px) {
+    @content;
+  }
+}
 
 html {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
-  // Support pour Container Queries
-  container-type: inline-size;
 }
 
 * {
@@ -70,8 +60,6 @@ html {
 body {
   background-color: $background-color;
   color: $text-color-muted;
-  // Améliorer les performances de scroll
-  overflow-x: hidden;
 }
 
 a {
@@ -79,13 +67,8 @@ a {
   color: inherit;
 }
 
-// ========================================
-// SECTIONS DE BASE MODERNISÉES
-// ========================================
-
 .first {
-  height: 100dvh; // Nouvelle unité viewport
-  min-height: 100svh;
+  height: calc(100vh - 6.25rem);
   scroll-snap-align: center;
 
   .error {
@@ -95,10 +78,10 @@ a {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: var(--gap-medium);
+    gap: 1.25rem;
 
     p {
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-size: 2.25rem;
       color: $primary-color;
       font-weight: 500;
 
@@ -110,10 +93,6 @@ a {
 }
 
 .others {
-  height: 100dvh;
-  min-height: 100svh;
+  height: 100vh;
   scroll-snap-align: center;
-
-  // Container query support
-  container-type: size;
 }

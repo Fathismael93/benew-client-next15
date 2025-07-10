@@ -1,14 +1,8 @@
 @use 'sass:color';
 @use '../../../app/app.scss' as *;
-// Import des nouveaux mixins responsive
-// @use '../../../abstracts/responsive-mixins' as *;
 
 .hero {
-  // Base: utiliser les nouvelles unités viewport
-  height: 100dvh;
-  min-height: 100svh;
-  max-height: 100lvh;
-
+  height: 100%;
   overflow: hidden;
   background: linear-gradient(
     180deg,
@@ -17,298 +11,268 @@
   );
   position: relative;
 
-  // Container query pour adaptation fluide
-  container-type: size;
-
   .wrapper {
-    max-width: var(--container-max-width);
+    max-width: 70rem;
     height: 100%;
     margin: auto;
-    display: grid;
 
-    // Layout par défaut (mobile portrait)
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
-    gap: var(--gap-small);
-    align-items: center;
-    padding: var(--section-padding);
-
-    // Tablet portrait: layout vertical optimisé
-    @include tablet-portrait {
-      grid-template-rows: 1.2fr 0.8fr;
-      gap: var(--gap-medium);
-    }
-
-    // Mobile landscape: layout horizontal compact
-    @include mobile-landscape {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr;
-      gap: var(--gap-medium);
-    }
-
-    // Tablet landscape: équilibré horizontal
-    @include tablet-landscape {
-      grid-template-columns: 1.2fr 0.8fr;
-      grid-template-rows: 1fr;
-      gap: var(--gap-large);
-    }
-
-    // Desktop standard: layout classique
-    @include desktop-standard {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr;
-      gap: var(--gap-large);
-    }
-
-    // Laptop court: optimisé pour écrans 16:9
-    @include laptop-short {
-      grid-template-columns: 1.3fr 0.7fr;
-      grid-template-rows: 1fr;
-      gap: var(--gap-medium);
-    }
-
-    // Ultrawide: utiliser l'espace disponible
-    @include ultrawide {
-      max-width: 80rem;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 6rem;
-    }
-  }
-
-  .textContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--gap-small);
-
-    @include mobile-portrait {
-      text-align: center;
-      order: 1;
-    }
-
-    @include mobile-landscape {
-      text-align: left;
-      gap: calc(var(--gap-small) * 0.8);
-    }
-
-    h2 {
-      font-size: clamp(0.9rem, 2.5vw, 1.3rem);
-      color: $secondary-color;
-      letter-spacing: 0.1em;
-      margin: 0;
-
-      @include mobile-landscape {
-        font-size: clamp(0.8rem, 2vw, 1rem);
-      }
-
-      @include desktop-standard {
-        font-size: clamp(1.1rem, 1.5vw, 1.4rem);
-      }
-    }
-
-    h1 {
-      font-size: clamp(1.8rem, 6vw, 4.5rem);
-      background: linear-gradient(
-        45deg,
-        $text-color,
-        $primary-color,
-        $secondary-color
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700;
-      line-height: 1.1;
-      margin: 0;
-
-      @include mobile-landscape {
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        line-height: 1.2;
-      }
-
-      @include laptop-short {
-        font-size: clamp(2rem, 4vw, 3.5rem);
-      }
-
-      @include ultrawide {
-        font-size: clamp(3rem, 5vw, 5rem);
-      }
-    }
-
-    .buttonGroup {
+    .textContainer {
+      width: 50%;
+      height: 100%;
       display: flex;
-      gap: var(--gap-small);
-      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
 
-      @include mobile-portrait {
-        flex-direction: column;
+      @include small {
+        width: 100%;
+        height: 50%;
+        gap: 1rem;
         align-items: center;
+        text-align: center;
       }
 
-      @include mobile-landscape {
-        flex-direction: row;
-        justify-content: flex-start;
+      @include mobile {
+        width: 100%;
+        height: 50%;
+        gap: 1rem;
+        align-items: center;
+        text-align: center;
       }
 
-      @include desktop-standard {
-        justify-content: flex-start;
-        gap: var(--gap-medium);
+      @include tablet {
+        width: 100%;
+        height: 50%;
+        gap: 1.25rem;
+        align-items: center;
+        text-align: center;
       }
 
-      .primaryButton,
-      .secondaryButton {
-        padding: clamp(0.7rem, 2vw, 1rem) clamp(1.2rem, 3vw, 2rem);
-        border-radius: 30px;
-        font-weight: 600;
-        font-size: clamp(0.85rem, 1.5vw, 1rem);
-        transition: all 0.3s ease;
-        text-decoration: none;
-        white-space: nowrap;
+      @include laptop {
+        width: 100%;
+        height: 50%;
+        gap: 1.25rem;
+        align-items: center;
+        text-align: center;
+      }
 
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+      h2 {
+        font-size: 1.3rem;
+        color: $secondary-color;
+        letter-spacing: 0.188rem;
+
+        @include small {
+          font-size: 1rem;
+          margin-top: 10px;
         }
 
-        @include mobile-landscape {
-          padding: 0.6rem 1rem;
-          font-size: 0.85rem;
+        @include mobile {
+          font-size: 1rem;
         }
 
-        @include mobile-portrait {
-          width: min(100%, 250px);
-          text-align: center;
+        @include tablet {
+          font-size: 1.05rem;
+        }
+
+        @include laptop {
+          font-size: 1.1rem;
         }
       }
 
-      .primaryButton {
+      h1 {
+        font-size: 4.5rem;
         background: linear-gradient(
           45deg,
+          $text-color,
           $primary-color,
-          color.adjust($primary-color, $lightness: 10%)
+          $secondary-color
         );
-        color: $background-color;
-        border: none;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
 
-        &:hover {
+        @include small {
+          font-size: 1.5rem;
+        }
+
+        @include mobile {
+          font-size: 2.2rem;
+        }
+
+        @include tablet {
+          font-size: 2.5rem;
+        }
+
+        @include laptop {
+          font-size: 2.5rem;
+        }
+      }
+
+      .buttonGroup {
+        display: flex;
+        gap: 1rem;
+
+        .primaryButton,
+        .secondaryButton {
+          padding: 1rem 2rem;
+          border-radius: 30px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          text-decoration: none;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+          }
+        }
+
+        .primaryButton {
           background: linear-gradient(
             45deg,
-            color.adjust($primary-color, $lightness: 5%),
-            $secondary-color
+            $primary-color,
+            color.adjust($primary-color, $lightness: 10%)
           );
+          color: $background-color;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            background: linear-gradient(
+              45deg,
+              color.adjust($primary-color, $lightness: 5%),
+              $secondary-color
+            );
+          }
+        }
+
+        .secondaryButton {
+          background: transparent;
+          color: $primary-color;
+          border: 2px solid $primary-color;
+          cursor: pointer;
+
+          &:hover {
+            background: rgba($primary-color, 0.1);
+            border-color: $secondary-color;
+            color: $secondary-color;
+          }
+        }
+
+        @media (max-width: 768px) {
+          justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+          flex-direction: column;
+
+          .primaryButton,
+          .secondaryButton {
+            width: 100%;
+            text-align: center;
+          }
         }
       }
 
-      .secondaryButton {
-        background: transparent;
-        color: $primary-color;
-        border: 2px solid $primary-color;
+      img {
+        width: 2.5rem;
+        filter: hue-rotate(20deg) brightness(1.2);
 
-        &:hover {
-          background: rgba($primary-color, 0.1);
-          border-color: $secondary-color;
-          color: $secondary-color;
+        @include small {
+          width: 1.2rem;
         }
-      }
-    }
 
-    img {
-      width: clamp(1.5rem, 3vw, 2.5rem);
-      filter: hue-rotate(20deg) brightness(1.2);
-      align-self: center;
+        @include mobile {
+          width: 1.2rem;
+        }
 
-      @include mobile-landscape {
-        display: none;
-      }
+        @include tablet {
+          width: 1.5rem;
+        }
 
-      @include laptop-short {
-        display: none;
+        @include laptop {
+          width: 2rem;
+        }
       }
     }
   }
 
   .imageContainer {
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
 
-    @include mobile-portrait {
-      order: 2;
-      height: 40vh;
-      margin-top: 1rem;
+    @include small {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
     }
 
-    @include mobile-landscape {
-      height: 100%;
+    @include mobile {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
+    }
+
+    @include tablet {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
+    }
+
+    @include laptop {
+      height: 50%;
+      width: 100%;
+      top: unset;
+      bottom: 0;
     }
 
     .heroImage {
-      width: 100%;
-      height: 100%;
       object-fit: contain;
       max-width: 100%;
       max-height: 100%;
-
-      @include mobile-portrait {
-        max-height: 35vh;
-        width: auto;
-      }
-
-      @include mobile-landscape {
-        max-height: 60vh;
-        width: auto;
-      }
     }
   }
 
   .slidingTextContainer {
     position: absolute;
-    font-size: clamp(4rem, 15vw, 20rem);
-    bottom: clamp(-60px, -8vw, -90px);
+    font-size: 20rem;
+    bottom: -90px;
     white-space: nowrap;
     color: rgba($text-color, 0.02);
     width: 100%;
     font-weight: bold;
-    pointer-events: none;
 
-    @include mobile-landscape {
-      font-size: clamp(3rem, 10vw, 8rem);
-      bottom: clamp(-30px, -5vw, -40px);
-      color: rgba($text-color, 0.015);
+    @include small {
+      font-size: 8rem;
+      bottom: -40px;
+      color: rgba($text-color, 0.03);
     }
 
-    @include laptop-short {
-      bottom: clamp(-40px, -6vw, -60px);
-      font-size: clamp(6rem, 12vw, 12rem);
+    @include mobile {
+      font-size: 8rem;
+      bottom: -40px;
+      color: rgba($text-color, 0.03);
     }
 
-    @include ultrawide {
-      font-size: clamp(15rem, 18vw, 25rem);
-      bottom: clamp(-100px, -10vw, -120px);
-    }
-  }
-
-  // Container Queries pour adaptation fine
-  @container (max-width: 600px) {
-    .wrapper {
-      grid-template-columns: 1fr !important;
-      grid-template-rows: auto 1fr !important;
-      gap: var(--gap-small) !important;
+    @include tablet {
+      font-size: 11rem;
+      bottom: -50px;
+      color: rgba($text-color, 0.02);
     }
 
-    .textContainer h1 {
-      font-size: clamp(1.5rem, 5vw, 2.5rem) !important;
-    }
-  }
-
-  @container (max-height: 400px) {
-    .slidingTextContainer {
-      display: none;
-    }
-
-    .textContainer {
-      gap: calc(var(--gap-small) * 0.5) !important;
+    @include laptop {
+      font-size: 12rem;
+      bottom: -50px;
+      color: rgba($text-color, 0.02);
     }
   }
 }
