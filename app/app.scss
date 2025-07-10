@@ -1,49 +1,98 @@
-// app/app.scss - Fichier principal simplifié
-// ===== IMPORTS DES MODULES =====
+@use 'sass:color';
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
-// 1. Configuration de base
-@import './styles/config/variables';
+// Couleurs principales extraites du logo
+$color-dark: #0c0c1a; // Couleur 1
+$color-orange: #f6a037; // Couleur 2
+$color-pink: #f266b0; // Couleur 3
+$color-light: #fae6d1; // Couleur 4
+$color-purple: #9e1f9d; // Couleur 5
 
-// 2. Mixins utilitaires
-@import './styles/mixins/breakpoints';
-@import './styles/mixins/effects';
-@import './styles/mixins/utilities';
+// Thèmes
+$primary-color: $color-orange;
+$secondary-color: $color-pink;
+$accent-color: $color-purple;
+$background-color: $color-dark;
+$text-color: $color-light;
 
-// 3. Styles de base
-@import './styles/base/reset';
-@import './styles/base/typography';
-@import './styles/base/layout';
+// Couleurs dérivées pour les variations
+$text-color-muted: rgba($text-color, 0.7);
+$background-color-light: color.adjust($background-color, $lightness: 10%);
 
-// 4. Composants globaux
-@import './styles/components/buttons';
-@import './styles/components/cards';
+@mixin small {
+  @media (min-width: 320px) and (max-width: 479px) {
+    @content;
+  }
+}
 
-// 5. Classes utilitaires
-@import './styles/utilities/spacing';
-@import './styles/utilities/visibility';
-@import './styles/utilities/text';
+@mixin mobile {
+  @media (min-width: 480px) and (max-width: 737px) {
+    @content;
+  }
+}
 
-// 6. Animations globales
-@import './styles/animations/keyframes';
+@mixin tablet {
+  @media (min-width: 738px) and (max-width: 799px) {
+    @content;
+  }
+}
 
-// 7. Support accessibilité et responsive
-@import './styles/support/accessibility';
-@import './styles/support/performance';
+@mixin laptop {
+  @media (min-width: 800px) and (max-width: 1024px) {
+    @content;
+  }
+}
 
-// 8. Pages spécifiques (sections principales)
-@import './styles/pages/sections';
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
 
-// ===== CLASSES UTILITAIRES FINALES =====
-// Seulement les classes qui dépendent de tous les modules ci-dessus
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'DM Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
 
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
+body {
+  background-color: $background-color;
+  color: $text-color-muted;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.first {
+  height: calc(100vh - 6.25rem);
+  scroll-snap-align: center;
+
+  .error {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    p {
+      font-size: 2.25rem;
+      color: $primary-color;
+      font-weight: 500;
+
+      a {
+        color: $text-color;
+      }
+    }
+  }
+}
+
+.others {
+  height: 100vh;
+  scroll-snap-align: center;
 }
