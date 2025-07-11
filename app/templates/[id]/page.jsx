@@ -147,7 +147,7 @@ function getTemplateDataQuery(templateId) {
           a.application_category, 
           a.application_fee, 
           a.application_rent, 
-          a.application_images[0], 
+          a.application_images, 
           a.application_level,
           t.template_id, 
           t.template_name

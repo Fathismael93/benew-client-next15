@@ -13,8 +13,6 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 
-  console.log('Applications:', applications);
-
   // Remplacer la fonction handleOrderClick
   const handleOrderClick = (app) => {
     // Vérifier si platforms existe et n'est pas vide
