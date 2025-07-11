@@ -88,39 +88,6 @@
   transition: transform 0.5s ease;
 }
 
-.gradientOverlay {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  right: 1rem;
-  height: 40px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
-  pointer-events: none;
-  border-radius: 12px 12px 0 0;
-}
-
-.gradientLeft {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  width: 40px;
-  bottom: 0;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
-  pointer-events: none;
-  border-radius: 12px 0 0 0;
-}
-
-.gradientRight {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 40px;
-  bottom: 0;
-  background: linear-gradient(-90deg, rgba(0, 0, 0, 0.2) 0%, transparent 100%);
-  pointer-events: none;
-  border-radius: 0 12px 0 0;
-}
-
 .templateInfoContainer {
   height: 30%;
   padding: 1.5rem;
@@ -144,7 +111,7 @@
 .templateName {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: $primary-color;
   margin: 0 0 0.75rem 0;
   line-height: 1.2;
 }

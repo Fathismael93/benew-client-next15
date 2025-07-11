@@ -21,11 +21,6 @@ const TemplatesList = ({ templates }) => {
             <Link
               href={`/templates/${template.template_id}`}
               className="templateCard"
-              style={{
-                background:
-                  template.template_color ||
-                  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              }}
               onMouseEnter={() => setHoveredCard(template.template_id)}
               onMouseLeave={() => setHoveredCard(null)}
             >
@@ -44,21 +39,10 @@ const TemplatesList = ({ templates }) => {
                       priority
                     />
                   </div>
-
-                  {/* Gradients overlay */}
-                  <div className="gradientOverlay"></div>
-                  <div className="gradientLeft"></div>
-                  <div className="gradientRight"></div>
                 </div>
 
                 {/* Conteneur info (30% de la hauteur) */}
-                <div
-                  className="templateInfoContainer"
-                  style={{
-                    backgroundColor:
-                      template.template_color || 'rgba(255, 255, 255, 0.95)',
-                  }}
-                >
+                <div className="templateInfoContainer">
                   <div className="templateAppInfo">
                     <h3 className="templateName">{template.template_name}</h3>
                     <div className="templatePlatforms">
