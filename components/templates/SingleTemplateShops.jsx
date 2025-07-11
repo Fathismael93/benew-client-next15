@@ -1,8 +1,10 @@
 'use client';
+
 import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
-import { DollarSign, Eye } from 'lucide-react';
+import { FaDollarSign } from 'react-icons/fa';
+import { IoEye } from 'react-icons/io5';
 import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal/OrderModal';
@@ -83,13 +85,13 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
                         onClick={() => handleOrderClick(app)}
                         disabled={!platforms || platforms.length === 0}
                       >
-                        <DollarSign size={16} />
+                        <FaDollarSign size={16} />
                       </button>
                       <Link
                         href={`/templates/${templateID}/applications/${app.application_id}`}
                         className="btn btn-preview"
                       >
-                        <Eye size={16} />
+                        <IoEye size={16} />
                         Voir +
                       </Link>
                     </div>
