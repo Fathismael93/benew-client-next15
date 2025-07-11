@@ -13,8 +13,6 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 
-  console.log('Applications:', applications);
-
   // Remplacer la fonction handleOrderClick
   const handleOrderClick = (app) => {
     // Vérifier si platforms existe et n'est pas vide
@@ -47,7 +45,7 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
               <div key={app.application_id} className="application-card">
                 <div className="card-image">
                   <CldImage
-                    src={app.application_image}
+                    src={app.application_images[0]}
                     alt={app.application_name}
                     width={400}
                     height={200}
