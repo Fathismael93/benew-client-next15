@@ -150,7 +150,7 @@ function getTemplateDataQuery(templateId) {
           a.application_images[0], 
           a.application_level
           t.template_id, 
-          t.template_name,
+          t.template_name
         FROM catalog.applications a
         JOIN catalog.templates t ON a.application_template_id = t.template_id 
         WHERE a.application_template_id = $1 
