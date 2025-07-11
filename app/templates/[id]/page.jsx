@@ -144,17 +144,11 @@ function getTemplateDataQuery(templateId) {
         SELECT 
           a.application_id, 
           a.application_name, 
-          a.application_link, 
-          a.application_admin_link, 
+          a.application_category, 
           a.application_fee, 
-          a.application_images, 
+          a.application_rent, 
+          a.application_image[0], 
           a.application_level,
-          a.application_description,
-          a.created_at,
-          t.template_name,
-          t.template_image,
-          t.template_has_web,
-          t.template_has_mobile
         FROM catalog.applications a
         JOIN catalog.templates t ON a.application_template_id = t.template_id 
         WHERE a.application_template_id = $1 
