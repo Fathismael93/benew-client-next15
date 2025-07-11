@@ -22,7 +22,9 @@ const TemplatesList = ({ templates }) => {
               href={`/templates/${template.template_id}`}
               className="templateCard"
               style={{
-                backgroundColor: template.template_color,
+                background:
+                  template.template_color ||
+                  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               }}
               onMouseEnter={() => setHoveredCard(template.template_id)}
               onMouseLeave={() => setHoveredCard(null)}
@@ -50,7 +52,13 @@ const TemplatesList = ({ templates }) => {
                 </div>
 
                 {/* Conteneur info (30% de la hauteur) */}
-                <div className="templateInfoContainer">
+                <div
+                  className="templateInfoContainer"
+                  style={{
+                    backgroundColor:
+                      template.template_color || 'rgba(255, 255, 255, 0.95)',
+                  }}
+                >
                   <div className="templateAppInfo">
                     <h3 className="templateName">{template.template_name}</h3>
                     <div className="templatePlatforms">

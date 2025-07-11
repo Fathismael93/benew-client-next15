@@ -79,12 +79,12 @@
     z-index: 2;
 
     @include small {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     @include mobile {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
   }
