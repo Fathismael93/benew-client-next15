@@ -38,69 +38,67 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
         />
       </section>
 
-      <section className="applications-grid-section">
-        <div className="applications-container">
-          {applications.length !== undefined &&
-            applications.map((app) => (
-              <div key={app.application_id} className="application-card">
-                <div className="card-image">
-                  <CldImage
-                    src={app.application_images[0]}
-                    alt={app.application_name}
-                    width={400}
-                    height={200}
-                    className="app-image"
-                    priority
-                  />
-                  <div className="image-overlay">
-                    <div className="stats-badge">
-                      <span className="level-badge">
-                        Niveau {app.application_level}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="card-content">
-                  <h3 className="app-title">
-                    {app.application_name} | {app.application_category}
-                  </h3>
-                  <p className="app-subtitle">
-                    Type: <span className="level">{app.application_level}</span>
-                  </p>
-
-                  <div className="card-footer">
-                    <div className="price-section">
-                      <span className="price">{app.application_fee} FDJ</span>
-                      <div className="rent">
-                        <span className="rent-price">
-                          {app.application_rent} FDJ/mois
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="action-buttons">
-                      <button
-                        className="btn btn-cart"
-                        onClick={() => handleOrderClick(app)}
-                        disabled={!platforms || platforms.length === 0}
-                      >
-                        <FaDollarSign size={16} />
-                      </button>
-                      <Link
-                        href={`/templates/${templateID}/applications/${app.application_id}`}
-                        className="btn btn-preview"
-                      >
-                        <IoEye size={16} />
-                        Voir +
-                      </Link>
-                    </div>
+      {applications.length !== undefined &&
+        applications.map((app) => (
+          <section key={app.application_id} className="others projectSection">
+            <div className="application-card">
+              <div className="card-image">
+                <CldImage
+                  src={app.application_images[0]}
+                  alt={app.application_name}
+                  width={400}
+                  height={200}
+                  className="app-image"
+                  priority
+                />
+                <div className="image-overlay">
+                  <div className="stats-badge">
+                    <span className="level-badge">
+                      Niveau {app.application_level}
+                    </span>
                   </div>
                 </div>
               </div>
-            ))}
-        </div>
-      </section>
+
+              <div className="card-content">
+                <h3 className="app-title">
+                  {app.application_name} | {app.application_category}
+                </h3>
+                <p className="app-subtitle">
+                  Type: <span className="level">{app.application_level}</span>
+                </p>
+
+                <div className="card-footer">
+                  <div className="price-section">
+                    <span className="price">{app.application_fee} FDJ</span>
+                    <div className="rent">
+                      <span className="rent-price">
+                        {app.application_rent} FDJ/mois
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="action-buttons">
+                    <button
+                      className="btn btn-cart"
+                      onClick={() => handleOrderClick(app)}
+                      disabled={!platforms || platforms.length === 0}
+                    >
+                      <FaDollarSign size={16} />
+                    </button>
+                    <Link
+                      href={`/templates/${templateID}/applications/${app.application_id}`}
+                      className="btn btn-preview"
+                    >
+                      <IoEye size={16} />
+                      Voir +
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        ))}
 
       {selectedApp && (
         <OrderModal
