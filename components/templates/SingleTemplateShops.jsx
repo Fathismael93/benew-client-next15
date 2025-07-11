@@ -1,7 +1,8 @@
-/* eslint-disable no-unused-vars */
 'use client';
 import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
+import Link from 'next/link';
+import { DollarSign, Eye } from 'lucide-react';
 import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal/OrderModal';
@@ -34,55 +35,70 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
           planets="/sun.png"
         />
       </section>
-      {applications.length !== undefined &&
-        applications.map((app) => (
-          <section key={app.application_id} className="others projectSection">
-            {/* <div className="contentWrapper">
-              <div className="imageContainer">
-                <CldImage
-                  src={app.application_images[0]}
-                  alt={app.application_name}
-                  width={800}
-                  height={1000}
-                  className="projectImage"
-                  priority
-                />
-              </div>
-              <div className="detailsContainer">
-                <h4 className="projectTitle">{app.application_name}</h4>
-                <p className="appType">Type: {app.application_type}</p>
-                <div className="appDetails">
-                  <p className="appFee">Prix: {app.application_fee} Fdj</p>
-                  <a
-                    href={app.application_link}
-                    className="appLink"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Visiter l&apos;application
-                  </a>
-                  <div className="buttonGroup">
-                    <button
-                      className={`primaryButton ${!platforms || platforms.length === 0 ? 'disabled' : ''}`}
-                      onClick={() => handleOrderClick(app)}
-                      disabled={!platforms || platforms.length === 0}
-                    >
-                      {!platforms || platforms.length === 0
-                        ? 'Paiement indisponible'
-                        : 'Commander maintenant'}
-                    </button>
-                    <a
-                      href={`/templates/${templateID}/applications/${app.application_id}`}
-                      className="secondaryButton"
-                    >
-                      En savoir plus
-                    </a>
+
+      <section className="applications-grid-section">
+        <div className="applications-container">
+          {applications.length !== undefined &&
+            applications.map((app) => (
+              <div key={app.application_id} className="application-card">
+                <div className="card-image">
+                  <CldImage
+                    src={app.application_image}
+                    alt={app.application_name}
+                    width={400}
+                    height={200}
+                    className="app-image"
+                    priority
+                  />
+                  <div className="image-overlay">
+                    <div className="stats-badge">
+                      <span className="level-badge">
+                        Niveau {app.application_level}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-content">
+                  <h3 className="app-title">
+                    {app.application_name} | {app.application_category}
+                  </h3>
+                  <p className="app-subtitle">
+                    Type: <span className="level">{app.application_level}</span>
+                  </p>
+
+                  <div className="card-footer">
+                    <div className="price-section">
+                      <span className="price">{app.application_fee} FDJ</span>
+                      <div className="rent">
+                        <span className="rent-price">
+                          {app.application_rent} FDJ/mois
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="action-buttons">
+                      <button
+                        className="btn btn-cart"
+                        onClick={() => handleOrderClick(app)}
+                        disabled={!platforms || platforms.length === 0}
+                      >
+                        <DollarSign size={16} />
+                      </button>
+                      <Link
+                        href={`/templates/${templateID}/applications/${app.application_id}`}
+                        className="btn btn-preview"
+                      >
+                        <Eye size={16} />
+                        Voir +
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div> */}
-          </section>
-        ))}
+            ))}
+        </div>
+      </section>
 
       {selectedApp && (
         <OrderModal
