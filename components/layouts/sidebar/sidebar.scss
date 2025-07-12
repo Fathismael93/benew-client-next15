@@ -114,6 +114,12 @@
       transform: scale(1.1);
     }
 
+    // Correction spécifique pour les pages template détail
+    &.template-detail-fix {
+      top: 2.1rem; // Décalage vers le haut (-0.213rem)
+      left: 1.95rem; // Décalage vers la gauche (-0.238rem)
+    }
+
     svg {
       path {
         stroke: $background-color;

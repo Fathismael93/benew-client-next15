@@ -1,8 +1,19 @@
+'use client';
+
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 function ToggleButton({ setOpen }) {
+  const pathname = usePathname();
+
+  // Détecter si on est sur une page template détail (/templates/[id])
+  const isTemplateDetailPage = /^\/templates\/[^/]+\/?$/.test(pathname);
+
   return (
-    <button onClick={() => setOpen((prev) => !prev)}>
+    <button
+      onClick={() => setOpen((prev) => !prev)}
+      className={isTemplateDetailPage ? 'template-detail-fix' : ''}
+    >
       <svg width="23" height="23" viewBox="0 0 23 23">
         <motion.path
           strokeWidth="3"
