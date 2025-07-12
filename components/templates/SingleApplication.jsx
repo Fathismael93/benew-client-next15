@@ -7,6 +7,7 @@ import Parallax from '../layouts/parallax';
 import OrderModal from '../modal/OrderModal'; // Import the OrderModal component
 import './styling/application.scss';
 import Link from 'next/link';
+import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
 
 const SingleApplication = ({
   application,
@@ -44,7 +45,7 @@ const SingleApplication = ({
 
   // Format currency with the $ symbol
   const formatCurrency = (value) => {
-    return `$${parseFloat(value).toFixed(2)}`;
+    return `FDJ ${formatPrice(value)}`;
   };
 
   // Remplacer la fonction openOrderModal
@@ -190,7 +191,7 @@ const SingleApplication = ({
                     <li>
                       <span className="details-label">Type</span>
                       <span className="details-value">
-                        {appDetails.application_type}
+                        {getApplicationLevelLabel(appDetails.application_level)}
                       </span>
                     </li>
                     <li>
