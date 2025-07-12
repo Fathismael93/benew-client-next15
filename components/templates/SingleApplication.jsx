@@ -88,35 +88,30 @@ const SingleApplication = ({
         {images.length > 0 ? (
           <div className="gallery-container">
             <div className="gallery-swiper-wrapper">
-              {/* Images de gauche (avec blur) */}
+              {/* Image de gauche (avec blur) */}
               <div className="gallery-side-images gallery-left">
                 {images.length > 2 && (
                   <>
-                    {images.map((image, index) => {
+                    {(() => {
                       const currentIndex = images.findIndex(
                         (img) => img === selectedImage,
                       );
-                      const leftIndex1 =
+                      const leftIndex =
                         currentIndex > 0 ? currentIndex - 1 : images.length - 1;
-                      const leftIndex2 =
-                        leftIndex1 > 0 ? leftIndex1 - 1 : images.length - 1;
 
-                      if (index === leftIndex1 || index === leftIndex2) {
-                        return (
-                          <div key={index} className="gallery-side-image">
-                            <CldImage
-                              src={image}
-                              width={400}
-                              height={600}
-                              alt={`Application view ${index + 1}`}
-                              className="side-image"
-                              crop="fill"
-                            />
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
+                      return (
+                        <div className="gallery-side-image">
+                          <CldImage
+                            src={images[leftIndex]}
+                            width={400}
+                            height={600}
+                            alt={`Application view ${leftIndex + 1}`}
+                            className="side-image"
+                            crop="fill"
+                          />
+                        </div>
+                      );
+                    })()}
                   </>
                 )}
               </div>
@@ -180,52 +175,34 @@ const SingleApplication = ({
                 </button>
               )}
 
-              {/* Images de droite (avec blur) */}
+              {/* Image de droite (avec blur) */}
               <div className="gallery-side-images gallery-right">
                 {images.length > 2 && (
                   <>
-                    {images.map((image, index) => {
+                    {(() => {
                       const currentIndex = images.findIndex(
                         (img) => img === selectedImage,
                       );
-                      const rightIndex1 =
+                      const rightIndex =
                         currentIndex < images.length - 1 ? currentIndex + 1 : 0;
-                      const rightIndex2 =
-                        rightIndex1 < images.length - 1 ? rightIndex1 + 1 : 0;
 
-                      if (index === rightIndex1 || index === rightIndex2) {
-                        return (
-                          <div key={index} className="gallery-side-image">
-                            <CldImage
-                              src={image}
-                              width={400}
-                              height={600}
-                              alt={`Application view ${index + 1}`}
-                              className="side-image"
-                              crop="fill"
-                            />
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
+                      return (
+                        <div className="gallery-side-image">
+                          <CldImage
+                            src={images[rightIndex]}
+                            width={400}
+                            height={600}
+                            alt={`Application view ${rightIndex + 1}`}
+                            className="side-image"
+                            crop="fill"
+                          />
+                        </div>
+                      );
+                    })()}
                   </>
                 )}
               </div>
             </div>
-
-            {/* Indicateurs de pagination */}
-            {images.length > 1 && (
-              <div className="gallery-pagination">
-                {images.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`gallery-dot ${images[index] === selectedImage ? 'active' : ''}`}
-                    onClick={() => setSelectedImage(images[index])}
-                  />
-                ))}
-              </div>
-            )}
           </div>
         ) : (
           <div className="no-images">
