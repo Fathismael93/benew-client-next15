@@ -63,7 +63,7 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
   };
 
   return (
-    <div className="appsContainer">
+    <div>
       <section className="first">
         <Parallax
           bgColor="#0c0c1d"
