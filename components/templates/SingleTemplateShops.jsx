@@ -75,9 +75,9 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
           planets="/sun.png"
         />
       </section> */}
-      <section className="others projectSection">
+      {/* <section className="others projectSection">
         <h1>Pour les boutiques du templaye {applications[0]?.template_name}</h1>
-      </section>
+      </section> */}
     </div>
   );
 
