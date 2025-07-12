@@ -64,7 +64,7 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
 
   return (
     <div className="appsContainer">
-      {/* <section className="others">
+      <section className="first">
         <Parallax
           bgColor="#0c0c1d"
           title={
@@ -74,10 +74,10 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
           }
           planets="/sun.png"
         />
-      </section> */}
-      {/* <section className="others projectSection">
+      </section>
+      <section className="others projectSection">
         <h1>Pour les boutiques du templaye {applications[0]?.template_name}</h1>
-      </section> */}
+      </section>
     </div>
   );
 

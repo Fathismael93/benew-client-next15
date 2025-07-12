@@ -11,8 +11,8 @@ const TemplatesList = ({ templates }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
 
   return (
-    <div className="templatesContainer">
-      <section className="others">
+    <div>
+      <section className="first">
         <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
       </section>
       {templates.length !== undefined &&
