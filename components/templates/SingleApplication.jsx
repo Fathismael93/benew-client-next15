@@ -83,7 +83,7 @@ const SingleApplication = ({
       </section>
 
       <section className="others gallery-section">
-        {/* {images.length > 0 ? (
+        {images.length > 0 ? (
           <div className="gallery-container">
             <div className="gallery-content-wrapper">
               <div className="gallery-image-container">
@@ -126,11 +126,11 @@ const SingleApplication = ({
           <div className="no-images">
             No images available for this application
           </div>
-        )} */}
+        )}
       </section>
 
       <section className="others details-section">
-        {/* {appDetails &&
+        {appDetails &&
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
           <div className="details-container">
@@ -259,11 +259,11 @@ const SingleApplication = ({
           <div className="no-details">
             No details available for this application
           </div>
-        )} */}
+        )}
       </section>
 
       {/* Order Modal */}
-      {/* {appDetails &&
+      {appDetails &&
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 && (
           <OrderModal
@@ -273,7 +273,7 @@ const SingleApplication = ({
             applicationId={appDetails.application_id}
             applicationFee={appDetails.application_fee}
           />
-        )} */}
+        )}
     </div>
   );
 };
