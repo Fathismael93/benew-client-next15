@@ -140,7 +140,7 @@ const SingleApplication = ({
                 <h2>{appDetails.application_name}</h2>
                 <div className="details-badges">
                   <span className="details-badge type-badge">
-                    {appDetails.application_type}
+                    {appDetails.application_level}
                   </span>
                   <span className="details-badge category-badge">
                     {appDetails.application_category}
@@ -232,28 +232,6 @@ const SingleApplication = ({
                   </ul>
                 </div>
               </div>
-
-              {appDetails.application_other_versions &&
-                appDetails.application_other_versions.length > 0 && (
-                  <div className="details-other-versions">
-                    <h3>Other Versions</h3>
-                    <div className="version-links">
-                      {appDetails.application_other_versions.map(
-                        (version, index) => (
-                          <a
-                            key={index}
-                            href={version}
-                            className="version-link"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Version {index + 1}
-                          </a>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                )}
             </div>
           </div>
         ) : (
