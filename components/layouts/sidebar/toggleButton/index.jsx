@@ -5,9 +5,10 @@ import { usePathname } from 'next/navigation';
 
 function ToggleButton({ setOpen }) {
   const pathname = usePathname();
-
-  // Détecter si on est sur une page template détail (/templates/[id])
-  const isTemplateDetailPage = /^\/templates\/[^/]+\/?$/.test(pathname);
+  const isTemplateDetailPage =
+    pathname.startsWith('/templates/') &&
+    pathname.split('/').filter(Boolean).length >= 2 &&
+    pathname.split('/').filter(Boolean)[0] === 'templates';
 
   return (
     <button
