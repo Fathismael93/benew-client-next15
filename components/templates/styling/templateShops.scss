@@ -1,5 +1,14 @@
 @use '@/app/app.scss' as *;
 
+.appsContainer {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    $background-color,
+    color.adjust($background-color, $lightness: -3%)
+  );
+}
+
 .projectSection {
   width: 100%;
   height: 100vh;
