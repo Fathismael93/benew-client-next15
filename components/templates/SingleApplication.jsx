@@ -18,13 +18,13 @@ const SingleApplication = ({
   performanceMetrics,
   context,
 }) => {
-  console.log('Application Data:', application);
-  console.log('Template Data:', template);
-  console.log('Related Applications:', relatedApplications);
-  console.log('Platforms:', platforms);
-  console.log('Adaptive Config:', adaptiveConfig);
-  console.log('Performance Metrics:', performanceMetrics);
-  console.log('Context:', context);
+  // console.log('Application Data:', application);
+  // console.log('Template Data:', template);
+  // console.log('Related Applications:', relatedApplications);
+  // console.log('Platforms:', platforms);
+  // console.log('Adaptive Config:', adaptiveConfig);
+  // console.log('Performance Metrics:', performanceMetrics);
+  // console.log('Context:', context);
 
   // Get the images from the application object
   const images = (application && application.application_images) || [];

@@ -170,7 +170,6 @@ function getApplicationDataQuery(applicationId, templateId) {
           a.application_fee,
           a.application_rent,
           a.application_images,
-          a.application_other_versions,
           a.application_level,
           a.sales_count as application_sales,
           a.created_at as application_created,
