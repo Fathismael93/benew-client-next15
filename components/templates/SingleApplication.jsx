@@ -86,89 +86,80 @@ const SingleApplication = ({
       <section className="others gallery-section">
         {images.length > 0 ? (
           <div className="gallery-container">
-            <div className="gallery-content-wrapper">
-              <div className="gallery-swiper-container">
+            <div className="gallery-swiper-wrapper">
+              {/* Images de gauche (avec blur) */}
+              <div className="gallery-side-images gallery-left">
+                {images.length > 2 && (
+                  <>
+                    {images.map((image, index) => {
+                      const currentIndex = images.findIndex(
+                        (img) => img === selectedImage,
+                      );
+                      const leftIndex1 =
+                        currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+                      const leftIndex2 =
+                        leftIndex1 > 0 ? leftIndex1 - 1 : images.length - 1;
+
+                      if (index === leftIndex1 || index === leftIndex2) {
+                        return (
+                          <div key={index} className="gallery-side-image">
+                            <CldImage
+                              src={image}
+                              width={400}
+                              height={600}
+                              alt={`Application view ${index + 1}`}
+                              className="side-image"
+                              crop="fill"
+                            />
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                  </>
+                )}
+              </div>
+
+              {/* Flèche gauche */}
+              {images.length > 1 && (
+                <button
+                  className="gallery-arrow gallery-arrow-left"
+                  onClick={() => {
+                    const currentIndex = images.findIndex(
+                      (img) => img === selectedImage,
+                    );
+                    const prevIndex =
+                      currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+                    setSelectedImage(images[prevIndex]);
+                  }}
+                >
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                  </svg>
+                </button>
+              )}
+
+              {/* Image principale au centre */}
+              <div className="gallery-main-container">
                 {selectedImage && (
                   <CldImage
                     src={selectedImage}
-                    width={1200}
-                    height={800}
+                    width={800}
+                    height={1000}
                     alt="Featured application view"
                     className="gallery-main-image"
                     crop="fit"
-                    sizes="(max-width: 768px) 100vw, 90vw"
+                    sizes="(max-width: 768px) 90vw, 60vw"
                     placeholder="blur"
                     blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
                   />
-                )}
-
-                {/* Flèche gauche */}
-                {images.length > 1 && (
-                  <button
-                    className="gallery-arrow gallery-arrow-left"
-                    onClick={() => {
-                      const currentIndex = images.findIndex(
-                        (img) => img === selectedImage,
-                      );
-                      const prevIndex =
-                        currentIndex > 0 ? currentIndex - 1 : images.length - 1;
-                      setSelectedImage(images[prevIndex]);
-                    }}
-                  >
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="15,18 9,12 15,6"></polyline>
-                    </svg>
-                  </button>
-                )}
-
-                {/* Flèche droite */}
-                {images.length > 1 && (
-                  <button
-                    className="gallery-arrow gallery-arrow-right"
-                    onClick={() => {
-                      const currentIndex = images.findIndex(
-                        (img) => img === selectedImage,
-                      );
-                      const nextIndex =
-                        currentIndex < images.length - 1 ? currentIndex + 1 : 0;
-                      setSelectedImage(images[nextIndex]);
-                    }}
-                  >
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="9,6 15,12 9,18"></polyline>
-                    </svg>
-                  </button>
-                )}
-
-                {/* Indicateurs de pagination */}
-                {images.length > 1 && (
-                  <div className="gallery-pagination">
-                    {images.map((_, index) => (
-                      <button
-                        key={index}
-                        className={`gallery-dot ${images[index] === selectedImage ? 'active' : ''}`}
-                        onClick={() => setSelectedImage(images[index])}
-                      />
-                    ))}
-                  </div>
                 )}
 
                 {/* Compteur d'images */}
@@ -179,7 +170,79 @@ const SingleApplication = ({
                   </div>
                 )}
               </div>
+
+              {/* Flèche droite */}
+              {images.length > 1 && (
+                <button
+                  className="gallery-arrow gallery-arrow-right"
+                  onClick={() => {
+                    const currentIndex = images.findIndex(
+                      (img) => img === selectedImage,
+                    );
+                    const nextIndex =
+                      currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+                    setSelectedImage(images[nextIndex]);
+                  }}
+                >
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <polyline points="9,6 15,12 9,18"></polyline>
+                  </svg>
+                </button>
+              )}
+
+              {/* Images de droite (avec blur) */}
+              <div className="gallery-side-images gallery-right">
+                {images.length > 2 && (
+                  <>
+                    {images.map((image, index) => {
+                      const currentIndex = images.findIndex(
+                        (img) => img === selectedImage,
+                      );
+                      const rightIndex1 =
+                        currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+                      const rightIndex2 =
+                        rightIndex1 < images.length - 1 ? rightIndex1 + 1 : 0;
+
+                      if (index === rightIndex1 || index === rightIndex2) {
+                        return (
+                          <div key={index} className="gallery-side-image">
+                            <CldImage
+                              src={image}
+                              width={400}
+                              height={600}
+                              alt={`Application view ${index + 1}`}
+                              className="side-image"
+                              crop="fill"
+                            />
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                  </>
+                )}
+              </div>
             </div>
+
+            {/* Indicateurs de pagination */}
+            {images.length > 1 && (
+              <div className="gallery-pagination">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`gallery-dot ${images[index] === selectedImage ? 'active' : ''}`}
+                    onClick={() => setSelectedImage(images[index])}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         ) : (
           <div className="no-images">
