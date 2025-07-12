@@ -175,6 +175,256 @@
   }
 }
 
+// Ajouter ces styles après .gallery-main-container
+
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.gallery-main-image {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(246, 160, 55, 0.2),
+    0 8px 25px rgba(0, 0, 0, 0.3);
+
+  // Animation de transition fluide
+  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateX(30px);
+
+  @include mobile {
+    max-height: 60vh;
+    border-radius: 16px;
+  }
+
+  @include small {
+    max-height: 50vh;
+    border-radius: 12px;
+  }
+
+  &:hover {
+    transform: scale(1.02) translateX(0);
+    box-shadow:
+      0 25px 80px rgba(246, 160, 55, 0.3),
+      0 12px 35px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+  }
+}
+
+// Animation pour les images latérales
+.gallery-side-image {
+  width: 200px;
+  height: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  opacity: 0.6;
+
+  // Animation de transition pour les images latérales
+  animation: fadeInSlide 0.4s ease-out forwards;
+  animation-delay: 0.1s;
+
+  @include tablet {
+    width: 160px;
+    height: 220px;
+  }
+
+  @include mobile {
+    width: 120px;
+    height: 160px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(3px);
+    background: rgba(12, 12, 26, 0.3);
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+
+  .side-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+
+    &::after {
+      backdrop-filter: blur(1px);
+      background: rgba(12, 12, 26, 0.1);
+    }
+  }
+}
+
+// Animations keyframes
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  100% {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Animation pour le compteur
+.gallery-counter {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba($color-dark, 0.9),
+    rgba($color-purple, 0.9)
+  );
+  color: $color-light;
+  padding: 8px 16px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba($color-orange, 0.3);
+
+  // Animation pour le compteur
+  animation: counterUpdate 0.3s ease-out;
+
+  @include mobile {
+    top: 15px;
+    right: 15px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  @include small {
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+@keyframes counterUpdate {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Animation pour les flèches au clic
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, $color-orange, $color-pink);
+  border: none;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 10;
+  color: $color-dark;
+  box-shadow:
+    0 8px 25px rgba(246, 160, 55, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.2);
+
+  @include tablet {
+    width: 56px;
+    height: 56px;
+  }
+
+  @include mobile {
+    width: 48px;
+    height: 48px;
+  }
+
+  @include small {
+    width: 40px;
+    height: 40px;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, $color-pink, $color-orange);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow:
+      0 12px 35px rgba(246, 160, 55, 0.6),
+      0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+    animation: arrowPulse 0.2s ease-out;
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+
+    @include mobile {
+      font-size: 24px;
+    }
+
+    @include small {
+      font-size: 20px;
+    }
+  }
+}
+
+@keyframes arrowPulse {
+  0% {
+    transform: translateY(-50%) scale(0.95);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
 .gallery-main-image {
   width: 100%;
   height: auto;

@@ -100,7 +100,10 @@ const SingleApplication = ({
                         currentIndex > 0 ? currentIndex - 1 : images.length - 1;
 
                       return (
-                        <div className="gallery-side-image">
+                        <div
+                          className="gallery-side-image"
+                          key={`left-${leftIndex}`}
+                        >
                           <CldImage
                             src={images[leftIndex]}
                             width={400}
@@ -135,19 +138,22 @@ const SingleApplication = ({
 
               {/* Image principale au centre */}
               <div className="gallery-main-container">
-                {selectedImage && (
-                  <CldImage
-                    src={selectedImage}
-                    width={800}
-                    height={1000}
-                    alt="Featured application view"
-                    className="gallery-main-image"
-                    crop="fit"
-                    sizes="(max-width: 768px) 90vw, 60vw"
-                    placeholder="blur"
-                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
-                  />
-                )}
+                <div className="gallery-image-wrapper">
+                  {selectedImage && (
+                    <CldImage
+                      key={selectedImage} // Clé unique pour forcer le re-render
+                      src={selectedImage}
+                      width={800}
+                      height={1000}
+                      alt="Featured application view"
+                      className="gallery-main-image"
+                      crop="fit"
+                      sizes="(max-width: 768px) 90vw, 60vw"
+                      placeholder="blur"
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
+                    />
+                  )}
+                </div>
 
                 {/* Compteur d'images */}
                 {images.length > 1 && (
@@ -187,7 +193,10 @@ const SingleApplication = ({
                         currentIndex < images.length - 1 ? currentIndex + 1 : 0;
 
                       return (
-                        <div className="gallery-side-image">
+                        <div
+                          className="gallery-side-image"
+                          key={`right-${rightIndex}`}
+                        >
                           <CldImage
                             src={images[rightIndex]}
                             width={400}
