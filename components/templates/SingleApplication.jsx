@@ -140,7 +140,7 @@ const SingleApplication = ({
                 <h2>{appDetails.application_name}</h2>
                 <div className="details-badges">
                   <span className="details-badge type-badge">
-                    {appDetails.application_level}
+                    {`Type ${appDetails.application_level}`}
                   </span>
                   <span className="details-badge category-badge">
                     {appDetails.application_category}
