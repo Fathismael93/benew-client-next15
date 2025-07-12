@@ -68,7 +68,7 @@ const SingleApplication = ({
 
   return (
     <div>
-      <section className="others">
+      <section className="first">
         <Parallax
           bgColor="#0c0c1d"
           title={
