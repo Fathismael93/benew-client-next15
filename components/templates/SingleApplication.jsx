@@ -87,7 +87,7 @@ const SingleApplication = ({
         {images.length > 0 ? (
           <div className="gallery-container">
             <div className="gallery-content-wrapper">
-              <div className="gallery-image-container">
+              <div className="gallery-swiper-container">
                 {selectedImage && (
                   <CldImage
                     src={selectedImage}
@@ -101,25 +101,83 @@ const SingleApplication = ({
                     blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII="
                   />
                 )}
-              </div>
 
-              <div className="gallery-thumbnail-wrapper">
-                {images.map((image, index) => (
-                  <div
-                    key={index}
-                    className={`gallery-thumbnail ${selectedImage === image ? 'active' : ''}`}
-                    onClick={() => handleImageSelect(image)}
+                {/* Flèche gauche */}
+                {images.length > 1 && (
+                  <button
+                    className="gallery-arrow gallery-arrow-left"
+                    onClick={() => {
+                      const currentIndex = images.findIndex(
+                        (img) => img === selectedImage,
+                      );
+                      const prevIndex =
+                        currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+                      setSelectedImage(images[prevIndex]);
+                    }}
                   >
-                    <CldImage
-                      src={image}
-                      width={120}
-                      height={120}
-                      alt={`Application view ${index + 1}`}
-                      className="thumbnail-image"
-                      crop="fill"
-                    />
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                  </button>
+                )}
+
+                {/* Flèche droite */}
+                {images.length > 1 && (
+                  <button
+                    className="gallery-arrow gallery-arrow-right"
+                    onClick={() => {
+                      const currentIndex = images.findIndex(
+                        (img) => img === selectedImage,
+                      );
+                      const nextIndex =
+                        currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+                      setSelectedImage(images[nextIndex]);
+                    }}
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="9,6 15,12 9,18"></polyline>
+                    </svg>
+                  </button>
+                )}
+
+                {/* Indicateurs de pagination */}
+                {images.length > 1 && (
+                  <div className="gallery-pagination">
+                    {images.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`gallery-dot ${images[index] === selectedImage ? 'active' : ''}`}
+                        onClick={() => setSelectedImage(images[index])}
+                      />
+                    ))}
                   </div>
-                ))}
+                )}
+
+                {/* Compteur d'images */}
+                {images.length > 1 && (
+                  <div className="gallery-counter">
+                    {images.findIndex((img) => img === selectedImage) + 1} /{' '}
+                    {images.length}
+                  </div>
+                )}
               </div>
             </div>
           </div>

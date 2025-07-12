@@ -37,17 +37,20 @@
   overflow: hidden;
 }
 
-.gallery-image-container {
+// Remplacer les styles existants pour gallery-image-container et gallery-thumbnail dans application.scss par ceci :
+
+.gallery-swiper-container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  height: 65vh; // Use viewport height for better control
+  height: 65vh;
+  max-width: fit-content;
   margin: 0 auto;
-  max-width: fit-content; // This is the key change - container will fit the image
   border: 2px solid rgba(255, 165, 0, 0.3);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(255, 165, 0, 0.1);
+  overflow: hidden;
 
   @include mobile {
     height: 50vh;
@@ -72,82 +75,156 @@
   }
 }
 
-.gallery-thumbnail-wrapper {
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 165, 0, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
   display: flex;
-  flex-wrap: nowrap;
-  gap: 1rem;
-  overflow-x: auto;
-  padding: 0.5rem;
-  scrollbar-width: thin;
+  align-items: center;
   justify-content: center;
-  min-height: 120px;
-
-  &::-webkit-scrollbar {
-    height: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 165, 0, 0.5);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 165, 0, 0.8);
-  }
-}
-
-.gallery-thumbnail {
-  flex: 0 0 auto;
-  width: 100px;
-  height: 100px;
-  border-radius: 12px;
-  overflow: hidden;
   cursor: pointer;
-  position: relative;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+  z-index: 10;
+  color: #000;
+  box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
 
   @include mobile {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
   }
 
   @include small {
-    width: 60px;
-    height: 60px;
+    width: 36px;
+    height: 36px;
   }
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.2);
+    background: rgba(255, 165, 0, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 16px rgba(255, 165, 0, 0.4);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  svg {
+    @include mobile {
+      width: 20px;
+      height: 20px;
+    }
+
+    @include small {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.gallery-arrow-left {
+  left: -24px;
+
+  @include mobile {
+    left: -20px;
+  }
+
+  @include small {
+    left: -18px;
+  }
+}
+
+.gallery-arrow-right {
+  right: -24px;
+
+  @include mobile {
+    right: -20px;
+  }
+
+  @include small {
+    right: -18px;
+  }
+}
+
+.gallery-pagination {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+
+  @include mobile {
+    bottom: -35px;
+    gap: 6px;
+  }
+
+  @include small {
+    bottom: -30px;
+    gap: 5px;
+  }
+}
+
+.gallery-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  @include mobile {
+    width: 10px;
+    height: 10px;
+  }
+
+  @include small {
+    width: 8px;
+    height: 8px;
+  }
+
+  &:hover {
+    background: rgba(255, 165, 0, 0.7);
+    transform: scale(1.2);
   }
 
   &.active {
-    border: 2px solid #ffa500;
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.3);
+    background: rgba(255, 165, 0, 1);
+    transform: scale(1.3);
+    box-shadow: 0 2px 8px rgba(255, 165, 0, 0.4);
+  }
+}
 
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255, 165, 0, 0.1);
-      z-index: 1;
-    }
+.gallery-counter {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 10;
+
+  @include mobile {
+    top: 12px;
+    right: 12px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
   }
 
-  .thumbnail-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  @include small {
+    top: 10px;
+    right: 10px;
+    padding: 3px 6px;
+    font-size: 0.75rem;
   }
 }
 
