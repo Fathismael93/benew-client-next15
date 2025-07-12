@@ -8,6 +8,7 @@ import OrderModal from '../modal/OrderModal'; // Import the OrderModal component
 import './styling/application.scss';
 import Link from 'next/link';
 import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
+import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 
 const SingleApplication = ({
   application,
@@ -133,16 +134,7 @@ const SingleApplication = ({
                     setSelectedImage(images[prevIndex]);
                   }}
                 >
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <polyline points="15,18 9,12 15,6"></polyline>
-                  </svg>
+                  <MdOutlineChevronLeft size={32} />
                 </button>
               )}
 
@@ -184,16 +176,7 @@ const SingleApplication = ({
                     setSelectedImage(images[nextIndex]);
                   }}
                 >
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <polyline points="9,6 15,12 9,18"></polyline>
-                  </svg>
+                  <MdOutlineChevronRight size={32} />
                 </button>
               )}
 

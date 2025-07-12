@@ -259,13 +259,11 @@
 
   svg {
     @include mobile {
-      width: 24px;
-      height: 24px;
+      font-size: 24px;
     }
 
     @include small {
-      width: 20px;
-      height: 20px;
+      font-size: 20px;
     }
   }
 }
@@ -411,21 +409,6 @@
     font-size: 1rem;
     padding: 1rem;
   }
-}
-
-.no-images {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 20px;
-  color: #a0a0a0;
-  font-size: 1.25rem;
-  text-align: center;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
 }
 
 // Details section styling - with improved responsiveness
