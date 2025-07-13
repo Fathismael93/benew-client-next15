@@ -132,7 +132,6 @@
   overflow: hidden;
 }
 
-// Animation pour les images latérales
 .gallery-side-image {
   width: 200px;
   height: 280px;
@@ -153,6 +152,13 @@
   @include mobile {
     width: 120px;
     height: 160px;
+  }
+
+  // CETTE PARTIE MANQUAIT POUR LES PETITS ÉCRANS
+  @include small {
+    width: 100px;
+    height: 140px;
+    border-radius: 12px;
   }
 
   &::after {
@@ -184,6 +190,42 @@
       backdrop-filter: blur(1px);
       background: rgba(12, 12, 26, 0.1);
     }
+  }
+}
+
+.gallery-arrow-left {
+  left: 15%;
+
+  @include tablet {
+    left: 10%;
+  }
+
+  @include mobile {
+    left: 8%;
+  }
+
+  @include small {
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.gallery-arrow-right {
+  right: 15%;
+
+  @include tablet {
+    right: 10%;
+  }
+
+  @include mobile {
+    right: 8%;
+  }
+
+  @include small {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
@@ -348,7 +390,11 @@
   box-shadow:
     0 20px 60px rgba(246, 160, 55, 0.2),
     0 8px 25px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s ease;
+
+  // Animation de transition fluide - CETTE LIGNE MANQUAIT
+  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateX(30px);
 
   @include mobile {
     max-height: 60vh;
@@ -361,10 +407,11 @@
   }
 
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.02) translateX(0);
     box-shadow:
       0 25px 80px rgba(246, 160, 55, 0.3),
       0 12px 35px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
   }
 }
 
