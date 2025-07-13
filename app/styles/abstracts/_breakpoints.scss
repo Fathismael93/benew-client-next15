@@ -4,6 +4,9 @@
 // Basé sur les statistiques réelles d'usage des appareils
 // Mobile-first approach avec support complet des orientations
 
+// ✅ IMPORT DES MODULES SASS MODERNES
+@use 'sass:map';
+
 // =============================================================================
 // 1. BREAKPOINTS DE BASE (Largeur d'écran)
 // =============================================================================
@@ -176,8 +179,8 @@ $device-breakpoints: (
 /// @param {String} $name - Nom du breakpoint
 /// @return {String} - Valeur du breakpoint
 @function breakpoint($name) {
-  @if map-has-key($breakpoints, $name) {
-    @return map-get($breakpoints, $name);
+  @if map.has-key($breakpoints, $name) {
+    @return map.get($breakpoints, $name);
   }
   @warn "Breakpoint `#{$name}` n'existe pas dans $breakpoints.";
   @return null;
@@ -188,10 +191,10 @@ $device-breakpoints: (
 /// @param {String} $property - 'width' ou 'height'
 /// @return {String} - Valeur de la dimension
 @function device-dimension($device, $property: 'width') {
-  @if map-has-key($device-breakpoints, $device) {
-    $device-map: map-get($device-breakpoints, $device);
-    @if map-has-key($device-map, $property) {
-      @return map-get($device-map, $property);
+  @if map.has-key($device-breakpoints, $device) {
+    $device-map: map.get($device-breakpoints, $device);
+    @if map.has-key($device-map, $property) {
+      @return map.get($device-map, $property);
     }
   }
   @warn "Appareil `#{$device}` ou propriété `#{$property}` introuvable.";
@@ -252,10 +255,10 @@ $device-breakpoints: (
 /// @param {String} $device - Nom de l'appareil
 /// @param {String} $orientation - 'portrait', 'landscape', ou null pour les deux
 @mixin device($device, $orientation: null) {
-  @if map-has-key($device-breakpoints, $device) {
-    $device-map: map-get($device-breakpoints, $device);
-    $width: map-get($device-map, 'width');
-    $height: map-get($device-map, 'height');
+  @if map.has-key($device-breakpoints, $device) {
+    $device-map: map.get($device-breakpoints, $device);
+    $width: map.get($device-map, 'width');
+    $height: map.get($device-map, 'height');
 
     @if $orientation == 'portrait' {
       @media (min-width: $width) and (max-width: $width) and (min-height: $height) and (max-height: $height) and (orientation: portrait) {
