@@ -1,76 +1,133 @@
 @use '../../../app/styles/abstracts' as *;
 
+// =============================
+// NAVBAR - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
 .navbar {
-  height: 6.25rem;
+  // 📱 MOBILE FIRST - Styles de base optimaux pour petits écrans
+  height: 5rem; // Plus grand pour une meilleure zone tactile
   scroll-snap-align: start;
   z-index: 999;
+  position: relative;
 
-  @include small {
-    height: 5rem;
+  // 🖥️ Réduction progressive pour écrans plus grands
+  @include from('md') {
+    height: 5.5rem;
   }
 
-  @include mobile {
-    height: 5rem;
+  @include from('xl') {
+    height: 6.25rem; // Taille originale pour desktop
   }
 
   .wrapper {
-    max-width: 70rem;
+    // 📱 MOBILE - Configuration optimale
+    max-width: 100%;
     height: 100%;
     margin: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 1rem 1.5rem; // Plus d'espace sur mobile
 
-    @include small {
-      justify-content: flex-end;
-      padding: 1rem;
+    // 📟 SMALL MOBILE - Ajustements pour très petits écrans
+    @include until('sm') {
+      padding: 0.75rem 1rem;
+      justify-content: flex-end; // Logo masqué, sidebar à droite
     }
 
-    @include mobile {
-      justify-content: flex-end;
+    // 🖥️ TABLET ET PLUS - Ajustements progressifs
+    @include from('lg') {
+      max-width: 43rem;
       padding: 1.25rem;
     }
 
-    @include tablet {
-      max-width: 43rem;
-      justify-content: flex-end;
+    @include from('xl') {
+      max-width: 70rem;
+      padding: 1rem; // Retour aux valeurs desktop
     }
 
-    @include laptop {
+    @include from('xxxl') {
       max-width: 37rem;
     }
 
+    // 🖼️ LOGO - Gestion responsive intelligente
     div {
-      margin-left: 1rem;
+      // 📱 MOBILE - Logo plus visible
+      margin-left: 0;
+      display: flex;
+      align-items: center;
 
-      @include small {
+      img {
+        height: auto;
+        width: auto;
+        max-height: 3rem; // Plus grand sur mobile
+        max-width: 4rem;
+        object-fit: contain;
+      }
+
+      // 📟 TRÈS PETITS ÉCRANS - Logo masqué pour économiser l'espace
+      @include until('sm') {
         display: none;
       }
 
-      @include mobile {
-        display: none;
+      // 🖥️ TABLET ET PLUS - Logo progressivement plus petit
+      @include from('lg') {
+        margin-left: 1rem;
+
+        img {
+          max-height: 2.5rem;
+          max-width: 3.5rem;
+        }
       }
 
-      @include tablet {
-        display: none;
+      @include from('xl') {
+        img {
+          max-height: 2rem; // Taille desktop originale
+          max-width: 3rem;
+        }
       }
     }
 
+    // 🔗 ICÔNES SOCIALES - Optimisation mobile-first
     .social {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem; // Plus d'espace entre les icônes sur mobile
+      align-items: center;
+
+      // 📟 TRÈS PETITS ÉCRANS - Espacement réduit mais toujours utilisable
+      @include until('sm') {
+        gap: 1rem;
+      }
+
+      // 🖥️ DESKTOP - Retour aux valeurs originales
+      @include from('xl') {
+        gap: 1rem;
+      }
 
       a {
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem; // Zone tactile plus grande
+        border-radius: 50%;
 
         &:hover {
           transform: scale(1.1) rotate(5deg);
+          background: rgba(css-var(primary-color), 0.1);
+        }
+
+        // 📱 MOBILE - Zone tactile optimisée
+        @include until('lg') {
+          padding: 0.75rem; // Zone tactile encore plus grande sur mobile
         }
       }
 
       .social-icon {
-        width: 1rem;
-        height: 1rem;
+        // 📱 MOBILE FIRST - Icônes bien visibles
+        width: 1.8rem;
+        height: 1.8rem;
         transition: all 0.3s ease;
         filter: grayscale(0.3);
 
@@ -78,11 +135,72 @@
           filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
         }
 
-        @include small {
-          width: 1rem;
+        // 📟 TRÈS PETITS ÉCRANS - Légèrement plus petites mais toujours utilisables
+        @include until('sm') {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+
+        // 🖥️ TABLET ET PLUS - Réduction progressive
+        @include from('lg') {
+          width: 1.4rem;
+          height: 1.4rem;
+        }
+
+        @include from('xl') {
+          width: 1rem; // Taille desktop originale
           height: 1rem;
         }
       }
     }
+  }
+}
+
+// =============================
+// AMÉLIORATIONS ACCESSIBILITÉ ET UX
+// =============================
+
+// Zone tactile minimale recommandée (44px)
+@media (pointer: coarse) {
+  .navbar .wrapper .social a {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+// Adaptation pour écrans très larges
+@include from('xxxxl') {
+  .navbar .wrapper {
+    max-width: 1920px;
+    padding: 1rem 2rem;
+  }
+}
+
+// Adaptation pour mode paysage sur mobile
+@include mobile-landscape {
+  .navbar {
+    height: 4rem; // Plus compact en mode paysage
+
+    .wrapper {
+      padding: 0.5rem 1rem;
+
+      div img {
+        max-height: 2rem;
+        max-width: 2.5rem;
+      }
+
+      .social .social-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+      }
+    }
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .navbar .wrapper div img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 }

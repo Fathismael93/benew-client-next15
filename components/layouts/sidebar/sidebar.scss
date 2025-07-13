@@ -1,6 +1,10 @@
 @use 'sass:color';
 @use '../../../app/styles/abstracts' as *;
 
+// =============================
+// SIDEBAR - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -15,7 +19,12 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 20rem;
+
+    // 📱 MOBILE FIRST - Sidebar bien visible et utilisable
+    width: 75vw; // 75% de la largeur d'écran sur mobile
+    max-width: 320px; // Maximum pour éviter que ce soit trop large
+    min-width: 260px; // Minimum pour la lisibilité
+
     background: linear-gradient(
       135deg,
       css-var(text-color),
@@ -23,14 +32,36 @@
     );
     box-shadow: 2px 0 10px rgba(css-var(background-color), 0.3);
 
-    @include small {
-      width: 12.5rem;
+    // 📟 TRÈS PETITS ÉCRANS - Prend plus de place pour être utilisable
+    @include until('xs') {
+      width: 85vw;
+      min-width: 280px;
     }
 
-    @include mobile {
-      width: 12.5rem;
+    // 📱 SMALL MOBILE - Optimisation pour petits téléphones
+    @include between('xs', 'sm') {
+      width: 80vw;
+      min-width: 270px;
     }
 
+    // 📱 MOBILE STANDARD - Taille équilibrée
+    @include between('sm', 'md') {
+      width: 70vw;
+      min-width: 260px;
+    }
+
+    // 🖥️ TABLET ET PLUS - Réduction progressive
+    @include from('lg') {
+      width: 25rem; // Taille fixe pour tablets
+      min-width: 20rem;
+    }
+
+    @include from('xl') {
+      width: 20rem; // Taille desktop originale
+      min-width: 20rem;
+    }
+
+    // 🔗 LIENS DE NAVIGATION - Optimisation mobile-first
     .links {
       position: absolute;
       width: 100%;
@@ -39,23 +70,37 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.25rem;
-      font-size: 2rem;
+      gap: 2rem; // Plus d'espace entre les liens sur mobile
       cursor: pointer;
 
-      @include small {
-        font-size: 1.25rem;
+      // 📱 MOBILE - Police plus grande et plus lisible
+      font-size: 1.8rem;
+      padding: 1rem; // Padding pour éviter que ça touche les bords
+
+      // 📟 TRÈS PETITS ÉCRANS - Ajustements pour la lisibilité
+      @include until('sm') {
+        font-size: 1.6rem;
+        gap: 1.8rem;
+        padding: 0.75rem;
       }
 
-      @include mobile {
-        font-size: 1.25rem;
+      // 🖥️ TABLET ET PLUS - Réduction progressive
+      @include from('md') {
+        font-size: 1.7rem;
+        gap: 1.8rem;
       }
 
-      @include tablet {
+      @include from('lg') {
         font-size: 1.5rem;
+        gap: 1.5rem;
       }
 
-      @include laptop {
+      @include from('xl') {
+        font-size: 2rem; // Taille desktop originale
+        gap: 1.25rem;
+      }
+
+      @include from('xxxl') {
         font-size: 1.7rem;
       }
 
@@ -64,24 +109,68 @@
         align-items: center;
         justify-content: center;
         gap: 1.25rem;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
+
+        // 📱 MOBILE - Zone tactile optimisée
+        padding: 1rem 1.5rem;
+        width: 90%; // Presque toute la largeur pour une meilleure zone tactile
+        min-height: 60px; // Zone tactile minimale recommandée
+
+        border-radius: 12px;
         transition: all 0.3s ease;
+
+        // 📟 AJUSTEMENTS POUR TRÈS PETITS ÉCRANS
+        @include until('sm') {
+          padding: 0.875rem 1.25rem;
+          min-height: 56px;
+          width: 92%;
+        }
+
+        // 🖥️ DESKTOP - Retour aux valeurs originales
+        @include from('xl') {
+          padding: 0.5rem 1rem;
+          min-height: auto;
+          width: auto;
+          gap: 1.25rem;
+        }
 
         &:hover {
           background: linear-gradient(
             135deg,
-            rgba(css-var(primary-color), 0.1),
-            rgba(css-var(secondary-color), 0.1)
+            rgba(css-var(primary-color), 0.15),
+            rgba(css-var(secondary-color), 0.15)
           );
           transform: translateX(10px);
+        }
+
+        // 📱 MOBILE - Effet tactile visuel
+        &:active {
+          transform: translateX(5px) scale(0.98);
+          background: linear-gradient(
+            135deg,
+            rgba(css-var(primary-color), 0.2),
+            rgba(css-var(secondary-color), 0.2)
+          );
         }
 
         a {
           color: css-var(background-color);
           text-decoration: none;
-          font-weight: 500;
+          font-weight: 600; // Plus gras pour une meilleure lisibilité mobile
           transition: all 0.3s ease;
+          text-align: center;
+          width: 100%;
+
+          // 📱 MOBILE - Amélioration de la lisibilité
+          @include until('lg') {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+          }
+
+          // 🖥️ DESKTOP - Retour aux valeurs originales
+          @include from('xl') {
+            font-weight: 500;
+            letter-spacing: 0;
+          }
 
           &:hover {
             color: css-var(primary-color);
@@ -91,44 +180,207 @@
         .icon {
           color: css-var(primary-color);
           margin-right: 1rem;
+
+          // 📱 MOBILE - Icônes plus grandes pour la visibilité
+          font-size: 1.5rem;
+
+          @include until('sm') {
+            font-size: 1.3rem;
+            margin-right: 0.75rem;
+          }
+
+          @include from('xl') {
+            font-size: 1.25rem;
+            margin-right: 1rem;
+          }
         }
       }
     }
   }
 
+  // 🔘 BOUTON TOGGLE - Optimisation mobile-first
   button {
     z-index: 999;
-    width: 1.875rem;
-    height: 1.875rem;
+
+    // 📱 MOBILE - Bouton plus grand et mieux positionné
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
     position: fixed;
-    top: 2.313rem;
-    left: 2.188rem;
-    background-color: transparent;
-    border: none;
+    top: 1.25rem; // Meilleur positionnement sur mobile
+    left: 1.25rem;
+
+    background-color: rgba(css-var(background-color), 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(css-var(primary-color), 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
 
+    // 📟 TRÈS PETITS ÉCRANS - Ajustements pour la visibilité
+    @include until('sm') {
+      width: 2.75rem;
+      height: 2.75rem;
+      top: 1rem;
+      left: 1rem;
+    }
+
+    // 🖥️ TABLET ET PLUS - Réduction progressive
+    @include from('md') {
+      width: 2.5rem;
+      height: 2.5rem;
+      top: 1.5rem;
+      left: 1.5rem;
+    }
+
+    @include from('xl') {
+      width: 1.875rem; // Taille desktop originale
+      height: 1.875rem;
+      top: 2.313rem;
+      left: 2.188rem;
+      background-color: transparent;
+      border: none;
+    }
+
     &:hover {
-      background-color: rgba(css-var(primary-color), 0.1);
+      background-color: rgba(css-var(primary-color), 0.2);
       transform: scale(1.1);
+      border-color: rgba(css-var(primary-color), 0.5);
+
+      // 🖥️ DESKTOP - Comportement original
+      @include from('xl') {
+        background-color: rgba(css-var(primary-color), 0.1);
+        transform: scale(1.1);
+      }
+    }
+
+    &:active {
+      transform: scale(0.95);
     }
 
     // Correction spécifique pour les pages template détail
     &.template-detail-fix {
-      top: 1.7rem; // Décalage vers le haut (-0.213rem)
-      left: 1rem; // Décalage vers la gauche (-0.238rem)
+      // 📱 MOBILE - Ajustements pour les pages template
+      top: 1rem;
+      left: 1rem;
+
+      @include from('md') {
+        top: 1.25rem;
+        left: 1.25rem;
+      }
+
+      @include from('xl') {
+        top: 1.7rem; // Valeurs originales
+        left: 1rem;
+      }
     }
 
     svg {
+      // 📱 MOBILE - Icône plus grande pour la visibilité
+      width: 1.5rem;
+      height: 1.5rem;
+
+      @include until('sm') {
+        width: 1.3rem;
+        height: 1.3rem;
+      }
+
+      @include from('xl') {
+        width: 23px; // Taille desktop originale
+        height: 23px;
+      }
+
       path {
-        stroke: css-var(background-color);
+        stroke: css-var(text-color);
         transition: all 0.3s ease;
+        stroke-width: 3;
+
+        // 📱 MOBILE - Trait plus épais pour la visibilité
+        @include until('lg') {
+          stroke-width: 4;
+        }
+
+        @include from('xl') {
+          stroke: css-var(background-color);
+          stroke-width: 3;
+        }
       }
 
       &:hover path {
         stroke: css-var(primary-color);
       }
+    }
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile - Sidebar plus compacte
+@include mobile-landscape {
+  .sidebar .bg {
+    width: 60vw;
+    max-width: 280px;
+
+    .links {
+      font-size: 1.4rem;
+      gap: 1.2rem;
+
+      .link {
+        padding: 0.75rem 1rem;
+        min-height: 50px;
+      }
+    }
+  }
+
+  .sidebar button {
+    width: 2.5rem;
+    height: 2.5rem;
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+}
+
+// Écrans haute densité - Amélioration de la netteté
+@include high-density {
+  .sidebar .bg {
+    box-shadow:
+      2px 0 10px rgba(css-var(background-color), 0.3),
+      0 0 1px rgba(css-var(primary-color), 0.1);
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('xxxxl') {
+  .sidebar .bg {
+    width: 18rem;
+    max-width: 22rem;
+  }
+}
+
+// Adaptation pour les écrans tactiles
+@media (pointer: coarse) {
+  .sidebar .bg .links .link {
+    min-height: 64px; // Zone tactile encore plus grande
+
+    &:hover {
+      transform: none; // Pas d'effet hover sur tactile
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .sidebar .bg .links .link,
+  .sidebar button {
+    transition: none;
+
+    &:hover {
+      transform: none;
     }
   }
 }
