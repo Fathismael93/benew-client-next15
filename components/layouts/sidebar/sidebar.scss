@@ -11,6 +11,13 @@
   justify-content: center;
   background-color: css-var(text-color);
   color: css-var(background-color);
+  background: linear-gradient(
+    135deg,
+    css-var(text-color),
+    color.adjust($text-color, $lightness: 5%)
+  );
+  box-shadow: 2px 0 10px rgba(css-var(background-color), 0.3);
+  background-color: transparent;
 
   .bg {
     z-index: 999;
@@ -31,13 +38,6 @@
     @include from('lg') {
       width: 20rem;
     }
-
-    background: linear-gradient(
-      135deg,
-      css-var(text-color),
-      color.adjust($text-color, $lightness: 5%)
-    );
-    box-shadow: 2px 0 10px rgba(css-var(background-color), 0.3);
 
     .links {
       position: absolute;
@@ -132,7 +132,6 @@
       left: 2.188rem;
     }
 
-    background-color: transparent;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
