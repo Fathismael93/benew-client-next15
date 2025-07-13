@@ -30,16 +30,40 @@ function Navbar() {
         </motion.div>
         <div className="social">
           <a href="#">
-            <img src="/facebook.png" alt="Facebook logo" />
+            <Image
+              src="/facebook.png"
+              alt="Facebook logo"
+              width={24}
+              height={24}
+              className="social-icon"
+            />
           </a>
           <a href="#">
-            <img src="/instagram.png" alt="Instagram logo" />
+            <Image
+              src="/instagram.png"
+              alt="Instagram logo"
+              width={24}
+              height={24}
+              className="social-icon"
+            />
           </a>
           <a href="#">
-            <img src="/snapchat.png" alt="Snapchat logo" />
+            <Image
+              src="/snapchat.png"
+              alt="Snapchat logo"
+              width={24}
+              height={24}
+              className="social-icon"
+            />
           </a>
           <a href="#">
-            <img src="/twitter.png" alt="Twitter logo" />
+            <Image
+              src="/twitter.png"
+              alt="Twitter logo"
+              width={24}
+              height={24}
+              className="social-icon"
+            />
           </a>
         </div>
       </div>

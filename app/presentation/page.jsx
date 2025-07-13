@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useAnimation } from 'framer-motion';
+import Image from 'next/image';
 import './presentation.scss';
 import Parallax from '@/components/layouts/parallax';
 import PresentationModal from '@/components/modal/PresentationModal';
@@ -82,18 +83,13 @@ function Presentation() {
         <Parallax bgColor="#0c0c1d" title="Présentation" planets="/sun.png" />
       </section>
       <section className="others">
-        <div
-          className="planets"
-          style={{
-            backgroundImage: `url(/planets.png)`,
-          }}
-        />
+        <div className="planets-background" />
         <div className="stars" />
         <div className="banner">
           <motion.div
             className="slider"
+            data-quantity={3}
             style={{
-              '--quantity': 3,
               rotateY: springRotation,
               rotateX: -26,
             }}
@@ -179,28 +175,43 @@ function Presentation() {
             }}
           >
             <div
-              className={`item ${currentIndex === 0 ? 'active' : ''}`}
-              style={{ '--position': 1 }}
+              className={`item ${currentIndex === 0 ? 'active' : ''} item-position-1`}
               onClick={() => handleItemClick('presentation')}
             >
               <h2>Présentation</h2>
-              <img src="/images/the_announcer.png" alt="Présentation" />
+              <Image
+                src="/images/the_announcer.png"
+                alt="Présentation"
+                width={150}
+                height={200}
+                className="item-image"
+              />
             </div>
             <div
-              className={`item ${currentIndex === 1 ? 'active' : ''}`}
-              style={{ '--position': 2 }}
+              className={`item ${currentIndex === 1 ? 'active' : ''} item-position-2`}
               onClick={() => handleItemClick('produit')}
             >
               <h2>Produit</h2>
-              <img src="/images/the_product.png" alt="Produit" />
+              <Image
+                src="/images/the_product.png"
+                alt="Produit"
+                width={150}
+                height={200}
+                className="item-image"
+              />
             </div>
             <div
-              className={`item ${currentIndex === 2 ? 'active' : ''}`}
-              style={{ '--position': 3 }}
+              className={`item ${currentIndex === 2 ? 'active' : ''} item-position-3`}
               onClick={() => handleItemClick('fondateur')}
             >
               <h2>Fondateur</h2>
-              <img src="/images/maitre_kaio.png" alt="Fondateur" />
+              <Image
+                src="/images/maitre_kaio.png"
+                alt="Fondateur"
+                width={150}
+                height={200}
+                className="item-image"
+              />
             </div>
           </motion.div>
         </div>

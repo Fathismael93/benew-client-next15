@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import Link from 'next/link';
 
 function NotFound() {
   return (
@@ -8,7 +8,7 @@ function NotFound() {
       <div className="error">
         <p>Erreur 404 !</p>
         <p>
-          Page introuvable, <a href="/">Retour à l&apos;accueil</a>
+          Page introuvable, <Link href="/">Retour à l&apos;accueil</Link>
         </p>
       </div>
     </section>

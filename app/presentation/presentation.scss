@@ -1,6 +1,7 @@
 @use '@/app/app.scss' as *;
 
-.planets {
+.planets-background {
+  background-image: url('/planets.png');
   background-size: cover;
   background-position: bottom;
   width: 100%;
@@ -46,17 +47,34 @@
   transform-style: preserve-3d;
   perspective: 1000px;
   z-index: 3;
+
+  // Gestion des positions avec CSS variables et classes
+  &[data-quantity='3'] {
+    --quantity: 3;
+  }
 }
 
 .banner .slider .item {
   position: absolute;
   inset: 0 0 0 0;
-  transform: rotateY(
-      calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)
-    )
-    translateZ(250px);
   cursor: pointer;
   transition: all 0.3s ease;
+
+  // Positions spécifiques pour chaque item
+  &.item-position-1 {
+    transform: rotateY(calc((1 - 1) * (360 / var(--quantity)) * 1deg))
+      translateZ(250px);
+  }
+
+  &.item-position-2 {
+    transform: rotateY(calc((2 - 1) * (360 / var(--quantity)) * 1deg))
+      translateZ(250px);
+  }
+
+  &.item-position-3 {
+    transform: rotateY(calc((3 - 1) * (360 / var(--quantity)) * 1deg))
+      translateZ(250px);
+  }
 
   h2 {
     color: $text-color;
@@ -81,7 +99,7 @@
       text-shadow: 2px 2px 8px rgba($primary-color, 0.3);
     }
 
-    img {
+    .item-image {
       border: 3px solid $primary-color;
       box-shadow: 0 0 20px rgba($primary-color, 0.4);
       filter: brightness(1.1);
@@ -89,7 +107,7 @@
   }
 }
 
-.banner .slider .item img {
+.banner .slider .item .item-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -114,17 +132,28 @@
   }
 
   .banner .slider .item {
-    transform: rotateY(
-        calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg)
-      )
-      translateZ(180px);
+    // Positions ajustées pour mobile
+    &.item-position-1 {
+      transform: rotateY(calc((1 - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(180px);
+    }
+
+    &.item-position-2 {
+      transform: rotateY(calc((2 - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(180px);
+    }
+
+    &.item-position-3 {
+      transform: rotateY(calc((3 - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(180px);
+    }
 
     h2 {
       font-size: 0.8rem;
     }
   }
 
-  .banner .slider .item img {
+  .banner .slider .item .item-image {
     &:hover {
       padding: 0.2rem;
       border: 2px solid $primary-color;

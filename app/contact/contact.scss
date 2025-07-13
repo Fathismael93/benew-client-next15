@@ -189,7 +189,7 @@
         margin-top: 0.6rem;
       }
 
-      img {
+      .social-icon {
         width: 1.3rem;
         height: 1.3rem;
         transition: all 0.3s ease;
@@ -425,6 +425,29 @@
           padding: 0.2rem;
           border-radius: 0.7rem;
         }
+      }
+
+      // Messages de statut
+      .error-message {
+        color: #ff4444;
+        margin-top: 0.625rem;
+        font-size: 0.875rem;
+        text-align: center;
+        padding: 0.5rem;
+        background: rgba(255, 68, 68, 0.1);
+        border-radius: 0.25rem;
+        border: 1px solid rgba(255, 68, 68, 0.3);
+      }
+
+      .success-message {
+        color: #22c55e;
+        margin-top: 0.625rem;
+        font-size: 0.875rem;
+        text-align: center;
+        padding: 0.5rem;
+        background: rgba(34, 197, 94, 0.1);
+        border-radius: 0.25rem;
+        border: 1px solid rgba(34, 197, 94, 0.3);
       }
     }
   }

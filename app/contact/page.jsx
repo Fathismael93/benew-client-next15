@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { useInView, motion } from 'framer-motion';
 import { MdMail, MdPhone, MdWhatsapp } from 'react-icons/md';
+import Image from 'next/image';
 import Parallax from '@/components/layouts/parallax';
 import { sendContactEmail } from '@/actions/sendContactEmail'; // Ajuste le chemin selon ton dossier
 import './contact.scss';
@@ -92,16 +93,40 @@ function Contact() {
             <motion.h2 variants={variants}>Comptes Sociaux</motion.h2>
             <motion.div className="social" variants={variants}>
               <motion.a href="#" variants={variants} title="Social link">
-                <img src="/facebook.png" alt="Facebook logo" />
+                <Image
+                  src="/facebook.png"
+                  alt="Facebook logo"
+                  width={32}
+                  height={32}
+                  className="social-icon"
+                />
               </motion.a>
               <motion.a href="#" variants={variants} title="Social link">
-                <img src="/instagram.png" alt="Instagram logo" />
+                <Image
+                  src="/instagram.png"
+                  alt="Instagram logo"
+                  width={32}
+                  height={32}
+                  className="social-icon"
+                />
               </motion.a>
               <motion.a href="#" variants={variants} title="Social link">
-                <img src="/snapchat.png" alt="Snapchat logo" />
+                <Image
+                  src="/snapchat.png"
+                  alt="Snapchat logo"
+                  width={32}
+                  height={32}
+                  className="social-icon"
+                />
               </motion.a>
               <motion.a href="#" variants={variants} title="Social link">
-                <img src="/twitter.png" alt="Twitter logo" />
+                <Image
+                  src="/twitter.png"
+                  alt="Twitter logo"
+                  width={32}
+                  height={32}
+                  className="social-icon"
+                />
               </motion.a>
             </motion.div>
           </motion.div>
@@ -188,12 +213,12 @@ function Contact() {
                 {loading ? 'Envoi en cours...' : 'Envoyer'}
               </button>
               {error && (
-                <div style={{ color: 'red', marginTop: '10px' }}>
+                <div className="error-message">
                   Erreur lors de l&apos;envoi du message
                 </div>
               )}
               {success && (
-                <div style={{ color: 'green', marginTop: '10px' }}>
+                <div className="success-message">
                   Message envoyé avec succès !
                 </div>
               )}
