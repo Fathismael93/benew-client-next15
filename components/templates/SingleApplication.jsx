@@ -321,18 +321,6 @@ const SingleApplication = ({
                     <h3 className="card-title">Informations Techniques</h3>
                     <div className="info-grid">
                       <div className="info-item">
-                        <span className="info-label">ID Application</span>
-                        <span className="info-value">
-                          {appDetails.application_id}
-                        </span>
-                      </div>
-                      <div className="info-item">
-                        <span className="info-label">Template ID</span>
-                        <span className="info-value">
-                          {template?.template_id}
-                        </span>
-                      </div>
-                      <div className="info-item">
                         <span className="info-label">Niveau</span>
                         <span className="info-value">
                           Niveau {appDetails.application_level}
