@@ -1,6 +1,3 @@
-// components/layouts/parallax/parallax.scss
-// ✅ VERSION OPTIMISÉE avec nouveaux breakpoints
-
 @use '../../../app/styles/abstracts' as *;
 
 .parallax {
@@ -13,9 +10,7 @@
   overflow: hidden;
 
   h1 {
-    // Mobile-first : taille adaptée aux petits écrans
-    font-size: 2.5rem;
-    text-align: center;
+    font-size: 4.5rem;
     background: linear-gradient(
       45deg,
       css-var(text-color),
@@ -29,190 +24,79 @@
     font-weight: 700;
     letter-spacing: 0.02em;
 
-    // iPhone standard et plus
-    @include from('sm') {
-      font-size: 3rem;
+    @include small {
+      font-size: 2.5rem;
+      text-align: center;
     }
 
-    // Grands mobiles
-    @include from('md') {
-      font-size: 3.5rem;
-    }
-
-    // Tablettes
-    @include from('lg') {
+    @include mobile {
       font-size: 4rem;
+      text-align: center;
     }
 
-    // Desktop
-    @include from('xl') {
-      font-size: 4.5rem;
-    }
-
-    // Écrans ultra-larges
-    @include from('xxxxl') {
-      font-size: 5rem;
+    @include tablet {
+      font-size: 4rem;
+      text-align: center;
     }
   }
 
   .mountains {
     background-image: url('/mountains.png');
+    background-size: contain;
     background-position: bottom;
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: 3;
 
-    // Mobile-first : background optimisé
-    background-size: contain;
-    background-repeat: no-repeat;
+    @include small {
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
 
-    // Desktop : background couvrant
-    @include from('xl') {
-      background-size: cover;
+    @include mobile {
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    @include tablet {
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    @include laptop {
+      background-size: contain;
       background-repeat: no-repeat;
     }
   }
 
   .planets {
+    background-size: contain;
     background-position: bottom;
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: 2;
 
-    // Mobile-first : couvrir complètement
-    background-size: cover;
-    background-repeat: no-repeat;
+    @include small {
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
 
-    // Desktop : ajustement fin
-    @include from('xl') {
-      background-size: contain;
+    @include mobile {
+      background-size: cover;
       background-repeat: no-repeat;
     }
   }
 
   .stars {
     background-image: url('/stars.png');
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: bottom;
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: 1;
-
-    // Toujours en contain pour éviter la déformation
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-}
-
-// ===== OPTIMISATIONS SPÉCIFIQUES PAR APPAREIL =====
-
-// iPhone X et écrans avec encoche : padding top
-@include device('iphone-x', 'portrait') {
-  .parallax h1 {
-    padding-top: env(safe-area-inset-top);
-  }
-}
-
-// iPhone en mode paysage : titre plus compact
-@include mobile-landscape {
-  .parallax h1 {
-    font-size: 2rem;
-    line-height: 1.1;
-  }
-}
-
-// iPad spécifique : optimisation des backgrounds
-@include device('ipad-standard', 'portrait') {
-  .parallax {
-    h1 {
-      font-size: 4.2rem;
-    }
-
-    .mountains {
-      background-size: cover;
-    }
-
-    .planets {
-      background-size: contain;
-    }
-  }
-}
-
-@include device('ipad-standard', 'landscape') {
-  .parallax {
-    h1 {
-      font-size: 3.8rem;
-    }
-
-    .mountains,
-    .planets {
-      background-size: cover;
-    }
-  }
-}
-
-// iPad Pro 12.9" : taille maximale
-@include device('ipad-pro-12', 'portrait') {
-  .parallax h1 {
-    font-size: 4.8rem;
-  }
-}
-
-// Écrans très larges : éviter un titre disproportionné
-@include from('ultra') {
-  .parallax h1 {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-}
-
-// Écrans courts (mode paysage mobile) : réduction de la taille
-@include short-screen {
-  .parallax h1 {
-    @include until('lg') {
-      font-size: 2rem;
-    }
-  }
-}
-
-// Écrans hauts : augmentation légère de la taille
-@include tall-screen {
-  .parallax h1 {
-    @include from('lg') {
-      font-size: calc(4rem + 1vw);
-    }
-  }
-}
-
-// Optimisation pour écrans haute densité
-@include high-density {
-  .parallax {
-    .mountains {
-      background-image: url('/mountains@2x.png');
-    }
-
-    .stars {
-      background-image: url('/stars@2x.png');
-    }
-  }
-}
-
-// Mode sombre : ajustement de l'opacité du texte
-@include dark-mode {
-  .parallax h1 {
-    text-shadow: 0 6px 12px rgba(css-var(background-color), 0.6);
-  }
-}
-
-// Réduction de mouvement : désactivation des effets parallax
-@include reduced-motion {
-  .parallax {
-    .mountains,
-    .planets,
-    .stars {
-      transform: none !important;
-    }
   }
 }
