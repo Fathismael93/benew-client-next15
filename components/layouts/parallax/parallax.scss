@@ -42,7 +42,7 @@
 
   .mountains {
     background-image: url('/mountains.png');
-    background-size: contain;
+    background-size: cover;
     background-position: bottom;
     width: 100%;
     height: 100%;
@@ -65,13 +65,13 @@
     }
 
     @include laptop {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
   }
 
   .planets {
-    background-size: contain;
+    background-size: cover;
     background-position: bottom;
     width: 100%;
     height: 100%;
@@ -79,19 +79,19 @@
     z-index: 2;
 
     @include small {
-      background-size: cover;
+      background-size: contain;
       background-repeat: no-repeat;
     }
 
     @include mobile {
-      background-size: cover;
+      background-size: contain;
       background-repeat: no-repeat;
     }
   }
 
   .stars {
     background-image: url('/stars.png');
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: bottom;
     width: 100%;
