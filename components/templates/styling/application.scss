@@ -14,31 +14,6 @@
 
 .gallery-container {
   width: 100%;
-  height: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.gallery-content-wrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  max-height: 90vh; // Ensure it fits in the viewport
-  overflow: hidden;
-}
-
-.gallery-container {
-  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -82,66 +57,6 @@
     flex-direction: column; // Changer la direction sur petit écran
     justify-content: space-between;
     padding: 60px 0; // Espace pour les images blur en haut/bas
-  }
-}
-
-.gallery-side-image {
-  width: 200px;
-  height: 280px;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-  opacity: 0.6;
-
-  // Animation de transition pour les images latérales
-  animation: fadeInSlide 0.4s ease-out forwards;
-  animation-delay: 0.1s;
-
-  @include tablet {
-    width: 160px;
-    height: 220px;
-  }
-
-  @include mobile {
-    width: 120px;
-    height: 160px;
-  }
-
-  @include small {
-    width: 100px;
-    height: 140px;
-    border-radius: 12px;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    backdrop-filter: blur(3px);
-    background: rgba(12, 12, 26, 0.3);
-    z-index: 2;
-    transition: all 0.3s ease;
-  }
-
-  .side-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
-    transition: all 0.3s ease;
-
-    &::after {
-      backdrop-filter: blur(1px);
-      background: rgba(12, 12, 26, 0.1);
-    }
   }
 }
 
@@ -215,40 +130,6 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-}
-
-.gallery-main-image {
-  width: 100%;
-  height: auto;
-  max-height: 70vh;
-  object-fit: contain;
-  border-radius: 20px;
-  box-shadow:
-    0 20px 60px rgba(246, 160, 55, 0.2),
-    0 8px 25px rgba(0, 0, 0, 0.3);
-
-  // Animation de transition fluide
-  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  opacity: 0;
-  transform: translateX(30px);
-
-  @include mobile {
-    max-height: 60vh;
-    border-radius: 16px;
-  }
-
-  @include small {
-    max-height: 50vh;
-    border-radius: 12px;
-  }
-
-  &:hover {
-    transform: scale(1.02) translateX(0);
-    box-shadow:
-      0 25px 80px rgba(246, 160, 55, 0.3),
-      0 12px 35px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s ease;
-  }
 }
 
 // Animation pour les images latérales
@@ -484,133 +365,6 @@
     box-shadow:
       0 25px 80px rgba(246, 160, 55, 0.3),
       0 12px 35px rgba(0, 0, 0, 0.4);
-  }
-}
-
-.gallery-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(135deg, $color-orange, $color-pink);
-  border: none;
-  border-radius: 50%;
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  color: $color-dark;
-  box-shadow:
-    0 8px 25px rgba(246, 160, 55, 0.4),
-    0 4px 12px rgba(0, 0, 0, 0.2);
-
-  @include tablet {
-    width: 56px;
-    height: 56px;
-  }
-
-  @include mobile {
-    width: 48px;
-    height: 48px;
-  }
-
-  @include small {
-    width: 40px;
-    height: 40px;
-  }
-
-  &:hover {
-    background: linear-gradient(135deg, $color-pink, $color-orange);
-    transform: translateY(-50%) scale(1.1);
-    box-shadow:
-      0 12px 35px rgba(246, 160, 55, 0.6),
-      0 6px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  &:active {
-    transform: translateY(-50%) scale(0.95);
-  }
-
-  svg {
-    @include mobile {
-      font-size: 24px;
-    }
-
-    @include small {
-      font-size: 20px;
-    }
-  }
-}
-
-.gallery-arrow-left {
-  left: 15%;
-
-  @include tablet {
-    left: 10%;
-  }
-
-  @include mobile {
-    left: 8%;
-  }
-
-  @include small {
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-}
-
-.gallery-arrow-right {
-  right: 15%;
-
-  @include tablet {
-    right: 10%;
-  }
-
-  @include mobile {
-    right: 8%;
-  }
-
-  @include small {
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-}
-
-.gallery-counter {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(
-    135deg,
-    rgba($color-dark, 0.9),
-    rgba($color-purple, 0.9)
-  );
-  color: $color-light;
-  padding: 8px 16px;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  z-index: 10;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba($color-orange, 0.3);
-
-  @include mobile {
-    top: 15px;
-    right: 15px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-
-  @include small {
-    top: 10px;
-    right: 10px;
-    padding: 4px 8px;
-    font-size: 0.75rem;
   }
 }
 
