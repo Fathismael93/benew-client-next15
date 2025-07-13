@@ -1,0 +1,513 @@
+// =============================================================================
+// SYSTÈME DE BREAKPOINTS MODERNE - 2024
+// =============================================================================
+// Basé sur les statistiques réelles d'usage des appareils
+// Mobile-first approach avec support complet des orientations
+
+// =============================================================================
+// 1. BREAKPOINTS DE BASE (Largeur d'écran)
+// =============================================================================
+
+$breakpoints: (
+  // Mobile First - Smartphones
+  'xs': 320px,
+  // iPhone 5/SE, petits Android
+  'sm': 375px,
+  // iPhone 6/7/8, iPhone 12/13 mini
+  'md': 414px,
+  // iPhone 6/7/8 Plus, iPhone 12/13/14
+  'lg': 768px,
+  // iPad mini, tablettes portrait
+  'xl': 1024px,
+  // iPad, tablettes landscape, petits laptops
+  'xxl': 1280px,
+  // Laptops standards, petits desktops
+  'xxxl': 1440px,
+  // Desktops HD
+  'xxxxl': 1920px,
+  // Full HD desktops
+  'ultra': 2560px // 4K, ultra-wide monitors
+) !default;
+
+// =============================================================================
+// 2. BREAKPOINTS SPÉCIFIQUES PAR APPAREIL
+// =============================================================================
+
+$device-breakpoints: (
+  // === SMARTPHONES ===
+  'iphone-se': (
+      width: 320px,
+      height: 568px,
+    ),
+  'iphone-standard': (
+    width: 375px,
+    height: 667px,
+  ),
+  // iPhone 6/7/8, 12/13 mini
+  'iphone-plus': (
+      width: 414px,
+      height: 736px,
+    ),
+  // iPhone 6/7/8 Plus
+  'iphone-x': (
+      width: 375px,
+      height: 812px,
+    ),
+  // iPhone X/11 Pro/12/13
+  'iphone-pro-max': (
+      width: 428px,
+      height: 926px,
+    ),
+  // iPhone 12/13/14 Pro Max
+  'iphone-15-pro': (
+      width: 393px,
+      height: 852px,
+    ),
+  // iPhone 15 Pro
+  'android-small': (
+      width: 360px,
+      height: 640px,
+    ),
+  // Galaxy S5, petits Android
+  'android-medium': (
+      width: 412px,
+      height: 915px,
+    ),
+  // Pixel, Galaxy S20/S21
+  'android-large': (
+      width: 430px,
+      height: 932px,
+    ),
+  // Galaxy S22 Ultra
+  // === TABLETTES ===
+  'ipad-mini': (
+      width: 768px,
+      height: 1024px,
+    ),
+  // iPad mini
+  'ipad-standard': (
+      width: 820px,
+      height: 1180px,
+    ),
+  // iPad 10.9"
+  'ipad-air': (
+      width: 834px,
+      height: 1194px,
+    ),
+  // iPad Air
+  'ipad-pro-11': (
+      width: 834px,
+      height: 1194px,
+    ),
+  // iPad Pro 11"
+  'ipad-pro-12': (
+      width: 1024px,
+      height: 1366px,
+    ),
+  // iPad Pro 12.9"
+  'android-tablet': (
+      width: 800px,
+      height: 1280px,
+    ),
+  // Tablettes Android
+  'surface-go': (
+      width: 768px,
+      height: 1024px,
+    ),
+  // Surface Go
+  'surface-pro': (
+      width: 912px,
+      height: 1368px,
+    ),
+  // Surface Pro
+  // === LAPTOPS ===
+  'laptop-small': (
+      width: 1280px,
+      height: 720px,
+    ),
+  // 13" laptops
+  'laptop-medium': (
+      width: 1366px,
+      height: 768px,
+    ),
+  // 14-15" laptops
+  'laptop-large': (
+      width: 1440px,
+      height: 900px,
+    ),
+  // 15-16" MacBook Pro
+  'laptop-xl': (
+      width: 1680px,
+      height: 1050px,
+    ),
+  // 16" MacBook Pro
+  // === DESKTOPS ===
+  'desktop-hd': (
+      width: 1920px,
+      height: 1080px,
+    ),
+  // Full HD
+  'desktop-2k': (
+      width: 2560px,
+      height: 1440px,
+    ),
+  // 2K/QHD
+  'desktop-4k': (
+      width: 3840px,
+      height: 2160px,
+    ),
+  // 4K UHD
+  'ultrawide-2k': (
+      width: 3440px,
+      height: 1440px,
+    ),
+  // Ultrawide 21:9
+  'ultrawide-4k': (
+      width: 5120px,
+      height: 2160px,
+    ) // Ultrawide 5K
+) !default;
+
+// =============================================================================
+// 3. FONCTIONS UTILITAIRES
+// =============================================================================
+
+/// Récupère une valeur de breakpoint
+/// @param {String} $name - Nom du breakpoint
+/// @return {String} - Valeur du breakpoint
+@function breakpoint($name) {
+  @if map-has-key($breakpoints, $name) {
+    @return map-get($breakpoints, $name);
+  }
+  @warn "Breakpoint `#{$name}` n'existe pas dans $breakpoints.";
+  @return null;
+}
+
+/// Récupère les dimensions d'un appareil
+/// @param {String} $device - Nom de l'appareil
+/// @param {String} $property - 'width' ou 'height'
+/// @return {String} - Valeur de la dimension
+@function device-dimension($device, $property: 'width') {
+  @if map-has-key($device-breakpoints, $device) {
+    $device-map: map-get($device-breakpoints, $device);
+    @if map-has-key($device-map, $property) {
+      @return map-get($device-map, $property);
+    }
+  }
+  @warn "Appareil `#{$device}` ou propriété `#{$property}` introuvable.";
+  @return null;
+}
+
+// =============================================================================
+// 4. MIXINS RESPONSIVE - MOBILE FIRST
+// =============================================================================
+
+/// Mixin pour media query mobile-first (min-width)
+/// @param {String} $breakpoint - Nom du breakpoint
+@mixin from($breakpoint) {
+  $value: breakpoint($breakpoint);
+  @if $value {
+    @media (min-width: $value) {
+      @content;
+    }
+  }
+}
+
+/// Mixin pour media query desktop-first (max-width)
+/// @param {String} $breakpoint - Nom du breakpoint
+@mixin until($breakpoint) {
+  $value: breakpoint($breakpoint) - 1px;
+  @if $value {
+    @media (max-width: $value) {
+      @content;
+    }
+  }
+}
+
+/// Mixin pour media query entre deux breakpoints
+/// @param {String} $from-breakpoint - Breakpoint minimum
+/// @param {String} $until-breakpoint - Breakpoint maximum
+@mixin between($from-breakpoint, $until-breakpoint) {
+  $from-value: breakpoint($from-breakpoint);
+  $until-value: breakpoint($until-breakpoint) - 1px;
+
+  @if $from-value and $until-value {
+    @media (min-width: $from-value) and (max-width: $until-value) {
+      @content;
+    }
+  }
+}
+
+/// Mixin pour un breakpoint exact
+/// @param {String} $breakpoint - Nom du breakpoint
+@mixin only($breakpoint) {
+  @include between($breakpoint, $breakpoint);
+}
+
+// =============================================================================
+// 5. MIXINS SPÉCIFIQUES PAR APPAREIL
+// =============================================================================
+
+/// Mixin pour cibler un appareil spécifique
+/// @param {String} $device - Nom de l'appareil
+/// @param {String} $orientation - 'portrait', 'landscape', ou null pour les deux
+@mixin device($device, $orientation: null) {
+  @if map-has-key($device-breakpoints, $device) {
+    $device-map: map-get($device-breakpoints, $device);
+    $width: map-get($device-map, 'width');
+    $height: map-get($device-map, 'height');
+
+    @if $orientation == 'portrait' {
+      @media (min-width: $width) and (max-width: $width) and (min-height: $height) and (max-height: $height) and (orientation: portrait) {
+        @content;
+      }
+    } @else if $orientation == 'landscape' {
+      @media (min-width: $height) and (max-width: $height) and (min-height: $width) and (max-height: $width) and (orientation: landscape) {
+        @content;
+      }
+    } @else {
+      @media (min-width: $width) and (max-width: $width) and (min-height: $height) and (max-height: $height) {
+        @content;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// 6. MIXINS POUR ORIENTATIONS
+// =============================================================================
+
+/// Mixin pour orientation portrait
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+/// Mixin pour orientation paysage
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+/// Mixin pour écrans hauts (utile pour les nouveaux smartphones)
+@mixin tall-screen {
+  @media (min-height: 800px) {
+    @content;
+  }
+}
+
+/// Mixin pour écrans courts
+@mixin short-screen {
+  @media (max-height: 600px) {
+    @content;
+  }
+}
+
+// =============================================================================
+// 7. MIXINS POUR DENSITÉ D'ÉCRAN
+// =============================================================================
+
+/// Mixin pour écrans haute densité (Retina, etc.)
+@mixin high-density {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @content;
+  }
+}
+
+/// Mixin pour écrans basse densité
+@mixin low-density {
+  @media (-webkit-max-device-pixel-ratio: 1.5), (max-resolution: 144dpi) {
+    @content;
+  }
+}
+
+// =============================================================================
+// 8. MIXINS POUR PRÉFÉRENCES UTILISATEUR
+// =============================================================================
+
+/// Mixin pour mode sombre
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+/// Mixin pour mode clair
+@mixin light-mode {
+  @media (prefers-color-scheme: light) {
+    @content;
+  }
+}
+
+/// Mixin pour réduction de mouvement
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+/// Mixin pour mouvement normal
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+// =============================================================================
+// 9. MIXINS COMBINÉS AVANCÉS
+// =============================================================================
+
+/// Mixin pour smartphones en portrait
+@mixin mobile-portrait {
+  @media (max-width: 767px) and (orientation: portrait) {
+    @content;
+  }
+}
+
+/// Mixin pour smartphones en paysage
+@mixin mobile-landscape {
+  @media (max-width: 767px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+/// Mixin pour tablettes en portrait
+@mixin tablet-portrait {
+  @media (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
+    @content;
+  }
+}
+
+/// Mixin pour tablettes en paysage
+@mixin tablet-landscape {
+  @media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+/// Mixin pour desktop et plus
+@mixin desktop-up {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+// =============================================================================
+// 10. MIXINS POUR CONTENEURS
+// =============================================================================
+
+/// Mixin pour conteneur responsive avec largeurs maximales
+@mixin container {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  @include from('sm') {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  @include from('lg') {
+    max-width: 768px;
+  }
+
+  @include from('xl') {
+    max-width: 1024px;
+  }
+
+  @include from('xxl') {
+    max-width: 1280px;
+  }
+
+  @include from('xxxl') {
+    max-width: 1440px;
+  }
+
+  @include from('xxxxl') {
+    max-width: 1920px;
+  }
+}
+
+// =============================================================================
+// 11. EXEMPLES D'UTILISATION
+// =============================================================================
+
+/*
+// Utilisation basique mobile-first
+.my-component {
+  padding: 1rem;
+  
+  @include from('md') {
+    padding: 2rem;
+  }
+  
+  @include from('xl') {
+    padding: 3rem;
+  }
+}
+
+// Ciblage d'appareil spécifique
+.hero-section {
+  height: 60vh;
+  
+  @include device('iphone-x', 'portrait') {
+    height: 70vh; // Plus de hauteur pour l'iPhone X en portrait
+  }
+  
+  @include device('ipad-standard', 'landscape') {
+    height: 50vh; // Moins de hauteur pour iPad en paysage
+  }
+}
+
+// Responsive avec orientations
+.navigation {
+  @include mobile-portrait {
+    position: fixed;
+    bottom: 0;
+  }
+  
+  @include mobile-landscape {
+    position: fixed;
+    top: 0;
+  }
+  
+  @include tablet-portrait {
+    position: sticky;
+    top: 0;
+  }
+}
+
+// Combinaison avec préférences utilisateur
+.card {
+  transition: transform 0.3s ease;
+  
+  @include motion-ok {
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+  
+  @include reduced-motion {
+    transition: none;
+  }
+  
+  @include dark-mode {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+}
+
+// Écrans haute densité
+.logo {
+  background-image: url('logo.png');
+  
+  @include high-density {
+    background-image: url('logo@2x.png');
+    background-size: contain;
+  }
+}
+*/

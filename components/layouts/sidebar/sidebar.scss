@@ -1,3 +1,6 @@
+// components/layouts/sidebar/sidebar.scss
+// ✅ VERSION OPTIMISÉE avec nouveaux breakpoints
+
 @use 'sass:color';
 @use '../../../app/styles/abstracts' as *;
 
@@ -15,21 +18,26 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 20rem;
+
+    // Mobile-first : largeur optimisée
+    width: 12.5rem;
+
+    // Mobiles plus grands : largeur légèrement augmentée
+    @include from('sm') {
+      width: 14rem;
+    }
+
+    // Tablettes et plus : largeur confortable
+    @include from('lg') {
+      width: 20rem;
+    }
+
     background: linear-gradient(
       135deg,
       css-var(text-color),
       color.adjust($text-color, $lightness: 5%)
     );
     box-shadow: 2px 0 10px rgba(css-var(background-color), 0.3);
-
-    @include small {
-      width: 12.5rem;
-    }
-
-    @include mobile {
-      width: 12.5rem;
-    }
 
     .links {
       position: absolute;
@@ -40,23 +48,28 @@
       align-items: center;
       justify-content: center;
       gap: 1.25rem;
-      font-size: 2rem;
       cursor: pointer;
 
-      @include small {
-        font-size: 1.25rem;
+      // Mobile-first : taille de police adaptée
+      font-size: 1.25rem;
+
+      // Mobiles plus grands : augmentation progressive
+      @include from('sm') {
+        font-size: 1.4rem;
       }
 
-      @include mobile {
-        font-size: 1.25rem;
-      }
-
-      @include tablet {
+      @include from('md') {
         font-size: 1.5rem;
       }
 
-      @include laptop {
+      // Tablettes : taille intermédiaire
+      @include from('lg') {
         font-size: 1.7rem;
+      }
+
+      // Desktop : taille maximale
+      @include from('xl') {
+        font-size: 2rem;
       }
 
       .link {
@@ -102,8 +115,23 @@
     height: 1.875rem;
     border-radius: 50%;
     position: fixed;
-    top: 2.313rem;
-    left: 2.188rem;
+
+    // Mobile-first : positionnement optimisé
+    top: 1.5rem;
+    left: 1.5rem;
+
+    // Mobiles plus grands : ajustement
+    @include from('sm') {
+      top: 1.8rem;
+      left: 1.8rem;
+    }
+
+    // Desktop : position standard
+    @include from('xl') {
+      top: 2.313rem;
+      left: 2.188rem;
+    }
+
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -116,8 +144,18 @@
 
     // Correction spécifique pour les pages template détail
     &.template-detail-fix {
-      top: 1.7rem; // Décalage vers le haut (-0.213rem)
-      left: 1rem; // Décalage vers la gauche (-0.238rem)
+      top: 1.2rem;
+      left: 1rem;
+
+      @include from('sm') {
+        top: 1.4rem;
+        left: 1.2rem;
+      }
+
+      @include from('xl') {
+        top: 1.7rem;
+        left: 1rem;
+      }
     }
 
     svg {
@@ -130,5 +168,47 @@
         stroke: css-var(primary-color);
       }
     }
+  }
+}
+
+// ===== OPTIMISATIONS SPÉCIFIQUES PAR APPAREIL =====
+
+// iPhone en mode paysage : sidebar plus compact
+@include mobile-landscape {
+  .sidebar {
+    .bg {
+      width: 10rem;
+
+      .links {
+        font-size: 1rem;
+        gap: 0.8rem;
+      }
+    }
+
+    button {
+      width: 1.5rem;
+      height: 1.5rem;
+      top: 0.8rem;
+      left: 0.8rem;
+    }
+  }
+}
+
+// iPad spécifique : optimisation pour les grandes tablettes
+@include device('ipad-pro-12', 'portrait') {
+  .sidebar .bg {
+    width: 22rem;
+
+    .links {
+      font-size: 2.2rem;
+      gap: 1.5rem;
+    }
+  }
+}
+
+// Écrans ultra-larges : éviter une sidebar disproportionnée
+@include from('ultra') {
+  .sidebar .bg {
+    max-width: 24rem;
   }
 }

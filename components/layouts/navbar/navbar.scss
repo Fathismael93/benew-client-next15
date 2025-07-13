@@ -1,16 +1,17 @@
+// components/layouts/navbar/navbar.scss
+// ✅ VERSION OPTIMISÉE avec nouveaux breakpoints
+
 @use '../../../app/styles/abstracts' as *;
 
 .navbar {
-  height: 6.25rem;
+  // Mobile-first : hauteur par défaut pour mobile
+  height: 5rem;
   scroll-snap-align: start;
   z-index: 999;
 
-  @include small {
-    height: 5rem;
-  }
-
-  @include mobile {
-    height: 5rem;
+  // Desktop et plus : hauteur plus importante
+  @include from('lg') {
+    height: 6.25rem;
   }
 
   .wrapper {
@@ -19,40 +20,42 @@
     margin: auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    @include small {
-      justify-content: flex-end;
-      padding: 1rem;
-    }
+    // Mobile-first : alignement et padding par défaut
+    justify-content: flex-end;
+    padding: 1rem;
 
-    @include mobile {
-      justify-content: flex-end;
+    // Ajustements pour différentes tailles mobiles
+    @include from('sm') {
       padding: 1.25rem;
     }
 
-    @include tablet {
+    // Tablette : réduction de la largeur max
+    @include from('lg') {
       max-width: 43rem;
-      justify-content: flex-end;
+      padding: 0;
     }
 
-    @include laptop {
+    // Desktop : largeur réduite et alignement équilibré
+    @include from('xl') {
       max-width: 37rem;
+      justify-content: space-between;
     }
 
+    // Desktop large : retour à la largeur complète
+    @include from('xxl') {
+      max-width: 70rem;
+    }
+
+    // Logo container
     div {
-      margin-left: 1rem;
+      // Mobile : masqué par défaut (économie d'espace)
+      display: none;
 
-      @include small {
-        display: none;
-      }
-
-      @include mobile {
-        display: none;
-      }
-
-      @include tablet {
-        display: none;
+      // Desktop : affiché avec marge
+      @include from('xl') {
+        display: block;
+        margin-left: 1rem;
       }
     }
 
@@ -69,20 +72,61 @@
       }
 
       .social-icon {
+        // Mobile : taille de base
         width: 1rem;
         height: 1rem;
         transition: all 0.3s ease;
         filter: grayscale(0.3);
 
-        &:hover {
-          filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
+        // Mobiles plus grands : légèrement plus gros
+        @include from('md') {
+          width: 1.2rem;
+          height: 1.2rem;
         }
 
-        @include small {
+        // Desktop : taille standard
+        @include from('xl') {
           width: 1rem;
           height: 1rem;
         }
+
+        &:hover {
+          filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
+        }
       }
     }
+  }
+}
+
+// ===== OPTIMISATIONS SPÉCIFIQUES PAR APPAREIL =====
+
+// iPhone X et écrans avec encoche
+@include device('iphone-x', 'portrait') {
+  .navbar {
+    height: calc(5rem + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+// iPad en mode paysage : navbar plus compact
+@include tablet-landscape {
+  .navbar {
+    height: 4rem;
+
+    .wrapper {
+      padding: 0.5rem 1rem;
+
+      .social .social-icon {
+        width: 0.9rem;
+        height: 0.9rem;
+      }
+    }
+  }
+}
+
+// Écrans très larges : centrage du contenu
+@include from('xxxxl') {
+  .navbar .wrapper {
+    max-width: 1440px;
   }
 }

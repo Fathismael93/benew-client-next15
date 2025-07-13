@@ -1,3 +1,6 @@
+// components/layouts/hero/hero.scss
+// ✅ VERSION OPTIMISÉE avec nouveaux breakpoints
+
 @use 'sass:color';
 @use '../../../app/styles/abstracts' as *;
 
@@ -17,70 +20,62 @@
     margin: auto;
 
     .textContainer {
-      width: 50%;
-      height: 100%;
+      // Mobile-first : layout vertical par défaut
+      width: 100%;
+      height: 50%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 1.5rem;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
 
-      @include small {
-        width: 100%;
-        height: 50%;
-        gap: 1rem;
-        align-items: center;
-        text-align: center;
+      // Mobiles plus grands : plus d'espace
+      @include from('sm') {
+        gap: 1.2rem;
       }
 
-      @include mobile {
-        width: 100%;
-        height: 50%;
-        gap: 1rem;
-        align-items: center;
-        text-align: center;
+      // Tablettes : gap augmenté
+      @include from('lg') {
+        gap: 1.5rem;
       }
 
-      @include tablet {
-        width: 100%;
-        height: 50%;
-        gap: 1.25rem;
-        align-items: center;
-        text-align: center;
-      }
-
-      @include laptop {
-        width: 100%;
-        height: 50%;
-        gap: 1.25rem;
-        align-items: center;
-        text-align: center;
+      // Desktop : layout horizontal
+      @include from('xl') {
+        width: 50%;
+        height: 100%;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1.5rem;
       }
 
       h2 {
-        font-size: 1.3rem;
+        // Mobile-first : taille de base
+        font-size: 1rem;
         color: $secondary-color;
         letter-spacing: 0.188rem;
+        margin-top: 0;
 
-        @include small {
-          font-size: 1rem;
-          margin-top: 10px;
-        }
-
-        @include mobile {
-          font-size: 1rem;
-        }
-
-        @include tablet {
-          font-size: 1.05rem;
-        }
-
-        @include laptop {
+        // Mobiles plus grands
+        @include from('sm') {
           font-size: 1.1rem;
+        }
+
+        // Tablettes
+        @include from('lg') {
+          font-size: 1.2rem;
+        }
+
+        // Desktop
+        @include from('xl') {
+          font-size: 1.3rem;
+          margin-top: 10px;
         }
       }
 
       h1 {
-        font-size: 4.5rem;
+        // Mobile-first : taille adaptée aux petits écrans
+        font-size: 1.5rem;
         background: linear-gradient(
           45deg,
           $text-color,
@@ -92,26 +87,46 @@
         -webkit-text-fill-color: transparent;
         font-weight: 700;
 
-        @include small {
-          font-size: 1.5rem;
-        }
-
-        @include mobile {
+        // iPhone standard
+        @include from('sm') {
           font-size: 2.2rem;
         }
 
-        @include tablet {
+        // Grands mobiles et petites tablettes
+        @include from('md') {
           font-size: 2.5rem;
         }
 
-        @include laptop {
-          font-size: 2.5rem;
+        // Tablettes
+        @include from('lg') {
+          font-size: 3rem;
+        }
+
+        // Desktop
+        @include from('xl') {
+          font-size: 4.5rem;
         }
       }
 
       .buttonGroup {
         display: flex;
         gap: 1rem;
+
+        // Mobile : stack vertical pour très petits écrans
+        flex-direction: column;
+        width: 100%;
+
+        // Mobiles plus grands : horizontal
+        @include from('sm') {
+          flex-direction: row;
+          justify-content: center;
+          width: auto;
+        }
+
+        // Desktop : alignement naturel
+        @include from('xl') {
+          justify-content: flex-start;
+        }
 
         .primaryButton,
         .secondaryButton {
@@ -120,6 +135,15 @@
           font-weight: 600;
           transition: all 0.3s ease;
           text-decoration: none;
+
+          // Mobile : boutons pleine largeur
+          width: 100%;
+          text-align: center;
+
+          // Mobiles plus grands : largeur auto
+          @include from('sm') {
+            width: auto;
+          }
 
           &:hover {
             transform: translateY(-2px);
@@ -158,81 +182,50 @@
             color: $secondary-color;
           }
         }
-
-        @media (max-width: 768px) {
-          justify-content: center;
-        }
-
-        @media (max-width: 480px) {
-          flex-direction: column;
-
-          .primaryButton,
-          .secondaryButton {
-            width: 100%;
-            text-align: center;
-          }
-        }
       }
 
       img {
-        width: 2.5rem;
+        // Mobile-first : taille de base
+        width: 1.2rem;
         filter: hue-rotate(20deg) brightness(1.2);
 
-        @include small {
-          width: 1.2rem;
-        }
-
-        @include mobile {
-          width: 1.2rem;
-        }
-
-        @include tablet {
+        // Mobiles plus grands
+        @include from('md') {
           width: 1.5rem;
         }
 
-        @include laptop {
+        // Tablettes
+        @include from('lg') {
           width: 2rem;
+        }
+
+        // Desktop
+        @include from('xl') {
+          width: 2.5rem;
         }
       }
     }
   }
 
   .imageContainer {
-    height: 100%;
-    width: 50%;
+    // Mobile-first : en bas, pleine largeur
+    height: 50%;
+    width: 100%;
     position: absolute;
-    top: 0;
-    right: 0;
+    bottom: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    @include small {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-    }
-
-    @include mobile {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-    }
-
-    @include tablet {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
-    }
-
-    @include laptop {
-      height: 50%;
-      width: 100%;
-      top: unset;
-      bottom: 0;
+    // Desktop : côté droit, pleine hauteur
+    @include from('xl') {
+      height: 100%;
+      width: 50%;
+      top: 0;
+      right: 0;
+      bottom: auto;
+      left: auto;
     }
 
     .heroImage {
@@ -244,35 +237,130 @@
 
   .slidingTextContainer {
     position: absolute;
-    font-size: 20rem;
-    bottom: -90px;
     white-space: nowrap;
-    color: rgba($text-color, 0.02);
     width: 100%;
     font-weight: bold;
 
-    @include small {
-      font-size: 8rem;
-      bottom: -40px;
-      color: rgba($text-color, 0.03);
+    // Mobile-first : taille et position adaptées
+    font-size: 8rem;
+    bottom: -40px;
+    color: rgba($text-color, 0.03);
+
+    // Mobiles plus grands
+    @include from('md') {
+      font-size: 10rem;
+      bottom: -45px;
     }
 
-    @include mobile {
-      font-size: 8rem;
-      bottom: -40px;
-      color: rgba($text-color, 0.03);
-    }
-
-    @include tablet {
-      font-size: 11rem;
-      bottom: -50px;
-      color: rgba($text-color, 0.02);
-    }
-
-    @include laptop {
+    // Tablettes
+    @include from('lg') {
       font-size: 12rem;
       bottom: -50px;
       color: rgba($text-color, 0.02);
+    }
+
+    // Desktop
+    @include from('xl') {
+      font-size: 20rem;
+      bottom: -90px;
+    }
+  }
+}
+
+// ===== OPTIMISATIONS SPÉCIFIQUES PAR APPAREIL =====
+
+// iPhone X et écrans avec encoche
+@include device('iphone-x', 'portrait') {
+  .hero .wrapper .textContainer {
+    padding-top: env(safe-area-inset-top);
+    height: calc(50% - env(safe-area-inset-top));
+  }
+}
+
+// iPhone en mode paysage : layout spécial
+@include mobile-landscape {
+  .hero {
+    .wrapper .textContainer {
+      width: 60%;
+      height: 100%;
+      gap: 0.8rem;
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .buttonGroup {
+        flex-direction: row;
+        gap: 0.5rem;
+
+        .primaryButton,
+        .secondaryButton {
+          padding: 0.7rem 1.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .imageContainer {
+      width: 40%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
+
+// iPad en portrait : optimisation spécifique
+@include device('ipad-standard', 'portrait') {
+  .hero .wrapper .textContainer {
+    gap: 2rem;
+
+    h1 {
+      font-size: 3.5rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+// iPad en paysage : layout desktop précoce
+@include tablet-landscape {
+  .hero {
+    .wrapper .textContainer {
+      width: 55%;
+      height: 100%;
+      align-items: flex-start;
+      text-align: left;
+
+      .buttonGroup {
+        justify-content: flex-start;
+      }
+    }
+
+    .imageContainer {
+      width: 45%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
+
+// Écrans très hauts : ajustement des proportions
+@include tall-screen {
+  .hero .wrapper .textContainer {
+    @include until('xl') {
+      height: 60%;
+    }
+  }
+
+  .hero .imageContainer {
+    @include until('xl') {
+      height: 40%;
     }
   }
 }
