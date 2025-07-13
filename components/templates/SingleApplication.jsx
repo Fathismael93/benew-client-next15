@@ -19,14 +19,6 @@ const SingleApplication = ({
   performanceMetrics,
   context,
 }) => {
-  // console.log('Application Data:', application);
-  // console.log('Template Data:', template);
-  // console.log('Related Applications:', relatedApplications);
-  // console.log('Platforms:', platforms);
-  // console.log('Adaptive Config:', adaptiveConfig);
-  // console.log('Performance Metrics:', performanceMetrics);
-  // console.log('Context:', context);
-
   // Get the images from the application object
   const images = (application && application.application_images) || [];
 
@@ -224,109 +216,175 @@ const SingleApplication = ({
         {appDetails &&
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
-          <div className="details-container">
-            <div className="details-content-wrapper">
-              <div className="details-header">
-                <h2>{appDetails.application_name}</h2>
-                <div className="details-badges">
-                  <span className="details-badge type-badge">
-                    {`Type ${appDetails.application_level}`}
-                  </span>
-                  <span className="details-badge category-badge">
-                    {appDetails.application_category}
-                  </span>
+          <div className="app-showcase">
+            <div className="showcase-container">
+              {/* En-tête principal avec titre et template */}
+              <div className="showcase-header">
+                <div className="title-block">
+                  <h1 className="app-title">{appDetails.application_name}</h1>
+                  <div className="template-info">
+                    <span className="template-label">Template:</span>
+                    <span className="template-name">
+                      {template?.template_name}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="app-badges">
+                  <div className="badge level-badge">
+                    <span className="badge-label">Type</span>
+                    <span className="badge-value">
+                      {getApplicationLevelLabel(appDetails.application_level)}
+                    </span>
+                  </div>
+                  <div className="badge category-badge">
+                    <span className="badge-label">Catégorie</span>
+                    <span className="badge-value">
+                      {appDetails.application_category}
+                    </span>
+                  </div>
+                  <div className="badge sales-badge">
+                    <span className="badge-label">Ventes</span>
+                    <span className="badge-value">
+                      {appDetails.application_sales || 0}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="details-grid">
-                <div className="details-description">
-                  <h3>Description</h3>
-                  <p className="description-text">
-                    {appDetails.application_description ||
-                      'No description available.'}
-                  </p>
+              {/* Contenu principal en deux colonnes */}
+              <div className="showcase-content">
+                {/* Colonne de gauche - Description */}
+                <div className="content-main">
+                  <div className="description-card">
+                    <h2 className="section-title">
+                      Description de l&apos;application
+                    </h2>
+                    <div className="description-content">
+                      <p className="description-text">
+                        {appDetails.application_description ||
+                          'Aucune description disponible pour cette application.'}
+                      </p>
+                    </div>
+                  </div>
 
-                  <div className="details-actions">
+                  {/* Boutons d'action */}
+                  <div className="action-buttons">
                     <Link
                       href={appDetails.application_link}
-                      className="details-button secondary"
+                      className="btn btn-primary"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <span className="button-icon">🚀</span>
-                      Visit Application
+                      <span className="btn-icon">🚀</span>
+                      <span className="btn-text">
+                        Visiter l&apos;Application
+                      </span>
                     </Link>
+
+                    {appDetails.application_admin_link && (
+                      <Link
+                        href={appDetails.application_admin_link}
+                        className="btn btn-secondary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span className="btn-icon">⚙️</span>
+                        <span className="btn-text">Interface Admin</span>
+                      </Link>
+                    )}
+
                     <button
                       onClick={openOrderModal}
-                      className={`details-button primary ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
+                      className={`btn btn-accent ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
                       disabled={
                         !platforms ||
                         typeof platforms !== 'object' ||
                         Object.keys(platforms).length === 0
                       }
                     >
-                      <span className="button-icon">💳</span>
-                      {!platforms ||
-                      typeof platforms !== 'object' ||
-                      Object.keys(platforms).length === 0
-                        ? 'Paiement indisponible'
-                        : 'Commander'}
+                      <span className="btn-icon">💳</span>
+                      <span className="btn-text">
+                        {!platforms ||
+                        typeof platforms !== 'object' ||
+                        Object.keys(platforms).length === 0
+                          ? 'Paiement indisponible'
+                          : 'Commander maintenant'}
+                      </span>
                     </button>
                   </div>
                 </div>
 
-                <div className="details-info-card">
-                  <h3>Application Details</h3>
-                  <ul className="details-list">
-                    <li>
-                      <span className="details-label">Type</span>
-                      <span className="details-value">
-                        {getApplicationLevelLabel(appDetails.application_level)}
-                      </span>
-                    </li>
-                    <li>
-                      <span className="details-label">Category</span>
-                      <span className="details-value">
-                        {appDetails.application_category}
-                      </span>
-                    </li>
-                    <li>
-                      <span className="details-label">Fee</span>
-                      <span className="details-value">
-                        {formatCurrency(appDetails.application_fee)}
-                      </span>
-                    </li>
-                    <li>
-                      <span className="details-label">Rent</span>
-                      <span className="details-value">
-                        {formatCurrency(appDetails.application_rent)}
-                      </span>
-                    </li>
-                    {platforms &&
-                      typeof platforms === 'object' &&
-                      Object.keys(platforms).length > 0 && (
-                        <li className="platforms-list-item">
-                          <span className="details-label">Platforms</span>
-                          <div className="platform-badges-small">
-                            {Object.values(platforms).map((platform, index) => (
-                              <span
-                                key={index}
-                                className="platform-badge-small"
-                              >
-                                {platform.platform_name}
-                              </span>
-                            ))}
-                          </div>
-                        </li>
-                      )}
-                  </ul>
+                {/* Colonne de droite - Informations techniques */}
+                <div className="content-sidebar">
+                  <div className="info-card">
+                    <h3 className="card-title">Informations Techniques</h3>
+                    <div className="info-grid">
+                      <div className="info-item">
+                        <span className="info-label">ID Application</span>
+                        <span className="info-value">
+                          {appDetails.application_id}
+                        </span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Template ID</span>
+                        <span className="info-value">
+                          {template?.template_id}
+                        </span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Niveau</span>
+                        <span className="info-value">
+                          Niveau {appDetails.application_level}
+                        </span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Catégorie</span>
+                        <span className="info-value">
+                          {appDetails.application_category}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Carte des prix */}
+                  <div className="pricing-card">
+                    <h3 className="card-title">Tarification</h3>
+                    <div className="pricing-grid">
+                      <div className="price-item fee">
+                        <span className="price-label">
+                          Frais d&apos;installation
+                        </span>
+                        <span className="price-amount">
+                          {formatCurrency(appDetails.application_fee)}
+                        </span>
+                      </div>
+                      <div className="price-item rent">
+                        <span className="price-label">Loyer mensuel</span>
+                        <span className="price-amount">
+                          {formatCurrency(appDetails.application_rent)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="pricing-note">
+                      <small>
+                        Tous les prix sont en Francs Djiboutiens (FDJ)
+                      </small>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         ) : (
           <div className="no-details">
-            No details available for this application
+            <div className="no-details-content">
+              <h2>Aucune information disponible</h2>
+              <p>
+                Les détails de cette application ne sont pas disponibles pour le
+                moment.
+              </p>
+            </div>
           </div>
         )}
       </section>

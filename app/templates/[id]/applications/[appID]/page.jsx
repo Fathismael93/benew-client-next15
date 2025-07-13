@@ -172,17 +172,10 @@ function getApplicationDataQuery(applicationId, templateId) {
           a.application_images,
           a.application_level,
           a.sales_count as application_sales,
-          a.created_at as application_created,
-          a.updated_at as application_updated,
           
           -- Données du template parent
           t.template_id,
           t.template_name,
-          t.template_image,
-          t.template_has_web,
-          t.template_has_mobile,
-          t.template_added,
-          t.sales_count as template_sales,
           
           -- Statistiques du template
           (
