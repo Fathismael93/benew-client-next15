@@ -67,7 +67,7 @@
   width: 100%;
   height: 80vh;
   position: relative;
-  gap: 3rem; // Gap augmenté
+  gap: 3rem;
 
   @include tablet {
     gap: 2.5rem;
@@ -79,26 +79,9 @@
 
   @include small {
     gap: 1.5rem;
-  }
-}
-
-.gallery-side-images {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-
-  @include small {
-    display: none; // Masquer sur très petits écrans
-  }
-
-  &.gallery-left {
-    order: 1;
-  }
-
-  &.gallery-right {
-    order: 3;
+    flex-direction: column; // Changer la direction sur petit écran
+    justify-content: space-between;
+    padding: 60px 0; // Espace pour les images blur en haut/bas
   }
 }
 
@@ -108,8 +91,11 @@
   border-radius: 16px;
   overflow: hidden;
   position: relative;
-  transition: all 0.3s ease;
   opacity: 0.6;
+
+  // Animation de transition pour les images latérales
+  animation: fadeInSlide 0.4s ease-out forwards;
+  animation-delay: 0.1s;
 
   @include tablet {
     width: 160px;
@@ -119,6 +105,12 @@
   @include mobile {
     width: 120px;
     height: 160px;
+  }
+
+  @include small {
+    width: 100px;
+    height: 140px;
+    border-radius: 12px;
   }
 
   &::after {
@@ -131,6 +123,7 @@
     backdrop-filter: blur(3px);
     background: rgba(12, 12, 26, 0.3);
     z-index: 2;
+    transition: all 0.3s ease;
   }
 
   .side-image {
@@ -143,10 +136,48 @@
   &:hover {
     opacity: 0.8;
     transform: scale(1.05);
+    transition: all 0.3s ease;
 
     &::after {
       backdrop-filter: blur(1px);
       background: rgba(12, 12, 26, 0.1);
+    }
+  }
+}
+
+.gallery-side-images {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+
+  &.gallery-left {
+    order: 1;
+  }
+
+  &.gallery-right {
+    order: 3;
+  }
+
+  // Sur petits écrans, réorganiser la disposition
+  @include small {
+    position: absolute;
+    width: 100%;
+    height: auto;
+
+    &.gallery-left {
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      order: unset;
+    }
+
+    &.gallery-right {
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      order: unset;
     }
   }
 }
@@ -172,6 +203,8 @@
 
   @include small {
     max-width: 320px;
+    flex: unset; // Enlever flex: 1 sur petit écran
+    height: auto;
   }
 }
 
@@ -513,7 +546,7 @@
 }
 
 .gallery-arrow-left {
-  left: 15%; // Position ajustée avec le padding
+  left: 15%;
 
   @include tablet {
     left: 10%;
@@ -524,12 +557,14 @@
   }
 
   @include small {
-    left: 5%;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
 .gallery-arrow-right {
-  right: 15%; // Position ajustée avec le padding
+  right: 15%;
 
   @include tablet {
     right: 10%;
@@ -540,7 +575,9 @@
   }
 
   @include small {
-    right: 5%;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
