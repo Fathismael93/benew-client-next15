@@ -1,5 +1,5 @@
-@use 'sass:color';
-@use '../app.scss' as *;
+// ✅ APRÈS
+@use '../styles/abstracts' as *;
 
 .contact {
   height: 100%;

@@ -1,0 +1,22 @@
+// styles/abstracts/_variables.scss
+// Variables extraites de app/app.scss
+
+@use 'sass:color';
+
+// Couleurs principales extraites du logo
+$color-dark: #0c0c1a;
+$color-orange: #f6a037;
+$color-pink: #f266b0;
+$color-light: #fae6d1;
+$color-purple: #9e1f9d;
+
+// Thèmes
+$primary-color: $color-orange;
+$secondary-color: $color-pink;
+$accent-color: $color-purple;
+$background-color: $color-dark;
+$text-color: $color-light;
+
+// Couleurs dérivées pour les variations
+$text-color-muted: rgba($text-color, 0.7);
+$background-color-light: color.adjust($background-color, $lightness: 10%);

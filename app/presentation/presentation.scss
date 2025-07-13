@@ -1,4 +1,5 @@
-@use '@/app/app.scss' as *;
+// ✅ APRÈS
+@use '../styles/abstracts' as *;
 
 .planets-background {
   background-image: url('/planets.png');

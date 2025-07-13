@@ -1,0 +1,59 @@
+// styles/base/_global.scss
+// Styles globaux extraits de app/app.scss
+
+@use '../abstracts' as *;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'DM Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+body {
+  background-color: $background-color;
+  color: $text-color-muted;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.first {
+  height: calc(100vh - 6.25rem);
+  scroll-snap-align: center;
+
+  .error {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    p {
+      font-size: 2.25rem;
+      color: $primary-color;
+      font-weight: 500;
+
+      a {
+        color: $text-color;
+      }
+    }
+  }
+}
+
+.others {
+  height: 100vh;
+  scroll-snap-align: center;
+}
