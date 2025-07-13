@@ -19,8 +19,9 @@ html {
 }
 
 body {
-  background-color: $background-color;
-  color: $text-color-muted;
+  // Utilisation des CSS custom properties pour les couleurs
+  background-color: css-var(background-color);
+  color: css-var(text-color-muted);
 }
 
 a {
@@ -43,11 +44,11 @@ a {
 
     p {
       font-size: 2.25rem;
-      color: $primary-color;
+      color: css-var(primary-color);
       font-weight: 500;
 
       a {
-        color: $text-color;
+        color: css-var(text-color);
       }
     }
   }

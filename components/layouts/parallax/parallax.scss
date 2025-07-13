@@ -13,14 +13,14 @@
     font-size: 4.5rem;
     background: linear-gradient(
       45deg,
-      $text-color,
-      $primary-color,
-      $secondary-color
+      css-var(text-color),
+      css-var(primary-color),
+      css-var(secondary-color)
     );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 4px 8px rgba($background-color, 0.3);
+    text-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
     font-weight: 700;
     letter-spacing: 0.02em;
 

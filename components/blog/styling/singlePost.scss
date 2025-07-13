@@ -16,7 +16,7 @@ article {
   em {
     display: block;
     align-self: flex-end;
-    color: rgba($text-color, 0.7);
+    color: rgba(css-var(text-color), 0.7);
     font-style: italic;
 
     @include small {
@@ -37,11 +37,11 @@ article {
     gap: 2.5rem;
     background: linear-gradient(
       135deg,
-      rgba($background-color, 0.8),
+      rgba(css-var(background-color), 0.8),
       rgba(color.adjust($background-color, $lightness: 5%), 0.8)
     );
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 16px rgba($background-color, 0.4);
+    box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
     position: relative;
 
     &::before {
@@ -51,9 +51,9 @@ article {
       padding: 2px;
       background: linear-gradient(
         135deg,
-        $primary-color,
-        $secondary-color,
-        $accent-color
+        css-var(primary-color),
+        css-var(secondary-color),
+        css-var(accent-color)
       );
       border-radius: inherit;
       mask:
@@ -92,7 +92,7 @@ article {
 
     h1 {
       font-size: 2.5rem;
-      color: $text-color;
+      color: css-var(text-color);
       text-align: center;
 
       @include small {
@@ -106,7 +106,7 @@ article {
 
       h2 {
         font-size: 1.5rem;
-        color: $primary-color;
+        color: css-var(primary-color);
         margin-bottom: 1rem;
 
         @include small {
@@ -115,14 +115,14 @@ article {
       }
 
       h3 {
-        color: $secondary-color;
+        color: css-var(secondary-color);
         margin-bottom: 0.5rem;
       }
 
       p {
         font-size: 1rem;
         margin-top: 0.938rem;
-        color: $text-color;
+        color: css-var(text-color);
         line-height: 1.6;
 
         @include small {
@@ -141,20 +141,20 @@ article {
         height: auto;
         margin: 1.5rem auto;
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba($background-color, 0.3);
-        border: 2px solid rgba($primary-color, 0.1);
+        box-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
+        border: 2px solid rgba(css-var(primary-color), 0.1);
       }
 
       /* Style for links in parsed content */
       a {
-        color: $primary-color;
+        color: css-var(primary-color);
         text-decoration: none;
-        border-bottom: 1px solid rgba($primary-color, 0.3);
+        border-bottom: 1px solid rgba(css-var(primary-color), 0.3);
         transition: all 0.3s ease;
 
         &:hover {
-          color: $secondary-color;
-          border-bottom-color: $secondary-color;
+          color: css-var(secondary-color);
+          border-bottom-color: css-var(secondary-color);
         }
       }
 
@@ -165,20 +165,20 @@ article {
         padding-left: 1.5rem;
 
         li {
-          color: $text-color;
+          color: css-var(text-color);
           margin-bottom: 0.5rem;
         }
       }
 
       /* Style for blockquotes in parsed content */
       blockquote {
-        border-left: 4px solid $primary-color;
+        border-left: 4px solid css-var(primary-color);
         margin: 1.5rem 0;
         padding: 1rem 1.5rem;
-        background: rgba($primary-color, 0.05);
+        background: rgba(css-var(primary-color), 0.05);
         border-radius: 0 8px 8px 0;
         font-style: italic;
-        color: rgba($text-color, 0.9);
+        color: rgba(css-var(text-color), 0.9);
       }
     }
   }

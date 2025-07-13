@@ -1,14 +1,16 @@
+@use '../../app/styles/abstracts' as *;
+
 .no-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top: 10%;
-  
-    .no-content-text {
-      color: orange;
-      font-weight: bold;
-      font-size: 1.75rem;
-    }
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 10%;
+
+  .no-content-text {
+    color: css-var(primary-color);
+    font-weight: bold;
+    font-size: 1.75rem;
   }
+}

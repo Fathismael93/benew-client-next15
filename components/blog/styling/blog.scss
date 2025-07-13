@@ -10,7 +10,7 @@
     left: 0;
     padding-top: 3.125rem;
     text-align: center;
-    color: $primary-color;
+    color: css-var(primary-color);
     font-size: 1.5rem;
 
     @include small {
@@ -35,9 +35,9 @@
       height: 0.625rem;
       background: linear-gradient(
         90deg,
-        $primary-color,
-        $secondary-color,
-        $accent-color
+        css-var(primary-color),
+        css-var(secondary-color),
+        css-var(accent-color)
       );
       border-radius: 10px;
     }
@@ -51,7 +51,7 @@
     align-items: center;
 
     .no-content-text {
-      color: $text-color;
+      color: css-var(text-color);
       font-weight: bold;
       font-size: 1.75rem;
     }

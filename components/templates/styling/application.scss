@@ -246,17 +246,17 @@
   right: 20px;
   background: linear-gradient(
     135deg,
-    rgba($color-dark, 0.9),
-    rgba($color-purple, 0.9)
+    rgba(css-var(color-dark), 0.9),
+    rgba(css-var(color-purple), 0.9)
   );
-  color: $color-light;
+  color: css-var(color-light);
   padding: 8px 16px;
   border-radius: 25px;
   font-size: 0.9rem;
   font-weight: 600;
   z-index: 10;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba($color-orange, 0.3);
+  border: 1px solid rgba(css-var(color-orange), 0.3);
 
   // Animation pour le compteur
   animation: counterUpdate 0.3s ease-out;
@@ -295,7 +295,11 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: linear-gradient(135deg, $color-orange, $color-pink);
+  background: linear-gradient(
+    135deg,
+    css-var(color-orange),
+    css-var(color-pink)
+  );
   border: none;
   border-radius: 50%;
   width: 64px;
@@ -306,7 +310,7 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 10;
-  color: $color-dark;
+  color: css-var(color-dark);
   box-shadow:
     0 8px 25px rgba(246, 160, 55, 0.4),
     0 4px 12px rgba(0, 0, 0, 0.2);
@@ -327,7 +331,11 @@
   }
 
   &:hover {
-    background: linear-gradient(135deg, $color-pink, $color-orange);
+    background: linear-gradient(
+      135deg,
+      css-var(color-pink),
+      css-var(color-orange)
+    );
     transform: translateY(-50%) scale(1.1);
     box-shadow:
       0 12px 35px rgba(246, 160, 55, 0.6),
@@ -405,10 +413,10 @@
   height: 100vh;
   background: linear-gradient(
     135deg,
-    rgba($color-dark, 0.9),
-    rgba($color-purple, 0.1)
+    rgba(css-var(color-dark), 0.9),
+    rgba(css-var(color-purple), 0.1)
   );
-  color: rgba($color-light, 0.7);
+  color: rgba(css-var(color-light), 0.7);
   font-size: 1.5rem;
   text-align: center;
   padding: 2rem;
@@ -450,17 +458,17 @@
     background:
       radial-gradient(
         circle at 20% 80%,
-        rgba($color-orange, 0.1) 0%,
+        rgba(css-var(color-orange), 0.1) 0%,
         transparent 50%
       ),
       radial-gradient(
         circle at 80% 20%,
-        rgba($color-pink, 0.1) 0%,
+        rgba(css-var(color-pink), 0.1) 0%,
         transparent 50%
       ),
       radial-gradient(
         circle at 40% 40%,
-        rgba($color-purple, 0.05) 0%,
+        rgba(css-var(color-purple), 0.05) 0%,
         transparent 50%
       );
     pointer-events: none;
@@ -532,11 +540,11 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba($color-orange, 0.3);
+    background: rgba(css-var(color-orange), 0.3);
     border-radius: 3px;
 
     &:hover {
-      background: rgba($color-orange, 0.5);
+      background: rgba(css-var(color-orange), 0.5);
     }
   }
 }
@@ -548,7 +556,7 @@
   align-items: flex-start;
   gap: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid rgba($color-orange, 0.2);
+  border-bottom: 2px solid rgba(css-var(color-orange), 0.2);
   flex-shrink: 0;
 
   @include tablet {
@@ -570,11 +578,15 @@
   .app-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: $color-light;
+    color: css-var(color-light);
     margin: 0 0 0.5rem 0;
     letter-spacing: -0.02em;
     line-height: 1.1;
-    background: linear-gradient(135deg, $color-orange, $color-pink);
+    background: linear-gradient(
+      135deg,
+      css-var(color-orange),
+      css-var(color-pink)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -603,7 +615,7 @@
     margin-top: 0.5rem;
 
     .template-label {
-      color: $text-color-muted;
+      color: css-var(text-color-muted);
       font-size: 1rem;
       font-weight: 500;
 
@@ -613,13 +625,13 @@
     }
 
     .template-name {
-      color: $color-orange;
+      color: css-var(color-orange);
       font-size: 1.1rem;
       font-weight: 600;
       padding: 0.25rem 0.75rem;
-      background: rgba($color-orange, 0.1);
+      background: rgba(css-var(color-orange), 0.1);
       border-radius: 6px;
-      border: 1px solid rgba($color-orange, 0.3);
+      border: 1px solid rgba(css-var(color-orange), 0.3);
 
       @include mobile {
         font-size: 1rem;
@@ -699,21 +711,21 @@
   }
 
   &.level-badge {
-    background: rgba($color-orange, 0.1);
-    border-color: rgba($color-orange, 0.3);
-    color: $color-orange;
+    background: rgba(css-var(color-orange), 0.1);
+    border-color: rgba(css-var(color-orange), 0.3);
+    color: css-var(color-orange);
   }
 
   &.category-badge {
-    background: rgba($color-purple, 0.1);
-    border-color: rgba($color-purple, 0.3);
-    color: $color-purple;
+    background: rgba(css-var(color-purple), 0.1);
+    border-color: rgba(css-var(color-purple), 0.3);
+    color: css-var(color-purple);
   }
 
   &.sales-badge {
-    background: rgba($color-pink, 0.1);
-    border-color: rgba($color-pink, 0.3);
-    color: $color-pink;
+    background: rgba(css-var(color-pink), 0.1);
+    border-color: rgba(css-var(color-pink), 0.3);
+    color: css-var(color-pink);
   }
 }
 
@@ -752,8 +764,8 @@
 }
 
 .description-card {
-  background: rgba($color-light, 0.03);
-  border: 1px solid rgba($color-light, 0.1);
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
   border-radius: 16px;
   padding: 1.25rem;
   backdrop-filter: blur(10px);
@@ -770,14 +782,14 @@
   }
 
   &:hover {
-    border-color: rgba($color-orange, 0.3);
-    box-shadow: 0 8px 32px rgba($color-orange, 0.1);
+    border-color: rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
   }
 
   .section-title {
     font-size: 1.4rem;
     font-weight: 700;
-    color: $color-light;
+    color: css-var(color-light);
     margin: 0 0 1rem 0;
     position: relative;
 
@@ -793,7 +805,11 @@
       left: 0;
       width: 50px;
       height: 2px;
-      background: linear-gradient(90deg, $color-orange, $color-pink);
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
       border-radius: 2px;
     }
   }
@@ -802,7 +818,7 @@
     .description-text {
       font-size: 1rem;
       line-height: 1.6;
-      color: $text-color-muted;
+      color: css-var(text-color-muted);
       margin: 0;
       max-height: 150px;
       overflow-y: auto;
@@ -823,7 +839,7 @@
       }
 
       &::-webkit-scrollbar-thumb {
-        background: rgba($color-orange, 0.3);
+        background: rgba(css-var(color-orange), 0.3);
         border-radius: 2px;
       }
     }
@@ -914,55 +930,55 @@
   &.btn-primary {
     background: linear-gradient(
       135deg,
-      $color-orange,
+      css-var(color-orange),
       color.adjust($color-orange, $lightness: 10%)
     );
-    color: $color-dark;
-    box-shadow: 0 6px 20px rgba($color-orange, 0.3);
+    color: css-var(color-dark);
+    box-shadow: 0 6px 20px rgba(css-var(color-orange), 0.3);
 
     &:hover {
       background: linear-gradient(
         135deg,
         color.adjust($color-orange, $lightness: 10%),
-        $color-orange
+        css-var(color-orange)
       );
-      box-shadow: 0 8px 25px rgba($color-orange, 0.4);
+      box-shadow: 0 8px 25px rgba(css-var(color-orange), 0.4);
     }
   }
 
   &.btn-secondary {
-    background: rgba($color-light, 0.05);
-    color: $color-light;
-    border-color: rgba($color-light, 0.2);
+    background: rgba(css-var(color-light), 0.05);
+    color: css-var(color-light);
+    border-color: rgba(css-var(color-light), 0.2);
 
     &:hover {
-      background: rgba($color-light, 0.1);
-      border-color: rgba($color-light, 0.3);
-      box-shadow: 0 6px 20px rgba($color-light, 0.1);
+      background: rgba(css-var(color-light), 0.1);
+      border-color: rgba(css-var(color-light), 0.3);
+      box-shadow: 0 6px 20px rgba(css-var(color-light), 0.1);
     }
   }
 
   &.btn-accent {
     background: linear-gradient(
       135deg,
-      $color-pink,
+      css-var(color-pink),
       color.adjust($color-pink, $lightness: 10%)
     );
-    color: $color-dark;
-    box-shadow: 0 6px 20px rgba($color-pink, 0.3);
+    color: css-var(color-dark);
+    box-shadow: 0 6px 20px rgba(css-var(color-pink), 0.3);
 
     &:hover {
       background: linear-gradient(
         135deg,
         color.adjust($color-pink, $lightness: 10%),
-        $color-pink
+        css-var(color-pink)
       );
-      box-shadow: 0 8px 25px rgba($color-pink, 0.4);
+      box-shadow: 0 8px 25px rgba(css-var(color-pink), 0.4);
     }
 
     &.disabled {
-      background: rgba($text-color-muted, 0.3);
-      color: rgba($color-light, 0.5);
+      background: rgba(css-var(text-color-muted), 0.3);
+      color: rgba(css-var(color-light), 0.5);
       cursor: not-allowed;
       box-shadow: none;
 
@@ -988,8 +1004,8 @@
 
 .info-card,
 .pricing-card {
-  background: rgba($color-light, 0.03);
-  border: 1px solid rgba($color-light, 0.1);
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
   border-radius: 16px;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
@@ -1000,18 +1016,18 @@
   }
 
   &:hover {
-    border-color: rgba($color-purple, 0.3);
-    box-shadow: 0 8px 32px rgba($color-purple, 0.1);
+    border-color: rgba(css-var(color-purple), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-purple), 0.1);
   }
 }
 
 .card-title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: $color-light;
+  color: css-var(color-light);
   margin: 0 0 0.875rem 0;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba($color-light, 0.1);
+  border-bottom: 1px solid rgba(css-var(color-light), 0.1);
 
   @include mobile {
     font-size: 1rem;
@@ -1035,7 +1051,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba($color-light, 0.05);
+  border-bottom: 1px solid rgba(css-var(color-light), 0.05);
 
   @include mobile {
     padding: 0.4rem 0;
@@ -1046,7 +1062,7 @@
   }
 
   .info-label {
-    color: $text-color-muted;
+    color: css-var(text-color-muted);
     font-size: 0.85rem;
     font-weight: 500;
 
@@ -1056,7 +1072,7 @@
   }
 
   .info-value {
-    color: $color-light;
+    color: css-var(color-light);
     font-weight: 600;
     font-size: 0.9rem;
 
@@ -1090,36 +1106,36 @@
   }
 
   &.fee {
-    background: rgba($color-orange, 0.1);
-    border: 1px solid rgba($color-orange, 0.2);
+    background: rgba(css-var(color-orange), 0.1);
+    border: 1px solid rgba(css-var(color-orange), 0.2);
 
     .price-label {
       color: color.adjust($color-orange, $lightness: 20%);
     }
 
     .price-amount {
-      color: $color-orange;
+      color: css-var(color-orange);
     }
 
     &:hover {
-      background: rgba($color-orange, 0.15);
+      background: rgba(css-var(color-orange), 0.15);
     }
   }
 
   &.rent {
-    background: rgba($color-pink, 0.1);
-    border: 1px solid rgba($color-pink, 0.2);
+    background: rgba(css-var(color-pink), 0.1);
+    border: 1px solid rgba(css-var(color-pink), 0.2);
 
     .price-label {
       color: color.adjust($color-pink, $lightness: 20%);
     }
 
     .price-amount {
-      color: $color-pink;
+      color: css-var(color-pink);
     }
 
     &:hover {
-      background: rgba($color-pink, 0.15);
+      background: rgba(css-var(color-pink), 0.15);
     }
   }
 
@@ -1147,7 +1163,7 @@
   text-align: center;
 
   small {
-    color: $text-color-muted;
+    color: css-var(text-color-muted);
     font-size: 0.75rem;
     font-style: italic;
 
@@ -1167,8 +1183,8 @@
 
   .no-details-content {
     text-align: center;
-    background: rgba($color-light, 0.03);
-    border: 1px solid rgba($color-light, 0.1);
+    background: rgba(css-var(color-light), 0.03);
+    border: 1px solid rgba(css-var(color-light), 0.1);
     border-radius: 16px;
     padding: 2rem 1.5rem;
     backdrop-filter: blur(10px);
@@ -1179,7 +1195,7 @@
 
     h2 {
       font-size: 1.75rem;
-      color: $color-orange;
+      color: css-var(color-orange);
       margin: 0 0 0.75rem 0;
 
       @include mobile {
@@ -1188,7 +1204,7 @@
     }
 
     p {
-      color: $text-color-muted;
+      color: css-var(text-color-muted);
       font-size: 1rem;
       margin: 0;
 

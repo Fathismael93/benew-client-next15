@@ -14,7 +14,7 @@
 .application-card {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  border: 1px solid rgba($primary-color, 0.2);
+  border: 1px solid rgba(css-var(primary-color), 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   overflow: hidden;
@@ -22,8 +22,8 @@
 
   &:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 48px rgba($primary-color, 0.2);
-    border-color: rgba($primary-color, 0.4);
+    box-shadow: 0 16px 48px rgba(css-var(primary-color), 0.2);
+    border-color: rgba(css-var(primary-color), 0.4);
   }
 }
 
@@ -31,7 +31,11 @@
   position: relative;
   height: 200px;
   overflow: hidden;
-  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color) 0%,
+    css-var(secondary-color) 100%
+  );
 }
 
 .app-image {
@@ -52,7 +56,7 @@
 .app-title {
   font-size: 1.125rem;
   font-weight: 700;
-  color: $text-color;
+  color: css-var(text-color);
   margin: 0 0 0.75rem 0;
   line-height: 1.4;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -60,11 +64,11 @@
 
 .app-subtitle {
   font-size: 0.875rem;
-  color: $text-color-muted;
+  color: css-var(text-color-muted);
   margin: 0 0 1.5rem 0;
 
   .level {
-    color: $primary-color;
+    color: css-var(primary-color);
     font-weight: 600;
   }
 }
@@ -85,7 +89,7 @@
 .price {
   font-size: 1.75rem;
   font-weight: 800;
-  color: $primary-color;
+  color: css-var(primary-color);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -97,7 +101,7 @@
 
 .rent-price {
   font-size: 0.75rem;
-  color: $text-color-muted;
+  color: css-var(text-color-muted);
   font-weight: 500;
 }
 
@@ -126,30 +130,34 @@
 }
 
 .btn-cart {
-  background: rgba($background-color-light, 0.8);
-  color: $text-color;
-  border: 1px solid rgba($primary-color, 0.3);
+  background: rgba(css-var(background-color-light), 0.8);
+  color: css-var(text-color);
+  border: 1px solid rgba(css-var(primary-color), 0.3);
 
   &:hover:not(:disabled) {
-    background: rgba($primary-color, 0.1);
-    border-color: $primary-color;
+    background: rgba(css-var(primary-color), 0.1);
+    border-color: css-var(primary-color);
     transform: translateY(-2px);
   }
 }
 
 .btn-preview {
-  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
-  color: $background-color;
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color) 0%,
+    css-var(secondary-color) 100%
+  );
+  color: css-var(background-color);
   border: 1px solid transparent;
 
   &:hover {
     background: linear-gradient(
       135deg,
-      $secondary-color 0%,
-      $accent-color 100%
+      css-var(secondary-color) 0%,
+      css-var(accent-color) 100%
     );
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+    box-shadow: 0 4px 12px rgba(css-var(primary-color), 0.3);
   }
 }
 

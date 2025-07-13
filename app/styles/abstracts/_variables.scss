@@ -3,6 +3,9 @@
 
 @use 'sass:color';
 
+// =============================
+// SCSS VARIABLES (Compile-time)
+// =============================
 // Couleurs principales extraites du logo
 $color-dark: #0c0c1a;
 $color-orange: #f6a037;
@@ -10,13 +13,48 @@ $color-pink: #f266b0;
 $color-light: #fae6d1;
 $color-purple: #9e1f9d;
 
-// Thèmes
+// Thèmes (pour compilation)
 $primary-color: $color-orange;
 $secondary-color: $color-pink;
 $accent-color: $color-purple;
 $background-color: $color-dark;
 $text-color: $color-light;
 
-// Couleurs dérivées pour les variations
+// Couleurs dérivées pour les variations (compile-time)
 $text-color-muted: rgba($text-color, 0.7);
 $background-color-light: color.adjust($background-color, $lightness: 10%);
+
+// =============================
+// CSS CUSTOM PROPERTIES (Runtime)
+// =============================
+:root {
+  // Couleurs de base - disponibles au runtime
+  --color-dark: #{$color-dark};
+  --color-orange: #{$color-orange};
+  --color-pink: #{$color-pink};
+  --color-light: #{$color-light};
+  --color-purple: #{$color-purple};
+
+  // Couleurs thématiques - modifiables au runtime
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --accent-color: #{$accent-color};
+  --background-color: #{$background-color};
+  --text-color: #{$text-color};
+
+  // Couleurs dérivées
+  --text-color-muted: #{$text-color-muted};
+  --background-color-light: #{$background-color-light};
+}
+
+// =============================
+// FONCTIONS UTILITAIRES
+// =============================
+// Fonction pour récupérer les CSS custom properties
+@function css-var($name, $fallback: null) {
+  @if $fallback {
+    @return var(--#{$name}, #{$fallback});
+  } @else {
+    @return var(--#{$name});
+  }
+}

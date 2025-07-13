@@ -6,8 +6,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: $text-color;
-  color: $background-color;
+  background-color: css-var(text-color);
+  color: css-var(background-color);
 
   .bg {
     z-index: 999;
@@ -18,10 +18,10 @@
     width: 20rem;
     background: linear-gradient(
       135deg,
-      $text-color,
+      css-var(text-color),
       color.adjust($text-color, $lightness: 5%)
     );
-    box-shadow: 2px 0 10px rgba($background-color, 0.3);
+    box-shadow: 2px 0 10px rgba(css-var(background-color), 0.3);
 
     @include small {
       width: 12.5rem;
@@ -71,25 +71,25 @@
         &:hover {
           background: linear-gradient(
             135deg,
-            rgba($primary-color, 0.1),
-            rgba($secondary-color, 0.1)
+            rgba(css-var(primary-color), 0.1),
+            rgba(css-var(secondary-color), 0.1)
           );
           transform: translateX(10px);
         }
 
         a {
-          color: $background-color;
+          color: css-var(background-color);
           text-decoration: none;
           font-weight: 500;
           transition: all 0.3s ease;
 
           &:hover {
-            color: $primary-color;
+            color: css-var(primary-color);
           }
         }
 
         .icon {
-          color: $primary-color;
+          color: css-var(primary-color);
           margin-right: 1rem;
         }
       }
@@ -110,7 +110,7 @@
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: rgba($primary-color, 0.1);
+      background-color: rgba(css-var(primary-color), 0.1);
       transform: scale(1.1);
     }
 
@@ -122,12 +122,12 @@
 
     svg {
       path {
-        stroke: $background-color;
+        stroke: css-var(background-color);
         transition: all 0.3s ease;
       }
 
       &:hover path {
-        stroke: $primary-color;
+        stroke: css-var(primary-color);
       }
     }
   }
