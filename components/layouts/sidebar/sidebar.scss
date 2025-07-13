@@ -116,6 +116,10 @@
     border-radius: 50%;
     position: fixed;
 
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
     // Mobile-first : positionnement optimisé
     top: 1.5rem;
     left: 1.5rem;
@@ -131,10 +135,6 @@
       top: 2.313rem;
       left: 2.188rem;
     }
-
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
 
     &:hover {
       background-color: rgba(css-var(primary-color), 0.1);
