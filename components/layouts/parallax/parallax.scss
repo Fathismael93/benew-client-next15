@@ -50,17 +50,17 @@
     z-index: 3;
 
     @include small {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     @include mobile {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     @include tablet {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
