@@ -54,9 +54,7 @@
 
   @include small {
     gap: 1.5rem;
-    flex-direction: column; // Changer la direction sur petit écran
-    justify-content: space-between;
-    padding: 60px 0; // Espace pour les images blur en haut/bas
+    // Garde la direction horizontale, masque juste les images latérales
   }
 }
 
@@ -75,25 +73,9 @@
     order: 3;
   }
 
-  // Sur petits écrans, réorganiser la disposition
+  // Masquer sur petits écrans
   @include small {
-    position: absolute;
-    width: 100%;
-    height: auto;
-
-    &.gallery-left {
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      order: unset;
-    }
-
-    &.gallery-right {
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      order: unset;
-    }
+    display: none;
   }
 }
 
@@ -118,7 +100,7 @@
 
   @include small {
     max-width: 320px;
-    flex: unset; // Enlever flex: 1 sur petit écran
+    flex: 1; // Garde flex: 1 pour occuper l'espace disponible
     height: auto;
   }
 }
