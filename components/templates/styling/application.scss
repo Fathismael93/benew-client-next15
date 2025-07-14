@@ -1,7 +1,14 @@
 @use 'sass:color';
 @use '../../../app/styles/abstracts' as *;
 
-// Gallery section styling remains the same
+// =============================
+// SINGLE APPLICATION - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
+// =============================
+// PAGE 1 - GALLERY SECTION MOBILE-FIRST
+// =============================
+
 .gallery-section {
   width: 100%;
   display: flex;
@@ -11,6 +18,7 @@
   background: linear-gradient(to bottom, #0c0c1d, #151528);
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
 
 .gallery-container {
@@ -21,18 +29,26 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 3rem; // Padding ajouté
 
-  @include tablet {
-    padding: 2.5rem;
+  // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace
+  padding: 1rem 0.75rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
+  @include until('sm') {
+    padding: 0.75rem 0.5rem;
   }
 
-  @include mobile {
-    padding: 2rem;
+  // 🖥️ TABLET ET PLUS - Augmentation progressive
+  @include from('md') {
+    padding: 1.5rem 1rem;
   }
 
-  @include small {
-    padding: 1.5rem;
+  @include from('lg') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('xl') {
+    padding: 3rem; // Valeur desktop originale
   }
 }
 
@@ -41,260 +57,233 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 80vh;
   position: relative;
-  gap: 3rem;
 
-  @include tablet {
-    gap: 2.5rem;
+  // 📱 MOBILE FIRST - Layout vertical optimisé
+  flex-direction: column;
+  height: 100%;
+  gap: 1.5rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    gap: 1rem;
   }
 
-  @include mobile {
+  // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
+  @include from('lg') {
+    flex-direction: row;
+    height: 80vh;
     gap: 2rem;
   }
 
-  @include small {
-    gap: 1.5rem;
-    // Garde la direction horizontale, masque juste les images latérales
+  @include from('xl') {
+    gap: 3rem; // Valeur desktop originale
   }
 }
+
+// =============================
+// IMAGES LATÉRALES - MOBILE-FIRST
+// =============================
 
 .gallery-side-images {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
+  // 📱 MOBILE - Cachées car inutiles, remplacées par miniatures
+  display: none;
 
-  &.gallery-left {
-    order: 1;
-  }
+  // 🖥️ DESKTOP - Réapparition pour l'effet visuel
+  @include from('lg') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
 
-  &.gallery-right {
-    order: 3;
-  }
+    &.gallery-left {
+      order: 1;
+    }
 
-  // Masquer sur petits écrans
-  @include small {
-    display: none;
+    &.gallery-right {
+      order: 3;
+    }
   }
 }
 
+.gallery-side-image {
+  // Styles conservés pour desktop uniquement
+  @include from('lg') {
+    width: 180px;
+    height: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.6;
+    animation: fadeInSlide 0.4s ease-out forwards;
+    animation-delay: 0.1s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      backdrop-filter: blur(3px);
+      background: rgba(12, 12, 26, 0.3);
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .side-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+      transition: all 0.3s ease;
+
+      &::after {
+        backdrop-filter: blur(1px);
+        background: rgba(12, 12, 26, 0.1);
+      }
+    }
+  }
+
+  @include from('xl') {
+    width: 200px;
+    height: 280px;
+  }
+}
+
+// =============================
+// CONTENEUR PRINCIPAL - MOBILE-FIRST
+// =============================
+
 .gallery-main-container {
-  order: 2;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 5;
-  flex: 1;
-  max-width: 600px;
-  height: 100%;
 
-  @include tablet {
+  // 📱 MOBILE FIRST - Utilisation maximale de l'espace
+  width: 95%;
+  height: 70%; // 70% de la hauteur pour l'image principale
+  max-width: none;
+  order: 1;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    width: 98%;
+    height: 65%;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('md') {
+    width: 90%;
+    height: 75%;
+  }
+
+  @include from('lg') {
+    // DESKTOP - Retour au layout original
+    order: 2;
+    flex: 1;
     max-width: 500px;
+    height: 100%;
+    width: auto;
   }
 
-  @include mobile {
-    max-width: 400px;
-  }
-
-  @include small {
-    max-width: 320px;
-    flex: 1; // Garde flex: 1 pour occuper l'espace disponible
-    height: auto;
+  @include from('xl') {
+    max-width: 600px;
   }
 }
-
-// Ajouter ces styles après .gallery-main-container
 
 .gallery-image-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(246, 160, 55, 0.3);
+
+  // 📱 MOBILE - Border radius plus prononcé
+  @include until('lg') {
+    border-radius: 24px;
+    box-shadow: 0 16px 48px rgba(246, 160, 55, 0.4);
+  }
 }
 
-.gallery-side-image {
-  width: 200px;
-  height: 280px;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-  opacity: 0.6;
+.gallery-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateX(30px);
 
-  // Animation de transition pour les images latérales
-  animation: fadeInSlide 0.4s ease-out forwards;
-  animation-delay: 0.1s;
-
-  @include tablet {
-    width: 160px;
-    height: 220px;
-  }
-
-  @include mobile {
-    width: 120px;
-    height: 160px;
-  }
-
-  // CETTE PARTIE MANQUAIT POUR LES PETITS ÉCRANS
-  @include small {
-    width: 100px;
-    height: 140px;
-    border-radius: 12px;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    backdrop-filter: blur(3px);
-    background: rgba(12, 12, 26, 0.3);
-    z-index: 2;
-    transition: all 0.3s ease;
-  }
-
-  .side-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+  // 📱 MOBILE - Border radius adapté
+  @include until('lg') {
+    border-radius: 24px;
   }
 
   &:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
+    transform: scale(1.02) translateX(0);
+    box-shadow: 0 25px 80px rgba(246, 160, 55, 0.3);
     transition: all 0.3s ease;
-
-    &::after {
-      backdrop-filter: blur(1px);
-      background: rgba(12, 12, 26, 0.1);
-    }
   }
 }
 
-.gallery-arrow-left {
-  left: 15%;
+// =============================
+// COMPTEUR D'IMAGES - MOBILE-FIRST
+// =============================
 
-  @include tablet {
-    left: 10%;
-  }
-
-  @include mobile {
-    left: 8%;
-  }
-
-  @include small {
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-}
-
-.gallery-arrow-right {
-  right: 15%;
-
-  @include tablet {
-    right: 10%;
-  }
-
-  @include mobile {
-    right: 8%;
-  }
-
-  @include small {
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-}
-
-// Animations keyframes
-@keyframes slideInFromRight {
-  0% {
-    opacity: 0;
-    transform: translateX(30px) scale(0.95);
-  }
-  50% {
-    opacity: 0.7;
-    transform: translateX(0) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
-@keyframes fadeInSlide {
-  0% {
-    opacity: 0;
-    transform: translateY(20px) scale(0.9);
-  }
-  100% {
-    opacity: 0.6;
-    transform: translateY(0) scale(1);
-  }
-}
-
-// Animation pour le compteur
 .gallery-counter {
   position: absolute;
-  top: 20px;
-  right: 20px;
   background: linear-gradient(
     135deg,
     rgba(css-var(color-dark), 0.9),
     rgba(css-var(color-purple), 0.9)
   );
   color: css-var(color-light);
-  padding: 8px 16px;
   border-radius: 25px;
-  font-size: 0.9rem;
   font-weight: 600;
   z-index: 10;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(css-var(color-orange), 0.3);
-
-  // Animation pour le compteur
   animation: counterUpdate 0.3s ease-out;
 
-  @include mobile {
-    top: 15px;
-    right: 15px;
-    padding: 6px 12px;
-    font-size: 0.8rem;
+  // 📱 MOBILE FIRST - Plus visible et accessible
+  top: 1rem;
+  right: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
   }
 
-  @include small {
-    top: 10px;
-    right: 10px;
-    padding: 4px 8px;
-    font-size: 0.75rem;
+  // 🖥️ DESKTOP - Taille plus discrète
+  @include from('xl') {
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 }
 
-@keyframes counterUpdate {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+// =============================
+// FLÈCHES NAVIGATION - MOBILE-FIRST
+// =============================
 
-// Animation pour les flèches au clic
 .gallery-arrow {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   background: linear-gradient(
     135deg,
     css-var(color-orange),
@@ -302,8 +291,6 @@
   );
   border: none;
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,23 +298,29 @@
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 10;
   color: css-var(color-dark);
-  box-shadow:
-    0 8px 25px rgba(246, 160, 55, 0.4),
-    0 4px 12px rgba(0, 0, 0, 0.2);
 
-  @include tablet {
-    width: 56px;
-    height: 56px;
-  }
+  // 📱 MOBILE FIRST - Flèches grandes et accessibles
+  width: 56px;
+  height: 56px;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 8px 25px rgba(246, 160, 55, 0.5);
 
-  @include mobile {
+  // 📟 TRÈS PETITS ÉCRANS - Toujours utilisables
+  @include until('sm') {
     width: 48px;
     height: 48px;
   }
 
-  @include small {
-    width: 40px;
-    height: 40px;
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('md') {
+    width: 60px;
+    height: 60px;
+  }
+
+  @include from('xl') {
+    width: 64px; // Valeur desktop originale
+    height: 64px;
   }
 
   &:hover {
@@ -337,9 +330,7 @@
       css-var(color-orange)
     );
     transform: translateY(-50%) scale(1.1);
-    box-shadow:
-      0 12px 35px rgba(246, 160, 55, 0.6),
-      0 6px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 35px rgba(246, 160, 55, 0.6);
   }
 
   &:active {
@@ -349,62 +340,120 @@
 
   svg {
     transition: transform 0.2s ease;
+    font-size: 28px;
 
-    @include mobile {
+    @include until('sm') {
       font-size: 24px;
     }
 
-    @include small {
-      font-size: 20px;
+    @include from('xl') {
+      font-size: 32px;
     }
   }
 }
 
-@keyframes arrowPulse {
-  0% {
-    transform: translateY(-50%) scale(0.95);
+.gallery-arrow-left {
+  // 📱 MOBILE - Positionnement optimisé
+  left: 1rem;
+
+  @include until('sm') {
+    left: 0.75rem;
   }
-  50% {
-    transform: translateY(-50%) scale(1.05);
-  }
-  100% {
-    transform: translateY(-50%) scale(1);
+
+  // 🖥️ DESKTOP - Repositionnement selon layout
+  @include from('lg') {
+    left: 15%;
   }
 }
 
-.gallery-main-image {
+.gallery-arrow-right {
+  // 📱 MOBILE - Positionnement optimisé
+  right: 1rem;
+
+  @include until('sm') {
+    right: 0.75rem;
+  }
+
+  // 🖥️ DESKTOP - Repositionnement selon layout
+  @include from('lg') {
+    right: 15%;
+  }
+}
+
+// =============================
+// MINIATURES NAVIGATION - MOBILE ONLY
+// =============================
+
+.gallery-thumbnails {
+  // 📱 MOBILE FIRST - Nouvelles miniatures pour navigation
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  height: auto;
-  max-height: 70vh;
-  object-fit: contain;
-  border-radius: 20px;
-  box-shadow:
-    0 20px 60px rgba(246, 160, 55, 0.2),
-    0 8px 25px rgba(0, 0, 0, 0.3);
+  max-width: 100%;
+  order: 2;
+  padding: 0 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
 
-  // Animation de transition fluide - CETTE LIGNE MANQUAIT
-  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  opacity: 0;
-  transform: translateX(30px);
-
-  @include mobile {
-    max-height: 60vh;
-    border-radius: 16px;
+  // Masquer les scrollbars sur mobile
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
-  @include small {
-    max-height: 50vh;
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    gap: 0.5rem;
+    padding: 0 0.75rem;
+  }
+
+  // 🖥️ DESKTOP - Cachées car images latérales disponibles
+  @include from('lg') {
+    display: none;
+  }
+
+  .thumbnail-item {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
     border-radius: 12px;
-  }
-
-  &:hover {
-    transform: scale(1.02) translateX(0);
-    box-shadow:
-      0 25px 80px rgba(246, 160, 55, 0.3),
-      0 12px 35px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    cursor: pointer;
     transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+
+    @include until('sm') {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+    }
+
+    &.active {
+      border-color: css-var(color-orange);
+      transform: scale(1.1);
+      box-shadow: 0 4px 16px rgba(css-var(color-orange), 0.4);
+    }
+
+    &:hover:not(.active) {
+      border-color: rgba(css-var(color-orange), 0.5);
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }
+
+// =============================
+// MESSAGE NO IMAGES - MOBILE-FIRST
+// =============================
 
 .no-images {
   display: flex;
@@ -417,24 +466,26 @@
     rgba(css-var(color-purple), 0.1)
   );
   color: rgba(css-var(color-light), 0.7);
-  font-size: 1.5rem;
   text-align: center;
-  padding: 2rem;
   backdrop-filter: blur(10px);
 
-  @include mobile {
+  // 📱 MOBILE FIRST - Texte bien visible
+  font-size: 1.5rem;
+  padding: 2rem 1rem;
+
+  @include until('sm') {
     font-size: 1.25rem;
-    padding: 1.5rem;
+    padding: 1.5rem 0.75rem;
   }
 
-  @include small {
-    font-size: 1rem;
-    padding: 1rem;
+  @include from('xl') {
+    font-size: 1.5rem;
+    padding: 2rem;
   }
 }
 
 // =============================
-// NOUVELLE SECTION DETAILS MODERNISÉE
+// PAGE 2 - DETAILS SECTION MOBILE-FIRST
 // =============================
 
 .details-section {
@@ -479,57 +530,67 @@
 .app-showcase {
   width: 100%;
   height: 100%;
-  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
   position: relative;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  @include laptop {
-    padding: 1.5rem;
+  // 📱 MOBILE FIRST - Padding minimal, largeur maximale
+  max-width: 100%;
+  padding: 1.5rem 1rem;
+
+  @include until('sm') {
+    padding: 1rem 0.75rem;
   }
 
-  @include tablet {
-    padding: 1.25rem;
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('md') {
+    padding: 2rem 1.5rem;
+    max-width: 90%;
   }
 
-  @include mobile {
-    padding: 1rem;
+  @include from('lg') {
+    padding: 2.5rem 2rem;
+    max-width: 85%;
   }
 
-  @include small {
-    padding: 0.75rem;
+  @include from('xl') {
+    max-width: 1400px;
+    padding: 2rem;
   }
 }
 
 .showcase-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
   animation: fadeInUp 0.8s ease-out;
   width: 100%;
   height: 100%;
-  max-height: calc(100vh - 4rem);
   overflow-y: auto;
 
-  @include tablet {
-    gap: 1.25rem;
-    max-height: calc(100vh - 2.5rem);
-  }
+  // 📱 MOBILE FIRST - Gap optimisé
+  gap: 2rem;
+  max-height: calc(100vh - 3rem);
 
-  @include mobile {
-    gap: 1rem;
+  @include until('sm') {
+    gap: 1.5rem;
     max-height: calc(100vh - 2rem);
   }
 
-  @include small {
-    max-height: calc(100vh - 1.5rem);
+  // 🖥️ TABLET ET PLUS
+  @include from('md') {
+    gap: 2.25rem;
+    max-height: calc(100vh - 4rem);
   }
 
-  // Personnaliser la scrollbar
+  @include from('xl') {
+    gap: 1.5rem;
+    max-height: calc(100vh - 4rem);
+  }
+
+  // Scrollbar personnalisée
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -549,37 +610,55 @@
   }
 }
 
-// En-tête principal
+// =============================
+// EN-TÊTE PRINCIPAL - MOBILE-FIRST
+// =============================
+
 .showcase-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 1.5rem;
-  padding-bottom: 1rem;
+  padding-bottom: 1.5rem;
   border-bottom: 2px solid rgba(css-var(color-orange), 0.2);
   flex-shrink: 0;
 
-  @include tablet {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-    padding-bottom: 0.75rem;
+  // 📱 MOBILE FIRST - Layout vertical avec badges sous le titre
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: center;
+
+  @include until('sm') {
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
   }
 
-  @include mobile {
-    gap: 0.75rem;
-    padding-bottom: 0.5rem;
+  // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
+  @include from('lg') {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    gap: 2rem;
+  }
+
+  @include from('xl') {
+    gap: 1.5rem;
+    padding-bottom: 1rem;
   }
 }
 
 .title-block {
-  flex: 1;
+  // 📱 MOBILE - Full width
+  width: 100%;
+
+  // 🖥️ DESKTOP - Flex sizing
+  @include from('lg') {
+    flex: 1;
+    width: auto;
+  }
 
   .app-title {
-    font-size: 2.5rem;
     font-weight: 800;
     color: css-var(color-light);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 1rem 0;
     letter-spacing: -0.02em;
     line-height: 1.1;
     background: linear-gradient(
@@ -591,20 +670,25 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
 
-    @include laptop {
+    // 📱 MOBILE FIRST - Titre imposant et lisible
+    font-size: 2.5rem;
+
+    @include until('sm') {
       font-size: 2.25rem;
+      margin: 0 0 0.875rem 0;
     }
 
-    @include tablet {
-      font-size: 2rem;
+    // 🖥️ TABLET ET PLUS - Maintien de la taille ou légère augmentation
+    @include from('md') {
+      font-size: 2.75rem;
     }
 
-    @include mobile {
-      font-size: 1.75rem;
+    @include from('lg') {
+      font-size: 2.5rem;
     }
 
-    @include small {
-      font-size: 1.5rem;
+    @include from('xl') {
+      font-size: 2.5rem;
     }
   }
 
@@ -614,45 +698,67 @@
     gap: 0.75rem;
     margin-top: 0.5rem;
 
+    // 📱 MOBILE - Centré
+    justify-content: center;
+
+    // 🖥️ DESKTOP - Aligné à gauche
+    @include from('lg') {
+      justify-content: flex-start;
+    }
+
     .template-label {
       color: css-var(text-color-muted);
-      font-size: 1rem;
       font-weight: 500;
 
-      @include mobile {
+      // 📱 MOBILE FIRST
+      font-size: 1rem;
+
+      @include until('sm') {
         font-size: 0.9rem;
       }
     }
 
     .template-name {
       color: css-var(color-orange);
-      font-size: 1.1rem;
       font-weight: 600;
-      padding: 0.25rem 0.75rem;
+      padding: 0.375rem 0.875rem;
       background: rgba(css-var(color-orange), 0.1);
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid rgba(css-var(color-orange), 0.3);
 
-      @include mobile {
+      // 📱 MOBILE FIRST
+      font-size: 1.1rem;
+
+      @include until('sm') {
         font-size: 1rem;
-        padding: 0.2rem 0.6rem;
+        padding: 0.3rem 0.75rem;
       }
     }
   }
 }
 
+// =============================
+// BADGES - MOBILE-FIRST
+// =============================
+
 .app-badges {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  align-items: flex-start;
 
-  @include tablet {
-    justify-content: flex-start;
+  // 📱 MOBILE FIRST - Centré sous le titre
+  justify-content: center;
+  width: 100%;
+
+  @include until('sm') {
+    gap: 0.75rem;
   }
 
-  @include mobile {
-    gap: 0.75rem;
+  // 🖥️ DESKTOP - Aligné à droite
+  @include from('lg') {
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: auto;
   }
 }
 
@@ -661,21 +767,24 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0.75rem;
   border-radius: 12px;
-  min-width: 100px;
   backdrop-filter: blur(10px);
   border: 1px solid;
   transition: all 0.3s ease;
 
-  @include mobile {
+  // 📱 MOBILE FIRST - Badges plus grands et lisibles
+  padding: 1rem 0.875rem;
+  min-width: 90px;
+
+  @include until('sm') {
+    padding: 0.875rem 0.75rem;
     min-width: 80px;
-    padding: 0.6rem;
   }
 
-  @include small {
-    min-width: 70px;
-    padding: 0.5rem;
+  // 🖥️ DESKTOP - Taille plus compacte
+  @include from('xl') {
+    padding: 0.75rem;
+    min-width: 100px;
   }
 
   &:hover {
@@ -684,29 +793,37 @@
   }
 
   .badge-label {
-    font-size: 0.75rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 0.5rem;
     opacity: 0.8;
 
-    @include small {
-      font-size: 0.7rem;
-      margin-bottom: 0.3rem;
+    // 📱 MOBILE FIRST
+    font-size: 0.8rem;
+
+    @include until('sm') {
+      font-size: 0.75rem;
+      margin-bottom: 0.375rem;
+    }
+
+    @include from('xl') {
+      font-size: 0.75rem;
     }
   }
 
   .badge-value {
-    font-size: 1.1rem;
     font-weight: 700;
 
-    @include mobile {
-      font-size: 1rem;
+    // 📱 MOBILE FIRST
+    font-size: 1.2rem;
+
+    @include until('sm') {
+      font-size: 1.1rem;
     }
 
-    @include small {
-      font-size: 0.9rem;
+    @include from('xl') {
+      font-size: 1.1rem;
     }
   }
 
@@ -729,56 +846,79 @@
   }
 }
 
-// Contenu principal
+// =============================
+// CONTENU PRINCIPAL - MOBILE-FIRST
+// =============================
+
 .showcase-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  display: flex;
   align-items: start;
   flex: 1;
   min-height: 0;
 
-  @include laptop {
+  // 📱 MOBILE FIRST - Stack vertical
+  flex-direction: column;
+  gap: 2rem;
+
+  @include until('sm') {
     gap: 1.5rem;
   }
 
-  @include tablet {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+  // 🖥️ DESKTOP - Layout en grid 2 colonnes
+  @include from('lg') {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    flex-direction: row;
   }
 
-  @include mobile {
-    gap: 1rem;
+  @include from('xl') {
+    gap: 2rem;
   }
 }
 
 .content-main {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
   min-height: 0;
 
-  @include mobile {
-    gap: 1rem;
+  // 📱 MOBILE FIRST - Gap généreux
+  gap: 2rem;
+  width: 100%;
+
+  @include until('sm') {
+    gap: 1.5rem;
+  }
+
+  // 🖥️ DESKTOP
+  @include from('xl') {
+    gap: 1.25rem;
   }
 }
+
+// =============================
+// DESCRIPTION CARD - MOBILE-FIRST
+// =============================
 
 .description-card {
   background: rgba(css-var(color-light), 0.03);
   border: 1px solid rgba(css-var(color-light), 0.1);
   border-radius: 16px;
-  padding: 1.25rem;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   flex: 1;
   min-height: 0;
 
-  @include tablet {
-    padding: 1rem;
+  // 📱 MOBILE FIRST - Padding généreux
+  padding: 1.75rem 1.5rem;
+
+  @include until('sm') {
+    padding: 1.5rem 1.25rem;
   }
 
-  @include mobile {
-    padding: 0.875rem;
+  // 🖥️ DESKTOP
+  @include from('xl') {
+    padding: 1.25rem;
   }
 
   &:hover {
@@ -787,47 +927,61 @@
   }
 
   .section-title {
-    font-size: 1.4rem;
     font-weight: 700;
     color: css-var(color-light);
-    margin: 0 0 1rem 0;
+    margin: 0 0 1.25rem 0;
     position: relative;
 
-    @include mobile {
-      font-size: 1.25rem;
-      margin: 0 0 0.75rem 0;
+    // 📱 MOBILE FIRST
+    font-size: 1.6rem;
+
+    @include until('sm') {
+      font-size: 1.4rem;
+      margin: 0 0 1rem 0;
+    }
+
+    @include from('xl') {
+      font-size: 1.4rem;
+      margin: 0 0 1rem 0;
     }
 
     &::after {
       content: '';
       position: absolute;
-      bottom: -0.4rem;
+      bottom: -0.5rem;
       left: 0;
-      width: 50px;
-      height: 2px;
+      width: 60px;
+      height: 3px;
       background: linear-gradient(
         90deg,
         css-var(color-orange),
         css-var(color-pink)
       );
-      border-radius: 2px;
+      border-radius: 3px;
     }
   }
 
   .description-content {
     .description-text {
-      font-size: 1rem;
       line-height: 1.6;
       color: css-var(text-color-muted);
       margin: 0;
-      max-height: 150px;
       overflow-y: auto;
       padding-right: 0.5rem;
 
-      @include mobile {
-        font-size: 0.9rem;
+      // 📱 MOBILE FIRST
+      font-size: 1.1rem;
+      max-height: 200px;
+
+      @include until('sm') {
+        font-size: 1rem;
+        max-height: 180px;
         line-height: 1.5;
-        max-height: 120px;
+      }
+
+      @include from('xl') {
+        font-size: 1rem;
+        max-height: 150px;
       }
 
       &::-webkit-scrollbar {
@@ -846,16 +1000,33 @@
   }
 }
 
-// Boutons d'action
+// =============================
+// BOUTONS D'ACTION - MOBILE-FIRST
+// =============================
+
 .action-buttons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
   flex-shrink: 0;
 
-  @include mobile {
-    flex-direction: column;
-    gap: 0.5rem;
+  // 📱 MOBILE FIRST - Stack vertical full-width
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  @include until('sm') {
+    gap: 0.875rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Transition vers horizontal
+  @include from('md') {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+    width: auto;
+  }
+
+  @include from('xl') {
+    gap: 0.75rem;
   }
 }
 
@@ -863,23 +1034,39 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  gap: 0.625rem;
   border-radius: 12px;
   font-weight: 600;
-  font-size: 0.9rem;
   text-decoration: none;
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  min-height: 44px;
   position: relative;
   overflow: hidden;
 
-  @include mobile {
-    padding: 0.6rem 1.25rem;
-    font-size: 0.85rem;
-    min-height: 40px;
+  // 📱 MOBILE FIRST - Boutons full-width et tactiles
+  padding: 1.25rem 2rem;
+  font-size: 1rem;
+  min-height: 56px;
+  width: 100%;
+
+  @include until('sm') {
+    padding: 1.125rem 1.75rem;
+    font-size: 0.95rem;
+    min-height: 52px;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('md') {
+    width: auto;
+    padding: 1rem 1.75rem;
+    font-size: 0.95rem;
+  }
+
+  @include from('xl') {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    min-height: 44px;
   }
 
   &::before {
@@ -911,19 +1098,27 @@
   }
 
   .btn-icon {
-    font-size: 1.2rem;
+    // 📱 MOBILE FIRST
+    font-size: 1.3rem;
 
-    @include mobile {
-      font-size: 1.1rem;
+    @include until('sm') {
+      font-size: 1.2rem;
+    }
+
+    @include from('xl') {
+      font-size: 1.2rem;
     }
   }
 
   .btn-text {
-    white-space: nowrap;
+    // 📱 MOBILE - Texte centré
+    text-align: center;
+    line-height: 1.2;
 
-    @include mobile {
-      white-space: normal;
-      text-align: center;
+    // 🖥️ DESKTOP - Texte normal
+    @include from('md') {
+      white-space: nowrap;
+      text-align: left;
     }
   }
 
@@ -934,7 +1129,7 @@
       color.adjust($color-orange, $lightness: 10%)
     );
     color: css-var(color-dark);
-    box-shadow: 0 6px 20px rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 25px rgba(css-var(color-orange), 0.3);
 
     &:hover {
       background: linear-gradient(
@@ -942,7 +1137,7 @@
         color.adjust($color-orange, $lightness: 10%),
         css-var(color-orange)
       );
-      box-shadow: 0 8px 25px rgba(css-var(color-orange), 0.4);
+      box-shadow: 0 12px 35px rgba(css-var(color-orange), 0.4);
     }
   }
 
@@ -954,7 +1149,7 @@
     &:hover {
       background: rgba(css-var(color-light), 0.1);
       border-color: rgba(css-var(color-light), 0.3);
-      box-shadow: 0 6px 20px rgba(css-var(color-light), 0.1);
+      box-shadow: 0 8px 25px rgba(css-var(color-light), 0.1);
     }
   }
 
@@ -965,7 +1160,7 @@
       color.adjust($color-pink, $lightness: 10%)
     );
     color: css-var(color-dark);
-    box-shadow: 0 6px 20px rgba(css-var(color-pink), 0.3);
+    box-shadow: 0 8px 25px rgba(css-var(color-pink), 0.3);
 
     &:hover {
       background: linear-gradient(
@@ -973,7 +1168,7 @@
         color.adjust($color-pink, $lightness: 10%),
         css-var(color-pink)
       );
-      box-shadow: 0 8px 25px rgba(css-var(color-pink), 0.4);
+      box-shadow: 0 12px 35px rgba(css-var(color-pink), 0.4);
     }
 
     &.disabled {
@@ -990,15 +1185,26 @@
   }
 }
 
-// Sidebar avec informations
+// =============================
+// SIDEBAR INFORMATIONS - MOBILE-FIRST
+// =============================
+
 .content-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   min-height: 0;
 
-  @include mobile {
-    gap: 0.875rem;
+  // 📱 MOBILE FIRST - Full width
+  gap: 1.75rem;
+  width: 100%;
+
+  @include until('sm') {
+    gap: 1.5rem;
+  }
+
+  // 🖥️ DESKTOP
+  @include from('xl') {
+    gap: 1rem;
   }
 }
 
@@ -1007,12 +1213,19 @@
   background: rgba(css-var(color-light), 0.03);
   border: 1px solid rgba(css-var(color-light), 0.1);
   border-radius: 16px;
-  padding: 1.5rem;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 
-  @include mobile {
-    padding: 1.25rem;
+  // 📱 MOBILE FIRST - Cards plus spacieuses
+  padding: 2rem 1.75rem;
+
+  @include until('sm') {
+    padding: 1.75rem 1.5rem;
+  }
+
+  // 🖥️ DESKTOP
+  @include from('xl') {
+    padding: 1.5rem;
   }
 
   &:hover {
@@ -1022,27 +1235,45 @@
 }
 
 .card-title {
-  font-size: 1.1rem;
   font-weight: 700;
   color: css-var(color-light);
-  margin: 0 0 0.875rem 0;
-  padding-bottom: 0.5rem;
+  margin: 0 0 1.25rem 0;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(css-var(color-light), 0.1);
 
-  @include mobile {
-    font-size: 1rem;
-    margin: 0 0 0.75rem 0;
-    padding-bottom: 0.4rem;
+  // 📱 MOBILE FIRST
+  font-size: 1.3rem;
+
+  @include until('sm') {
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.625rem;
+  }
+
+  @include from('xl') {
+    font-size: 1.1rem;
+    margin: 0 0 0.875rem 0;
+    padding-bottom: 0.5rem;
   }
 }
+
+// =============================
+// GRILLE INFORMATIONS - MOBILE-FIRST
+// =============================
 
 .info-grid {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
 
-  @include mobile {
-    gap: 0.6rem;
+  // 📱 MOBILE FIRST
+  gap: 1rem;
+
+  @include until('sm') {
+    gap: 0.875rem;
+  }
+
+  @include from('xl') {
+    gap: 0.75rem;
   }
 }
 
@@ -1050,11 +1281,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
   border-bottom: 1px solid rgba(css-var(color-light), 0.05);
 
-  @include mobile {
-    padding: 0.4rem 0;
+  @include until('sm') {
+    padding: 0.625rem 0;
+  }
+
+  @include from('xl') {
+    padding: 0.5rem 0;
   }
 
   &:last-child {
@@ -1063,33 +1298,54 @@
 
   .info-label {
     color: css-var(text-color-muted);
-    font-size: 0.85rem;
     font-weight: 500;
 
-    @include mobile {
-      font-size: 0.8rem;
+    // 📱 MOBILE FIRST
+    font-size: 1rem;
+
+    @include until('sm') {
+      font-size: 0.9rem;
+    }
+
+    @include from('xl') {
+      font-size: 0.85rem;
     }
   }
 
   .info-value {
     color: css-var(color-light);
     font-weight: 600;
-    font-size: 0.9rem;
 
-    @include mobile {
-      font-size: 0.85rem;
+    // 📱 MOBILE FIRST
+    font-size: 1.05rem;
+
+    @include until('sm') {
+      font-size: 1rem;
+    }
+
+    @include from('xl') {
+      font-size: 0.9rem;
     }
   }
 }
 
-// Carte des prix
+// =============================
+// CARTE TARIFICATION - MOBILE-FIRST
+// =============================
+
 .pricing-grid {
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
 
-  @include mobile {
-    gap: 0.75rem;
+  // 📱 MOBILE FIRST
+  gap: 1.25rem;
+
+  @include until('sm') {
+    gap: 1rem;
+  }
+
+  @include from('xl') {
+    gap: 0.875rem;
   }
 }
 
@@ -1097,12 +1353,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 0.3s ease;
 
-  @include mobile {
-    padding: 0.6rem;
+  // 📱 MOBILE FIRST - Plus d'espace
+  padding: 1.25rem 1rem;
+
+  @include until('sm') {
+    padding: 1rem 0.875rem;
+  }
+
+  @include from('xl') {
+    padding: 0.75rem;
   }
 
   &.fee {
@@ -1140,40 +1402,65 @@
   }
 
   .price-label {
-    font-size: 0.85rem;
     font-weight: 500;
 
-    @include mobile {
-      font-size: 0.8rem;
+    // 📱 MOBILE FIRST
+    font-size: 1rem;
+
+    @include until('sm') {
+      font-size: 0.9rem;
+    }
+
+    @include from('xl') {
+      font-size: 0.85rem;
     }
   }
 
   .price-amount {
-    font-size: 1rem;
     font-weight: 700;
 
-    @include mobile {
-      font-size: 0.95rem;
+    // 📱 MOBILE FIRST - Prix bien visibles
+    font-size: 1.4rem;
+
+    @include until('sm') {
+      font-size: 1.25rem;
+    }
+
+    @include from('xl') {
+      font-size: 1rem;
     }
   }
 }
 
 .pricing-note {
-  margin-top: 0.75rem;
+  margin-top: 1rem;
   text-align: center;
+
+  @include from('xl') {
+    margin-top: 0.75rem;
+  }
 
   small {
     color: css-var(text-color-muted);
-    font-size: 0.75rem;
     font-style: italic;
 
-    @include mobile {
-      font-size: 0.7rem;
+    // 📱 MOBILE FIRST
+    font-size: 0.85rem;
+
+    @include until('sm') {
+      font-size: 0.8rem;
+    }
+
+    @include from('xl') {
+      font-size: 0.75rem;
     }
   }
 }
 
-// Message d'erreur
+// =============================
+// MESSAGE NO DETAILS - MOBILE-FIRST
+// =============================
+
 .no-details {
   display: flex;
   justify-content: center;
@@ -1186,36 +1473,109 @@
     background: rgba(css-var(color-light), 0.03);
     border: 1px solid rgba(css-var(color-light), 0.1);
     border-radius: 16px;
-    padding: 2rem 1.5rem;
     backdrop-filter: blur(10px);
 
-    @include mobile {
-      padding: 1.5rem 1rem;
+    // 📱 MOBILE FIRST
+    padding: 2.5rem 2rem;
+
+    @include until('sm') {
+      padding: 2rem 1.5rem;
+    }
+
+    @include from('xl') {
+      padding: 2rem 1.5rem;
     }
 
     h2 {
-      font-size: 1.75rem;
       color: css-var(color-orange);
-      margin: 0 0 0.75rem 0;
+      margin: 0 0 1rem 0;
 
-      @include mobile {
-        font-size: 1.5rem;
+      // 📱 MOBILE FIRST
+      font-size: 2rem;
+
+      @include until('sm') {
+        font-size: 1.75rem;
+      }
+
+      @include from('xl') {
+        font-size: 1.75rem;
       }
     }
 
     p {
       color: css-var(text-color-muted);
-      font-size: 1rem;
       margin: 0;
 
-      @include mobile {
-        font-size: 0.9rem;
+      // 📱 MOBILE FIRST
+      font-size: 1.1rem;
+
+      @include until('sm') {
+        font-size: 1rem;
+      }
+
+      @include from('xl') {
+        font-size: 1rem;
       }
     }
   }
 }
 
-// Animations
+// =============================
+// ANIMATIONS KEYFRAMES
+// =============================
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  100% {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes counterUpdate {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes arrowPulse {
+  0% {
+    transform: translateY(-50%) scale(0.95);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -1224,5 +1584,186 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile - Optimisations spécifiques
+@include mobile-landscape {
+  .gallery-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .gallery-swiper-wrapper {
+    height: 90vh;
+    gap: 1rem;
+  }
+
+  .gallery-main-container {
+    height: 80%;
+  }
+
+  .gallery-arrow {
+    width: 48px;
+    height: 48px;
+  }
+
+  .gallery-thumbnails {
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+
+    .thumbnail-item {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  .details-section .app-showcase {
+    padding: 1rem 0.75rem;
+  }
+
+  .showcase-container {
+    gap: 1.25rem;
+  }
+
+  .title-block .app-title {
+    font-size: 2rem;
+  }
+
+  .badge {
+    padding: 0.75rem 0.625rem;
+    min-width: 75px;
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.) - Plus d'espace pour le contenu
+@include tall-screen {
+  .gallery-main-container {
+    @include until('lg') {
+      height: 75%;
+    }
+  }
+
+  .gallery-thumbnails {
+    @include until('lg') {
+      margin-top: 1rem;
+    }
+  }
+
+  .showcase-container {
+    @include until('lg') {
+      gap: 2.5rem;
+    }
+  }
+
+  .description-card .description-content .description-text {
+    @include until('lg') {
+      max-height: 220px;
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .gallery-arrow {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .gallery-thumbnails .thumbnail-item {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .btn {
+    min-height: 48px;
+  }
+
+  .badge {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  // Pas d'effet hover sur tactile, juste active
+  .gallery-arrow:hover,
+  .btn:hover,
+  .badge:hover {
+    transform: none;
+  }
+
+  .gallery-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .gallery-main-image,
+  .gallery-arrow,
+  .badge,
+  .btn,
+  .description-card,
+  .info-card,
+  .pricing-card {
+    transition: none;
+    animation: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+
+  .btn::before {
+    display: none;
+  }
+
+  .showcase-container {
+    animation: none;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .gallery-main-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .gallery-thumbnails .thumbnail-item img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .gallery-arrow {
+    box-shadow:
+      0 8px 25px rgba(246, 160, 55, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Très grands écrans - Limitation et optimisation
+@include from('xxxxl') {
+  .gallery-container {
+    padding: 3rem 2rem;
+  }
+
+  .gallery-main-container {
+    max-width: 800px;
+  }
+
+  .app-showcase {
+    max-width: 1600px;
+  }
+
+  .title-block .app-title {
+    font-size: 3rem;
   }
 }
