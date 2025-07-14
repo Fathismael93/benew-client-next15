@@ -323,7 +323,7 @@ const SingleApplication = ({
                       <div className="info-item">
                         <span className="info-label">Niveau</span>
                         <span className="info-value">
-                          Niveau {appDetails.application_level}
+                          {appDetails.application_level}
                         </span>
                       </div>
                       <div className="info-item">

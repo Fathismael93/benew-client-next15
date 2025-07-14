@@ -1,455 +1,800 @@
-// ✅ APRÈS
+// =============================
+// CONTACT PAGE - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
 @use 'sass:color';
 @use '../styles/abstracts' as *;
 
 .contact {
-  height: 100%;
-  max-width: 70rem;
+  width: 100%;
   margin: auto;
   display: flex;
-  align-items: center;
-  gap: 3rem;
+  align-items: flex-start; // Changé pour éviter le centrage vertical problématique
+  position: relative;
 
-  @include small {
-    width: 70%;
-    flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+  // 📱 MOBILE FIRST - Layout vertical avec formulaire en premier
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0.75rem;
+  min-height: 100vh; // Assure la hauteur complète
+  max-width: none; // Utilise toute la largeur
+
+  // 📟 TRÈS PETITS ÉCRANS - Optimisations supplémentaires
+  @include until('sm') {
+    gap: 1.25rem;
+    padding: 0.75rem 0.5rem;
   }
 
-  @include mobile {
-    width: 70%;
-    flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+  // 🖥️ TABLET ET PLUS - Transition progressive vers layout horizontal
+  @include from('md') {
+    gap: 2rem;
+    padding: 1.5rem 1rem;
+    max-width: 90%;
   }
 
-  @include tablet {
-    width: 70%;
-    flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+  @include from('lg') {
+    gap: 2.5rem;
+    padding: 2rem 1.5rem;
+    max-width: 80%;
   }
 
-  @include laptop {
-    width: 70%;
-    flex-direction: column;
-    gap: 0.1rem;
-    max-width: 30rem;
+  @include from('xl') {
+    // DESKTOP - Retour au layout original
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+    padding: 2rem;
+    max-width: 70rem;
+    min-height: auto;
   }
 
-  .textContainer {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    gap: 0.625rem;
-
-    @include small {
-      gap: 1rem;
-      text-align: center;
-      align-items: center;
-      margin-top: 3rem;
-    }
-
-    @include mobile {
-      gap: 1rem;
-      text-align: center;
-      align-items: center;
-      margin-top: 2.5rem;
-    }
-
-    @include tablet {
-      gap: 1rem;
-      text-align: center;
-      align-items: center;
-      margin-top: 2.5rem;
-    }
-
-    @include laptop {
-      gap: 1rem;
-      text-align: center;
-      align-items: center;
-      margin-top: 2.5rem;
-    }
-
-    h1 {
-      font-size: 4rem;
-      color: $text-color;
-
-      @include small {
-        display: none;
-      }
-
-      @include mobile {
-        display: none;
-      }
-
-      @include tablet {
-        display: none;
-      }
-
-      @include laptop {
-        display: none;
-      }
-    }
-
-    .item {
-      display: flex;
-      justify-content: flex-start;
-      font-size: 1rem;
-      gap: 1.875rem;
-
-      @include small {
-        gap: 1rem;
-      }
-
-      @include mobile {
-        gap: 1rem;
-      }
-
-      @include tablet {
-        gap: 1rem;
-      }
-
-      @include laptop {
-        gap: 1rem;
-      }
-
-      .icon {
-        color: $primary-color;
-      }
-
-      p {
-        letter-spacing: 2px;
-        color: $text-color;
-
-        @include small {
-          font-size: 0.85rem;
-          font-weight: 250;
-        }
-
-        @include mobile {
-          font-size: 0.85rem;
-          font-weight: 350;
-        }
-
-        @include tablet {
-          font-size: 1rem;
-          font-weight: 350;
-        }
-
-        @include laptop {
-          font-size: 1rem;
-          font-weight: 350;
-        }
-      }
-    }
-
-    h2 {
-      font-size: 2rem;
-      line-height: 1rem;
-      margin-top: 1rem;
-      color: $text-color;
-
-      @include small {
-        display: none;
-      }
-
-      @include mobile {
-        display: none;
-      }
-
-      @include tablet {
-        display: none;
-      }
-
-      @include laptop {
-        display: none;
-      }
-    }
-
-    .social {
-      display: flex;
-      gap: 1.25rem;
-      margin-top: 1rem;
-
-      @include small {
-        margin-top: 0.6rem;
-      }
-
-      @include mobile {
-        margin-top: 0.6rem;
-      }
-
-      @include tablet {
-        margin-top: 0.6rem;
-      }
-
-      @include laptop {
-        margin-top: 0.6rem;
-      }
-
-      .social-icon {
-        width: 1.3rem;
-        height: 1.3rem;
-        transition: all 0.3s ease;
-
-        &:hover {
-          transform: scale(1.1);
-          filter: hue-rotate(20deg) brightness(1.2);
-        }
-
-        @include small {
-          width: 1rem;
-          height: 1rem;
-        }
-
-        @include mobile {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
-
-        @include tablet {
-          width: 1.6rem;
-          height: 1.6rem;
-        }
-
-        @include laptop {
-          width: 1.6rem;
-          height: 1.6rem;
-        }
-      }
-    }
-  }
+  // =============================
+  // CONTENEUR FORMULAIRE - MOBILE-FIRST
+  // =============================
 
   .formContainer {
-    flex: 1;
+    width: 100%;
     position: relative;
+    flex-shrink: 0;
 
-    @include small {
-      width: 100%;
-      margin-bottom: 2rem;
+    // 📱 MOBILE FIRST - Formulaire en PREMIER pour éviter le problème de clavier
+    order: 1;
+
+    @include until('sm') {
+      // Optimisations spéciales pour très petits écrans
+      margin-bottom: 1rem;
     }
 
-    @include mobile {
-      width: 100%;
-      margin-bottom: 2rem;
-    }
-
-    @include tablet {
-      width: 100%;
-      margin-bottom: 2rem;
-    }
-
-    @include laptop {
-      width: 100%;
-      margin-bottom: 2rem;
+    // 🖥️ DESKTOP - Retour à l'ordre original
+    @include from('xl') {
+      flex: 1;
+      order: 2;
     }
 
     .phoneSvg {
       position: absolute;
       margin: auto;
       z-index: -1;
+      opacity: 0.6; // Plus discret sur mobile
+
+      // 📱 MOBILE FIRST - SVG plus petit et centré
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
 
       svg {
-        @include small {
-          width: 13rem;
-          height: 13rem;
+        // 📱 MOBILE FIRST - Taille réduite
+        width: 180px;
+        height: 180px;
+
+        @include until('sm') {
+          width: 150px;
+          height: 150px;
         }
 
-        @include mobile {
-          width: 13rem;
-          height: 13rem;
+        // 🖥️ TABLET ET PLUS - Augmentation progressive
+        @include from('md') {
+          width: 200px;
+          height: 200px;
         }
 
-        @include tablet {
-          width: 15rem;
-          height: 15rem;
+        @include from('lg') {
+          width: 220px;
+          height: 220px;
         }
 
-        @include laptop {
-          width: 15rem;
-          height: 15rem;
+        @include from('xl') {
+          width: 400px; // Taille desktop originale
+          height: 400px;
         }
+      }
+
+      // 🖥️ DESKTOP - Repositionnement original
+      @include from('xl') {
+        top: auto;
+        left: auto;
+        transform: none;
+        opacity: 1;
       }
     }
 
     form {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      position: relative;
+      z-index: 10;
+      background: rgba(css-var(background-color), 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(css-var(primary-color), 0.2);
 
-      @include small {
-        gap: 1.2rem;
+      // 📱 MOBILE FIRST - Formulaire compact et accessible
+      gap: 1.25rem;
+      padding: 1.5rem 1.25rem;
+
+      @include until('sm') {
+        gap: 1rem;
+        padding: 1.25rem 1rem;
+        border-radius: 12px;
       }
 
-      @include mobile {
-        gap: 1.3rem;
+      // 🖥️ TABLET ET PLUS - Ajustements progressifs
+      @include from('md') {
+        gap: 1.375rem;
+        padding: 1.75rem 1.5rem;
       }
 
-      @include tablet {
-        gap: 1.4rem;
+      @include from('lg') {
+        gap: 1.5rem;
+        padding: 2rem;
       }
 
-      @include laptop {
-        gap: 1.4rem;
+      @include from('xl') {
+        // DESKTOP - Retour au style original
+        background: transparent;
+        backdrop-filter: none;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        gap: 1.5rem;
       }
 
       input,
       textarea {
-        padding: 1.2rem 1.5rem;
-        background: linear-gradient(
-          135deg,
-          rgba($text-color, 0.05),
-          rgba($text-color, 0.08)
-        );
-        border: 2px solid rgba($text-color, 0.3);
-        color: $text-color;
         border-radius: 12px;
         transition: all 0.4s ease;
-        font-size: 1rem;
         font-weight: 400;
         backdrop-filter: blur(10px);
-        box-shadow: 0 2px 8px rgba($background-color, 0.2);
+        box-shadow: 0 2px 8px rgba(css-var(background-color), 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba(css-var(text-color), 0.05),
+          rgba(css-var(text-color), 0.08)
+        );
+        border: 2px solid rgba(css-var(text-color), 0.3);
+        color: css-var(text-color);
+
+        // 📱 MOBILE FIRST - Champs tactiles optimaux
+        padding: 1.25rem 1.125rem;
+        font-size: 1rem;
+        min-height: 48px; // Zone tactile recommandée
+
+        @include until('sm') {
+          padding: 1.125rem 1rem;
+          font-size: 0.95rem;
+          min-height: 44px;
+          border-radius: 10px;
+        }
+
+        // 🖥️ TABLET ET PLUS - Ajustements progressifs
+        @include from('md') {
+          padding: 1.2rem 1.2rem;
+          font-size: 1rem;
+        }
+
+        @include from('lg') {
+          padding: 1.2rem 1.3rem;
+          font-size: 1rem;
+          border-radius: 11px;
+        }
+
+        @include from('xl') {
+          padding: 1.2rem 1.5rem; // Valeurs desktop originales
+          font-size: 1rem;
+          border-radius: 12px;
+          min-height: auto;
+        }
 
         &:focus {
-          border-color: $primary-color;
+          border-color: css-var(primary-color);
           box-shadow:
-            0 0 0 3px rgba($primary-color, 0.2),
-            0 4px 12px rgba($primary-color, 0.15);
+            0 0 0 3px rgba(css-var(primary-color), 0.2),
+            0 4px 12px rgba(css-var(primary-color), 0.15);
           background: linear-gradient(
             135deg,
-            rgba($primary-color, 0.08),
-            rgba($secondary-color, 0.05)
+            rgba(css-var(primary-color), 0.08),
+            rgba(css-var(secondary-color), 0.05)
           );
           outline: none;
-          transform: translateY(-2px);
+          transform: translateY(-1px); // Moins de mouvement sur mobile
+
+          // 🖥️ DESKTOP - Mouvement original
+          @include from('xl') {
+            transform: translateY(-2px);
+          }
         }
 
         &::placeholder {
-          color: rgba($text-color, 0.6);
+          color: rgba(css-var(text-color), 0.6);
           font-weight: 300;
         }
 
         &:hover {
-          border-color: rgba($primary-color, 0.5);
+          border-color: rgba(css-var(primary-color), 0.5);
           transform: translateY(-1px);
-        }
-
-        @include small {
-          padding: 1rem 1.2rem;
-          font-size: 0.95rem;
-          border-radius: 10px;
-        }
-
-        @include mobile {
-          padding: 1.1rem 1.3rem;
-          font-size: 1rem;
-          border-radius: 10px;
-        }
-
-        @include tablet {
-          padding: 1.1rem 1.4rem;
-          font-size: 1rem;
-          border-radius: 11px;
-        }
-
-        @include laptop {
-          padding: 1.1rem 1.4rem;
-          font-size: 1rem;
-          border-radius: 11px;
         }
       }
 
       textarea {
         resize: vertical;
-        min-height: 120px;
         font-family: inherit;
         line-height: 1.5;
 
-        @include small {
+        // 📱 MOBILE FIRST - Textarea optimisée
+        min-height: 120px;
+
+        @include until('sm') {
           min-height: 100px;
         }
 
-        @include mobile {
+        // 🖥️ TABLET ET PLUS
+        @include from('md') {
           min-height: 110px;
+        }
+
+        @include from('xl') {
+          min-height: 120px; // Valeur desktop originale
         }
       }
 
       button {
-        padding: 1rem;
         border: none;
-        background: linear-gradient(
-          135deg,
-          $primary-color,
-          color.adjust($primary-color, $lightness: 10%)
-        );
-        color: $background-color;
         cursor: pointer;
         font-weight: 600;
-        font-size: 1rem;
-        border-radius: 0.313rem;
+        border-radius: 12px;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 8px rgba($primary-color, 0.3);
+        background: linear-gradient(
+          135deg,
+          css-var(primary-color),
+          color.adjust($primary-color, $lightness: 10%)
+        );
+        color: css-var(background-color);
+        box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+
+        // 📱 MOBILE FIRST - Bouton tactile optimal
+        padding: 1.25rem 2rem;
+        font-size: 1rem;
+        min-height: 48px;
+        width: 100%; // Full width sur mobile
+
+        @include until('sm') {
+          padding: 1.125rem 1.75rem;
+          font-size: 0.95rem;
+          min-height: 44px;
+          border-radius: 10px;
+        }
+
+        // 🖥️ TABLET ET PLUS - Ajustements progressifs
+        @include from('md') {
+          padding: 1.125rem 1.875rem;
+          font-size: 1rem;
+        }
+
+        @include from('lg') {
+          padding: 1rem 2rem;
+          border-radius: 11px;
+        }
+
+        @include from('xl') {
+          padding: 1rem; // Valeur desktop originale
+          border-radius: 0.313rem;
+          font-size: 1rem;
+          width: auto;
+          min-height: auto;
+        }
 
         &:hover {
           background: linear-gradient(
             135deg,
             color.adjust($primary-color, $lightness: 5%),
-            $secondary-color
+            css-var(secondary-color)
           );
           transform: translateY(-2px);
-          box-shadow: 0 6px 12px rgba($primary-color, 0.4);
+          box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
         }
 
         &:active {
           transform: translateY(0);
         }
+      }
 
-        @include small {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
+      // Messages de statut - Améliorés pour mobile
+      .error-message,
+      .success-message {
+        margin-top: 0.75rem;
+        text-align: center;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        // 📱 MOBILE FIRST - Messages plus visibles
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+
+        @include until('sm') {
+          padding: 0.75rem 0.875rem;
+          font-size: 0.85rem;
         }
 
-        @include mobile {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
-        }
-
-        @include tablet {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
-        }
-
-        @include laptop {
-          padding: 0.2rem;
-          border-radius: 0.7rem;
+        // 🖥️ DESKTOP
+        @include from('xl') {
+          margin-top: 0.625rem;
+          padding: 0.5rem;
+          font-size: 0.875rem;
         }
       }
 
-      // Messages de statut
       .error-message {
         color: #ff4444;
-        margin-top: 0.625rem;
-        font-size: 0.875rem;
-        text-align: center;
-        padding: 0.5rem;
         background: rgba(255, 68, 68, 0.1);
-        border-radius: 0.25rem;
         border: 1px solid rgba(255, 68, 68, 0.3);
       }
 
       .success-message {
         color: #22c55e;
-        margin-top: 0.625rem;
-        font-size: 0.875rem;
-        text-align: center;
-        padding: 0.5rem;
         background: rgba(34, 197, 94, 0.1);
-        border-radius: 0.25rem;
         border: 1px solid rgba(34, 197, 94, 0.3);
       }
     }
+  }
+
+  // =============================
+  // CONTENEUR INFORMATIONS - MOBILE-FIRST
+  // =============================
+
+  .textContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+
+    // 📱 MOBILE FIRST - Informations en SECOND (après le formulaire)
+    order: 2;
+    gap: 1.25rem;
+    text-align: center;
+    align-items: center;
+
+    @include until('sm') {
+      gap: 1rem;
+      margin-top: 0;
+    }
+
+    // 🖥️ TABLET ET PLUS - Ajustements progressifs
+    @include from('md') {
+      gap: 1.375rem;
+    }
+
+    @include from('lg') {
+      gap: 1.5rem;
+    }
+
+    @include from('xl') {
+      // DESKTOP - Retour au layout original
+      flex: 1;
+      width: 50%;
+      gap: 0.625rem;
+      text-align: left;
+      align-items: flex-start;
+      order: 1;
+      margin-top: 3rem;
+    }
+
+    h1 {
+      color: css-var(text-color);
+
+      // 📱 MOBILE FIRST - Titre visible et impactant
+      font-size: 2.5rem;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
+
+      @include until('sm') {
+        font-size: 2.25rem;
+      }
+
+      // 🖥️ TABLET ET PLUS - Ajustements
+      @include from('md') {
+        font-size: 2.75rem;
+      }
+
+      @include from('lg') {
+        font-size: 3rem;
+      }
+
+      @include from('xl') {
+        font-size: 4rem; // Valeur desktop originale
+        display: block; // Réapparaît sur desktop
+      }
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.875rem 1rem;
+      background: rgba(css-var(text-color), 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(css-var(primary-color), 0.2);
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 320px; // Limite la largeur sur mobile
+
+      // 📱 MOBILE FIRST
+      justify-content: center;
+      text-align: center;
+
+      @include until('sm') {
+        gap: 0.75rem;
+        padding: 0.75rem 0.875rem;
+        max-width: 300px;
+      }
+
+      // 🖥️ TABLET ET PLUS
+      @include from('md') {
+        max-width: 350px;
+      }
+
+      @include from('xl') {
+        // DESKTOP - Retour au style original
+        justify-content: flex-start;
+        text-align: left;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        max-width: none;
+        gap: 1.875rem;
+      }
+
+      &:hover {
+        background: rgba(css-var(primary-color), 0.1);
+        border-color: rgba(css-var(primary-color), 0.3);
+        transform: translateY(-2px);
+
+        // 🖥️ DESKTOP - Pas d'effet hover
+        @include from('xl') {
+          background: transparent;
+          border: none;
+          transform: none;
+        }
+      }
+
+      .icon {
+        color: css-var(primary-color);
+        flex-shrink: 0;
+
+        // 📱 MOBILE FIRST - Icône plus visible
+        font-size: 1.5rem;
+
+        @include until('sm') {
+          font-size: 1.3rem;
+        }
+
+        @include from('xl') {
+          font-size: 1.25rem; // Valeur desktop originale
+        }
+      }
+
+      p {
+        letter-spacing: 1px; // Réduit pour mobile
+        color: css-var(text-color);
+        margin: 0;
+        flex: 1;
+
+        // 📱 MOBILE FIRST - Texte lisible
+        font-size: 0.95rem;
+        font-weight: 500;
+
+        @include until('sm') {
+          font-size: 0.85rem;
+          font-weight: 400;
+        }
+
+        // 🖥️ TABLET ET PLUS
+        @include from('md') {
+          font-size: 1rem;
+          font-weight: 450;
+        }
+
+        @include from('lg') {
+          font-size: 1rem;
+          font-weight: 400;
+        }
+
+        @include from('xl') {
+          font-size: 1rem; // Valeur desktop originale
+          font-weight: 400;
+          letter-spacing: 2px;
+        }
+      }
+    }
+
+    h2 {
+      color: css-var(text-color);
+      margin: 0;
+
+      // 📱 MOBILE FIRST - Titre de section visible
+      font-size: 1.75rem;
+      line-height: 1.2;
+      margin-top: 1.5rem;
+
+      @include until('sm') {
+        font-size: 1.5rem;
+        margin-top: 1.25rem;
+      }
+
+      // 🖥️ TABLET ET PLUS
+      @include from('md') {
+        font-size: 1.875rem;
+      }
+
+      @include from('xl') {
+        font-size: 2rem; // Valeur desktop originale
+        line-height: 1rem;
+        margin-top: 1rem;
+        display: block; // Réapparaît sur desktop
+      }
+    }
+
+    .social {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      // 📱 MOBILE FIRST
+      margin-top: 1.25rem;
+
+      @include until('sm') {
+        gap: 1.25rem;
+        margin-top: 1rem;
+      }
+
+      // 🖥️ TABLET ET PLUS
+      @include from('md') {
+        gap: 1.375rem;
+      }
+
+      @include from('xl') {
+        justify-content: flex-start; // Aligné à gauche sur desktop
+        gap: 1.25rem;
+        margin-top: 1rem;
+      }
+
+      .social-icon {
+        transition: all 0.3s ease;
+        filter: grayscale(0.2);
+        border-radius: 50%;
+        padding: 0.5rem;
+        background: rgba(css-var(primary-color), 0.1);
+
+        // 📱 MOBILE FIRST - Icônes tactiles
+        width: 2.5rem;
+        height: 2.5rem;
+
+        @include until('sm') {
+          width: 2.25rem;
+          height: 2.25rem;
+          padding: 0.375rem;
+        }
+
+        // 🖥️ TABLET ET PLUS
+        @include from('md') {
+          width: 2.25rem;
+          height: 2.25rem;
+        }
+
+        @include from('lg') {
+          width: 2rem;
+          height: 2rem;
+        }
+
+        @include from('xl') {
+          width: 1.3rem; // Valeur desktop originale
+          height: 1.3rem;
+          padding: 0;
+          background: transparent;
+        }
+
+        &:hover {
+          transform: scale(1.1);
+          filter: hue-rotate(20deg) brightness(1.2) grayscale(0);
+          background: rgba(css-var(primary-color), 0.2);
+
+          // 🖥️ DESKTOP - Effet original
+          @include from('xl') {
+            background: transparent;
+          }
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// GESTION SPÉCIALE DU CLAVIER MOBILE
+// =============================
+
+// Évite que le viewport soit rogné par le clavier
+@media screen and (max-height: 600px) and (max-width: 768px) {
+  .contact {
+    min-height: 100vh;
+    padding-bottom: 2rem; // Espace supplémentaire en bas
+
+    .formContainer {
+      form {
+        // Assure que le formulaire reste accessible même avec clavier
+        position: relative;
+        z-index: 1000;
+
+        input,
+        textarea {
+          // Optimise la gestion du focus avec clavier
+          scroll-margin-top: 1rem;
+        }
+      }
+    }
+  }
+}
+
+// Mode paysage sur mobile - Layout spécialement optimisé
+@include mobile-landscape {
+  .contact {
+    flex-direction: row;
+    gap: 1.5rem;
+    padding: 1rem 0.75rem;
+    align-items: flex-start;
+
+    .formContainer {
+      order: 2;
+      width: 60%;
+
+      form {
+        gap: 1rem;
+        padding: 1.25rem;
+
+        input,
+        textarea {
+          padding: 0.875rem 1rem;
+          min-height: 40px;
+        }
+
+        textarea {
+          min-height: 80px;
+        }
+
+        button {
+          padding: 0.875rem 1.5rem;
+          min-height: 40px;
+        }
+      }
+    }
+
+    .textContainer {
+      order: 1;
+      width: 40%;
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .item {
+        padding: 0.625rem 0.75rem;
+        gap: 0.75rem;
+
+        p {
+          font-size: 0.8rem;
+        }
+      }
+
+      .social .social-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .contact {
+    @include until('lg') {
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+
+    .textContainer h1 {
+      @include until('lg') {
+        font-size: 3rem;
+      }
+    }
+
+    .formContainer form {
+      @include until('lg') {
+        gap: 1.5rem;
+        padding: 2rem 1.5rem;
+      }
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .contact {
+    .formContainer form {
+      input,
+      textarea,
+      button {
+        min-height: 48px; // Zone tactile recommandée
+      }
+    }
+
+    .textContainer {
+      .item {
+        min-height: 48px;
+      }
+
+      .social .social-icon {
+        min-width: 44px;
+        min-height: 44px;
+      }
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .contact {
+    .formContainer form input,
+    .formContainer form textarea,
+    .formContainer form button,
+    .textContainer .item,
+    .textContainer .social .social-icon {
+      transition: none;
+
+      &:hover,
+      &:focus {
+        transform: none;
+      }
+    }
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .contact .textContainer .social .social-icon {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('xxxxl') {
+  .contact {
+    max-width: 80rem;
+    gap: 4rem;
   }
 }
