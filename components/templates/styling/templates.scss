@@ -1,36 +1,100 @@
 @use 'sass:color';
 @use '../../../app/styles/abstracts' as *;
 
+// =============================
+// TEMPLATES LIST - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
 .projectSection {
   width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
   position: relative;
+
+  // 📱 MOBILE FIRST - Padding optimisé pour utiliser tout l'espace
+  padding: 1.5rem 1rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Padding minimal
+  @include until('sm') {
+    padding: 1rem 0.75rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Augmentation progressive du padding
+  @include from('md') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('xl') {
+    padding: 3rem; // Valeur desktop originale
+  }
 }
 
-// Nouveau style pour les cartes templates
+// =============================
+// CARTE TEMPLATE - MOBILE-FIRST OPTIMISÉE
+// =============================
+
 .templateCard {
   display: flex;
   flex-direction: column;
-  height: 400px;
-  width: 90%;
-  max-width: 600px;
-  border-radius: 16px;
+  border-radius: 20px; // Plus arrondi sur mobile pour un look moderne
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  background: rgba($text-color, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba($primary-color, 0.1);
+
+  // 📱 MOBILE FIRST - Taille optimale pour la lisibilité
+  height: 480px; // Plus grand sur mobile
+  width: 95%;
+  max-width: 100%;
+
+  // 📟 TRÈS PETITS ÉCRANS - Ajustements pour très petits appareils
+  @include until('sm') {
+    height: 450px;
+    width: 98%;
+    border-radius: 16px;
+  }
+
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    height: 460px;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  @include from('lg') {
+    height: 440px;
+    width: 85%;
+    max-width: 550px;
+  }
+
+  @include from('xl') {
+    height: 400px; // Valeur desktop originale
+    width: 90%;
+    max-width: 600px;
+    border-radius: 16px;
+  }
 
   &:hover {
     text-decoration: none;
     color: inherit;
+  }
+
+  // 📱 MOBILE - Effet tactile
+  &:active {
+    transform: scale(0.98);
   }
 }
 
@@ -44,49 +108,137 @@
     box-shadow 0.3s ease;
 
   &.hovered {
-    transform: translateY(-5px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px); // Plus de mouvement sur mobile
+    box-shadow: 0 20px 50px rgba($primary-color, 0.2);
+  }
+
+  // 📱 MOBILE - Effet tactile pour les appareils tactiles
+  @media (pointer: coarse) {
+    &:active {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba($primary-color, 0.15);
+    }
   }
 }
 
+// =============================
+// CONTENEUR IMAGE - MOBILE-FIRST
+// =============================
+
 .templateImageContainer {
   position: relative;
-  height: 70%;
-  padding: 1rem 1rem 0 1rem;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(
+    135deg,
+    rgba($primary-color, 0.05),
+    rgba($secondary-color, 0.05)
+  );
+
+  // 📱 MOBILE FIRST - Plus d'espace pour l'image
+  height: 75%; // Plus de place pour l'image sur mobile
+  padding: 1.5rem 1.25rem 0.75rem 1.25rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    height: 73%;
+    padding: 1.25rem 1rem 0.5rem 1rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustement progressif
+  @include from('md') {
+    height: 72%;
+    padding: 1.25rem 1.125rem 0.625rem 1.125rem;
+  }
+
+  @include from('xl') {
+    height: 70%; // Valeur desktop originale
+    padding: 1rem 1rem 0 1rem;
+  }
 }
 
 .templateAppImage {
   width: 100%;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  background: rgba($background-color, 0.95);
+
+  // 📱 MOBILE - Ombre plus prononcée pour la profondeur
+  @include until('lg') {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  @include from('xl') {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); // Valeur desktop originale
+    border-radius: 8px;
+  }
 }
 
 .templateImage {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 12px;
   transition: transform 0.5s ease;
+
+  // 📱 MOBILE - Légèrement plus de zoom au hover pour l'impact
+  .templateCardInner.hovered & {
+    transform: scale(1.08);
+  }
+
+  @include from('xl') {
+    border-radius: 8px;
+
+    .templateCardInner.hovered & {
+      transform: scale(1.02); // Valeur desktop originale
+    }
+  }
 }
 
+// =============================
+// CONTENEUR INFO - MOBILE-FIRST
+// =============================
+
 .templateInfoContainer {
-  height: 30%;
-  padding: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(10px);
-  // La couleur de fond sera appliquée via le style inline dans le composant
+  backdrop-filter: blur(15px);
+  background: linear-gradient(
+    135deg,
+    rgba($background-color, 0.95),
+    rgba($background-color, 0.85)
+  );
+  border-top: 1px solid rgba($primary-color, 0.1);
+
+  // 📱 MOBILE FIRST - Plus d'espace pour le contenu
+  height: 25%; // Proportion ajustée
+  padding: 1.5rem 1.25rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    height: 27%;
+    padding: 1.25rem 1rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustement progressif
+  @include from('md') {
+    height: 28%;
+    padding: 1.375rem 1.125rem;
+  }
+
+  @include from('xl') {
+    height: 30%; // Valeur desktop originale
+    padding: 1.5rem;
+  }
 }
 
 .templateAppInfo {
@@ -97,21 +249,80 @@
   text-align: center;
   height: 100%;
   width: 100%;
+  gap: 1rem; // Espacement entre titre et icônes
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    gap: 0.75rem;
+  }
+
+  // 🖥️ DESKTOP
+  @include from('xl') {
+    gap: 0.75rem; // Valeur desktop originale
+  }
 }
 
+// =============================
+// TITRE TEMPLATE - MOBILE-FIRST
+// =============================
+
 .templateName {
-  font-size: 1.25rem;
   font-weight: 700;
   color: $primary-color;
-  margin: 0 0 0.75rem 0;
+  margin: 0;
   line-height: 1.2;
+  text-shadow: 0 2px 4px rgba($background-color, 0.3);
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE FIRST - Titre bien visible et lisible
+  font-size: 1.6rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours lisible
+  @include until('sm') {
+    font-size: 1.4rem;
+    line-height: 1.3;
+  }
+
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    font-size: 1.45rem;
+  }
+
+  @include from('lg') {
+    font-size: 1.35rem;
+  }
+
+  @include from('xl') {
+    font-size: 1.25rem; // Valeur desktop originale
+    margin: 0 0 0.75rem 0;
+  }
+
+  // Effet hover amélioré
+  .templateCardInner.hovered & {
+    color: $secondary-color;
+    transform: scale(1.05);
+  }
 }
+
+// =============================
+// ICÔNES PLATEFORMES - MOBILE-FIRST
+// =============================
 
 .templatePlatforms {
   display: flex;
-  gap: 0.75rem;
+  gap: 1.25rem; // Plus d'espace sur mobile
   justify-content: center;
   align-items: center;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    gap: 1rem;
+  }
+
+  // 🖥️ DESKTOP
+  @include from('xl') {
+    gap: 0.75rem; // Valeur desktop originale
+  }
 }
 
 .templatePlatformIcon {
@@ -121,15 +332,173 @@
   color: $primary-color;
   opacity: 0.8;
   transition: all 0.3s ease;
+  padding: 0.5rem; // Zone tactile plus grande
+  border-radius: 50%;
+  background: rgba($primary-color, 0.1);
+
+  // 📱 MOBILE FIRST - Icônes bien visibles
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours utilisables
+  @include until('sm') {
+    padding: 0.375rem;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  @include from('xl') {
+    padding: 0; // Valeur desktop originale
+    background: transparent;
+
+    svg {
+      width: 20px; // Valeur desktop originale
+      height: 20px;
+    }
+  }
 
   &:hover {
     opacity: 1;
     color: $secondary-color;
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.1);
+    background: rgba($secondary-color, 0.15);
+  }
+
+  // 📱 MOBILE - Effet tactile
+  &:active {
+    transform: translateY(0) scale(0.95);
   }
 }
 
-// Ancien style conservé pour compatibilité (peut être supprimé si plus utilisé)
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile - Layout optimisé
+@include mobile-landscape {
+  .projectSection {
+    padding: 1rem 0.75rem;
+  }
+
+  .templateCard {
+    height: 420px;
+    width: 90%;
+    max-width: 450px;
+  }
+
+  .templateImageContainer {
+    height: 70%;
+    padding: 1rem 0.875rem 0.5rem 0.875rem;
+  }
+
+  .templateInfoContainer {
+    height: 30%;
+    padding: 1rem 0.875rem;
+  }
+
+  .templateName {
+    font-size: 1.3rem;
+  }
+
+  .templatePlatformIcon svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .templateCard {
+    @include until('lg') {
+      height: 500px; // Plus de hauteur disponible
+    }
+  }
+
+  .templateImageContainer {
+    @include until('lg') {
+      height: 76%;
+    }
+  }
+
+  .templateInfoContainer {
+    @include until('lg') {
+      height: 24%;
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .templateCard {
+    // Zone tactile minimale recommandée
+    min-height: 400px;
+  }
+
+  .templatePlatformIcon {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .templateCard,
+  .templateCardInner,
+  .templateImage,
+  .templateName,
+  .templatePlatformIcon {
+    transition: none;
+
+    &:hover,
+    &.hovered {
+      transform: none;
+    }
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .templateAppImage {
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.2),
+      0 2px 8px rgba($primary-color, 0.1);
+  }
+
+  .templateImage {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Très grands écrans - Limitation et centrage
+@include from('xxxxl') {
+  .projectSection {
+    padding: 3rem 2rem;
+  }
+
+  .templateCard {
+    max-width: 700px;
+    height: 450px;
+  }
+}
+
+// =============================
+// ANCIEN STYLE CONSERVÉ POUR COMPATIBILITÉ
+// =============================
+
 .contentCard {
   width: 90%;
   max-width: 1400px;
@@ -152,6 +521,15 @@
     .projectImage {
       transform: scale(1.02);
     }
+  }
+
+  @include until('lg') {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  @include until('md') {
+    padding: 1rem;
   }
 }
 
@@ -183,6 +561,12 @@
   border-radius: 12px;
   backdrop-filter: blur(5px);
   border: 1px solid rgba($primary-color, 0.2);
+
+  @include until('md') {
+    bottom: 0.75rem;
+    right: 0.75rem;
+    padding: 0.5rem;
+  }
 }
 
 .platformIcon {
@@ -224,6 +608,18 @@
   padding: 0.5rem 0;
   text-shadow: 0 2px 4px rgba($background-color, 0.5);
   transition: all 0.3s ease;
+
+  @include until('lg') {
+    font-size: 1.75rem;
+  }
+
+  @include until('md') {
+    font-size: 1.5rem;
+  }
+
+  @include until('sm') {
+    font-size: 1.25rem;
+  }
 }
 
 .viewDetails {
@@ -233,116 +629,8 @@
   margin-top: 0.5rem;
   opacity: 0.7;
   transition: all 0.3s ease;
-}
 
-// Responsive design
-@media (max-width: 1024px) {
-  .templateCard {
-    width: 95%;
-    max-width: 500px;
-  }
-
-  .templateName {
-    font-size: 1.1rem;
-  }
-
-  .contentCard {
-    width: 95%;
-    padding: 1.5rem;
-  }
-
-  .projectTitle {
-    font-size: 1.75rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .projectSection {
-    padding: 2rem;
-  }
-
-  .templateCard {
-    height: 350px;
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .templateImageContainer {
-    padding: 0.75rem 0.75rem 0 0.75rem;
-  }
-
-  .templateInfoContainer {
-    padding: 1rem;
-  }
-
-  .templateName {
-    font-size: 1rem;
-  }
-
-  .gradientOverlay {
-    top: 0.75rem;
-    left: 0.75rem;
-    right: 0.75rem;
-    height: 30px;
-  }
-
-  .gradientLeft {
-    top: 0.75rem;
-    left: 0.75rem;
-    width: 30px;
-  }
-
-  .gradientRight {
-    top: 0.75rem;
-    right: 0.75rem;
-    width: 30px;
-  }
-
-  .contentCard {
-    padding: 1rem;
-  }
-
-  .projectTitle {
-    font-size: 1.5rem;
-  }
-
-  .platforms {
-    bottom: 0.75rem;
-    right: 0.75rem;
-    padding: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .projectSection {
-    padding: 1rem;
-  }
-
-  .templateCard {
-    height: 300px;
-    width: 100%;
-  }
-
-  .templateName {
-    font-size: 0.9rem;
-  }
-
-  .templatePlatformIcon {
-    svg {
-      width: 16px;
-      height: 16px;
-    }
-  }
-
-  .contentCard {
-    width: 100%;
-  }
-
-  .projectTitle {
-    font-size: 1.25rem;
-  }
-
-  .viewDetails {
+  @include until('sm') {
     font-size: 0.9rem;
   }
 }
