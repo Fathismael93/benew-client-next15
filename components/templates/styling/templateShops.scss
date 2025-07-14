@@ -1,143 +1,529 @@
 @use 'sass:color';
 @use '../../../app/styles/abstracts' as *;
 
+// =============================
+// SINGLE TEMPLATE SHOPS - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
 .projectSection {
   width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
   position: relative;
-}
 
-.application-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  border: 1px solid rgba(css-var(primary-color), 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-  transition: all 0.3s ease;
+  // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace
+  padding: 1.5rem 1rem;
 
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 16px 48px rgba(css-var(primary-color), 0.2);
-    border-color: rgba(css-var(primary-color), 0.4);
+  // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
+  @include until('sm') {
+    padding: 1rem 0.75rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Augmentation progressive
+  @include from('md') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('xl') {
+    padding: 3rem; // Valeur desktop originale
   }
 }
 
+// =============================
+// CARTE APPLICATION - MOBILE-FIRST OPTIMISÉE
+// =============================
+
+.application-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px; // Plus arrondi sur mobile
+  border: 1px solid rgba(css-var(primary-color), 0.25);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Carte imposante et utilisable
+  width: 95%;
+  max-width: 100%;
+  min-height: 420px; // Hauteur minimum garantie
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  // 📟 TRÈS PETITS ÉCRANS - Utilisation maximale de l'espace
+  @include until('sm') {
+    width: 98%;
+    min-height: 400px;
+    border-radius: 16px;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('md') {
+    width: 90%;
+    max-width: 500px;
+    min-height: 380px;
+  }
+
+  @include from('lg') {
+    width: 85%;
+    max-width: 450px;
+    min-height: 360px;
+  }
+
+  @include from('xl') {
+    width: 80%;
+    max-width: 400px;
+    min-height: auto; // Hauteur automatique sur desktop
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover {
+    transform: translateY(-10px); // Plus de mouvement sur mobile
+    box-shadow: 0 20px 60px rgba(css-var(primary-color), 0.25);
+    border-color: rgba(css-var(primary-color), 0.5);
+  }
+
+  // 📱 MOBILE - Effet tactile
+  &:active {
+    transform: translateY(-5px);
+  }
+
+  // Effet de brillance subtil
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(css-var(primary-color), 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+// =============================
+// IMAGE APPLICATION - MOBILE-FIRST
+// =============================
+
 .card-image {
   position: relative;
-  height: 200px;
   overflow: hidden;
   background: linear-gradient(
     135deg,
     css-var(primary-color) 0%,
-    css-var(secondary-color) 100%
+    css-var(secondary-color) 50%,
+    css-var(accent-color) 100%
   );
+  z-index: 2;
+
+  // 📱 MOBILE FIRST - Image plus visible et impactante
+  height: 240px;
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours visible
+  @include until('sm') {
+    height: 220px;
+  }
+
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    height: 220px;
+  }
+
+  @include from('lg') {
+    height: 210px;
+  }
+
+  @include from('xl') {
+    height: 200px; // Valeur desktop originale
+  }
+
+  // Overlay subtil pour améliorer le contraste
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(css-var(background-color), 0.1) 100%
+    );
+    z-index: 1;
+  }
 }
 
 .app-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
+  z-index: 0;
+  position: relative;
 
+  // 📱 MOBILE - Effet hover plus prononcé
   .application-card:hover & {
-    transform: scale(1.05);
+    transform: scale(1.08);
+  }
+
+  @include from('xl') {
+    .application-card:hover & {
+      transform: scale(1.05); // Effet plus subtil sur desktop
+    }
   }
 }
 
+// =============================
+// CONTENU CARTE - MOBILE-FIRST
+// =============================
+
 .card-content {
-  padding: 1.5rem;
+  // 📱 MOBILE FIRST - Plus d'espace pour le contenu
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 2;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    padding: 1.75rem 1.25rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    padding: 1.75rem 1.375rem;
+  }
+
+  @include from('xl') {
+    padding: 1.5rem; // Valeur desktop originale
+  }
 }
+
+// =============================
+// TITRE APPLICATION - MOBILE-FIRST
+// =============================
 
 .app-title {
-  font-size: 1.125rem;
   font-weight: 700;
   color: css-var(text-color);
-  margin: 0 0 0.75rem 0;
-  line-height: 1.4;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  margin: 0 0 1rem 0;
+  line-height: 1.3;
+  text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE FIRST - Titre bien visible
+  font-size: 1.4rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours lisible
+  @include until('sm') {
+    font-size: 1.25rem;
+    margin: 0 0 0.875rem 0;
+  }
+
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    font-size: 1.3rem;
+  }
+
+  @include from('lg') {
+    font-size: 1.2rem;
+  }
+
+  @include from('xl') {
+    font-size: 1.125rem; // Valeur desktop originale
+    margin: 0 0 0.75rem 0;
+  }
+
+  // Effet hover amélioré
+  .application-card:hover & {
+    color: css-var(primary-color);
+    transform: translateX(5px);
+  }
 }
 
+// =============================
+// SOUS-TITRE APPLICATION - MOBILE-FIRST
+// =============================
+
 .app-subtitle {
-  font-size: 0.875rem;
   color: css-var(text-color-muted);
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.75rem 0;
+  line-height: 1.4;
+
+  // 📱 MOBILE FIRST - Plus lisible
+  font-size: 1rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    font-size: 0.95rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements
+  @include from('md') {
+    font-size: 0.9rem;
+  }
+
+  @include from('xl') {
+    font-size: 0.875rem; // Valeur desktop originale
+    margin: 0 0 1.5rem 0;
+  }
 
   .level {
     color: css-var(primary-color);
-    font-weight: 600;
+    font-weight: 700;
+    background: rgba(css-var(primary-color), 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid rgba(css-var(primary-color), 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(css-var(primary-color), 0.2);
+      color: css-var(secondary-color);
+    }
   }
 }
 
+// =============================
+// FOOTER CARTE - MOBILE-FIRST ADAPTATIF
+// =============================
+
 .card-footer {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
-  gap: 1rem;
+  gap: 1.25rem;
+
+  // 📱 MOBILE FIRST - Layout intelligent selon l'espace
+  justify-content: space-between;
+
+  // 📟 TRÈS PETITS ÉCRANS - Stack vertical pour plus d'espace
+  @include until('sm') {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Layout horizontal
+  @include from('sm') {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  @include from('xl') {
+    gap: 1rem; // Valeur desktop originale
+  }
 }
+
+// =============================
+// SECTION PRIX - MOBILE-FIRST
+// =============================
 
 .price-section {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem; // Plus d'espace sur mobile
+
+  // 📟 TRÈS PETITS ÉCRANS - Centré quand en stack
+  @include until('sm') {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  @include from('xl') {
+    gap: 0.25rem; // Valeur desktop originale
+  }
 }
 
 .price {
-  font-size: 1.75rem;
   font-weight: 800;
   color: css-var(primary-color);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE FIRST - Prix imposant et visible
+  font-size: 2.25rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours impactant
+  @include until('sm') {
+    font-size: 2rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    font-size: 2.1rem;
+  }
+
+  @include from('lg') {
+    font-size: 1.9rem;
+  }
+
+  @include from('xl') {
+    font-size: 1.75rem; // Valeur desktop originale
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  // Effet hover amélioré
+  .application-card:hover & {
+    color: css-var(secondary-color);
+    transform: scale(1.05);
+  }
 }
 
 .rent {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Centré
+  @include until('sm') {
+    justify-content: center;
+  }
+
+  @include from('xl') {
+    gap: 0.25rem; // Valeur desktop originale
+  }
 }
 
 .rent-price {
-  font-size: 0.75rem;
   color: css-var(text-color-muted);
-  font-weight: 500;
+  font-weight: 600; // Plus gras pour la lisibilité mobile
+
+  // 📱 MOBILE FIRST - Plus lisible
+  font-size: 0.9rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('sm') {
+    font-size: 0.85rem;
+  }
+
+  // 🖥️ DESKTOP
+  @include from('xl') {
+    font-size: 0.75rem; // Valeur desktop originale
+    font-weight: 500;
+  }
 }
+
+// =============================
+// BOUTONS D'ACTION - MOBILE-FIRST OPTIMISÉS
+// =============================
 
 .action-buttons {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem; // Plus d'espace sur mobile
+
+  // 📟 TRÈS PETITS ÉCRANS - Boutons full-width
+  @include until('sm') {
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  @include from('xl') {
+    gap: 0.5rem; // Valeur desktop originale
+  }
 }
 
 .btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
   border: none;
-  border-radius: 10px;
-  font-size: 0.875rem;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
+
+  // 📱 MOBILE FIRST - Boutons tactiles optimaux
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  min-height: 48px; // Zone tactile recommandée
+
+  // 📟 TRÈS PETITS ÉCRANS - Full width pour une meilleure UX
+  @include until('sm') {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('md') {
+    padding: 0.875rem 1.125rem;
+    font-size: 0.9rem;
+  }
+
+  @include from('xl') {
+    padding: 0.75rem 1rem; // Valeur desktop originale
+    font-size: 0.875rem;
+    min-height: auto;
+  }
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  // Effet de brillance
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.3s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
   }
 }
 
 .btn-cart {
-  background: rgba(css-var(background-color-light), 0.8);
+  background: rgba(css-var(background-color-light), 0.9);
   color: css-var(text-color);
-  border: 1px solid rgba(css-var(primary-color), 0.3);
+  border: 2px solid rgba(css-var(primary-color), 0.4);
+  backdrop-filter: blur(10px);
 
   &:hover:not(:disabled) {
-    background: rgba(css-var(primary-color), 0.1);
+    background: rgba(css-var(primary-color), 0.15);
     border-color: css-var(primary-color);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(css-var(primary-color), 0.3);
   }
 }
 
@@ -148,7 +534,8 @@
     css-var(secondary-color) 100%
   );
   color: css-var(background-color);
-  border: 1px solid transparent;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 15px rgba(css-var(primary-color), 0.3);
 
   &:hover {
     background: linear-gradient(
@@ -156,73 +543,172 @@
       css-var(secondary-color) 0%,
       css-var(accent-color) 100%
     );
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(css-var(primary-color), 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(css-var(secondary-color), 0.4);
+  }
+
+  // Icône avec transition
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
   }
 }
 
-// Responsive Design
-@include tablet {
-  .applications-container {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile - Layout optimisé
+@include mobile-landscape {
+  .projectSection {
+    padding: 1rem 0.75rem;
   }
 
-  .applications-grid-section {
-    padding: 3rem 1.5rem;
-  }
-}
-
-@include mobile {
-  .applications-container {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .applications-grid-section {
-    padding: 2rem 1rem;
-  }
-
-  .card-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .action-buttons {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .btn {
-    flex: 1;
-    justify-content: center;
-  }
-}
-
-@include small {
   .application-card {
-    margin: 0;
-  }
+    width: 90%;
+    max-width: 500px;
+    min-height: 350px;
 
-  .applications-grid-section {
-    padding: 1.5rem 0.75rem;
-  }
+    .card-image {
+      height: 180px;
+    }
 
-  .card-content {
-    padding: 1.25rem;
-  }
+    .card-content {
+      padding: 1.5rem 1.25rem;
+    }
 
-  .app-title {
-    font-size: 1rem;
-  }
+    .app-title {
+      font-size: 1.2rem;
+    }
 
-  .price {
-    font-size: 1.5rem;
-  }
+    .price {
+      font-size: 1.8rem;
+    }
 
+    .card-footer {
+      flex-direction: row;
+      gap: 1rem;
+    }
+
+    .action-buttons .btn {
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .application-card {
+    @include until('lg') {
+      min-height: 450px;
+    }
+
+    .card-image {
+      @include until('lg') {
+        height: 260px;
+      }
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
   .btn {
-    padding: 0.625rem 0.875rem;
-    font-size: 0.8rem;
+    min-width: 44px;
+    min-height: 44px;
   }
+
+  .application-card:hover {
+    transform: none; // Pas d'effet hover sur tactile au repos
+  }
+
+  .application-card:active {
+    transform: translateY(-5px);
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .application-card,
+  .app-image,
+  .app-title,
+  .price,
+  .btn {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+
+  .application-card::before,
+  .btn::before {
+    display: none;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .application-card {
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      0 4px 16px rgba(css-var(primary-color), 0.1);
+  }
+
+  .app-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('xxxxl') {
+  .projectSection {
+    padding: 3rem 2rem;
+  }
+
+  .application-card {
+    max-width: 500px;
+    min-height: 400px;
+  }
+}
+
+// =============================
+// ANIMATIONS AVANCÉES
+// =============================
+
+// Animation d'apparition pour les cartes
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.application-card {
+  animation: cardAppear 0.6s ease-out forwards;
+}
+
+// Animation de pulsation pour le prix
+@keyframes pricePulse {
+  0%,
+  100% {
+    text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
+  }
+  50% {
+    text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.6);
+  }
+}
+
+.price:hover {
+  animation: pricePulse 1s ease-in-out infinite;
 }
