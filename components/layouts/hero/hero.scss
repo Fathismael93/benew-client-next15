@@ -2,7 +2,7 @@
 @use '../../../app/styles/abstracts' as *;
 
 // =============================
-// HERO SECTION - APPROCHE MOBILE-FIRST OPTIMISÉE
+// HERO SECTION - APPROCHE MOBILE-FIRST OPTIMISÉE POUR TRÈS PETITS ÉCRANS
 // =============================
 
 .hero {
@@ -20,9 +20,14 @@
     max-width: 100%;
     height: 100%;
     margin: auto;
-    padding: 1rem; // Padding pour éviter que le contenu touche les bords
+    padding: 0.75rem; // Padding réduit pour plus d'espace
     display: flex;
     flex-direction: column;
+
+    // 📟 TRÈS PETITS ÉCRANS (384x640 et similaires) - CORRECTION CRITIQUE
+    @media (max-width: 400px) and (max-height: 680px) {
+      padding: 0.5rem; // Padding minimal
+    }
 
     // 🖥️ TABLET ET PLUS - Ajustements progressifs
     @include from('md') {
@@ -44,26 +49,45 @@
     .textContainer {
       // 📱 MOBILE FIRST - Section texte optimisée
       width: 100%;
-      height: 60%; // Plus d'espace pour le texte sur mobile
+      height: auto; // ✅ CHANGEMENT CRITIQUE : Plus de hauteur fixe
+      min-height: 60vh; // Hauteur minimale flexible
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      gap: 2rem; // Plus d'espace entre les éléments
-      padding: 1rem 0.5rem; // Padding interne
-      z-index: 10; // Au-dessus de l'image de fond
+      gap: 1.25rem; // ✅ Gap réduit pour économiser l'espace
+      padding: 0.75rem 0.25rem; // ✅ Padding réduit
+      z-index: 10;
 
-      // 📟 TRÈS PETITS ÉCRANS - Optimisations supplémentaires
+      // 📟 TRÈS PETITS ÉCRANS - OPTIMISATIONS DRASTIQUES
+      @media (max-width: 400px) and (max-height: 680px) {
+        min-height: 55vh; // Encore moins de hauteur
+        gap: 0.75rem; // ✅ Gap très réduit
+        padding: 0.5rem 0.15rem;
+        justify-content: flex-start; // Alignement en haut pour éviter coupures
+        padding-top: 1rem; // Un peu d'espace en haut
+      }
+
+      // 📟 ÉCRANS ULTRA-COMPACTS (comme 384x640)
+      @media (max-width: 390px) and (max-height: 650px) {
+        min-height: 50vh;
+        gap: 0.5rem; // ✅ Gap minimal
+        padding: 0.25rem 0.1rem;
+        padding-top: 0.75rem;
+      }
+
+      // 📟 TRÈS PETITS ÉCRANS - Autres tailles courantes
       @include until('sm') {
-        height: 65%;
-        gap: 1.5rem;
-        padding: 0.75rem 0.25rem;
+        min-height: 58vh;
+        gap: 1rem;
+        padding: 0.5rem 0.2rem;
       }
 
       // 🖥️ TABLET ET PLUS - Transition progressive vers desktop
       @include from('md') {
         height: 55%;
+        min-height: auto;
         gap: 2.25rem;
         padding: 1.5rem 1rem;
       }
@@ -83,29 +107,50 @@
         gap: 1.5rem;
         padding: 0;
         z-index: auto;
+        min-height: auto;
       }
 
-      // 🏷️ SOUS-TITRE - Mobile-first
+      // 🏷️ SOUS-TITRE - Mobile-first AVEC TAILLES ADAPTÉES
       h2 {
         // 📱 MOBILE - Plus visible et lisible
-        font-size: 1.4rem;
+        font-size: 1.1rem; // ✅ Taille réduite pour économiser l'espace
         color: $secondary-color;
-        letter-spacing: 0.1rem;
-        line-height: 1.3;
+        letter-spacing: 0.08rem;
+        line-height: 1.2; // ✅ Line-height réduit
         margin: 0;
-        max-width: 90%;
+        max-width: 95%;
+        font-weight: 500; // ✅ Poids réduit pour moins d'impact visuel
 
-        // 📟 TRÈS PETITS ÉCRANS
-        @include until('sm') {
-          font-size: 1.2rem;
+        // 📟 TRÈS PETITS ÉCRANS - TAILLES CRITIQUES
+        @media (max-width: 400px) and (max-height: 680px) {
+          font-size: 0.9rem; // ✅ Encore plus petit
           letter-spacing: 0.05rem;
-          margin-top: 0.5rem;
+          line-height: 1.15;
+          margin: 0;
+          font-weight: 400;
+        }
+
+        // 📟 ÉCRANS ULTRA-COMPACTS
+        @media (max-width: 390px) and (max-height: 650px) {
+          font-size: 0.85rem; // ✅ Taille minimale mais lisible
+          letter-spacing: 0.03rem;
+          line-height: 1.1;
+          font-weight: 400;
+        }
+
+        // 📟 AUTRES TRÈS PETITS ÉCRANS
+        @include until('sm') {
+          font-size: 1rem;
+          letter-spacing: 0.06rem;
+          line-height: 1.2;
         }
 
         // 🖥️ TABLET ET PLUS - Ajustements progressifs
         @include from('md') {
           font-size: 1.35rem;
           letter-spacing: 0.12rem;
+          line-height: 1.3;
+          font-weight: 500;
         }
 
         @include from('lg') {
@@ -120,10 +165,10 @@
         }
       }
 
-      // 🎯 TITRE PRINCIPAL - Mobile-first avec impact
+      // 🎯 TITRE PRINCIPAL - Mobile-first AVEC TAILLES RÉDUITES
       h1 {
-        // 📱 MOBILE - Titre imposant et lisible
-        font-size: 3rem;
+        // 📱 MOBILE - Titre imposant mais adapté
+        font-size: 2.2rem; // ✅ Réduit de 3rem à 2.2rem
         background: linear-gradient(
           45deg,
           $text-color,
@@ -134,19 +179,36 @@
         background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 700;
-        line-height: 1.1;
+        line-height: 1.05; // ✅ Line-height très serré
         margin: 0;
-        max-width: 95%;
+        max-width: 98%;
 
-        // 📟 TRÈS PETITS ÉCRANS - Toujours lisible
+        // 📟 TRÈS PETITS ÉCRANS - TAILLES CRITIQUES
+        @media (max-width: 400px) and (max-height: 680px) {
+          font-size: 1.8rem; // ✅ Drastiquement réduit
+          line-height: 1;
+          font-weight: 600; // Moins lourd visuellement
+          max-width: 100%;
+        }
+
+        // 📟 ÉCRANS ULTRA-COMPACTS
+        @media (max-width: 390px) and (max-height: 650px) {
+          font-size: 1.6rem; // ✅ Taille minimale mais impactante
+          line-height: 0.95;
+          font-weight: 600;
+        }
+
+        // 📟 AUTRES TRÈS PETITS ÉCRANS
         @include until('sm') {
-          font-size: 2.5rem;
-          line-height: 1.15;
+          font-size: 2rem;
+          line-height: 1.05;
         }
 
         // 🖥️ TABLET ET PLUS - Croissance progressive
         @include from('md') {
           font-size: 3.5rem;
+          line-height: 1.1;
+          font-weight: 700;
         }
 
         @include from('lg') {
@@ -156,16 +218,29 @@
         @include from('xl') {
           font-size: 4.5rem; // Taille desktop originale
           max-width: 100%;
+          line-height: 1.1;
         }
       }
 
-      // 🔘 GROUPE DE BOUTONS - Optimisation mobile-first
+      // 🔘 GROUPE DE BOUTONS - Optimisation mobile-first COMPACTE
       .buttonGroup {
         display: flex;
-        flex-direction: column; // Stack vertical sur mobile pour une meilleure UX
-        gap: 1rem;
+        flex-direction: column;
+        gap: 0.75rem; // ✅ Gap réduit
         width: 100%;
-        max-width: 320px; // Limite la largeur sur mobile
+        max-width: 300px; // ✅ Largeur réduite
+
+        // 📟 TRÈS PETITS ÉCRANS - BOUTONS COMPACTS
+        @media (max-width: 400px) and (max-height: 680px) {
+          gap: 0.5rem; // ✅ Gap minimal
+          max-width: 280px;
+        }
+
+        // 📟 ÉCRANS ULTRA-COMPACTS
+        @media (max-width: 390px) and (max-height: 650px) {
+          gap: 0.4rem; // ✅ Gap ultra-minimal
+          max-width: 260px;
+        }
 
         // 🖥️ TABLET ET PLUS - Transition vers horizontal
         @include from('md') {
@@ -176,39 +251,57 @@
         }
 
         @include from('xl') {
-          justify-content: flex-start; // Aligné à gauche sur desktop
+          justify-content: flex-start;
           max-width: none;
           gap: 1rem;
         }
 
         .primaryButton,
         .secondaryButton {
-          // 📱 MOBILE - Boutons tactiles optimaux
-          padding: 1.25rem 2rem;
-          border-radius: 30px;
+          // 📱 MOBILE - Boutons tactiles COMPACTS
+          padding: 1rem 1.5rem; // ✅ Padding réduit
+          border-radius: 25px; // ✅ Border-radius réduit
           font-weight: 600;
-          font-size: 1rem;
-          min-height: 56px; // Zone tactile recommandée
+          font-size: 0.9rem; // ✅ Font-size réduite
+          min-height: 48px; // ✅ Hauteur minimale réduite
           display: flex;
           align-items: center;
           justify-content: center;
           text-align: center;
           transition: all 0.3s ease;
           text-decoration: none;
-          line-height: 1.2;
+          line-height: 1.1; // ✅ Line-height réduit
 
-          // 📟 TRÈS PETITS ÉCRANS - Ajustements
+          // 📟 TRÈS PETITS ÉCRANS - BOUTONS ULTRA-COMPACTS
+          @media (max-width: 400px) and (max-height: 680px) {
+            padding: 0.8rem 1.2rem; // ✅ Padding minimal
+            font-size: 0.85rem;
+            min-height: 44px;
+            border-radius: 22px;
+          }
+
+          // 📟 ÉCRANS ULTRA-COMPACTS
+          @media (max-width: 390px) and (max-height: 650px) {
+            padding: 0.7rem 1rem; // ✅ Padding ultra-minimal
+            font-size: 0.8rem;
+            min-height: 40px;
+            border-radius: 20px;
+          }
+
+          // 📟 AUTRES TRÈS PETITS ÉCRANS
           @include until('sm') {
-            padding: 1rem 1.5rem;
-            font-size: 0.95rem;
-            min-height: 52px;
+            padding: 0.9rem 1.3rem;
+            font-size: 0.88rem;
+            min-height: 46px;
           }
 
           // 🖥️ TABLET ET PLUS - Ajustements progressifs
           @include from('md') {
             padding: 1.2rem 2.25rem;
             font-size: 1.05rem;
-            flex: 1; // Largeur égale sur tablet
+            flex: 1;
+            min-height: 56px;
+            border-radius: 30px;
           }
 
           @include from('xl') {
@@ -236,7 +329,7 @@
           color: $background-color;
           border: none;
           cursor: pointer;
-          order: 1; // Premier sur mobile
+          order: 1;
 
           &:hover {
             background: linear-gradient(
@@ -252,7 +345,12 @@
           color: $primary-color;
           border: 2px solid $primary-color;
           cursor: pointer;
-          order: 2; // Deuxième sur mobile
+          order: 2;
+
+          // 📟 TRÈS PETITS ÉCRANS - BORDURE PLUS FINE
+          @media (max-width: 400px) and (max-height: 680px) {
+            border-width: 1px; // ✅ Bordure plus fine pour économiser l'espace
+          }
 
           &:hover {
             background: rgba($primary-color, 0.1);
@@ -262,24 +360,39 @@
         }
       }
 
-      // 📜 ICÔNE SCROLL - Mobile-first
+      // 📜 ICÔNE SCROLL - Mobile-first TRÈS RÉDUITE
       img {
-        // 📱 MOBILE - Icône visible mais pas dominante
-        width: 2rem;
+        // 📱 MOBILE - Icône présente mais discrète
+        width: 1.5rem; // ✅ Taille réduite
         filter: hue-rotate(20deg) brightness(1.2);
-        margin-top: 1rem;
+        margin-top: 0.5rem; // ✅ Margin réduite
         animation: bounce 2s infinite;
 
-        // 📟 TRÈS PETITS ÉCRANS
+        // 📟 TRÈS PETITS ÉCRANS - ICÔNE MINIMALE
+        @media (max-width: 400px) and (max-height: 680px) {
+          width: 1.2rem; // ✅ Encore plus petite
+          margin-top: 0.25rem;
+          opacity: 0.8; // Moins visible pour économiser l'attention
+        }
+
+        // 📟 ÉCRANS ULTRA-COMPACTS - ICÔNE QUASI INVISIBLE
+        @media (max-width: 390px) and (max-height: 650px) {
+          width: 1rem; // ✅ Taille minimale
+          margin-top: 0.1rem;
+          opacity: 0.6;
+        }
+
+        // 📟 AUTRES TRÈS PETITS ÉCRANS
         @include until('sm') {
-          width: 1.5rem;
-          margin-top: 0.5rem;
+          width: 1.3rem;
+          margin-top: 0.3rem;
         }
 
         // 🖥️ TABLET ET PLUS - Ajustements
         @include from('md') {
           width: 2.25rem;
           margin-top: 1.25rem;
+          opacity: 1;
         }
 
         @include from('xl') {
@@ -290,10 +403,11 @@
     }
   }
 
-  // 🖼️ CONTENEUR IMAGE - Mobile-first avec meilleure visibilité
+  // 🖼️ CONTENEUR IMAGE - Mobile-first ADAPTÉ AUX PETITS ÉCRANS
   .imageContainer {
-    // 📱 MOBILE - Image présente mais pas écrasante
-    height: 40%; // Moins d'espace mais toujours visible
+    // 📱 MOBILE - Image présente mais optimisée
+    height: auto; // ✅ CHANGEMENT CRITIQUE : hauteur flexible
+    min-height: 35vh; // ✅ Hauteur minimale réduite
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -301,16 +415,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1; // Derrière le texte
+    z-index: 1;
 
-    // 📟 TRÈS PETITS ÉCRANS - Plus d'espace pour le texte
+    // 📟 TRÈS PETITS ÉCRANS - IMAGE ENCORE PLUS RÉDUITE
+    @media (max-width: 400px) and (max-height: 680px) {
+      min-height: 30vh; // ✅ Hauteur minimale réduite
+      opacity: 0.7; // Plus transparente pour ne pas gêner le texte
+    }
+
+    // 📟 ÉCRANS ULTRA-COMPACTS
+    @media (max-width: 390px) and (max-height: 650px) {
+      min-height: 25vh; // ✅ Hauteur minimale très réduite
+      opacity: 0.6;
+    }
+
+    // 📟 AUTRES TRÈS PETITS ÉCRANS
     @include until('sm') {
-      height: 35%;
+      min-height: 32vh;
+      opacity: 0.8;
     }
 
     // 🖥️ TABLET ET PLUS - Transition progressive
     @include from('md') {
       height: 45%;
+      min-height: auto;
+      opacity: 0.95;
     }
 
     @include from('lg') {
@@ -326,53 +455,78 @@
       bottom: auto;
       left: auto;
       z-index: auto;
+      opacity: 1;
+      min-height: auto;
     }
 
     .heroImage {
       object-fit: contain;
-      max-width: 85%; // Plus d'espace autour sur mobile
-      max-height: 85%;
-      opacity: 0.9; // Légèrement transparent sur mobile pour ne pas dominer
+      max-width: 80%; // ✅ Largeur réduite pour plus d'espace texte
+      max-height: 80%; // ✅ Hauteur réduite
+      opacity: inherit;
 
-      // 📟 TRÈS PETITS ÉCRANS
+      // 📟 TRÈS PETITS ÉCRANS - IMAGE TRÈS COMPACTE
+      @media (max-width: 400px) and (max-height: 680px) {
+        max-width: 70%; // ✅ Encore plus petite
+        max-height: 70%;
+      }
+
+      // 📟 ÉCRANS ULTRA-COMPACTS
+      @media (max-width: 390px) and (max-height: 650px) {
+        max-width: 65%; // ✅ Taille minimale
+        max-height: 65%;
+      }
+
+      // 📟 AUTRES TRÈS PETITS ÉCRANS
       @include until('sm') {
-        max-width: 80%;
-        max-height: 80%;
-        opacity: 0.8;
+        max-width: 75%;
+        max-height: 75%;
       }
 
       // 🖥️ TABLET ET PLUS - Plus visible progressivement
       @include from('md') {
         max-width: 90%;
         max-height: 90%;
-        opacity: 0.95;
       }
 
       @include from('xl') {
         max-width: 100%; // Taille desktop originale
         max-height: 100%;
-        opacity: 1;
       }
     }
   }
 
-  // ✨ TEXTE ANIMÉ "BENEW" - Mobile-first avec impact
+  // ✨ TEXTE ANIMÉ "BENEW" - Mobile-first ADAPTÉ
   .slidingTextContainer {
     position: absolute;
-    bottom: -60px; // Plus visible sur mobile
+    bottom: -40px; // ✅ Position ajustée pour petits écrans
     white-space: nowrap;
-    color: rgba($text-color, 0.04); // Plus visible sur mobile
+    color: rgba($text-color, 0.06); // ✅ Plus visible mais pas envahissant
     width: 100%;
     font-weight: bold;
-    z-index: 0; // Arrière-plan
+    z-index: 0;
 
-    // 📱 MOBILE - Taille impactante
-    font-size: 12rem;
+    // 📱 MOBILE - Taille adaptée
+    font-size: 8rem; // ✅ Taille réduite
 
-    // 📟 TRÈS PETITS ÉCRANS
+    // 📟 TRÈS PETITS ÉCRANS - TEXTE TRÈS RÉDUIT
+    @media (max-width: 400px) and (max-height: 680px) {
+      font-size: 6rem; // ✅ Encore plus petit
+      bottom: -30px;
+      color: rgba($text-color, 0.04);
+    }
+
+    // 📟 ÉCRANS ULTRA-COMPACTS
+    @media (max-width: 390px) and (max-height: 650px) {
+      font-size: 5rem; // ✅ Taille minimale
+      bottom: -25px;
+      color: rgba($text-color, 0.03);
+    }
+
+    // 📟 AUTRES TRÈS PETITS ÉCRANS
     @include until('sm') {
-      font-size: 10rem;
-      bottom: -50px;
+      font-size: 7rem;
+      bottom: -35px;
       color: rgba($text-color, 0.05);
     }
 
@@ -401,7 +555,7 @@
 // ANIMATIONS ET AMÉLIORATIONS
 // =============================
 
-// Animation bounce pour l'icône scroll
+// Animation bounce pour l'icône scroll - RÉDUITE sur petits écrans
 @keyframes bounce {
   0%,
   20%,
@@ -411,10 +565,10 @@
     transform: translateY(0);
   }
   40% {
-    transform: translateY(-10px);
+    transform: translateY(-6px); // ✅ Mouvement réduit
   }
   60% {
-    transform: translateY(-5px);
+    transform: translateY(-3px); // ✅ Mouvement réduit
   }
 }
 
@@ -422,79 +576,84 @@
 // ADAPTATIONS SPÉCIALES
 // =============================
 
-// Mode paysage sur mobile - Layout optimisé
+// Mode paysage sur mobile - Layout optimisé AVEC CORRECTIONS
 @include mobile-landscape {
   .hero .wrapper {
     flex-direction: row;
-    padding: 1rem;
+    padding: 0.5rem; // ✅ Padding réduit
 
     .textContainer {
-      width: 60%;
+      width: 65%; // ✅ Plus d'espace pour le texte
       height: 100%;
-      gap: 1.5rem;
+      min-height: auto;
+      gap: 1rem; // ✅ Gap réduit
       align-items: flex-start;
       text-align: left;
-      padding: 1rem;
-
-      h1 {
-        font-size: 2.5rem;
-      }
+      padding: 0.75rem;
 
       h2 {
-        font-size: 1.1rem;
+        font-size: 0.95rem; // ✅ Taille adaptée au paysage
+        line-height: 1.1;
+      }
+
+      h1 {
+        font-size: 2rem; // ✅ Taille adaptée au paysage
+        line-height: 1;
       }
 
       .buttonGroup {
         flex-direction: row;
-        gap: 0.75rem;
+        gap: 0.5rem; // ✅ Gap réduit
 
         .primaryButton,
         .secondaryButton {
-          padding: 0.75rem 1.5rem;
-          font-size: 0.9rem;
+          padding: 0.6rem 1.2rem; // ✅ Padding réduit
+          font-size: 0.8rem;
+          min-height: 40px;
         }
       }
 
       img {
-        width: 1.5rem;
-        margin-top: 0.5rem;
+        width: 1.2rem;
+        margin-top: 0.25rem;
       }
     }
   }
 
   .hero .imageContainer {
-    width: 40%;
+    width: 35%; // ✅ Moins d'espace pour l'image
     height: 100%;
+    min-height: auto;
     position: absolute;
     right: 0;
     bottom: auto;
     top: 0;
 
     .heroImage {
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 85%;
+      max-height: 85%;
     }
   }
 
   .hero .slidingTextContainer {
-    font-size: 8rem;
-    bottom: -40px;
+    font-size: 5rem; // ✅ Taille réduite pour paysage
+    bottom: -25px;
   }
 }
 
-// Adaptation pour écrans très hauts (iPhone X, 11, etc.)
+// Adaptation pour écrans très hauts (iPhone X, 11, etc.) - AVEC CORRECTIONS
 @include tall-screen {
   .hero .wrapper .textContainer {
-    gap: 2.5rem;
+    gap: 2rem; // ✅ Gap augmenté sur écrans hauts
 
     @include until('lg') {
-      height: 55%;
+      min-height: 55vh; // ✅ Peut prendre plus de place
     }
   }
 
   .hero .imageContainer {
     @include until('lg') {
-      height: 45%;
+      min-height: 40vh; // ✅ Plus d'espace pour l'image
     }
   }
 }
