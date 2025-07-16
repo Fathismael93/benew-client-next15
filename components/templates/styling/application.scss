@@ -485,18 +485,39 @@
 }
 
 // =============================
-// PAGE 2 - DETAILS SECTION MOBILE-FIRST
+// PAGE 2 - DETAILS SECTION MOBILE-FIRST CORRIGÉE
 // =============================
 
 .details-section {
   width: 100%;
-  min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start; // Changé de center à flex-start
   justify-content: center;
   background: linear-gradient(135deg, #151528 0%, #0c0c1d 50%, #1a0f2e 100%);
   position: relative;
-  overflow: hidden;
+  overflow: visible; // Changé de hidden à visible
+
+  // 📱 MOBILE FIRST - Hauteur naturelle avec minimum
+  min-height: 100vh;
+  height: auto; // Permet l'extension au-delà de 100vh
+
+  // 🖥️ DESKTOP - Retour à la hauteur fixe si nécessaire
+  @include from('xl') {
+    height: 100vh;
+    min-height: 100vh;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  // Override spécifique pour la classe .others si elle force height: 100vh
+  &.others {
+    height: auto !important; // Force l'override de la classe others
+    min-height: 100vh;
+
+    @include from('xl') {
+      height: 100vh !important;
+    }
+  }
 
   // Effet de particules en arrière-plan
   &::before {
@@ -529,36 +550,36 @@
 
 .app-showcase {
   width: 100%;
-  height: 100%;
   margin: 0 auto;
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: center;
+  align-items: flex-start; // Changé de center à flex-start
   justify-content: center;
 
   // 📱 MOBILE FIRST - Padding minimal, largeur maximale
   max-width: 100%;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1rem; // Augmenté le padding vertical
 
   @include until('sm') {
-    padding: 1rem 0.75rem;
+    padding: 1.5rem 0.75rem;
   }
 
   // 🖥️ TABLET ET PLUS - Ajustements progressifs
   @include from('md') {
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     max-width: 90%;
   }
 
   @include from('lg') {
-    padding: 2.5rem 2rem;
+    padding: 3rem 2rem;
     max-width: 85%;
   }
 
   @include from('xl') {
     max-width: 1400px;
     padding: 2rem;
+    align-items: center; // Retour au centrage sur desktop
   }
 }
 
@@ -567,45 +588,49 @@
   flex-direction: column;
   animation: fadeInUp 0.8s ease-out;
   width: 100%;
-  height: 100%;
-  overflow-y: auto;
 
-  // 📱 MOBILE FIRST - Gap optimisé
-  gap: 2rem;
-  max-height: calc(100vh - 3rem);
+  // 📱 MOBILE FIRST - Pas de contrainte de hauteur, scroll naturel
+  gap: 2.5rem; // Augmenté pour plus d'espace
+  overflow: visible; // Permet l'expansion naturelle
 
   @include until('sm') {
-    gap: 1.5rem;
-    max-height: calc(100vh - 2rem);
+    gap: 2rem;
   }
 
   // 🖥️ TABLET ET PLUS
   @include from('md') {
-    gap: 2.25rem;
-    max-height: calc(100vh - 4rem);
+    gap: 3rem; // Encore plus d'espace sur tablet
+  }
+
+  @include from('lg') {
+    gap: 3.5rem;
   }
 
   @include from('xl') {
-    gap: 1.5rem;
+    gap: 1.5rem; // Retour aux valeurs desktop
+    height: 100%;
     max-height: calc(100vh - 4rem);
+    overflow-y: auto; // Scroll interne seulement sur desktop
   }
 
-  // Scrollbar personnalisée
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
+  // Scrollbar personnalisée (seulement active sur desktop)
+  @include from('xl') {
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
 
-  &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 3px;
-  }
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background: rgba(css-var(color-orange), 0.3);
-    border-radius: 3px;
+    &::-webkit-scrollbar-thumb {
+      background: rgba(css-var(color-orange), 0.3);
+      border-radius: 3px;
 
-    &:hover {
-      background: rgba(css-var(color-orange), 0.5);
+      &:hover {
+        background: rgba(css-var(color-orange), 0.5);
+      }
     }
   }
 }
@@ -617,18 +642,18 @@
 .showcase-header {
   display: flex;
   align-items: flex-start;
-  padding-bottom: 1.5rem;
+  padding-bottom: 2rem; // Augmenté l'espacement
   border-bottom: 2px solid rgba(css-var(color-orange), 0.2);
   flex-shrink: 0;
 
   // 📱 MOBILE FIRST - Layout vertical avec badges sous le titre
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem; // Augmenté l'espacement
   text-align: center;
 
   @include until('sm') {
-    gap: 1.25rem;
-    padding-bottom: 1.25rem;
+    gap: 1.75rem;
+    padding-bottom: 1.75rem;
   }
 
   // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
@@ -847,57 +872,70 @@
 }
 
 // =============================
-// CONTENU PRINCIPAL - MOBILE-FIRST
+// CONTENU PRINCIPAL - MOBILE-FIRST CORRIGÉ
 // =============================
 
 .showcase-content {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   flex: 1;
-  min-height: 0;
 
-  // 📱 MOBILE FIRST - Stack vertical
+  // 📱 MOBILE FIRST - Stack vertical avec BEAUCOUP plus d'espace
   flex-direction: column;
-  gap: 2rem;
+  gap: 4rem; // Augmenté drastiquement pour éviter les chevauchements
 
   @include until('sm') {
-    gap: 1.5rem;
+    gap: 3rem;
   }
 
-  // 🖥️ DESKTOP - Layout en grid 2 colonnes
+  // 🖥️ TABLET - Maintenir le stack vertical encore plus longtemps
+  @include from('md') {
+    gap: 4.5rem;
+  }
+
   @include from('lg') {
+    gap: 5rem; // Énorme espacement sur large tablets
+  }
+
+  // 🖥️ DESKTOP ONLY - Layout en grid 2 colonnes
+  @include from('xl') {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
     flex-direction: row;
-  }
-
-  @include from('xl') {
-    gap: 2rem;
   }
 }
 
 .content-main {
   display: flex;
   flex-direction: column;
-  min-height: 0;
 
-  // 📱 MOBILE FIRST - Gap généreux
-  gap: 2rem;
+  // 📱 MOBILE FIRST - Gap ÉNORME pour éviter les chevauchements
+  gap: 3rem; // Triplé l'espacement
   width: 100%;
 
   @include until('sm') {
-    gap: 1.5rem;
+    gap: 2.5rem;
   }
 
-  // 🖥️ DESKTOP
+  // 🖥️ TABLET ET PLUS - Maintenir l'espacement généreux
+  @include from('md') {
+    gap: 3.5rem;
+  }
+
+  @include from('lg') {
+    gap: 4rem;
+  }
+
+  // 🖥️ DESKTOP - Retour aux valeurs compactes
   @include from('xl') {
     gap: 1.25rem;
+    min-height: 0; // Seulement sur desktop
   }
 }
 
 // =============================
-// DESCRIPTION CARD - MOBILE-FIRST
+// DESCRIPTION CARD - MOBILE-FIRST CORRIGÉE
 // =============================
 
 .description-card {
@@ -906,19 +944,29 @@
   border-radius: 16px;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
-  flex: 1;
-  min-height: 0;
+  flex-shrink: 0; // Empêche la compression
 
-  // 📱 MOBILE FIRST - Padding généreux
-  padding: 1.75rem 1.5rem;
+  // 📱 MOBILE FIRST - Padding ÉNORME, hauteur naturelle
+  padding: 3rem 2.5rem; // Doublé le padding
 
   @include until('sm') {
-    padding: 1.5rem 1.25rem;
+    padding: 2.5rem 2rem;
   }
 
-  // 🖥️ DESKTOP
+  // 🖥️ TABLET ET PLUS - Maintenir l'espacement généreux
+  @include from('md') {
+    padding: 3.5rem 3rem;
+  }
+
+  @include from('lg') {
+    padding: 4rem 3.5rem;
+  }
+
+  // 🖥️ DESKTOP - Retour aux valeurs compactes avec flex
   @include from('xl') {
     padding: 1.25rem;
+    flex: 1;
+    min-height: 0;
   }
 
   &:hover {
@@ -929,7 +977,7 @@
   .section-title {
     font-weight: 700;
     color: css-var(color-light);
-    margin: 0 0 1.25rem 0;
+    margin: 0 0 2rem 0; // Doublé l'espace sous le titre
     position: relative;
 
     // 📱 MOBILE FIRST
@@ -937,7 +985,7 @@
 
     @include until('sm') {
       font-size: 1.4rem;
-      margin: 0 0 1rem 0;
+      margin: 0 0 1.75rem 0;
     }
 
     @include from('xl') {
@@ -948,7 +996,7 @@
     &::after {
       content: '';
       position: absolute;
-      bottom: -0.5rem;
+      bottom: -1rem; // Encore plus d'espace
       left: 0;
       width: 60px;
       height: 3px;
@@ -966,67 +1014,71 @@
       line-height: 1.6;
       color: css-var(text-color-muted);
       margin: 0;
-      overflow-y: auto;
       padding-right: 0.5rem;
 
-      // 📱 MOBILE FIRST
+      // 📱 MOBILE FIRST - Hauteur naturelle, pas de contrainte
       font-size: 1.1rem;
-      max-height: 200px;
 
       @include until('sm') {
         font-size: 1rem;
-        max-height: 180px;
         line-height: 1.5;
       }
 
+      // 🖥️ DESKTOP - Scroll seulement si nécessaire
       @include from('xl') {
         font-size: 1rem;
         max-height: 150px;
-      }
+        overflow-y: auto;
 
-      &::-webkit-scrollbar {
-        width: 3px;
-      }
+        &::-webkit-scrollbar {
+          width: 3px;
+        }
 
-      &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);
-      }
+        &::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+        }
 
-      &::-webkit-scrollbar-thumb {
-        background: rgba(css-var(color-orange), 0.3);
-        border-radius: 2px;
+        &::-webkit-scrollbar-thumb {
+          background: rgba(css-var(color-orange), 0.3);
+          border-radius: 2px;
+        }
       }
     }
   }
 }
 
 // =============================
-// BOUTONS D'ACTION - MOBILE-FIRST
+// BOUTONS D'ACTION - MOBILE-FIRST CORRIGÉS
 // =============================
 
 .action-buttons {
   display: flex;
   flex-shrink: 0;
 
-  // 📱 MOBILE FIRST - Stack vertical full-width
+  // 📱 MOBILE FIRST - Stack vertical full-width avec ÉNORME espacement
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem; // Doublé l'espacement pour éviter les chevauchements
   width: 100%;
 
   @include until('sm') {
-    gap: 0.875rem;
+    gap: 1.75rem;
   }
 
-  // 🖥️ TABLET ET PLUS - Transition vers horizontal
+  // 🖥️ TABLET ET PLUS - Maintenir vertical encore plus longtemps
   @include from('md') {
+    gap: 2.25rem;
+  }
+
+  @include from('lg') {
+    gap: 2.5rem;
+  }
+
+  // 🖥️ DESKTOP ONLY - Transition vers horizontal
+  @include from('xl') {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 0.875rem;
-    width: auto;
-  }
-
-  @include from('xl') {
     gap: 0.75rem;
+    width: auto;
   }
 }
 
@@ -1044,26 +1096,32 @@
   position: relative;
   overflow: hidden;
 
-  // 📱 MOBILE FIRST - Boutons full-width et tactiles
-  padding: 1.25rem 2rem;
+  // 📱 MOBILE FIRST - Boutons full-width et tactiles avec plus d'espace
+  padding: 1.5rem 2rem; // Augmenté le padding
   font-size: 1rem;
   min-height: 56px;
   width: 100%;
 
   @include until('sm') {
-    padding: 1.125rem 1.75rem;
+    padding: 1.375rem 1.75rem;
     font-size: 0.95rem;
     min-height: 52px;
   }
 
-  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  // 🖥️ TABLET ET PLUS - Maintenir la taille généreuse
   @include from('md') {
-    width: auto;
-    padding: 1rem 1.75rem;
-    font-size: 0.95rem;
+    padding: 1.5rem 2.25rem;
+    font-size: 1rem;
   }
 
+  @include from('lg') {
+    padding: 1.625rem 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  // 🖥️ DESKTOP - Retour aux valeurs compactes
   @include from('xl') {
+    width: auto;
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
     min-height: 44px;
@@ -1186,25 +1244,34 @@
 }
 
 // =============================
-// SIDEBAR INFORMATIONS - MOBILE-FIRST
+// SIDEBAR INFORMATIONS - MOBILE-FIRST CORRIGÉE
 // =============================
 
 .content-sidebar {
   display: flex;
   flex-direction: column;
-  min-height: 0;
 
-  // 📱 MOBILE FIRST - Full width
-  gap: 1.75rem;
+  // 📱 MOBILE FIRST - Full width avec ÉNORME espacement
+  gap: 3rem; // Triplé l'espacement pour éviter les chevauchements
   width: 100%;
 
   @include until('sm') {
-    gap: 1.5rem;
+    gap: 2.5rem;
   }
 
-  // 🖥️ DESKTOP
+  // 🖥️ TABLET ET PLUS - Maintenir l'espacement généreux
+  @include from('md') {
+    gap: 3.5rem;
+  }
+
+  @include from('lg') {
+    gap: 4rem;
+  }
+
+  // 🖥️ DESKTOP - Retour aux valeurs compactes
   @include from('xl') {
     gap: 1rem;
+    min-height: 0;
   }
 }
 
@@ -1215,15 +1282,25 @@
   border-radius: 16px;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  flex-shrink: 0; // Empêche la compression
 
-  // 📱 MOBILE FIRST - Cards plus spacieuses
-  padding: 2rem 1.75rem;
+  // 📱 MOBILE FIRST - Cards ÉNORMÉMENT plus spacieuses
+  padding: 3rem 2.5rem; // Doublé le padding
 
   @include until('sm') {
-    padding: 1.75rem 1.5rem;
+    padding: 2.5rem 2rem;
   }
 
-  // 🖥️ DESKTOP
+  // 🖥️ TABLET ET PLUS - Maintenir l'espacement généreux
+  @include from('md') {
+    padding: 3.5rem 3rem;
+  }
+
+  @include from('lg') {
+    padding: 4rem 3.5rem;
+  }
+
+  // 🖥️ DESKTOP - Retour aux valeurs compactes
   @include from('xl') {
     padding: 1.5rem;
   }
@@ -1237,8 +1314,8 @@
 .card-title {
   font-weight: 700;
   color: css-var(color-light);
-  margin: 0 0 1.25rem 0;
-  padding-bottom: 0.75rem;
+  margin: 0 0 2rem 0; // Doublé l'espace
+  padding-bottom: 1.5rem; // Augmenté l'espace
   border-bottom: 1px solid rgba(css-var(color-light), 0.1);
 
   // 📱 MOBILE FIRST
@@ -1246,8 +1323,8 @@
 
   @include until('sm') {
     font-size: 1.2rem;
-    margin: 0 0 1rem 0;
-    padding-bottom: 0.625rem;
+    margin: 0 0 1.75rem 0;
+    padding-bottom: 1.25rem;
   }
 
   @include from('xl') {
@@ -1265,11 +1342,11 @@
   display: flex;
   flex-direction: column;
 
-  // 📱 MOBILE FIRST
-  gap: 1rem;
+  // 📱 MOBILE FIRST - Plus d'espace entre les items
+  gap: 1.5rem; // Augmenté
 
   @include until('sm') {
-    gap: 0.875rem;
+    gap: 1.25rem;
   }
 
   @include from('xl') {
@@ -1281,11 +1358,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 1rem 0; // Augmenté le padding
   border-bottom: 1px solid rgba(css-var(color-light), 0.05);
 
   @include until('sm') {
-    padding: 0.625rem 0;
+    padding: 0.875rem 0;
   }
 
   @include from('xl') {
@@ -1337,11 +1414,11 @@
   display: flex;
   flex-direction: column;
 
-  // 📱 MOBILE FIRST
-  gap: 1.25rem;
+  // 📱 MOBILE FIRST - Plus d'espace entre les prix
+  gap: 1.75rem; // Augmenté
 
   @include until('sm') {
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   @include from('xl') {
@@ -1356,11 +1433,11 @@
   border-radius: 10px;
   transition: all 0.3s ease;
 
-  // 📱 MOBILE FIRST - Plus d'espace
-  padding: 1.25rem 1rem;
+  // 📱 MOBILE FIRST - Beaucoup plus d'espace
+  padding: 1.75rem 1.5rem; // Augmenté le padding
 
   @include until('sm') {
-    padding: 1rem 0.875rem;
+    padding: 1.5rem 1.25rem;
   }
 
   @include from('xl') {
@@ -1433,7 +1510,7 @@
 }
 
 .pricing-note {
-  margin-top: 1rem;
+  margin-top: 1.5rem; // Augmenté l'espace
   text-align: center;
 
   @include from('xl') {
@@ -1626,7 +1703,7 @@
   }
 
   .showcase-container {
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
   .title-block .app-title {
@@ -1636,6 +1713,18 @@
   .badge {
     padding: 0.75rem 0.625rem;
     min-width: 75px;
+  }
+
+  .showcase-content {
+    gap: 2rem;
+  }
+
+  .content-main {
+    gap: 1.5rem;
+  }
+
+  .content-sidebar {
+    gap: 1.5rem;
   }
 }
 
@@ -1655,13 +1744,31 @@
 
   .showcase-container {
     @include until('lg') {
-      gap: 2.5rem;
+      gap: 3rem;
     }
   }
 
   .description-card .description-content .description-text {
     @include until('lg') {
       max-height: 220px;
+    }
+  }
+
+  .showcase-content {
+    @include until('lg') {
+      gap: 5rem;
+    }
+  }
+
+  .content-main {
+    @include until('lg') {
+      gap: 3.5rem;
+    }
+  }
+
+  .content-sidebar {
+    @include until('lg') {
+      gap: 3.5rem;
     }
   }
 }
