@@ -284,7 +284,7 @@ const SingleApplication = ({
         )}
       </section>
 
-      {/* SECTION 2 - Description, Boutons d'actions et Tarification */}
+      {/* SECTION 2 - Description, Tarification et Boutons d'actions */}
       <section className="others app-details-section">
         {appDetails &&
         typeof appDetails === 'object' &&
@@ -300,6 +300,28 @@ const SingleApplication = ({
                   {appDetails.application_description ||
                     'Aucune description disponible pour cette application.'}
                 </p>
+              </div>
+            </div>
+
+            {/* Carte des prix */}
+            <div className="pricing-card">
+              <h3 className="card-title">Tarification</h3>
+              <div className="pricing-grid">
+                <div className="price-item fee">
+                  <span className="price-label">Frais d&apos;installation</span>
+                  <span className="price-amount">
+                    {formatCurrency(appDetails.application_fee)}
+                  </span>
+                </div>
+                <div className="price-item rent">
+                  <span className="price-label">Loyer mensuel</span>
+                  <span className="price-amount">
+                    {formatCurrency(appDetails.application_rent)}
+                  </span>
+                </div>
+              </div>
+              <div className="pricing-note">
+                <small>Tous les prix sont en Francs Djiboutiens (FDJ)</small>
               </div>
             </div>
 
@@ -345,28 +367,6 @@ const SingleApplication = ({
                     : 'Commander maintenant'}
                 </span>
               </button>
-            </div>
-
-            {/* Carte des prix */}
-            <div className="pricing-card">
-              <h3 className="card-title">Tarification</h3>
-              <div className="pricing-grid">
-                <div className="price-item fee">
-                  <span className="price-label">Frais d&apos;installation</span>
-                  <span className="price-amount">
-                    {formatCurrency(appDetails.application_fee)}
-                  </span>
-                </div>
-                <div className="price-item rent">
-                  <span className="price-label">Loyer mensuel</span>
-                  <span className="price-amount">
-                    {formatCurrency(appDetails.application_rent)}
-                  </span>
-                </div>
-              </div>
-              <div className="pricing-note">
-                <small>Tous les prix sont en Francs Djiboutiens (FDJ)</small>
-              </div>
             </div>
           </div>
         ) : (

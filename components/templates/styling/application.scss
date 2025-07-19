@@ -737,134 +737,168 @@
 }
 
 // =============================
-// INFORMATIONS TECHNIQUES - MOBILE-FIRST
+// INFORMATIONS TECHNIQUES - MOBILE-FIRST EN CARTES
 // =============================
 
 .info-card {
-  background: rgba(css-var(color-light), 0.03);
-  border: 1px solid rgba(css-var(color-light), 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 
-  // 📱 MOBILE FIRST - Padding généreux
-  padding: 3rem 2.5rem;
+  .card-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 2rem 0;
+    text-align: center;
 
-  @include until('sm') {
-    padding: 2.5rem 2rem;
-  }
+    // 📱 MOBILE FIRST
+    font-size: 1.6rem;
 
-  // 🖥️ TABLET ET PLUS - Maintenir l'espacement généreux
-  @include from('md') {
-    padding: 3.5rem 3rem;
-  }
+    @include until('sm') {
+      font-size: 1.4rem;
+      margin: 0 0 1.75rem 0;
+    }
 
-  @include from('lg') {
-    padding: 4rem 3.5rem;
-  }
+    @include from('xl') {
+      font-size: 1.8rem;
+      margin: 0 0 1.5rem 0;
+    }
 
-  // 🖥️ DESKTOP - Retour aux valeurs compactes
-  @include from('xl') {
-    padding: 1.5rem;
-  }
-
-  &:hover {
-    border-color: rgba(css-var(color-purple), 0.3);
-    box-shadow: 0 8px 32px rgba(css-var(color-purple), 0.1);
-  }
-}
-
-.card-title {
-  font-weight: 700;
-  color: css-var(color-light);
-  margin: 0 0 2rem 0;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(css-var(color-light), 0.1);
-  text-align: center;
-
-  // 📱 MOBILE FIRST
-  font-size: 1.3rem;
-
-  @include until('sm') {
-    font-size: 1.2rem;
-    margin: 0 0 1.75rem 0;
-    padding-bottom: 1.25rem;
-  }
-
-  @include from('xl') {
-    font-size: 1.1rem;
-    margin: 0 0 0.875rem 0;
-    padding-bottom: 0.5rem;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-purple),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+    }
   }
 }
 
 .info-grid {
   display: flex;
-  flex-direction: column;
-
-  // 📱 MOBILE FIRST - Plus d'espace entre les items
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 1.5rem;
+  width: 100%;
 
   @include until('sm') {
-    gap: 1.25rem;
+    gap: 1rem;
+  }
+
+  @include from('md') {
+    gap: 2rem;
   }
 
   @include from('xl') {
-    gap: 0.75rem;
+    gap: 2.5rem;
   }
 }
 
 .info-item {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(css-var(color-light), 0.05);
+  text-align: center;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Cartes plus grandes et tactiles
+  padding: 2rem 1.5rem;
+  min-width: 140px;
+  flex: 1;
+  max-width: 200px;
 
   @include until('sm') {
-    padding: 0.875rem 0;
+    padding: 1.75rem 1.25rem;
+    min-width: 120px;
+  }
+
+  @include from('md') {
+    padding: 2.25rem 1.75rem;
+    min-width: 160px;
   }
 
   @include from('xl') {
-    padding: 0.5rem 0;
+    padding: 1.5rem 1.25rem;
+    min-width: 150px;
+    max-width: 180px;
   }
 
-  &:last-child {
-    border-bottom: none;
+  &:hover {
+    transform: translateY(-5px);
+    border-color: rgba(css-var(color-purple), 0.4);
+    box-shadow: 0 12px 40px rgba(css-var(color-purple), 0.2);
   }
 
   .info-label {
     color: css-var(text-color-muted);
     font-weight: 500;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 
     // 📱 MOBILE FIRST
-    font-size: 1rem;
+    font-size: 0.85rem;
 
     @include until('sm') {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
     }
 
     @include from('xl') {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
   }
 
   .info-value {
     color: css-var(color-light);
-    font-weight: 600;
+    font-weight: 700;
+    background: linear-gradient(
+      135deg,
+      css-var(color-purple),
+      css-var(color-pink)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 
-    // 📱 MOBILE FIRST
-    font-size: 1.05rem;
+    // 📱 MOBILE FIRST - Valeurs bien visibles
+    font-size: 1.4rem;
 
     @include until('sm') {
-      font-size: 1rem;
+      font-size: 1.2rem;
     }
 
     @include from('xl') {
-      font-size: 0.9rem;
+      font-size: 1.3rem;
     }
+  }
+
+  // Icône décorative en arrière-plan
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 8px;
+    height: 8px;
+    background: css-var(color-purple);
+    border-radius: 50%;
+    opacity: 0.3;
   }
 }
 
@@ -1266,121 +1300,154 @@
 }
 
 // =============================
-// CARTE TARIFICATION - MOBILE-FIRST
+// CARTE TARIFICATION - MOBILE-FIRST EN CARTES
 // =============================
 
 .pricing-card {
-  background: rgba(css-var(color-light), 0.03);
-  border: 1px solid rgba(css-var(color-light), 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 
-  // 📱 MOBILE FIRST - Padding généreux
-  padding: 3rem 2.5rem;
+  .card-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 2rem 0;
+    text-align: center;
+    position: relative;
 
-  @include until('sm') {
-    padding: 2.5rem 2rem;
-  }
+    // 📱 MOBILE FIRST
+    font-size: 1.6rem;
 
-  // 🖥️ TABLET ET PLUS - Maintenir l'espacement généreux
-  @include from('md') {
-    padding: 3.5rem 3rem;
-  }
+    @include until('sm') {
+      font-size: 1.4rem;
+      margin: 0 0 1.75rem 0;
+    }
 
-  @include from('lg') {
-    padding: 4rem 3.5rem;
-  }
+    @include from('xl') {
+      font-size: 1.8rem;
+      margin: 0 0 1.5rem 0;
+    }
 
-  // 🖥️ DESKTOP - Retour aux valeurs compactes
-  @include from('xl') {
-    padding: 1.5rem;
-  }
-
-  &:hover {
-    border-color: rgba(css-var(color-pink), 0.3);
-    box-shadow: 0 8px 32px rgba(css-var(color-pink), 0.1);
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+    }
   }
 }
 
 .pricing-grid {
   display: flex;
-  flex-direction: column;
-
-  // 📱 MOBILE FIRST - Plus d'espace entre les prix
-  gap: 1.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
 
   @include until('sm') {
-    gap: 1.5rem;
+    gap: 1rem;
+    flex-direction: column;
+  }
+
+  @include from('md') {
+    gap: 2rem;
   }
 
   @include from('xl') {
-    gap: 0.875rem;
+    gap: 2.5rem;
   }
 }
 
 .price-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 10px;
+  background: rgba(css-var(color-light), 0.03);
+  border: 2px solid;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 
-  // 📱 MOBILE FIRST - Beaucoup plus d'espace
-  padding: 1.75rem 1.5rem;
+  // 📱 MOBILE FIRST - Cartes plus grandes et tactiles
+  padding: 2.5rem 2rem;
+  min-width: 180px;
+  flex: 1;
+  max-width: 250px;
 
   @include until('sm') {
-    padding: 1.5rem 1.25rem;
+    padding: 2rem 1.5rem;
+    min-width: 160px;
+    width: 100%;
+    max-width: none;
+  }
+
+  @include from('md') {
+    padding: 2.75rem 2.25rem;
+    min-width: 200px;
   }
 
   @include from('xl') {
-    padding: 0.75rem;
+    padding: 2rem 1.75rem;
+    min-width: 190px;
+    max-width: 220px;
   }
 
-  &.fee {
-    background: rgba(css-var(color-orange), 0.1);
-    border: 1px solid rgba(css-var(color-orange), 0.2);
-
-    .price-label {
-      color: color.adjust($color-orange, $lightness: 20%);
-    }
-
-    .price-amount {
-      color: css-var(color-orange);
-    }
-
-    &:hover {
-      background: rgba(css-var(color-orange), 0.15);
-    }
+  // Effet de brillance au hover
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 20px;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
   }
 
-  &.rent {
-    background: rgba(css-var(color-pink), 0.1);
-    border: 1px solid rgba(css-var(color-pink), 0.2);
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 
-    .price-label {
-      color: color.adjust($color-pink, $lightness: 20%);
-    }
-
-    .price-amount {
-      color: css-var(color-pink);
-    }
-
-    &:hover {
-      background: rgba(css-var(color-pink), 0.15);
+    &::before {
+      opacity: 1;
     }
   }
 
   .price-label {
-    font-weight: 500;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
 
     // 📱 MOBILE FIRST
-    font-size: 1rem;
+    font-size: 0.9rem;
 
     @include until('sm') {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      margin-bottom: 0.75rem;
     }
 
     @include from('xl') {
@@ -1389,17 +1456,104 @@
   }
 
   .price-amount {
-    font-weight: 700;
-
-    // 📱 MOBILE FIRST - Prix bien visibles
-    font-size: 1.4rem;
+    font-weight: 800;
+    font-size: 2rem;
+    line-height: 1;
 
     @include until('sm') {
-      font-size: 1.25rem;
+      font-size: 1.75rem;
     }
 
     @include from('xl') {
-      font-size: 1rem;
+      font-size: 1.8rem;
+    }
+  }
+
+  &.fee {
+    background: linear-gradient(
+      135deg,
+      rgba(css-var(color-orange), 0.1),
+      rgba(css-var(color-orange), 0.05)
+    );
+    border-color: rgba(css-var(color-orange), 0.3);
+
+    .price-label {
+      color: color.adjust($color-orange, $lightness: 20%);
+    }
+
+    .price-amount {
+      background: linear-gradient(
+        135deg,
+        css-var(color-orange),
+        color.adjust($color-orange, $lightness: 15%)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(color-orange), 0.15),
+        rgba(css-var(color-orange), 0.08)
+      );
+      border-color: rgba(css-var(color-orange), 0.5);
+      box-shadow: 0 20px 60px rgba(css-var(color-orange), 0.3);
+    }
+
+    // Icône décorative
+    &::after {
+      content: '💰';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.2rem;
+      opacity: 0.3;
+    }
+  }
+
+  &.rent {
+    background: linear-gradient(
+      135deg,
+      rgba(css-var(color-pink), 0.1),
+      rgba(css-var(color-pink), 0.05)
+    );
+    border-color: rgba(css-var(color-pink), 0.3);
+
+    .price-label {
+      color: color.adjust($color-pink, $lightness: 20%);
+    }
+
+    .price-amount {
+      background: linear-gradient(
+        135deg,
+        css-var(color-pink),
+        color.adjust($color-pink, $lightness: 15%)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(color-pink), 0.15),
+        rgba(css-var(color-pink), 0.08)
+      );
+      border-color: rgba(css-var(color-pink), 0.5);
+      box-shadow: 0 20px 60px rgba(css-var(color-pink), 0.3);
+    }
+
+    // Icône décorative
+    &::after {
+      content: '📅';
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.2rem;
+      opacity: 0.3;
     }
   }
 }
