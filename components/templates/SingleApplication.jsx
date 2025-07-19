@@ -212,155 +212,160 @@ const SingleApplication = ({
         )}
       </section>
 
-      <section className="others details-section">
+      {/* SECTION 1 - En-tête et Informations techniques */}
+      <section className="others app-header-section">
         {appDetails &&
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
-          <div className="app-showcase">
-            <div className="showcase-container">
-              {/* En-tête principal avec titre et template */}
-              <div className="showcase-header">
-                <div className="title-block">
-                  <h1 className="app-title">{appDetails.application_name}</h1>
-                  <div className="template-info">
-                    <span className="template-label">Template:</span>
-                    <span className="template-name">
-                      {template?.template_name}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="app-badges">
-                  <div className="badge level-badge">
-                    <span className="badge-label">Type</span>
-                    <span className="badge-value">
-                      {getApplicationLevelLabel(appDetails.application_level)}
-                    </span>
-                  </div>
-                  <div className="badge category-badge">
-                    <span className="badge-label">Catégorie</span>
-                    <span className="badge-value">
-                      {appDetails.application_category}
-                    </span>
-                  </div>
-                  <div className="badge sales-badge">
-                    <span className="badge-label">Ventes</span>
-                    <span className="badge-value">
-                      {appDetails.application_sales || 0}
-                    </span>
-                  </div>
+          <div className="app-header-container">
+            {/* En-tête principal avec titre et template */}
+            <div className="app-header">
+              <div className="title-block">
+                <h1 className="app-title">{appDetails.application_name}</h1>
+                <div className="template-info">
+                  <span className="template-label">Template:</span>
+                  <span className="template-name">
+                    {template?.template_name}
+                  </span>
                 </div>
               </div>
 
-              {/* Contenu principal en deux colonnes */}
-              <div className="showcase-content">
-                {/* Colonne de gauche - Description */}
-                <div className="content-main">
-                  <div className="description-card">
-                    <h2 className="section-title">
-                      Description de l&apos;application
-                    </h2>
-                    <div className="description-content">
-                      <p className="description-text">
-                        {appDetails.application_description ||
-                          'Aucune description disponible pour cette application.'}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Boutons d'action */}
-                  <div className="action-buttons">
-                    <Link
-                      href={appDetails.application_link}
-                      className="btn btn-primary"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span className="btn-icon">🚀</span>
-                      <span className="btn-text">
-                        Visiter l&apos;Application
-                      </span>
-                    </Link>
-
-                    {appDetails.application_admin_link && (
-                      <Link
-                        href={appDetails.application_admin_link}
-                        className="btn btn-secondary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span className="btn-icon">⚙️</span>
-                        <span className="btn-text">Interface Admin</span>
-                      </Link>
-                    )}
-
-                    <button
-                      onClick={openOrderModal}
-                      className={`btn btn-accent ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
-                      disabled={
-                        !platforms ||
-                        typeof platforms !== 'object' ||
-                        Object.keys(platforms).length === 0
-                      }
-                    >
-                      <span className="btn-icon">💳</span>
-                      <span className="btn-text">
-                        {!platforms ||
-                        typeof platforms !== 'object' ||
-                        Object.keys(platforms).length === 0
-                          ? 'Paiement indisponible'
-                          : 'Commander maintenant'}
-                      </span>
-                    </button>
-                  </div>
+              <div className="app-badges">
+                <div className="badge level-badge">
+                  <span className="badge-label">Type</span>
+                  <span className="badge-value">
+                    {getApplicationLevelLabel(appDetails.application_level)}
+                  </span>
                 </div>
-
-                {/* Colonne de droite - Informations techniques */}
-                <div className="content-sidebar">
-                  <div className="info-card">
-                    <h3 className="card-title">Informations Techniques</h3>
-                    <div className="info-grid">
-                      <div className="info-item">
-                        <span className="info-label">Niveau</span>
-                        <span className="info-value">
-                          {appDetails.application_level}
-                        </span>
-                      </div>
-                      <div className="info-item">
-                        <span className="info-label">Catégorie</span>
-                        <span className="info-value">
-                          {appDetails.application_category}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Carte des prix */}
-                  <div className="pricing-card">
-                    <h3 className="card-title">Tarification</h3>
-                    <div className="pricing-grid">
-                      <div className="price-item fee">
-                        <span className="price-label">
-                          Frais d&apos;installation
-                        </span>
-                        <span className="price-amount">
-                          {formatCurrency(appDetails.application_fee)}
-                        </span>
-                      </div>
-                      <div className="price-item rent">
-                        <span className="price-label">Loyer mensuel</span>
-                        <span className="price-amount">
-                          {formatCurrency(appDetails.application_rent)}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="pricing-note">
-                      <small>
-                        Tous les prix sont en Francs Djiboutiens (FDJ)
-                      </small>
-                    </div>
-                  </div>
+                <div className="badge category-badge">
+                  <span className="badge-label">Catégorie</span>
+                  <span className="badge-value">
+                    {appDetails.application_category}
+                  </span>
                 </div>
+                <div className="badge sales-badge">
+                  <span className="badge-label">Ventes</span>
+                  <span className="badge-value">
+                    {appDetails.application_sales || 0}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Informations techniques */}
+            <div className="info-card">
+              <h3 className="card-title">Informations Techniques</h3>
+              <div className="info-grid">
+                <div className="info-item">
+                  <span className="info-label">Niveau</span>
+                  <span className="info-value">
+                    {appDetails.application_level}
+                  </span>
+                </div>
+                <div className="info-item">
+                  <span className="info-label">Catégorie</span>
+                  <span className="info-value">
+                    {appDetails.application_category}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="no-details">
+            <div className="no-details-content">
+              <h2>Aucune information disponible</h2>
+              <p>
+                Les détails de cette application ne sont pas disponibles pour le
+                moment.
+              </p>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* SECTION 2 - Description, Boutons d'actions et Tarification */}
+      <section className="others app-details-section">
+        {appDetails &&
+        typeof appDetails === 'object' &&
+        Object.keys(appDetails).length > 0 ? (
+          <div className="app-details-container">
+            {/* Description */}
+            <div className="description-card">
+              <h2 className="section-title">
+                Description de l&apos;application
+              </h2>
+              <div className="description-content">
+                <p className="description-text">
+                  {appDetails.application_description ||
+                    'Aucune description disponible pour cette application.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Boutons d'action */}
+            <div className="action-buttons">
+              <Link
+                href={appDetails.application_link}
+                className="btn btn-primary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="btn-icon">🚀</span>
+                <span className="btn-text">Visiter l&apos;Application</span>
+              </Link>
+
+              {appDetails.application_admin_link && (
+                <Link
+                  href={appDetails.application_admin_link}
+                  className="btn btn-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="btn-icon">⚙️</span>
+                  <span className="btn-text">Interface Admin</span>
+                </Link>
+              )}
+
+              <button
+                onClick={openOrderModal}
+                className={`btn btn-accent ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
+                disabled={
+                  !platforms ||
+                  typeof platforms !== 'object' ||
+                  Object.keys(platforms).length === 0
+                }
+              >
+                <span className="btn-icon">💳</span>
+                <span className="btn-text">
+                  {!platforms ||
+                  typeof platforms !== 'object' ||
+                  Object.keys(platforms).length === 0
+                    ? 'Paiement indisponible'
+                    : 'Commander maintenant'}
+                </span>
+              </button>
+            </div>
+
+            {/* Carte des prix */}
+            <div className="pricing-card">
+              <h3 className="card-title">Tarification</h3>
+              <div className="pricing-grid">
+                <div className="price-item fee">
+                  <span className="price-label">Frais d&apos;installation</span>
+                  <span className="price-amount">
+                    {formatCurrency(appDetails.application_fee)}
+                  </span>
+                </div>
+                <div className="price-item rent">
+                  <span className="price-label">Loyer mensuel</span>
+                  <span className="price-amount">
+                    {formatCurrency(appDetails.application_rent)}
+                  </span>
+                </div>
+              </div>
+              <div className="pricing-note">
+                <small>Tous les prix sont en Francs Djiboutiens (FDJ)</small>
               </div>
             </div>
           </div>
