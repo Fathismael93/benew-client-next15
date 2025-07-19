@@ -237,16 +237,14 @@ const SingleApplication = ({
                     {getApplicationLevelLabel(appDetails.application_level)}
                   </span>
                 </div>
-                <div className="badge category-badge">
-                  <span className="badge-label">Catégorie</span>
+                <div className="badge category-badge compact">
                   <span className="badge-value">
                     {appDetails.application_category}
                   </span>
                 </div>
-                <div className="badge sales-badge">
-                  <span className="badge-label">Ventes</span>
+                <div className="badge sales-badge compact">
                   <span className="badge-value">
-                    {appDetails.application_sales || 0}
+                    {appDetails.application_sales || 0} ventes
                   </span>
                 </div>
               </div>
