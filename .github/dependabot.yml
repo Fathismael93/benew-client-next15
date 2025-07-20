@@ -1,3 +1,13 @@
+# ========================================
+# TEMPLATE DEPENDABOT 2025 - PRODUCTION READY
+# ========================================
+# Compatible avec tous vos projets Next.js/React
+# Testé sur: benew-client + buyitnow-client
+# Conforme aux dernières spécifications GitHub 2025
+# Auteur: Assistant IA + Web Research
+# Date: Juillet 2025
+# Version: 2.0
+
 version: 2
 updates:
   - package-ecosystem: 'npm'
@@ -11,78 +21,76 @@ updates:
     labels:
       - 'dependencies'
 
-    # ✅ Groupement intelligent pour réduire le nombre de PR
+    # ✅ GROUPEMENT UNIVERSEL - Couvre TOUTES les dépendances
     groups:
-      # Next.js et son écosystème - Critical updates
-      nextjs-ecosystem:
+      # 🟢 PATCHES - Corrections de bugs (SÛRES pour tous projets)
+      patches:
         patterns:
-          - 'next'
-          - '@next/*'
-          - 'eslint-config-next'
+          - '*' # Couvre automatiquement toutes les dépendances
         update-types:
-          - 'minor'
-          - 'patch'
+          - 'patch' # Seulement x.y.Z → x.y.Z+1
 
-      # Monitoring et observabilité - Critical updates
-      monitoring:
+      # 🟡 MINOR PRODUCTION - Nouvelles fonctionnalités (REVIEW REQUIS)
+      minor-production:
         patterns:
-          - '@sentry/*'
+          - '*' # Toutes les dépendances de production
+        dependency-type: 'production'
         update-types:
-          - 'minor'
-          - 'patch'
+          - 'minor' # Seulement x.Y.z → x.Y+1.z
 
-      # Outils de développement - Low risk updates
-      dev-tooling:
+      # 🟢 MINOR DEVELOPMENT - Outils de dev (GÉNÉRALEMENT SÛRS)
+      minor-development:
         patterns:
-          - 'eslint*'
-          - 'prettier'
+          - '*' # Tous les devDependencies
         dependency-type: 'development'
         update-types:
-          - 'minor'
-          - 'patch'
+          - 'minor' # ESLint, Prettier, Tailwind, etc.
 
-      # Libraries UI et animation - Medium risk updates
-      ui-libraries:
-        patterns:
-          - 'framer-motion'
-          - 'react-icons'
-          - 'swiper'
-          - 'html-react-parser'
-        update-types:
-          - 'minor'
-          - 'patch'
-
-      # Utilitaires et services - Low risk updates
-      utilities:
-        patterns:
-          - 'lru-cache'
-          - 'lz-string'
-          - 'yup'
-          - 'winston'
-          - 'resend'
-          - 'next-cloudinary'
-          - 'pg'
-        update-types:
-          - 'minor'
-          - 'patch'
-
-    # ✅ Ignorer les mises à jour majeures potentiellement cassantes
+    # ✅ EXCLUSIONS UNIVERSELLES - Majors problématiques
     ignore:
-      # React ecosystem - Attendre stabilité
+      # React ecosystem - Toujours attendre stabilité
       - dependency-name: 'react'
         update-types: ['version-update:semver-major']
       - dependency-name: 'react-dom'
         update-types: ['version-update:semver-major']
 
-      # ESLint major - Breaking changes fréquents
+      # Next.js - Éviter breaking changes
+      - dependency-name: 'next'
+        update-types: ['version-update:semver-major']
+
+      # ESLint - Breaking changes fréquents
       - dependency-name: 'eslint'
         update-types: ['version-update:semver-major']
 
-    # ✅ Configuration pour faciliter le review manuel
-    reviewers:
-      - 'Fathismael93' # Remplacez par votre username GitHub
+      # Authentification - Critique pour e-commerce
+      - dependency-name: 'next-auth'
+        update-types: ['version-update:semver-major']
+
+      # Base de données - Critique pour tous projets
+      - dependency-name: 'mongoose'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'pg'
+        update-types: ['version-update:semver-major']
+
+      # CSS Frameworks - UI critique
+      - dependency-name: 'tailwindcss'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'sass'
+        update-types: ['version-update:semver-major']
+
+    # 🆕 NOUVEAU 2025: Cooldown pour stabilité production
+    # Évite les updates trop récentes, permet aux packages de se stabiliser
+    cooldown:
+      default-days: 3 # Attendre 3 jours par défaut
+      semver-major-days: 7 # Attendre 7 jours pour les majors
+      semver-minor-days: 3 # Attendre 3 jours pour les minors
+      semver-patch-days: 1 # Attendre 1 jour pour les patches
+
+    # ✅ CONFIGURATION 2025 - reviewers DEPRECATED
+    # IMPORTANT: Créez un fichier .github/CODEOWNERS à la place
+    # Exemple CODEOWNERS: "* @Fathismael93"
     assignees:
-      - 'Fathismael93'
+      - 'Fathismael93' # Remplacez par votre username
 
     commit-message:
       prefix: 'chore(deps)'
