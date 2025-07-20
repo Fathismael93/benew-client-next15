@@ -11,7 +11,8 @@ updates:
       - dependency-name: 'next'
         update-types: ['version-update:semver-major'] # Évite Next.js 13 → 14
 
-  - package-ecosystem: 'github-actions'
-    directory: '/.github/workflows'
-    schedule:
-      interval: 'monthly'
+
+  # - package-ecosystem: 'github-actions'
+  #   directory: '/.github/workflows'
+  #   schedule:
+  #     interval: 'monthly'
