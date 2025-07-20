@@ -1,0 +1,54 @@
+# socket.yml
+# Configuration Socket.dev CORRIGÉE pour version 1.0.64+
+# Format socket.yml version 2 (officiel)
+
+version: 2
+
+# ========================================
+# CONFIGURATION GITHUB APP
+# ========================================
+githubApp:
+  enabled: true
+  pullRequestAlertsEnabled: true
+  dependencyOverviewEnabled: true
+  projectReportsEnabled: true
+  disableCommentsAndCheckRuns: false
+  ignoreUsers: []
+
+# ========================================
+# CHEMINS ET DÉCLENCHEURS
+# ========================================
+# Fichiers/dossiers à ignorer lors des scans
+projectIgnorePaths:
+  - 'node_modules'
+  - '.next'
+  - 'dist'
+  - 'build'
+  - '.cache'
+  - 'coverage'
+  - '.socket'
+  - '*.log'
+  - '.env*'
+  - '*.test.js'
+  - '*.test.jsx'
+  - '__tests__'
+  - '.github/workflows'
+  - 'README.md'
+  - 'CHANGELOG.md'
+
+# Déclencher les alertes seulement pour ces fichiers
+triggerPaths:
+  - 'package.json'
+  - 'package-lock.json'
+  - 'yarn.lock'
+  - 'pnpm-lock.yaml'
+
+# ========================================
+# RÈGLES D'ISSUES PERSONNALISÉES
+# ========================================
+issueRules:
+  # Désactiver certaines alertes selon vos besoins
+  unresolvedRequire: false # Souvent faux positif en Next.js
+  # missingDependency: false
+  # installScripts: true      # Garder activé pour sécurité
+  # highEntropyStrings: false # Peut causer faux positifs
