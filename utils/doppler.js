@@ -43,8 +43,8 @@ const secretsCache = new Map();
 function isValidDopplerToken(token) {
   if (!token || typeof token !== 'string') return false;
 
-  // Format: dp.st.{env}.{rest}
-  const tokenPattern = /^dp\.st\.(dev|prod|stag)\.[\w-]+$/;
+  // Format officiel Doppler 2025 pour Service Token
+  const tokenPattern = /^dp\.st\.(?:[a-z0-9\-_]{2,35}\.)?[a-zA-Z0-9]{40,44}$/;
   return tokenPattern.test(token);
 }
 
