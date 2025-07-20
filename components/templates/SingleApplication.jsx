@@ -232,19 +232,16 @@ const SingleApplication = ({
 
               <div className="app-badges">
                 <div className="badge level-badge">
-                  <span className="badge-label">Type</span>
                   <span className="badge-value">
-                    {getApplicationLevelLabel(appDetails.application_level)}
+                    {
+                      getApplicationLevelLabel(appDetails.application_level)
+                        .short
+                    }
                   </span>
                 </div>
                 <div className="badge category-badge compact">
                   <span className="badge-value">
                     {appDetails.application_category}
-                  </span>
-                </div>
-                <div className="badge sales-badge compact">
-                  <span className="badge-value">
-                    {appDetails.application_sales || 0} ventes
                   </span>
                 </div>
               </div>

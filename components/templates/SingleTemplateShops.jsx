@@ -61,7 +61,7 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
                 <p className="app-subtitle">
                   Type:{' '}
                   <span className="level">
-                    {getApplicationLevelLabel(app.application_level)}
+                    {getApplicationLevelLabel(app.application_level).long}
                   </span>
                 </p>
 

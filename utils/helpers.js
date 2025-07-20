@@ -2,13 +2,13 @@
 export const getApplicationLevelLabel = (level) => {
   switch (level) {
     case 1:
-      return 'Boutique Simplifiée';
+      return { long: 'Boutique Simplifiée', short: 'BS' };
     case 2:
-      return 'Boutique Standard';
+      return { long: 'Boutique Standard', short: 'BS+' };
     case 3:
-      return 'Boutique Supérieure';
+      return { long: 'Boutique Supérieure', short: 'BS++' };
     case 4:
-      return 'Boutique Sophistiquée';
+      return { long: 'Boutique Sophistiquée', short: 'BS*' };
     default:
       return `Niveau ${level}`;
   }
