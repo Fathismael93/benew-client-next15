@@ -7,7 +7,12 @@
 import { Pool } from 'pg';
 import logger from '@utils/logger';
 import { captureMessage, captureDatabaseError } from '../instrumentation.js';
+import { initializeBenewConfig } from '@/utils/doppler';
 import * as Sentry from '@sentry/nextjs';
+
+// Configuration Doppler
+let dopplerConfig = null;
+let isConfigLoaded = false;
 
 const MAX_RETRIES = 5; // Max reconnection attempts
 const RETRY_DELAY = 5000; // Delay between retries (in ms)
@@ -56,6 +61,42 @@ let pool;
 let metricsInterval;
 let healthCheckInterval;
 
+// Load Doppler configuration
+async function loadDopplerConfig() {
+  if (dopplerConfig && isConfigLoaded) return dopplerConfig;
+
+  try {
+    const benewConfig = await initializeBenewConfig();
+    dopplerConfig = benewConfig.database;
+    isConfigLoaded = true;
+
+    console.log(
+      `[${getTimestamp()}] ✅ Doppler database configuration loaded successfully`,
+    );
+    return dopplerConfig;
+  } catch (error) {
+    console.error(
+      `[${getTimestamp()}] ❌ Failed to load Doppler config:`,
+      error.message,
+    );
+
+    // Fallback vers les variables d'environnement
+    dopplerConfig = {
+      username: process.env.USER_NAME,
+      host: process.env.HOST_NAME,
+      database: process.env.DB_NAME,
+      password: process.env.DB_PASSWORD,
+      port: Number(process.env.PORT_NUMBER) || 5432,
+      connectionTimeout: Number(process.env.CONNECTION_TIMEOUT) || 5000,
+      maxClients: Number(process.env.MAXIMUM_CLIENTS) || 10,
+      ssl: process.env.DB_CA ? { ca: process.env.DB_CA } : false,
+    };
+
+    isConfigLoaded = true;
+    return dopplerConfig;
+  }
+}
+
 // =============================================
 // POOL METRICS & MONITORING
 // =============================================
@@ -91,7 +132,7 @@ class PoolMetrics {
         pool.totalCount > 0
           ? (pool.totalCount - pool.idleCount) / pool.totalCount
           : 0,
-      maxConnections: Number(process.env.MAXIMUM_CLIENTS) || 10,
+      maxConnections: dopplerConfig?.maxClients || 10,
     };
 
     // Calculate average acquisition time from recent measurements
@@ -388,25 +429,24 @@ async function performHealthCheck() {
 // =============================================
 
 // 🔄 Function to create a new pool (for reconnection)
-const createPool = () => {
-  pool = new Pool({
-    user: process.env.USER_NAME,
-    host: process.env.HOST_NAME,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: Number(process.env.PORT_NUMBER) || 5432,
-    connectionTimeoutMillis: Number(process.env.CONNECTION_TIMEOUT) || 5000,
-    max: Number(process.env.MAXIMUM_CLIENTS) || 10,
-    idleTimeoutMillis: Number(process.env.CLIENT_EXISTENCE) || 30000,
+const createPool = async () => {
+  const config = await loadDopplerConfig();
 
-    ssl: process.env.DB_CA
-      ? {
-          require: true,
-          rejectUnauthorized: true,
-          ca: process.env.DB_CA,
-        }
-      : false,
+  pool = new Pool({
+    user: config.username,
+    host: config.host,
+    database: config.database,
+    password: config.password,
+    port: Number(config.port) || 5432,
+    connectionTimeoutMillis: Number(config.connectionTimeout) || 5000,
+    max: Number(config.maxClients) || 10,
+    idleTimeoutMillis: Number(process.env.CLIENT_EXISTENCE) || 30000,
+    ssl: config.ssl || false,
   });
+
+  console.log(`[${getTimestamp()}] 🔧 Pool created with Doppler configuration`);
+
+  // Resto de votre fonction createPool existante (les events handlers)...
 
   // ✅ SENTRY V9 - Improved error handling
   pool.on('error', (err, client) => {
@@ -510,7 +550,7 @@ const createPool = () => {
   return pool;
 };
 
-pool = createPool();
+pool = await createPool();
 
 // =============================================
 // MONITORING INTERVALS
@@ -597,6 +637,10 @@ const reconnectPool = async (attempt = 1) => {
       err.message,
     );
   }
+
+  // Refresh Doppler config before reconnecting
+  isConfigLoaded = false;
+  dopplerConfig = null;
 
   try {
     pool = createPool();
@@ -919,4 +963,10 @@ export const monitoring = {
   },
   performHealthCheck,
   getPoolInstance: () => pool,
+  getDopplerConfig: () => dopplerConfig,
+  refreshDopplerConfig: async () => {
+    isConfigLoaded = false;
+    dopplerConfig = null;
+    return await loadDopplerConfig();
+  },
 };
