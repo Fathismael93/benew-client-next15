@@ -4,14 +4,87 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
-    open-pull-requests-limit: 10
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Europe/Paris'
+    open-pull-requests-limit: 5
     labels:
       - 'dependencies'
-    ignore:
-      - dependency-name: 'next'
-        update-types: ['version-update:semver-major'] # Évite Next.js 13 → 14
 
-  - package-ecosystem: 'github-actions'
-    directory: '/.github/workflows'
-    schedule:
-      interval: 'monthly'
+    # ✅ Groupement intelligent pour réduire le nombre de PR
+    groups:
+      # Next.js et son écosystème - Critical updates
+      nextjs-ecosystem:
+        patterns:
+          - 'next'
+          - '@next/*'
+          - 'eslint-config-next'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Monitoring et observabilité - Critical updates
+      monitoring:
+        patterns:
+          - '@sentry/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Outils de développement - Low risk updates
+      dev-tooling:
+        patterns:
+          - 'eslint*'
+          - 'prettier'
+        dependency-type: 'development'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Libraries UI et animation - Medium risk updates
+      ui-libraries:
+        patterns:
+          - 'framer-motion'
+          - 'react-icons'
+          - 'swiper'
+          - 'html-react-parser'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Utilitaires et services - Low risk updates
+      utilities:
+        patterns:
+          - 'lru-cache'
+          - 'lz-string'
+          - 'yup'
+          - 'winston'
+          - 'resend'
+          - 'next-cloudinary'
+          - 'pg'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+    # ✅ Ignorer les mises à jour majeures potentiellement cassantes
+    ignore:
+      # React ecosystem - Attendre stabilité
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+
+      # ESLint major - Breaking changes fréquents
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+
+    # ✅ Configuration pour faciliter le review manuel
+    reviewers:
+      - 'Fathismael93' # Remplacez par votre username GitHub
+    assignees:
+      - 'Fathismael93'
+
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
+      include: 'scope'
