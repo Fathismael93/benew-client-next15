@@ -231,7 +231,7 @@ const SingleApplication = ({
               </div>
 
               <div className="app-badges">
-                <div className="badge level-badge">
+                <div className="badge level-badge compact">
                   <span className="badge-value">
                     {
                       getApplicationLevelLabel(appDetails.application_level)
