@@ -67,13 +67,15 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
 
                 <div className="price-section">
                   <div className="price-item">
-                    <span className="price-label">Frais</span>
+                    <span className="price-label">
+                      Frais d&apos;acquisition
+                    </span>
                     <span className="price">
                       {formatPrice(app.application_fee)} FDJ
                     </span>
                   </div>
                   <div className="price-item">
-                    <span className="price-label">Gestion</span>
+                    <span className="price-label">Frais de gestion</span>
                     <span className="rent-price">
                       {formatPrice(app.application_rent)} FDJ/mois
                     </span>
