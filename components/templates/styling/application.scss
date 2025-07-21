@@ -1488,22 +1488,22 @@
   align-items: center;
   justify-content: center;
 
-  // 📱 MOBILE FIRST - Padding généreux
-  padding: 0 1.5rem;
+  // 📱 MOBILE FIRST - Padding généreux avec espace vertical
+  padding: 2rem 1.5rem;
   gap: 3rem;
 
   @include until('sm') {
-    padding: 0 1rem;
+    padding: 1.5rem 1rem;
     gap: 2.5rem;
   }
 
   @include from('md') {
-    padding: 0 2rem;
+    padding: 2.5rem 2rem;
     gap: 3.5rem;
   }
 
   @include from('xl') {
-    padding: 0 2rem;
+    padding: 3rem 2rem;
     gap: 2rem;
     height: 100%;
   }
