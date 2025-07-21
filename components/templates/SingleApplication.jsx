@@ -28,6 +28,9 @@ const SingleApplication = ({
   // State for modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // État pour la navigation mobile section 2
+  const [activePricingSection, setActivePricingSection] = useState('needs');
+
   // Ajoutez ceci juste avant le return, après la fonction closeOrderModal
   useEffect(() => {
     const toggleButtons = document.querySelectorAll('.toggle-btn');
@@ -405,40 +408,83 @@ const SingleApplication = ({
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
           <div className="app-details-container">
-            <div className="purchase-grid">
-              {/* Bouton d'action à gauche */}
-              <div className="purchase-section">
-                <h3 className="section-title">Commander l&apos;application</h3>
-                <div className="purchase-content">
-                  <p className="purchase-description">
-                    Commandez maintenant cette application et bénéficiez
-                    d&apos;une installation complète avec support technique
-                    inclus.
-                  </p>
+            {/* Boutons de toggle mobile pour section 2 */}
+            <div className="mobile-section-nav">
+              <button
+                className={`section-btn ${activePricingSection === 'needs' ? 'active' : ''}`}
+                onClick={() => setActivePricingSection('needs')}
+              >
+                <span className="btn-icon">📋</span>
+                <span className="btn-text">Besoins spécifiques</span>
+              </button>
+              <button
+                className={`section-btn ${activePricingSection === 'pricing' ? 'active' : ''}`}
+                onClick={() => setActivePricingSection('pricing')}
+              >
+                <span className="btn-icon">💰</span>
+                <span className="btn-text">Tarification</span>
+              </button>
+            </div>
 
-                  <button
-                    onClick={openOrderModal}
-                    className={`btn btn-primary purchase-btn ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
-                    disabled={
-                      !platforms ||
-                      typeof platforms !== 'object' ||
-                      Object.keys(platforms).length === 0
-                    }
-                  >
-                    <span className="btn-icon">💳</span>
-                    <span className="btn-text">
-                      {!platforms ||
-                      typeof platforms !== 'object' ||
-                      Object.keys(platforms).length === 0
-                        ? 'Paiement indisponible'
-                        : 'Commander maintenant'}
-                    </span>
-                  </button>
+            <div className="purchase-grid">
+              {/* Section besoins spécifiques à gauche */}
+              <div
+                className={`needs-section ${activePricingSection === 'needs' ? 'active' : ''}`}
+              >
+                <h3 className="section-title">
+                  Besoins spécifiques de l&apos;application
+                </h3>
+                <div className="needs-table-container">
+                  <table className="needs-table">
+                    <tbody>
+                      <tr className="needs-row">
+                        <td className="needs-item">
+                          <span className="needs-icon">🌐</span>
+                          <span className="needs-text">Un hébergement web</span>
+                        </td>
+                      </tr>
+                      <tr className="needs-row">
+                        <td className="needs-item">
+                          <span className="needs-icon">💾</span>
+                          <span className="needs-text">
+                            Un hébergement de base de données
+                          </span>
+                        </td>
+                      </tr>
+                      <tr className="needs-row">
+                        <td className="needs-item">
+                          <span className="needs-icon">🔗</span>
+                          <span className="needs-text">
+                            Un nom de domaine (.com, .org, ...)
+                          </span>
+                        </td>
+                      </tr>
+                      <tr className="needs-row">
+                        <td className="needs-item">
+                          <span className="needs-icon">📧</span>
+                          <span className="needs-text">
+                            Un email professionnel
+                          </span>
+                        </td>
+                      </tr>
+                      <tr className="needs-row free-tools">
+                        <td className="needs-item">
+                          <span className="needs-icon">🎁</span>
+                          <span className="needs-text">
+                            Tous les autres outils nécessaires sont offerts
+                            gratuitement
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
-              {/* Tableau tarification à droite */}
-              <div className="pricing-section">
+              {/* Section tarification à droite (gardée identique) */}
+              <div
+                className={`pricing-section ${activePricingSection === 'pricing' ? 'active' : ''}`}
+              >
                 <h3 className="section-title">Tarification</h3>
                 <div className="pricing-table-container">
                   <table className="pricing-table">
@@ -475,6 +521,28 @@ const SingleApplication = ({
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Bouton commander en dessous */}
+            <div className="order-button-container">
+              <button
+                onClick={openOrderModal}
+                className={`btn btn-primary purchase-btn ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
+                disabled={
+                  !platforms ||
+                  typeof platforms !== 'object' ||
+                  Object.keys(platforms).length === 0
+                }
+              >
+                <span className="btn-icon">💳</span>
+                <span className="btn-text">
+                  {!platforms ||
+                  typeof platforms !== 'object' ||
+                  Object.keys(platforms).length === 0
+                    ? 'Paiement indisponible'
+                    : 'Commander maintenant'}
+                </span>
+              </button>
             </div>
           </div>
         ) : (

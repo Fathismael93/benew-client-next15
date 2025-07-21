@@ -21,7 +21,7 @@ export const formatPrice = (price) => {
 
   // Vérifier si le nombre est divisible par 1000
   if (numPrice >= 1000 && numPrice % 1000 === 0) {
-    return `${numPrice / 1000}K`;
+    return `${numPrice / 1000} K`;
   }
   // Vérifier si le nombre est supérieur à 1000 mais pas exactement divisible
   else if (numPrice >= 1000) {

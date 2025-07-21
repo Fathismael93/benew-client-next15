@@ -1675,6 +1675,76 @@
 }
 
 // =============================
+// NAVIGATION MOBILE SECTION 2 - BESOINS ET TARIFICATION
+// =============================
+
+.mobile-section-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+
+  // 🖥️ DESKTOP - Masquer la navigation mobile
+  @include from('lg') {
+    display: none;
+  }
+
+  .section-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid rgba(css-var(color-light), 0.2);
+    background: rgba(css-var(color-light), 0.05);
+    color: css-var(text-color-muted);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+    flex: 1;
+
+    @include until('sm') {
+      padding: 0.625rem 1.25rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-icon {
+      font-size: 1.1rem;
+
+      @include until('sm') {
+        font-size: 1rem;
+      }
+    }
+
+    .btn-text {
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: rgba(css-var(color-light), 0.1);
+      border-color: rgba(css-var(color-light), 0.3);
+      transform: translateY(-2px);
+    }
+
+    &.active {
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(color-orange), 0.15),
+        rgba(css-var(color-pink), 0.1)
+      );
+      border-color: rgba(css-var(color-orange), 0.4);
+      color: css-var(color-orange);
+      box-shadow: 0 4px 15px rgba(css-var(color-orange), 0.2);
+
+      .btn-icon {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// =============================
 // CARTE TARIFICATION - MOBILE-FIRST EN CARTES
 // =============================
 
@@ -1699,6 +1769,222 @@
 
     @include from('xl') {
       font-size: 0.75rem;
+    }
+  }
+}
+
+// =============================
+// SECTION BESOINS SPÉCIFIQUES - MOBILE-FIRST
+// =============================
+
+.needs-section {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  // Padding responsive
+  padding: 2.5rem 2rem;
+
+  @include until('sm') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('md') {
+    padding: 3rem 2.5rem;
+  }
+
+  @include from('lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('xl') {
+    padding: 2rem;
+  }
+
+  &:hover {
+    border-color: rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    position: relative;
+    text-align: center;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('xl') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+}
+
+// =============================
+// TABLEAU BESOINS SPÉCIFIQUES - MOBILE-FIRST
+// =============================
+
+.needs-table-container {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+
+  // Scrollable si nécessaire
+  max-height: 350px;
+  overflow-y: auto;
+
+  @include until('sm') {
+    max-height: 280px;
+  }
+
+  @include from('lg') {
+    max-height: 300px;
+  }
+
+  // Scrollbar personnalisée
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-orange), 0.3);
+    border-radius: 2px;
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.5);
+    }
+  }
+}
+
+.needs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.needs-row {
+  border-bottom: 1px solid rgba(css-var(color-light), 0.08);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(css-var(color-light), 0.02);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.free-tools {
+    background: rgba(css-var(color-orange), 0.05);
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.08);
+    }
+
+    .needs-text {
+      color: css-var(color-orange);
+      font-weight: 600;
+    }
+  }
+
+  .needs-item {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    @include until('sm') {
+      padding: 0.875rem 1rem;
+      gap: 0.625rem;
+    }
+
+    .needs-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+
+      @include until('sm') {
+        font-size: 1.1rem;
+      }
+    }
+
+    .needs-text {
+      color: css-var(color-light);
+      font-weight: 500;
+      line-height: 1.4;
+
+      // 📱 MOBILE FIRST
+      font-size: 0.9rem;
+
+      @include until('sm') {
+        font-size: 0.85rem;
+      }
+
+      @include from('lg') {
+        font-size: 0.95rem;
+      }
     }
   }
 }
@@ -1859,6 +2145,26 @@
 
 .pricing-section {
   width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  @include until('lg') {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+
+    &.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 
   .section-title {
     font-weight: 700;
@@ -2100,6 +2406,37 @@
       @include from('xl') {
         font-size: 1rem;
       }
+    }
+  }
+}
+
+// =============================
+// CONTENEUR BOUTON COMMANDER - MOBILE-FIRST
+// =============================
+
+.order-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(css-var(color-light), 0.1);
+  margin-top: 2rem;
+
+  @include until('sm') {
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .purchase-btn {
+    width: 100%;
+    max-width: 400px;
+
+    @include from('lg') {
+      max-width: 350px;
+    }
+
+    @include from('xl') {
+      max-width: 300px;
     }
   }
 }
