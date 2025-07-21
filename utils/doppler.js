@@ -405,6 +405,16 @@ export async function initializeBenewConfig() {
           process.env.NEXT_PUBLIC_SITE_URL,
         environment: process.env.NODE_ENV,
       },
+
+      // Pour le contact :
+      email: {
+        resendApiKey:
+          secrets.RESEND_API_KEY?.computed || process.env.RESEND_API_KEY,
+        fromAddress:
+          secrets.RESEND_FROM_EMAIL?.computed || process.env.RESEND_FROM_EMAIL,
+        toAddress:
+          secrets.RESEND_TO_EMAIL?.computed || process.env.RESEND_TO_EMAIL,
+      },
     };
 
     // Valider que les secrets critiques sont présents
