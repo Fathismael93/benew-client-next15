@@ -199,7 +199,7 @@ function anonymizeIp(ip) {
  * @param {Object} options - Options supplémentaires
  * @returns {string} Clé unique
  */
-function generateBenewKey(req, prefix = 'benew', options = {}) {
+function generateBenewKey(req, prefix = 'benew') {
   const ip = extractRealIp(req);
   const path = req.url || req.nextUrl?.pathname || '';
 

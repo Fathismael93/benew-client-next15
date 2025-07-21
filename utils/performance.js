@@ -9,7 +9,6 @@ import {
   captureDatabaseError,
   captureCloudinaryError,
   captureEmailError,
-  captureValidationError,
 } from '@/instrumentation';
 
 // Vérification d'environnement pour SSR (Server-Side Rendering)
