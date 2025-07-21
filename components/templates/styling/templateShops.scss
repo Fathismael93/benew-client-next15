@@ -347,26 +347,12 @@
 
 .price-item {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
 
-  &:first-child {
-    .price {
-      // Prix principal plus visible
-      font-size: 1.75rem;
-
-      @include until('sm') {
-        font-size: 1.5rem;
-      }
-
-      @include from('md') {
-        font-size: 1.6rem;
-      }
-
-      @include from('xl') {
-        font-size: 1.5rem;
-      }
-    }
+  @include until('sm') {
+    gap: 0.375rem;
   }
 }
 
@@ -374,7 +360,7 @@
   color: css-var(text-color-muted);
   font-size: 0.75rem;
   font-weight: 500;
-  margin-bottom: 0.25rem;
+  flex-shrink: 0;
 
   @include until('sm') {
     font-size: 0.7rem;
@@ -386,12 +372,30 @@
   color: css-var(primary-color);
   text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
   transition: all 0.3s ease;
+  text-align: right;
+
+  // Prix principal plus visible
+  font-size: 1.75rem;
+
+  @include until('sm') {
+    font-size: 1.5rem;
+  }
+
+  @include from('md') {
+    font-size: 1.6rem;
+  }
+
+  @include from('xl') {
+    font-size: 1.5rem;
+  }
 }
 
 .rent-price {
-  color: css-var(text-color-muted);
+  color: css-var(secondary-color); // Couleur secondaire
   font-weight: 600;
   font-size: 0.9rem;
+  text-align: right;
+  text-shadow: 0 2px 4px rgba(css-var(secondary-color), 0.3);
 
   @include until('sm') {
     font-size: 0.85rem;
