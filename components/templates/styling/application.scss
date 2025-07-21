@@ -1888,16 +1888,16 @@
   backdrop-filter: blur(10px);
   overflow: hidden;
 
-  // Scrollable si nécessaire
-  max-height: 350px;
+  // Même hauteur que le tableau tarification
+  max-height: 300px;
   overflow-y: auto;
 
   @include until('sm') {
-    max-height: 280px;
+    max-height: 250px; // Même hauteur que pricing sur petit écran
   }
 
   @include from('lg') {
-    max-height: 300px;
+    max-height: 300px; // Même hauteur sur desktop
   }
 
   // Scrollbar personnalisée
