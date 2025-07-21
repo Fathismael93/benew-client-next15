@@ -941,168 +941,123 @@
 }
 
 // =============================
-// INFORMATIONS TECHNIQUES - MOBILE-FIRST EN CARTES
+// TABLEAU INFORMATIONS TECHNIQUES - MOBILE-FIRST
 // =============================
 
-.info-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.info-table-card {
+  align-self: flex-start; // Aligné à gauche sous le titre
   width: 100%;
+  max-width: 500px; // Largeur limitée pour un meilleur design
+
+  // 📱 MOBILE FIRST - Position normale
+  @include until('lg') {
+    align-self: center;
+    max-width: none;
+  }
 
   .card-title {
     font-weight: 700;
     color: css-var(color-light);
-    margin: 0 0 2rem 0;
-    text-align: center;
-
-    // 📱 MOBILE FIRST
-    font-size: 1.6rem;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.4rem;
 
     @include until('sm') {
-      font-size: 1.4rem;
-      margin: 0 0 1.75rem 0;
+      font-size: 1.3rem;
+      text-align: center;
     }
 
-    @include from('xl') {
-      font-size: 1.8rem;
-      margin: 0 0 1.5rem 0;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -0.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(
-        90deg,
-        css-var(color-purple),
-        css-var(color-pink)
-      );
-      border-radius: 3px;
+    @include from('lg') {
+      text-align: left;
     }
   }
 }
 
-.info-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
-
-  @include until('sm') {
-    gap: 1rem;
-  }
-
-  @include from('md') {
-    gap: 2rem;
-  }
-
-  @include from('xl') {
-    gap: 2.5rem;
-  }
-}
-
-.info-item {
+.info-table-container {
   background: rgba(css-var(color-light), 0.03);
   border: 1px solid rgba(css-var(color-light), 0.1);
-  border-radius: 16px;
+  border-radius: 12px;
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  position: relative;
+  overflow: hidden;
 
-  // 📱 MOBILE FIRST - Cartes plus grandes et tactiles
-  padding: 2rem 1.5rem;
-  min-width: 140px;
-  flex: 1;
-  max-width: 200px;
+  // Scrollable si nécessaire
+  max-height: 300px;
+  overflow-y: auto;
 
   @include until('sm') {
-    padding: 1.75rem 1.25rem;
-    min-width: 120px;
+    max-height: 250px;
   }
 
-  @include from('md') {
-    padding: 2.25rem 1.75rem;
-    min-width: 160px;
+  // Scrollbar personnalisée
+  &::-webkit-scrollbar {
+    width: 4px;
   }
 
-  @include from('xl') {
-    padding: 1.5rem 1.25rem;
-    min-width: 150px;
-    max-width: 180px;
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
   }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-orange), 0.3);
+    border-radius: 2px;
+  }
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-row {
+  border-bottom: 1px solid rgba(css-var(color-light), 0.08);
+  transition: background-color 0.2s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    border-color: rgba(css-var(color-purple), 0.4);
-    box-shadow: 0 12px 40px rgba(css-var(color-purple), 0.2);
+    background: rgba(css-var(color-light), 0.02);
+  }
+
+  &:last-child {
+    border-bottom: none;
   }
 
   .info-label {
+    padding: 1rem 1.25rem;
     color: css-var(text-color-muted);
     font-weight: 500;
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-
-    // 📱 MOBILE FIRST
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    text-align: left;
+    vertical-align: top;
+    width: 40%;
 
     @include until('sm') {
-      font-size: 0.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    @include from('xl') {
-      font-size: 0.8rem;
+      padding: 0.875rem 1rem;
+      font-size: 0.85rem;
     }
   }
 
   .info-value {
+    padding: 1rem 1.25rem;
     color: css-var(color-light);
-    font-weight: 700;
-    background: linear-gradient(
-      135deg,
-      css-var(color-purple),
-      css-var(color-pink)
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-
-    // 📱 MOBILE FIRST - Valeurs bien visibles
-    font-size: 1.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: left;
+    vertical-align: top;
 
     @include until('sm') {
-      font-size: 1.2rem;
-    }
-
-    @include from('xl') {
-      font-size: 1.3rem;
+      padding: 0.875rem 1rem;
+      font-size: 0.85rem;
     }
   }
 
-  // Icône décorative en arrière-plan
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    width: 8px;
-    height: 8px;
-    background: css-var(color-purple);
-    border-radius: 50%;
-    opacity: 0.3;
+  .info-link {
+    color: css-var(color-orange);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: css-var(color-pink);
+      text-decoration: underline;
+    }
   }
 }
 

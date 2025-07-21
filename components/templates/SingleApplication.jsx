@@ -222,12 +222,6 @@ const SingleApplication = ({
             <div className="app-header">
               <div className="title-block">
                 <h1 className="app-title">{appDetails.application_name}</h1>
-                <div className="template-info">
-                  <span className="template-label">Template:</span>
-                  <span className="template-name">
-                    {template?.template_name}
-                  </span>
-                </div>
               </div>
 
               <div className="app-badges">
@@ -248,21 +242,75 @@ const SingleApplication = ({
             </div>
 
             {/* Informations techniques */}
-            <div className="info-card">
+            {/* Tableau des informations techniques */}
+            <div className="info-table-card">
               <h3 className="card-title">Informations Techniques</h3>
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="info-label">Niveau</span>
-                  <span className="info-value">
-                    {appDetails.application_level}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">Catégorie</span>
-                  <span className="info-value">
-                    {appDetails.application_category}
-                  </span>
-                </div>
+              <div className="info-table-container">
+                <table className="info-table">
+                  <tbody>
+                    <tr className="info-row">
+                      <td className="info-label">Template</td>
+                      <td className="info-value">
+                        {template?.template_name || 'Non spécifié'}
+                      </td>
+                    </tr>
+                    <tr className="info-row">
+                      <td className="info-label">Type d&apos;application</td>
+                      <td className="info-value">
+                        {
+                          getApplicationLevelLabel(appDetails.application_level)
+                            .long
+                        }{' '}
+                        (
+                        {
+                          getApplicationLevelLabel(appDetails.application_level)
+                            .short
+                        }
+                        )
+                      </td>
+                    </tr>
+                    <tr className="info-row">
+                      <td className="info-label">Niveau</td>
+                      <td className="info-value">
+                        {appDetails.application_level}
+                      </td>
+                    </tr>
+                    <tr className="info-row">
+                      <td className="info-label">Catégorie</td>
+                      <td className="info-value">
+                        {appDetails.application_category}
+                      </td>
+                    </tr>
+                    <tr className="info-row">
+                      <td className="info-label">Lien boutique</td>
+                      <td className="info-value">
+                        <a
+                          href={appDetails.application_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="info-link"
+                        >
+                          Voir la boutique
+                        </a>
+                      </td>
+                    </tr>
+                    {appDetails.application_admin_link && (
+                      <tr className="info-row">
+                        <td className="info-label">Gestion boutique</td>
+                        <td className="info-value">
+                          <a
+                            href={appDetails.application_admin_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="info-link"
+                          >
+                            Interface admin
+                          </a>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
