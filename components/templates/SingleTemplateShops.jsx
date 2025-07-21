@@ -57,48 +57,44 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
               <div className="card-content">
                 <h3 className="app-title">{app.application_name}</h3>
 
-                <p className="app-subtitle">
+                <p className="app-meta">
                   <span className="level">
                     {getApplicationLevelLabel(app.application_level).long}
                   </span>
+                  <span className="separator">-</span>
+                  <span className="category">{app.application_category}</span>
                 </p>
 
-                <p className="app-category">{app.application_category}</p>
-
-                <div className="card-footer">
-                  <div className="price-section">
-                    <div className="price-item">
-                      <span className="price-label">
-                        Frais d&apos;acquisition
-                      </span>
-                      <span className="price">
-                        {formatPrice(app.application_fee)} FDJ
-                      </span>
-                    </div>
-                    <div className="price-item">
-                      <span className="price-label">Frais de gestion</span>
-                      <span className="rent-price">
-                        {formatPrice(app.application_rent)} FDJ/mois
-                      </span>
-                    </div>
+                <div className="price-section">
+                  <div className="price-item">
+                    <span className="price-label">Frais</span>
+                    <span className="price">
+                      {formatPrice(app.application_fee)} FDJ
+                    </span>
                   </div>
-
-                  <div className="action-buttons">
-                    <button
-                      className="btn btn-cart"
-                      onClick={() => handleOrderClick(app)}
-                      disabled={!platforms || platforms.length === 0}
-                    >
-                      <FaDollarSign size={16} />
-                    </button>
-                    <Link
-                      href={`/templates/${templateID}/applications/${app.application_id}`}
-                      className="btn btn-preview"
-                    >
-                      <IoEye size={16} />
-                      <span className="btn-text">Voir +</span>
-                    </Link>
+                  <div className="price-item">
+                    <span className="price-label">Gestion</span>
+                    <span className="rent-price">
+                      {formatPrice(app.application_rent)} FDJ/mois
+                    </span>
                   </div>
+                </div>
+
+                <div className="action-buttons">
+                  <button
+                    className="btn btn-cart"
+                    onClick={() => handleOrderClick(app)}
+                    disabled={!platforms || platforms.length === 0}
+                  >
+                    <FaDollarSign size={16} />
+                  </button>
+                  <Link
+                    href={`/templates/${templateID}/applications/${app.application_id}`}
+                    className="btn btn-preview"
+                  >
+                    <IoEye size={16} />
+                    <span className="btn-text">Voir +</span>
+                  </Link>
                 </div>
               </div>
             </div>

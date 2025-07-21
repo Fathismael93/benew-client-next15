@@ -257,104 +257,116 @@
 }
 
 // =============================
-// SOUS-TITRE APPLICATION - MOBILE-FIRST
+// META INFORMATIONS (LEVEL - CATEGORY) - MOBILE-FIRST
 // =============================
 
-.app-subtitle {
+.app-meta {
   color: css-var(text-color-muted);
-  margin: 0 0 1.75rem 0;
+  margin: 0 0 1.5rem 0;
   line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 
-  // 📱 MOBILE FIRST - Plus lisible
-  font-size: 1rem;
+  // 📱 MOBILE FIRST
+  font-size: 0.85rem;
 
   // 📟 TRÈS PETITS ÉCRANS
   @include until('sm') {
-    font-size: 0.95rem;
-    margin: 0 0 1.5rem 0;
+    font-size: 0.8rem;
+    margin: 0 0 1.25rem 0;
   }
 
-  // 🖥️ TABLET ET PLUS - Ajustements
-  @include from('md') {
-    font-size: 0.9rem;
-  }
-
+  // 🖥️ DESKTOP
   @include from('xl') {
-    font-size: 0.875rem; // Valeur desktop originale
-    margin: 0 0 1.5rem 0;
+    font-size: 0.8rem;
   }
 
-  .level {
-    color: css-var(text-color-muted);
+  .level,
+  .category {
     font-weight: 400;
     font-style: italic;
   }
-}
 
-.app-category {
-  color: css-var(text-color-muted);
-  font-size: 0.85rem;
-  font-weight: 400;
-  font-style: italic;
-  margin: 0.25rem 0 1.5rem 0;
-
-  @include until('sm') {
-    font-size: 0.8rem;
-  }
-
-  @include from('xl') {
-    font-size: 0.8rem;
+  .separator {
+    color: css-var(text-color-muted);
+    opacity: 0.6;
   }
 }
 
 // =============================
-// FOOTER CARTE - MOBILE-FIRST ADAPTATIF
+// CONTENU CARTE RESTRUCTURÉ - MOBILE-FIRST
 // =============================
 
-.card-footer {
+.card-content {
+  // 📱 MOBILE FIRST - Flexbox pour structurer le contenu
   display: flex;
-  align-items: flex-end;
-  gap: 1.25rem;
+  flex-direction: column;
+  height: 100%;
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 2;
 
-  // 📱 MOBILE FIRST - Layout intelligent selon l'espace
-  justify-content: space-between;
-
-  // 📟 TRÈS PETITS ÉCRANS - Stack vertical pour plus d'espace
+  // 📟 TRÈS PETITS ÉCRANS
   @include until('sm') {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
+    padding: 1.75rem 1.25rem;
   }
 
-  // 🖥️ TABLET ET PLUS - Layout horizontal
-  @include from('sm') {
-    flex-direction: row;
-    justify-content: space-between;
+  // 🖥️ TABLET ET PLUS - Réduction progressive
+  @include from('md') {
+    padding: 1.75rem 1.375rem;
   }
 
   @include from('xl') {
-    gap: 1rem; // Valeur desktop originale
+    padding: 1.5rem; // Valeur desktop originale
   }
 }
 
 // =============================
-// SECTION PRIX - MOBILE-FIRST
+// SECTION PRIX REPOSITIONNÉE - MOBILE-FIRST
 // =============================
 
 .price-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; // Plus d'espace sur mobile
+  gap: 0.75rem;
+  margin: auto 0 1.5rem 0; // Pousse vers le bas avec marge en bas
 
-  // 📟 TRÈS PETITS ÉCRANS - Centré quand en stack
+  // 📟 TRÈS PETITS ÉCRANS
   @include until('sm') {
-    align-items: center;
-    text-align: center;
-    width: 100%;
+    margin: auto 0 1.25rem 0;
+    gap: 0.5rem;
   }
 
   @include from('xl') {
-    gap: 0.25rem; // Valeur desktop originale
+    margin: auto 0 1rem 0;
+    gap: 0.5rem;
+  }
+}
+
+.price-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  &:first-child {
+    .price {
+      // Prix principal plus visible
+      font-size: 1.75rem;
+
+      @include until('sm') {
+        font-size: 1.5rem;
+      }
+
+      @include from('md') {
+        font-size: 1.6rem;
+      }
+
+      @include from('xl') {
+        font-size: 1.5rem;
+      }
+    }
   }
 }
 
@@ -369,97 +381,72 @@
   }
 }
 
-.price-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
 .price {
   font-weight: 800;
   color: css-var(primary-color);
   text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
   transition: all 0.3s ease;
-
-  // 📱 MOBILE FIRST - Prix imposant et visible
-  font-size: 2.25rem;
-
-  // 📟 TRÈS PETITS ÉCRANS - Toujours impactant
-  @include until('sm') {
-    font-size: 2rem;
-  }
-
-  // 🖥️ TABLET ET PLUS - Réduction progressive
-  @include from('md') {
-    font-size: 2.1rem;
-  }
-
-  @include from('lg') {
-    font-size: 1.9rem;
-  }
-
-  @include from('xl') {
-    font-size: 1.75rem; // Valeur desktop originale
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
-  // Effet hover amélioré
-  .application-card:hover & {
-    color: css-var(secondary-color);
-    transform: scale(1.05);
-  }
-}
-
-.rent {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  // 📟 TRÈS PETITS ÉCRANS - Centré
-  @include until('sm') {
-    justify-content: center;
-  }
-
-  @include from('xl') {
-    gap: 0.25rem; // Valeur desktop originale
-  }
 }
 
 .rent-price {
   color: css-var(text-color-muted);
-  font-weight: 600; // Plus gras pour la lisibilité mobile
-
-  // 📱 MOBILE FIRST - Plus lisible
+  font-weight: 600;
   font-size: 0.9rem;
 
-  // 📟 TRÈS PETITS ÉCRANS
   @include until('sm') {
     font-size: 0.85rem;
   }
 
-  // 🖥️ DESKTOP
   @include from('xl') {
-    font-size: 0.75rem; // Valeur desktop originale
+    font-size: 0.85rem;
     font-weight: 500;
   }
 }
 
 // =============================
-// BOUTONS D'ACTION - MOBILE-FIRST OPTIMISÉS
+// BOUTONS D'ACTION EN BAS - MOBILE-FIRST
 // =============================
 
 .action-buttons {
   display: flex;
   gap: 0.75rem;
+  width: 100%;
+  margin-top: auto; // Pousse vers le bas
 
-  // 📟 TRÈS PETITS ÉCRANS - Boutons plus petits
   @include until('sm') {
-    width: 100%;
     gap: 0.5rem;
   }
 
   @include from('xl') {
     gap: 0.5rem;
+  }
+
+  .btn {
+    flex: 1; // Partage équitable de l'espace
+
+    // 📱 MOBILE FIRST - Boutons tactiles optimaux
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+
+    // 📟 TRÈS PETITS ÉCRANS - Boutons plus compacts
+    @include until('sm') {
+      padding: 0.625rem 0.75rem;
+      font-size: 0.8rem;
+      min-height: 40px;
+    }
+
+    // 🖥️ TABLET ET PLUS - Ajustements progressifs
+    @include from('md') {
+      padding: 0.875rem 1.125rem;
+      font-size: 0.9rem;
+    }
+
+    @include from('xl') {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      min-height: auto;
+    }
   }
 }
 
