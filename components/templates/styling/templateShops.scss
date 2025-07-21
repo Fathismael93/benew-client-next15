@@ -285,18 +285,25 @@
   }
 
   .level {
-    color: css-var(primary-color);
-    font-weight: 700;
-    background: rgba(css-var(primary-color), 0.1);
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    border: 1px solid rgba(css-var(primary-color), 0.2);
-    transition: all 0.3s ease;
+    color: css-var(text-color-muted);
+    font-weight: 400;
+    font-style: italic;
+  }
+}
 
-    &:hover {
-      background: rgba(css-var(primary-color), 0.2);
-      color: css-var(secondary-color);
-    }
+.app-category {
+  color: css-var(text-color-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0.25rem 0 1.5rem 0;
+
+  @include until('sm') {
+    font-size: 0.8rem;
+  }
+
+  @include from('xl') {
+    font-size: 0.8rem;
   }
 }
 
@@ -349,6 +356,23 @@
   @include from('xl') {
     gap: 0.25rem; // Valeur desktop originale
   }
+}
+
+.price-label {
+  color: css-var(text-color-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+
+  @include until('sm') {
+    font-size: 0.7rem;
+  }
+}
+
+.price-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .price {
@@ -426,16 +450,16 @@
 
 .action-buttons {
   display: flex;
-  gap: 0.75rem; // Plus d'espace sur mobile
+  gap: 0.75rem;
 
-  // 📟 TRÈS PETITS ÉCRANS - Boutons full-width
+  // 📟 TRÈS PETITS ÉCRANS - Boutons plus petits
   @include until('sm') {
     width: 100%;
     gap: 0.5rem;
   }
 
   @include from('xl') {
-    gap: 0.5rem; // Valeur desktop originale
+    gap: 0.5rem;
   }
 }
 
@@ -458,12 +482,11 @@
   font-size: 0.95rem;
   min-height: 48px; // Zone tactile recommandée
 
-  // 📟 TRÈS PETITS ÉCRANS - Full width pour une meilleure UX
+  // 📟 TRÈS PETITS ÉCRANS - Boutons plus compacts
   @include until('sm') {
-    flex: 1;
-    padding: 0.875rem 1rem;
-    font-size: 0.9rem;
-    min-height: 44px;
+    padding: 0.625rem 0.75rem; // Plus petit
+    font-size: 0.8rem;
+    min-height: 40px; // Plus petit
   }
 
   // 🖥️ TABLET ET PLUS - Ajustements progressifs
@@ -554,6 +577,13 @@
 
   &:hover svg {
     transform: scale(1.1);
+  }
+
+  .btn-text {
+    // 📟 TRÈS PETITS ÉCRANS - Cacher le texte
+    @include until('sm') {
+      display: none;
+    }
   }
 }
 

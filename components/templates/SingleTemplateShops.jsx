@@ -55,22 +55,28 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
               </div>
 
               <div className="card-content">
-                <h3 className="app-title">
-                  {app.application_name} | {app.application_category}
-                </h3>
+                <h3 className="app-title">{app.application_name}</h3>
+
                 <p className="app-subtitle">
-                  Type:{' '}
                   <span className="level">
                     {getApplicationLevelLabel(app.application_level).long}
                   </span>
                 </p>
 
+                <p className="app-category">{app.application_category}</p>
+
                 <div className="card-footer">
                   <div className="price-section">
-                    <span className="price">
-                      {formatPrice(app.application_fee)} FDJ
-                    </span>
-                    <div className="rent">
+                    <div className="price-item">
+                      <span className="price-label">
+                        Frais d&apos;acquisition
+                      </span>
+                      <span className="price">
+                        {formatPrice(app.application_fee)} FDJ
+                      </span>
+                    </div>
+                    <div className="price-item">
+                      <span className="price-label">Frais de gestion</span>
                       <span className="rent-price">
                         {formatPrice(app.application_rent)} FDJ/mois
                       </span>
@@ -90,7 +96,7 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
                       className="btn btn-preview"
                     >
                       <IoEye size={16} />
-                      Voir +
+                      <span className="btn-text">Voir +</span>
                     </Link>
                   </div>
                 </div>
