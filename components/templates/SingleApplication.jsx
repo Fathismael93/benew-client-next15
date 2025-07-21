@@ -405,70 +405,76 @@ const SingleApplication = ({
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
           <div className="app-details-container">
-            {/* Carte des prix */}
-            <div className="pricing-card">
-              <h3 className="card-title">Tarification</h3>
-              <div className="pricing-grid">
-                <div className="price-item fee">
-                  <span className="price-label">Frais d&apos;installation</span>
-                  <span className="price-amount">
-                    {formatCurrency(appDetails.application_fee)}
-                  </span>
-                </div>
-                <div className="price-item rent">
-                  <span className="price-label">Loyer mensuel</span>
-                  <span className="price-amount">
-                    {formatCurrency(appDetails.application_rent)}
-                  </span>
+            <div className="purchase-grid">
+              {/* Bouton d'action à gauche */}
+              <div className="purchase-section">
+                <h3 className="section-title">Commander l&apos;application</h3>
+                <div className="purchase-content">
+                  <p className="purchase-description">
+                    Commandez maintenant cette application et bénéficiez
+                    d&apos;une installation complète avec support technique
+                    inclus.
+                  </p>
+
+                  <button
+                    onClick={openOrderModal}
+                    className={`btn btn-primary purchase-btn ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
+                    disabled={
+                      !platforms ||
+                      typeof platforms !== 'object' ||
+                      Object.keys(platforms).length === 0
+                    }
+                  >
+                    <span className="btn-icon">💳</span>
+                    <span className="btn-text">
+                      {!platforms ||
+                      typeof platforms !== 'object' ||
+                      Object.keys(platforms).length === 0
+                        ? 'Paiement indisponible'
+                        : 'Commander maintenant'}
+                    </span>
+                  </button>
                 </div>
               </div>
-              <div className="pricing-note">
-                <small>Tous les prix sont en Francs Djiboutiens (FDJ)</small>
+
+              {/* Tableau tarification à droite */}
+              <div className="pricing-section">
+                <h3 className="section-title">Tarification</h3>
+                <div className="pricing-table-container">
+                  <table className="pricing-table">
+                    <tbody>
+                      <tr className="pricing-row">
+                        <td className="pricing-label">
+                          Frais d&apos;acquisition
+                        </td>
+                        <td className="pricing-value">
+                          {formatCurrency(appDetails.application_fee)}
+                        </td>
+                      </tr>
+                      <tr className="pricing-row">
+                        <td className="pricing-label">Frais de gestion</td>
+                        <td className="pricing-value">
+                          {formatCurrency(appDetails.application_rent)}
+                        </td>
+                      </tr>
+                      <tr className="pricing-row total-row">
+                        <td className="pricing-label">Total</td>
+                        <td className="pricing-value">
+                          {formatCurrency(
+                            appDetails.application_fee +
+                              appDetails.application_rent,
+                          )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="pricing-note">
+                    <small>
+                      Tous les prix sont en Francs Djiboutiens (FDJ)
+                    </small>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            {/* Boutons d'action */}
-            <div className="action-buttons">
-              <Link
-                href={appDetails.application_link}
-                className="btn btn-primary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="btn-icon">🚀</span>
-                <span className="btn-text">Visiter l&apos;Application</span>
-              </Link>
-
-              {appDetails.application_admin_link && (
-                <Link
-                  href={appDetails.application_admin_link}
-                  className="btn btn-secondary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span className="btn-icon">⚙️</span>
-                  <span className="btn-text">Interface Admin</span>
-                </Link>
-              )}
-
-              <button
-                onClick={openOrderModal}
-                className={`btn btn-accent ${!platforms || typeof platforms !== 'object' || Object.keys(platforms).length === 0 ? 'disabled' : ''}`}
-                disabled={
-                  !platforms ||
-                  typeof platforms !== 'object' ||
-                  Object.keys(platforms).length === 0
-                }
-              >
-                <span className="btn-icon">💳</span>
-                <span className="btn-text">
-                  {!platforms ||
-                  typeof platforms !== 'object' ||
-                  Object.keys(platforms).length === 0
-                    ? 'Paiement indisponible'
-                    : 'Commander maintenant'}
-                </span>
-              </button>
             </div>
           </div>
         ) : (
