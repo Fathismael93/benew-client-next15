@@ -1436,8 +1436,8 @@
   position: relative;
   overflow: visible;
 
-  // 📱 MOBILE FIRST - Hauteur naturelle
-  min-height: 100vh;
+  // 📱 MOBILE FIRST - Hauteur naturelle sans contrainte
+  min-height: auto;
   height: auto;
   padding: 3rem 0;
 
@@ -1445,12 +1445,12 @@
     padding: 2rem 0;
   }
 
-  // 🖥️ DESKTOP - Hauteur fixe
+  // 🖥️ DESKTOP - Hauteur naturelle aussi
   @include from('xl') {
-    height: 100vh;
-    min-height: 100vh;
-    overflow: hidden;
-    padding: 0;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding: 3rem 0;
   }
 
   // Effet de particules en arrière-plan différent
@@ -1505,7 +1505,7 @@
   @include from('xl') {
     padding: 3rem 2rem;
     gap: 2rem;
-    height: 100%;
+    height: auto; // Supprime la contrainte de hauteur
   }
 }
 
