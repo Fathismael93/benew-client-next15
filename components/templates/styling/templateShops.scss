@@ -368,22 +368,22 @@
 }
 
 .price {
-  font-weight: 600; // Même poids que rent-price
+  font-weight: 700; // Même poids que rent-price
   color: css-var(primary-color);
   text-shadow: 0 2px 4px rgba(css-var(primary-color), 0.3); // Même ombre que rent-price
   transition: all 0.3s ease;
   text-align: right;
 
   // Même taille que rent-price
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 
   @include until('sm') {
     font-size: 0.85rem;
   }
 
   @include from('xl') {
-    font-size: 0.85rem;
-    font-weight: 500; // Même poids que rent-price sur desktop
+    font-size: 1rem;
+    font-weight: 600; // Même poids que rent-price sur desktop
   }
 }
 
