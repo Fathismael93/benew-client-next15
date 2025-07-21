@@ -670,19 +670,20 @@
   position: relative;
   overflow: visible;
 
-  // 📱 MOBILE FIRST - Hauteur naturelle
-  min-height: 100vh;
+  // 📱 MOBILE FIRST - Hauteur naturelle réduite
+  min-height: 80vh;
   height: auto;
-  padding: 3rem 0;
+  padding: 2.5rem 0;
 
   @include until('sm') {
     padding: 2rem 0;
+    min-height: 70vh;
   }
 
-  // 🖥️ DESKTOP - Hauteur fixe
+  // 🖥️ DESKTOP - Hauteur ajustée
   @include from('xl') {
-    height: 100vh;
-    min-height: 100vh;
+    height: 80vh;
+    min-height: 80vh;
     overflow: hidden;
     padding: 0;
   }
@@ -941,36 +942,342 @@
 }
 
 // =============================
-// TABLEAU INFORMATIONS TECHNIQUES - MOBILE-FIRST
+// CONTENU PRINCIPAL - DESCRIPTION + TECHNIQUE
 // =============================
 
-.info-table-card {
-  align-self: flex-start; // Aligné à gauche sous le titre
+.main-content {
   width: 100%;
-  max-width: 500px; // Largeur limitée pour un meilleur design
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
-  // 📱 MOBILE FIRST - Position normale
-  @include until('lg') {
-    align-self: center;
-    max-width: none;
+  @include from('lg') {
+    gap: 0;
+  }
+}
+
+// =============================
+// BOUTONS TOGGLE MOBILE
+// =============================
+
+.mobile-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  // 🖥️ DESKTOP - Masquer les boutons toggle
+  @include from('lg') {
+    display: none;
   }
 
-  .card-title {
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid rgba(css-var(color-light), 0.2);
+    background: rgba(css-var(color-light), 0.05);
+    color: css-var(text-color-muted);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+
+    @include until('sm') {
+      padding: 0.625rem 1.25rem;
+      font-size: 0.85rem;
+    }
+
+    .toggle-icon {
+      font-size: 1.1rem;
+
+      @include until('sm') {
+        font-size: 1rem;
+      }
+    }
+
+    .toggle-text {
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: rgba(css-var(color-light), 0.1);
+      border-color: rgba(css-var(color-light), 0.3);
+      transform: translateY(-2px);
+    }
+
+    &.active {
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(color-orange), 0.15),
+        rgba(css-var(color-pink), 0.1)
+      );
+      border-color: rgba(css-var(color-orange), 0.4);
+      color: css-var(color-orange);
+      box-shadow: 0 4px 15px rgba(css-var(color-orange), 0.2);
+
+      .toggle-icon {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// =============================
+// GRILLE DE CONTENU - RESPONSIVE
+// =============================
+
+.content-grid {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+
+  // 📱 MOBILE - Une colonne, sections empilées
+  grid-template-columns: 1fr;
+
+  @include until('sm') {
+    gap: 1.5rem;
+  }
+
+  // 🖥️ DESKTOP - Deux colonnes côte à côte
+  @include from('lg') {
+    grid-template-columns: 1.2fr 0.8fr; // Description plus large que technique
+    gap: 3rem;
+  }
+
+  @include from('xl') {
+    gap: 4rem;
+  }
+}
+
+// =============================
+// SECTION DESCRIPTION - MOBILE-FIRST
+// =============================
+
+.description-section {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  // Padding responsive
+  padding: 2.5rem 2rem;
+
+  @include until('sm') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('md') {
+    padding: 3rem 2.5rem;
+  }
+
+  @include from('lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('xl') {
+    padding: 2rem;
+  }
+
+  &:hover {
+    border-color: rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
+  }
+
+  .section-title {
     font-weight: 700;
     color: css-var(color-light);
     margin: 0 0 1.5rem 0;
+    position: relative;
+    text-align: center;
+
+    // 📱 MOBILE FIRST
     font-size: 1.4rem;
 
     @include until('sm') {
       font-size: 1.3rem;
-      text-align: center;
+      margin: 0 0 1.25rem 0;
     }
 
     @include from('lg') {
       text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('xl') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+
+  .description-content {
+    .description-text {
+      line-height: 1.6;
+      color: css-var(text-color-muted);
+      margin: 0;
+      text-align: justify;
+
+      // 📱 MOBILE FIRST
+      font-size: 1rem;
+
+      @include until('sm') {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      @include from('lg') {
+        font-size: 1rem;
+        text-align: left;
+      }
+
+      // Scroll si texte trop long
+      max-height: 300px;
+      overflow-y: auto;
+
+      @include until('lg') {
+        max-height: 200px;
+      }
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(css-var(color-orange), 0.3);
+        border-radius: 2px;
+      }
     }
   }
 }
+
+// =============================
+// SECTION TECHNIQUE - MOBILE-FIRST
+// =============================
+
+.technical-section {
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    position: relative;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('xl') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-purple),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+}
+
+// =============================
+// TABLEAU INFORMATIONS TECHNIQUES - RÉORGANISÉ
+// =============================
 
 .info-table-container {
   background: rgba(css-var(color-light), 0.03);
@@ -980,11 +1287,15 @@
   overflow: hidden;
 
   // Scrollable si nécessaire
-  max-height: 300px;
+  max-height: 350px;
   overflow-y: auto;
 
   @include until('sm') {
-    max-height: 250px;
+    max-height: 280px;
+  }
+
+  @include from('lg') {
+    max-height: 300px;
   }
 
   // Scrollbar personnalisée
@@ -997,7 +1308,7 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(css-var(color-orange), 0.3);
+    background: rgba(css-var(color-purple), 0.3);
     border-radius: 2px;
   }
 }
@@ -1023,14 +1334,22 @@
     padding: 1rem 1.25rem;
     color: css-var(text-color-muted);
     font-weight: 500;
-    font-size: 0.9rem;
     text-align: left;
     vertical-align: top;
-    width: 40%;
+    width: 45%;
+
+    // 📱 MOBILE FIRST
+    font-size: 0.85rem;
 
     @include until('sm') {
       padding: 0.875rem 1rem;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      width: 40%;
+    }
+
+    @include from('lg') {
+      font-size: 0.9rem;
+      width: 50%;
     }
   }
 
@@ -1038,18 +1357,24 @@
     padding: 1rem 1.25rem;
     color: css-var(color-light);
     font-weight: 600;
-    font-size: 0.9rem;
     text-align: left;
     vertical-align: top;
 
+    // 📱 MOBILE FIRST
+    font-size: 0.85rem;
+
     @include until('sm') {
       padding: 0.875rem 1rem;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+    }
+
+    @include from('lg') {
+      font-size: 0.9rem;
     }
   }
 
   .info-link {
-    color: css-var(color-orange);
+    color: css-var(color-purple);
     text-decoration: none;
     font-weight: 600;
     transition: all 0.2s ease;
@@ -1144,120 +1469,6 @@
     padding: 0 2rem;
     gap: 2rem;
     height: 100%;
-  }
-}
-
-// =============================
-// DESCRIPTION CARD - MOBILE-FIRST
-// =============================
-
-.description-card {
-  background: rgba(css-var(color-light), 0.03);
-  border: 1px solid rgba(css-var(color-light), 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-  width: 100%;
-
-  // 📱 MOBILE FIRST - Padding généreux
-  padding: 3rem 2.5rem;
-
-  @include until('sm') {
-    padding: 2.5rem 2rem;
-  }
-
-  // 🖥️ TABLET ET PLUS - Maintenir l'espacement généreux
-  @include from('md') {
-    padding: 3.5rem 3rem;
-  }
-
-  @include from('lg') {
-    padding: 4rem 3.5rem;
-  }
-
-  // 🖥️ DESKTOP - Retour aux valeurs compactes
-  @include from('xl') {
-    padding: 2rem;
-  }
-
-  &:hover {
-    border-color: rgba(css-var(color-orange), 0.3);
-    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
-  }
-
-  .section-title {
-    font-weight: 700;
-    color: css-var(color-light);
-    margin: 0 0 2rem 0;
-    position: relative;
-    text-align: center;
-
-    // 📱 MOBILE FIRST
-    font-size: 1.6rem;
-
-    @include until('sm') {
-      font-size: 1.4rem;
-      margin: 0 0 1.75rem 0;
-    }
-
-    @include from('xl') {
-      font-size: 1.8rem;
-      margin: 0 0 1.5rem 0;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(
-        90deg,
-        css-var(color-orange),
-        css-var(color-pink)
-      );
-      border-radius: 3px;
-    }
-  }
-
-  .description-content {
-    .description-text {
-      line-height: 1.6;
-      color: css-var(text-color-muted);
-      margin: 0;
-      text-align: center;
-
-      // 📱 MOBILE FIRST - Hauteur naturelle, pas de contrainte
-      font-size: 1.1rem;
-
-      @include until('sm') {
-        font-size: 1rem;
-        line-height: 1.5;
-      }
-
-      // 🖥️ DESKTOP - Scroll seulement si nécessaire
-      @include from('xl') {
-        font-size: 1rem;
-        max-height: 150px;
-        overflow-y: auto;
-
-        &::-webkit-scrollbar {
-          width: 3px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.05);
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: rgba(css-var(color-orange), 0.3);
-          border-radius: 2px;
-        }
-      }
-    }
   }
 }
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Parallax from '../layouts/parallax';
 import OrderModal from '../modal/OrderModal'; // Import the OrderModal component
@@ -27,6 +27,42 @@ const SingleApplication = ({
 
   // State for modal
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Ajoutez ceci juste avant le return, après la fonction closeOrderModal
+  useEffect(() => {
+    const toggleButtons = document.querySelectorAll('.toggle-btn');
+    const descriptionContent = document.getElementById('description-content');
+    const technicalContent = document.getElementById('technical-content');
+
+    const handleToggle = (e) => {
+      const target = e.currentTarget.getAttribute('data-target');
+
+      // Supprimer la classe active de tous les boutons
+      toggleButtons.forEach((btn) => btn.classList.remove('active'));
+
+      // Ajouter la classe active au bouton cliqué
+      e.currentTarget.classList.add('active');
+
+      if (target === 'description') {
+        descriptionContent?.classList.add('active');
+        technicalContent?.classList.remove('active');
+      } else {
+        technicalContent?.classList.add('active');
+        descriptionContent?.classList.remove('active');
+      }
+    };
+
+    toggleButtons.forEach((button) => {
+      button.addEventListener('click', handleToggle);
+    });
+
+    // Cleanup
+    return () => {
+      toggleButtons.forEach((button) => {
+        button.removeEventListener('click', handleToggle);
+      });
+    };
+  }, []);
 
   // Function to handle image selection
   const handleImageSelect = (image) => {
@@ -218,14 +254,14 @@ const SingleApplication = ({
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
           <div className="app-header-container">
-            {/* En-tête principal avec titre et template */}
+            {/* En-tête principal avec titre et badges */}
             <div className="app-header">
               <div className="title-block">
                 <h1 className="app-title">{appDetails.application_name}</h1>
               </div>
 
               <div className="app-badges">
-                <div className="badge level-badge compact">
+                <div className="badge level-badge">
                   <span className="badge-value">
                     {
                       getApplicationLevelLabel(appDetails.application_level)
@@ -233,7 +269,7 @@ const SingleApplication = ({
                     }
                   </span>
                 </div>
-                <div className="badge category-badge compact">
+                <div className="badge category-badge">
                   <span className="badge-value">
                     {appDetails.application_category}
                   </span>
@@ -241,76 +277,112 @@ const SingleApplication = ({
               </div>
             </div>
 
-            {/* Informations techniques */}
-            {/* Tableau des informations techniques */}
-            <div className="info-table-card">
-              <h3 className="card-title">Informations Techniques</h3>
-              <div className="info-table-container">
-                <table className="info-table">
-                  <tbody>
-                    <tr className="info-row">
-                      <td className="info-label">Template</td>
-                      <td className="info-value">
-                        {template?.template_name || 'Non spécifié'}
-                      </td>
-                    </tr>
-                    <tr className="info-row">
-                      <td className="info-label">Type d&apos;application</td>
-                      <td className="info-value">
-                        {
-                          getApplicationLevelLabel(appDetails.application_level)
-                            .long
-                        }{' '}
-                        (
-                        {
-                          getApplicationLevelLabel(appDetails.application_level)
-                            .short
-                        }
-                        )
-                      </td>
-                    </tr>
-                    <tr className="info-row">
-                      <td className="info-label">Niveau</td>
-                      <td className="info-value">
-                        {appDetails.application_level}
-                      </td>
-                    </tr>
-                    <tr className="info-row">
-                      <td className="info-label">Catégorie</td>
-                      <td className="info-value">
-                        {appDetails.application_category}
-                      </td>
-                    </tr>
-                    <tr className="info-row">
-                      <td className="info-label">Lien boutique</td>
-                      <td className="info-value">
-                        <a
-                          href={appDetails.application_link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="info-link"
-                        >
-                          Voir la boutique
-                        </a>
-                      </td>
-                    </tr>
-                    {appDetails.application_admin_link && (
-                      <tr className="info-row">
-                        <td className="info-label">Gestion boutique</td>
-                        <td className="info-value">
-                          <a
-                            href={appDetails.application_admin_link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="info-link"
-                          >
-                            Interface admin
-                          </a>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+            {/* Contenu principal : Description + Informations techniques */}
+            <div className="main-content">
+              {/* Boutons de toggle mobile */}
+              <div className="mobile-toggle-buttons">
+                <button className="toggle-btn active" data-target="description">
+                  <span className="toggle-icon">📄</span>
+                  <span className="toggle-text">Description</span>
+                </button>
+                <button className="toggle-btn" data-target="technical">
+                  <span className="toggle-icon">⚙️</span>
+                  <span className="toggle-text">Technique</span>
+                </button>
+              </div>
+
+              <div className="content-grid">
+                {/* Description à gauche */}
+                <div
+                  className="description-section active"
+                  id="description-content"
+                >
+                  <h2 className="section-title">
+                    Description de l&apos;application
+                  </h2>
+                  <div className="description-content">
+                    <p className="description-text">
+                      {appDetails.application_description ||
+                        'Aucune description disponible pour cette application.'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Informations techniques à droite */}
+                <div className="technical-section" id="technical-content">
+                  <h3 className="section-title">Informations Techniques</h3>
+                  <div className="info-table-container">
+                    <table className="info-table">
+                      <tbody>
+                        <tr className="info-row">
+                          <td className="info-label">Template</td>
+                          <td className="info-value">
+                            {template?.template_name || 'Non spécifié'}
+                          </td>
+                        </tr>
+                        <tr className="info-row">
+                          <td className="info-label">
+                            Type d&apos;application
+                          </td>
+                          <td className="info-value">
+                            {
+                              getApplicationLevelLabel(
+                                appDetails.application_level,
+                              ).long
+                            }{' '}
+                            (
+                            {
+                              getApplicationLevelLabel(
+                                appDetails.application_level,
+                              ).short
+                            }
+                            )
+                          </td>
+                        </tr>
+                        <tr className="info-row">
+                          <td className="info-label">Niveau</td>
+                          <td className="info-value">
+                            {appDetails.application_level}
+                          </td>
+                        </tr>
+                        <tr className="info-row">
+                          <td className="info-label">Catégorie</td>
+                          <td className="info-value">
+                            {appDetails.application_category}
+                          </td>
+                        </tr>
+                        <tr className="info-row">
+                          <td className="info-label">Lien boutique</td>
+                          <td className="info-value">
+                            <Link
+                              href={appDetails.application_link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="info-link"
+                            >
+                              Voir la boutique
+                            </Link>
+                          </td>
+                        </tr>
+                        {appDetails.application_admin_link && (
+                          <tr className="info-row">
+                            <td className="info-label">Gestion boutique</td>
+                            <td className="info-value">
+                              <Link
+                                href={appDetails.application_admin_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="info-link"
+                              >
+                                Interface admin
+                              </Link>
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -327,25 +399,12 @@ const SingleApplication = ({
         )}
       </section>
 
-      {/* SECTION 2 - Description, Tarification et Boutons d'actions */}
+      {/* SECTION 2 - Tarification et Boutons d'actions */}
       <section className="others app-details-section">
         {appDetails &&
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
           <div className="app-details-container">
-            {/* Description */}
-            <div className="description-card">
-              <h2 className="section-title">
-                Description de l&apos;application
-              </h2>
-              <div className="description-content">
-                <p className="description-text">
-                  {appDetails.application_description ||
-                    'Aucune description disponible pour cette application.'}
-                </p>
-              </div>
-            </div>
-
             {/* Carte des prix */}
             <div className="pricing-card">
               <h3 className="card-title">Tarification</h3>
