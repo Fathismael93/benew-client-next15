@@ -368,25 +368,22 @@
 }
 
 .price {
-  font-weight: 800;
+  font-weight: 600; // Même poids que rent-price
   color: css-var(primary-color);
-  text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
+  text-shadow: 0 2px 4px rgba(css-var(primary-color), 0.3); // Même ombre que rent-price
   transition: all 0.3s ease;
   text-align: right;
 
-  // Prix principal plus visible
-  font-size: 1.75rem;
+  // Même taille que rent-price
+  font-size: 0.9rem;
 
   @include until('sm') {
-    font-size: 1.5rem;
-  }
-
-  @include from('md') {
-    font-size: 1.6rem;
+    font-size: 0.85rem;
   }
 
   @include from('xl') {
-    font-size: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 500; // Même poids que rent-price sur desktop
   }
 }
 
