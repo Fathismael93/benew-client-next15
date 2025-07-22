@@ -166,13 +166,13 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'", // Framer Motion + React
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", // SCSS + Google Fonts
-              "img-src 'self' https://res.cloudinary.com data:", // Cloudinary + data URLs
-              "font-src 'self' https://fonts.gstatic.com", // Google Fonts
-              "connect-src 'self'", // Server Actions uniquement
-              "form-action 'self'", // Formulaires sécurisés
-              "frame-ancestors 'none'", // Pas d'iframes
+              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' https://res.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com data:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://region1.analytics.google.com",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
               "base-uri 'self'",
             ].join('; '),
           },
@@ -509,6 +509,7 @@ const nextConfig = {
     SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
     CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+    GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
   },
 
   // ===== REDIRECTIONS SEO =====
