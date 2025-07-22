@@ -156,28 +156,29 @@ const nextConfig = {
             key: 'Cross-Origin-Resource-Policy',
             value: 'same-site',
           },
+          // Permissions limitées
           {
             key: 'Permissions-Policy',
             value:
               'geolocation=(), microphone=(), camera=(), payment=(), usb=()',
           },
           // CSP global adapté à ton stack
-          // {
-          //   key: 'Content-Security-Policy',
-          //   value: [
-          //     "default-src 'self'",
-          //     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com blob:",
-          //     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-          //     "img-src 'self' https://res.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com data:",
-          //     "font-src 'self' https://fonts.gstatic.com",
-          //     "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net",
-          //     "script-src-elem 'self' 'unsafe-inline' https://*.google.com https://*.googletagmanager.com https://*.google-analytics.com",
-          //     "worker-src 'self' blob:",
-          //     "form-action 'self'",
-          //     "frame-ancestors 'none'",
-          //     "base-uri 'self'",
-          //   ].join('; '),
-          // },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com blob:",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' https://res.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com data:",
+              "font-src 'self' https://fonts.gstatic.com",
+              'connect-src https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net',
+              "script-src-elem 'self' 'unsafe-inline' https://*.google.com https://*.googletagmanager.com https://*.google-analytics.com",
+              "worker-src 'self' blob:",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+            ].join('; '),
+          },
         ],
       },
 
