@@ -572,7 +572,6 @@ async function SingleTemplatePage({ params }) {
           templateID={templateId}
           applications={templateData.applications}
           platforms={templateData.platforms}
-          template={templateData.template}
           adaptiveConfig={adaptiveConfig}
           performanceMetrics={{
             loadTime: totalDuration,

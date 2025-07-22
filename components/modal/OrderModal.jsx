@@ -1,12 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createOrder } from '../../actions/orderActions';
 import './orderModal.scss';
 
+// Ajouter ces imports
+import {
+  trackPurchase,
+  trackModalOpen,
+  trackModalClose,
+} from '@/utils/analytics';
+
 const OrderModal = ({
   isOpen,
-  onClose,
+  closeMo,
   platforms,
   applicationId,
   applicationFee,
@@ -23,6 +30,18 @@ const OrderModal = ({
     accountName: '',
     accountNumber: '',
   });
+
+  // Tracker l'ouverture/fermeture de la modal
+  useEffect(() => {
+    if (isOpen) {
+      trackModalOpen('order_modal', `application_${applicationId}`);
+    }
+  }, [isOpen, applicationId]);
+
+  const closeModal = () => {
+    trackModalClose('order_modal', 'user_close');
+    closeMo();
+  };
 
   const handleInputChange = (e) => {
     setFormData({
@@ -113,6 +132,18 @@ const OrderModal = ({
         );
       }
 
+      // Tracker la commande réussie
+      trackPurchase(
+        {
+          application_id: applicationId,
+          application_fee: applicationFee,
+          application_name: `Application ${applicationId}`, // ou récupérer le vrai nom
+          application_category: 'web', // ou récupérer la vraie catégorie
+        },
+        result.orderId || Date.now().toString(), // ID de transaction
+        formData.paymentMethod,
+      );
+
       // Move to confirmation step
       setStep(3);
     } catch (err) {
@@ -170,7 +201,10 @@ const OrderModal = ({
               required
             />
             <div className="buttonContainer">
-              <button onClick={onClose} className="cancelButton">
+              <button
+                onClick={() => closeModal('user_cancel_step1')}
+                className="cancelButton"
+              >
                 Annuler
               </button>
               <button onClick={handleNext} className="nextButton">
@@ -237,7 +271,10 @@ const OrderModal = ({
               finaliser votre commande. Un email de confirmation vous sera
               envoyé à l&apos;adresse fournie.
             </p>
-            <button onClick={onClose} className="closeButton">
+            <button
+              onClick={() => closeModal('purchase_complete')}
+              className="closeButton"
+            >
               Fermer
             </button>
           </div>

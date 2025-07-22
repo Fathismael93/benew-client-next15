@@ -10,6 +10,9 @@ import Link from 'next/link';
 import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 
+// Ajouter ces imports
+import { trackPagePerformance, trackOrderStart } from '@/utils/analytics';
+
 const SingleApplication = ({
   application,
   template,
@@ -30,6 +33,17 @@ const SingleApplication = ({
 
   // État pour la navigation mobile section 2
   const [activePricingSection, setActivePricingSection] = useState('needs');
+
+  // Tracker les performances de la page application
+  useEffect(() => {
+    if (performanceMetrics?.loadTime && context?.applicationId) {
+      trackPagePerformance(
+        `application_${context.applicationId}`,
+        performanceMetrics.loadTime,
+        performanceMetrics.fromCache,
+      );
+    }
+  }, [performanceMetrics, context]);
 
   // Ajoutez ceci juste avant le return, après la fonction closeOrderModal
   useEffect(() => {
@@ -67,11 +81,6 @@ const SingleApplication = ({
     };
   }, []);
 
-  // Function to handle image selection
-  const handleImageSelect = (image) => {
-    setSelectedImage(image);
-  };
-
   // Get app details
   const appDetails = application;
 
@@ -91,6 +100,10 @@ const SingleApplication = ({
       alert('Aucune méthode de paiement disponible pour le moment');
       return;
     }
+
+    // Tracker le début de la commande
+    trackOrderStart(application);
+
     setIsModalOpen(true);
   };
 

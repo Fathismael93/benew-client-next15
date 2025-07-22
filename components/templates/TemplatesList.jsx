@@ -2,13 +2,33 @@
 
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './styling/templates.scss';
 import Parallax from '@/components/layouts/parallax';
 import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 
-const TemplatesList = ({ templates }) => {
+// Ajouter ces imports
+import { trackTemplateView, trackPagePerformance } from '@/utils/analytics';
+
+const TemplatesList = ({ templates, performanceMetrics }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
+
+  // Ajouter ce useEffect pour tracker les performances de la page
+  useEffect(() => {
+    if (performanceMetrics?.loadTime) {
+      trackPagePerformance(
+        'templates_list',
+        performanceMetrics.loadTime,
+        performanceMetrics.fromCache,
+      );
+    }
+  }, [performanceMetrics]);
+
+  // Modifier la fonction de gestion du clic sur les templates
+  const handleTemplateClick = (template) => {
+    // Tracker la vue du template
+    trackTemplateView(template.template_id, template.template_name);
+  };
 
   return (
     <div>
@@ -23,6 +43,8 @@ const TemplatesList = ({ templates }) => {
               className="templateCard"
               onMouseEnter={() => setHoveredCard(template.template_id)}
               onMouseLeave={() => setHoveredCard(null)}
+              // Ajouter le tracking du clic
+              onClick={() => handleTemplateClick(template)}
             >
               <div
                 className={`templateCardInner ${hoveredCard === template.template_id ? 'hovered' : ''}`}

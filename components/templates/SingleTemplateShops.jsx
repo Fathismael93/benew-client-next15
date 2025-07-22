@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { FaDollarSign } from 'react-icons/fa';
@@ -9,10 +9,32 @@ import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal/OrderModal';
 import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
+// Ajouter ces imports
+import {
+  trackApplicationView,
+  trackOrderStart,
+  trackPagePerformance,
+} from '@/utils/analytics';
 
-const SingleTemplateShops = ({ templateID, applications, platforms }) => {
+const SingleTemplateShops = ({
+  templateID,
+  applications,
+  platforms,
+  performanceMetrics,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
+
+  // Tracker les performances de la page template
+  useEffect(() => {
+    if (performanceMetrics?.loadTime) {
+      trackPagePerformance(
+        `template_${templateID}`,
+        performanceMetrics.loadTime,
+        performanceMetrics.fromCache,
+      );
+    }
+  }, [performanceMetrics, templateID]);
 
   // Remplacer la fonction handleOrderClick
   const handleOrderClick = (app) => {
@@ -21,8 +43,17 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
       alert('Aucune méthode de paiement disponible pour le moment');
       return;
     }
+
+    // Tracker le début de la commande
+    trackOrderStart(app);
+
     setSelectedApp(app);
     setIsModalOpen(true);
+  };
+
+  // Ajouter une fonction pour tracker les vues d'applications
+  const handleApplicationView = (app) => {
+    trackApplicationView(app.application_id, app.application_name, templateID);
   };
 
   return (
@@ -93,6 +124,8 @@ const SingleTemplateShops = ({ templateID, applications, platforms }) => {
                   <Link
                     href={`/templates/${templateID}/applications/${app.application_id}`}
                     className="btn btn-preview"
+                    // Ajouter le tracking de la vue d'application
+                    onClick={() => handleApplicationView(app)}
                   >
                     <IoEye size={16} />
                     <span className="btn-text">Voir +</span>
