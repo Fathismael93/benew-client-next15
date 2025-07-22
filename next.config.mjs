@@ -156,7 +156,6 @@ const nextConfig = {
             key: 'Cross-Origin-Resource-Policy',
             value: 'same-site',
           },
-          // Permissions limitées
           {
             key: 'Permissions-Policy',
             value:
