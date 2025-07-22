@@ -32,6 +32,7 @@ const validateEnv = () => {
     'CONNECTION_TIMEOUT',
     'MAXIMUM_CLIENTS',
     'NODE_ENV',
+    'NEXT_PUBLIC_GA_MEASUREMENT_ID', // ← AJOUTER CETTE LIGNE
   ];
 
   const missingVars = requiredVars.filter((varName) => !process.env[varName]);
