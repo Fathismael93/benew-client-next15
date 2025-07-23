@@ -268,7 +268,7 @@
           align-items: center;
           justify-content: center;
           text-align: center;
-          cursor: pointer;
+          cursor: pointer !important;
           transition: all 0.3s ease;
           text-decoration: none;
           line-height: 1.1; // ✅ Line-height réduit
