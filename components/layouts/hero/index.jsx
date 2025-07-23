@@ -52,17 +52,17 @@ function Hero() {
           animate="animate"
         >
           <motion.h2 variants={textVariants}>
-            Un nouveau moyen de gagner de l&apos;argent
+            Avec la boutique en ligne,
           </motion.h2>
           <motion.h1 variants={textVariants}>
-            Super Boutique, Super Riche
+            Commence ton incroyable histoire
           </motion.h1>
           <motion.div className="buttonGroup" variants={textVariants}>
-            <motion.a href="/services" className="primaryButton">
-              Découvrir nos services
+            <motion.a href="/templates" className="primaryButton">
+              Découvrir nos boutiques
             </motion.a>
-            <motion.a href="/contact" className="secondaryButton">
-              Parlons de votre projet
+            <motion.a href="/presentation" className="secondaryButton">
+              What&apos;s Benew
             </motion.a>
           </motion.div>
           <motion.img
