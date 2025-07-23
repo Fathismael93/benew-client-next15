@@ -1,7 +1,7 @@
 // app/layout.js
 import './styles/main.scss';
 import Navbar from '../components/layouts/navbar';
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
 import Script from 'next/script';
 
