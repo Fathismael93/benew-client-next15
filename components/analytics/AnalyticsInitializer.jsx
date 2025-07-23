@@ -113,40 +113,6 @@ export default function AnalyticsInitializer({ isDevelopment = false }) {
     }
   }, [pathname, isDevelopment]);
 
-  // Web Vitals reporting
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'web-vitals' in window) {
-      import('web-vitals')
-        .then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-          const reportWebVitals = (metric) => {
-            if (window.gtag) {
-              window.gtag('event', metric.name, {
-                event_category: 'Web Vitals',
-                value: Math.round(
-                  metric.name === 'CLS' ? metric.value * 1000 : metric.value,
-                ),
-                event_label: metric.id,
-                non_interaction: true,
-              });
-            }
-
-            if (isDevelopment) {
-              console.log(`[Web Vitals] ${metric.name}:`, metric);
-            }
-          };
-
-          getCLS(reportWebVitals);
-          getFID(reportWebVitals);
-          getFCP(reportWebVitals);
-          getLCP(reportWebVitals);
-          getTTFB(reportWebVitals);
-        })
-        .catch((error) => {
-          console.warn('[Analytics] Web Vitals not available:', error);
-        });
-    }
-  }, [isDevelopment]);
-
   // Test du tracking en développement
   useEffect(() => {
     if (isDevelopment && typeof window !== 'undefined') {
