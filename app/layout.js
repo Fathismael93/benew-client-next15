@@ -1,8 +1,9 @@
 // app/layout.js
 import './styles/main.scss';
 import Navbar from '../components/layouts/navbar';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
+import Script from 'next/script';
 
 // =============================
 // MÉTADONNÉES GLOBALES
@@ -99,6 +100,32 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="fr">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#f6a037" />
+        <meta name="application-name" content="Benew" />
+        <meta name="msapplication-TileColor" content="#f6a037" />
+
+        <Script
+          id="gtm-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){
+                w[l]=w[l]||[];
+                w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+                j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+                f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-K4F2X42H');
+            `,
+          }}
+        />
+      </head>
       <body>
         <Navbar />
         {children}
@@ -106,7 +133,7 @@ export default function RootLayout({ children }) {
         {/* Analytics avec initialisation automatique */}
         {process.env.NODE_ENV === 'production' && gaId && (
           <>
-            <GoogleAnalytics gaId={gaId} />
+            <GoogleTagManager gaId={gaId} />
             <AnalyticsInitializer />
           </>
         )}
@@ -114,10 +141,29 @@ export default function RootLayout({ children }) {
         {/* Analytics en développement pour tests */}
         {process.env.NODE_ENV === 'development' && gaId && (
           <>
-            <GoogleAnalytics gaId={gaId} />
+            <GoogleTagManager gaId={gaId} />
             <AnalyticsInitializer isDevelopment />
           </>
         )}
+
+        {/* Partie script de GTM */}
+        <Script
+          id="gtm-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){
+                w[l]=w[l]||[];
+                w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+                j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+                f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-K4F2X42H');
+            `,
+          }}
+        />
       </body>
     </html>
   );

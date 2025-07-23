@@ -2,7 +2,7 @@
 // Utilitaires Google Analytics optimisés pour Next.js 15 avec @next/third-parties
 // Version corrigée selon la documentation officielle
 
-import { sendGAEvent } from '@next/third-parties/google';
+import { sendGTMEvent } from '@next/third-parties/google';
 
 /**
  * Vérifie si Google Analytics est disponible
@@ -24,7 +24,8 @@ export const trackEvent = (eventName, parameters = {}) => {
     try {
       console.log(`[GA Debug] Sending event: ${eventName}`, parameters);
       // ✅ Signature correcte selon la documentation Next.js 15
-      sendGAEvent('event', eventName, {
+      sendGTMEvent({
+        event: eventName,
         event_category: parameters.event_category || 'engagement',
         event_label: parameters.event_label,
         value: parameters.value,
