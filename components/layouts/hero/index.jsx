@@ -51,9 +51,7 @@ function Hero() {
           initial="initial"
           animate="animate"
         >
-          <motion.h2 variants={textVariants}>
-            Avec la boutique en ligne,
-          </motion.h2>
+          <motion.h2 variants={textVariants}>Crois en toi,</motion.h2>
           <motion.h1 variants={textVariants}>Commence ton histoire</motion.h1>
           <motion.div className="buttonGroup" variants={textVariants}>
             <motion.a href="/templates" className="primaryButton">
