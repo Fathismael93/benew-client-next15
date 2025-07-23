@@ -15,7 +15,9 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
 
   // Ajouter ce useEffect pour tracker les performances de la page
   useEffect(() => {
+    console.log('Performance Metrics:', performanceMetrics);
     if (performanceMetrics?.loadTime) {
+      console.log('Tracking page performance:');
       trackPagePerformance(
         'templates_list',
         performanceMetrics.loadTime,
