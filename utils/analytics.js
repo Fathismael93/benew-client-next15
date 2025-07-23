@@ -22,9 +22,8 @@ export const isGAReady = () => {
 export const trackEvent = (eventName, parameters = {}) => {
   if (typeof window !== 'undefined') {
     try {
-      // ✅ Méthode officielle Next.js 15 recommandée
-      sendGAEvent({
-        event: eventName,
+      // ✅ Signature correcte selon la documentation Next.js 15
+      sendGAEvent('event', eventName, {
         event_category: parameters.event_category || 'engagement',
         event_label: parameters.event_label,
         value: parameters.value,
