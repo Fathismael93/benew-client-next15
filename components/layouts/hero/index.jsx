@@ -54,9 +54,7 @@ function Hero() {
           <motion.h2 variants={textVariants}>
             Avec la boutique en ligne,
           </motion.h2>
-          <motion.h1 variants={textVariants}>
-            Commence ton incroyable histoire
-          </motion.h1>
+          <motion.h1 variants={textVariants}>Commence ton histoire</motion.h1>
           <motion.div className="buttonGroup" variants={textVariants}>
             <motion.a href="/templates" className="primaryButton">
               Découvrir nos boutiques
