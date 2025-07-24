@@ -3,7 +3,7 @@
 // =============================
 
 @use 'sass:color';
-@use '../styles/abstracts' as *;
+@use '../../app/styles/abstracts/' as *;
 
 .contact {
   width: 100%;
