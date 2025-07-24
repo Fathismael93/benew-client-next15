@@ -25,6 +25,59 @@ import {
 } from '@/utils/performance';
 import { limitBenewAPI } from '@/backend/rateLimiter';
 
+export const metadata = {
+  title: 'Templates - Benew | Applications Web & Mobile',
+  description:
+    "Explorez notre collection de templates premium pour applications web et mobile. Solutions professionnelles prêtes à l'emploi pour votre business en ligne.",
+  keywords: [
+    'templates premium',
+    'applications web',
+    'applications mobile',
+    'e-commerce',
+    'solutions digitales',
+    'développement',
+    'Benew',
+    'Djibouti',
+  ],
+
+  openGraph: {
+    title: 'Templates Premium Benew - Collection Complète',
+    description:
+      'Découvrez nos templates professionnels pour applications web et mobile. Designs modernes et fonctionnalités avancées.',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Templates Premium Benew',
+    description:
+      'Collection de templates professionnels pour applications web et mobile.',
+  },
+
+  // Données structurées pour le SEO
+  other: {
+    'application-name': 'Benew Templates',
+    'theme-color': '#f6a037',
+  },
+
+  // URL canonique
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
 // =============================
 // CONFIGURATION PRODUCTION
 // =============================
@@ -383,24 +436,6 @@ function TemplatesPageSkeleton() {
       </div>
     </div>
   );
-}
-
-// =============================
-// CONFIGURATION DES HEADERS DE CACHE
-// =============================
-
-export async function generateMetadata() {
-  return {
-    title: 'Templates Benew',
-    description: 'Explorez notre collection de templates premium',
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      canonical: '/templates',
-    },
-  };
 }
 
 // =============================

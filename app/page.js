@@ -24,14 +24,14 @@ export const metadata = {
     description:
       'Templates premium et applications web & mobile pour propulser votre business en ligne.',
     url: process.env.NEXT_PUBLIC_SITE_URL,
-    images: [
-      {
-        url: '/og-home.png', // Image spécifique à l'accueil
-        width: 1200,
-        height: 630,
-        alt: "Benew - Page d'accueil",
-      },
-    ],
+    // images: [
+    //   {
+    //     url: '/og-home.png', // Image spécifique à l'accueil
+    //     width: 1200,
+    //     height: 630,
+    //     alt: "Benew - Page d'accueil",
+    //   },
+    // ],
   },
 
   // Données structurées pour le SEO
