@@ -37,15 +37,6 @@ const SingleTemplateShops = ({
         `template_${templateID}`,
         performanceMetrics.loadTime,
         performanceMetrics.fromCache,
-        {
-          // Contexte enrichi
-          template_id: templateID,
-          applications_count: applications?.length || 0,
-          from_cache: performanceMetrics.fromCache,
-          query_duration: performanceMetrics.queryDuration,
-          has_applications: applications && applications.length > 0,
-          template_name: applications?.[0]?.template_name,
-        },
       );
     }
   }, [performanceMetrics, templateID, applications]);
