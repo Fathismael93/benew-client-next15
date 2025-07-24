@@ -33,6 +33,7 @@ const validateEnv = () => {
     'MAXIMUM_CLIENTS',
     'NODE_ENV',
     'NEXT_PUBLIC_GA_MEASUREMENT_ID', // ← AJOUTER CETTE LIGNE
+    'NEXT_PUBLIC_GTM_CONTAINER_ID',
   ];
 
   const missingVars = requiredVars.filter((varName) => !process.env[varName]);

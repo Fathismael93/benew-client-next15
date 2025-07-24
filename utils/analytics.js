@@ -10,7 +10,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 export const isGAReady = () => {
   return (
     typeof window !== 'undefined' &&
-    (typeof window.gtag === 'function' || typeof sendGAEvent === 'function')
+    (typeof window.gtag === 'function' || typeof sendGTMEvent === 'function')
   );
 };
 
