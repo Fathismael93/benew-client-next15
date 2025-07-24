@@ -13,7 +13,7 @@ import {
 
 const OrderModal = ({
   isOpen,
-  closeMo,
+  onClose,
   platforms,
   applicationId,
   applicationFee,
@@ -40,7 +40,7 @@ const OrderModal = ({
 
   const closeModal = () => {
     trackModalClose('order_modal', 'user_close');
-    closeMo();
+    onClose();
   };
 
   const handleInputChange = (e) => {
