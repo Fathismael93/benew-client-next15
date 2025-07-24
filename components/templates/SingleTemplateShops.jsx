@@ -221,7 +221,7 @@ const SingleTemplateShops = ({
         application_id: selectedApp.application_id,
         template_id: templateID,
         close_action: 'manual_close',
-        time_spent_in_modal: Date.now() - (window.modalOpenTime || Date.now()),
+        // time_spent_in_modal: Date.now() - (window.modalOpenTime || Date.now()),
       });
     }
 
