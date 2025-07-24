@@ -660,78 +660,57 @@ function SingleTemplatePageSkeleton() {
 // CONFIGURATION DES METADATA
 // =============================
 
-export async function generateMetadata({ params }) {
-  const { id: rawId } = await params;
+export const metadata = {
+  title: 'One Template Benew | Application Web & Mobile',
+  description:
+    'Découvrez ce template premium et ses applications disponibles. Solutions professionnelles pour votre business en ligne avec support web et mobile.',
+  keywords: [
+    'template premium',
+    'application web',
+    'application mobile',
+    'solution digitale',
+    'développement',
+    'Benew',
+    'Djibouti',
+  ],
 
-  try {
-    // Validation rapide pour metadata
-    const validationResult = await validateTemplateId(rawId);
-    if (!validationResult.isValid) {
-      return {
-        title: 'Template non trouvé - Benew',
-        description:
-          "Le template demandé n'existe pas ou n'est plus disponible.",
-      };
-    }
+  openGraph: {
+    title: 'Template Premium Benew - Applications Disponibles',
+    description:
+      'Explorez ce template et ses applications web et mobile. Designs professionnels et fonctionnalités avancées.',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates/[id]`,
+  },
 
-    const templateId = validationResult.templateId;
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Template Premium Benew',
+    description:
+      'Template professionnel avec applications web et mobile disponibles.',
+  },
 
-    // Essayer de récupérer depuis le cache pour les metadata
-    const cacheKey = generateCacheKey('single_template', { templateId });
-    const cachedData = await projectCache.singleTemplate.get(cacheKey);
+  // Données structurées pour le SEO
+  other: {
+    'application-name': 'Benew Template',
+    'theme-color': '#f6a037',
+  },
 
-    if (cachedData && cachedData.template) {
-      const template = cachedData.template;
-      return {
-        title: `${template.template_name} - Templates Benew`,
-        description:
-          template.template_description ||
-          `Découvrez le template ${template.template_name} et ses applications sur Benew.`,
-        robots: {
-          index: true,
-          follow: true,
-        },
-        alternates: {
-          canonical: `/templates/${templateId}`,
-        },
-        openGraph: {
-          title: `${template.template_name} - Templates Benew`,
-          description:
-            template.template_description ||
-            `Template ${template.template_name} avec applications web et mobile.`,
-          images: template.template_image ? [template.template_image] : [],
-          type: 'website',
-        },
-      };
-    }
+  // URL canonique (sera dynamique avec l'ID réel)
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  },
 
-    // Fallback metadata si pas de cache
-    return {
-      title: 'Template Benew',
-      description: 'Découvrez ce template et ses applications sur Benew.',
-      robots: {
-        index: true,
-        follow: true,
-      },
-      alternates: {
-        canonical: `/templates/${templateId}`,
-      },
-    };
-  } catch (error) {
-    captureException(error, {
-      tags: {
-        component: 'single_template_metadata',
-        error_type: 'metadata_generation_error',
-      },
-      extra: { rawId },
-    });
-
-    return {
-      title: 'Template - Benew',
-      description: 'Template Benew',
-    };
-  }
-}
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
 
 // =============================
 // UTILITAIRES D'INVALIDATION
