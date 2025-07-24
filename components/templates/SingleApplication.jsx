@@ -10,8 +10,12 @@ import Link from 'next/link';
 import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 
-// Ajouter ces imports
-import { trackPagePerformance, trackOrderStart } from '@/utils/analytics';
+// Analytics imports - ajout de trackEvent
+import {
+  trackPagePerformance,
+  trackOrderStart,
+  trackEvent,
+} from '@/utils/analytics';
 
 const SingleApplication = ({
   application,
@@ -34,16 +38,109 @@ const SingleApplication = ({
   // État pour la navigation mobile section 2
   const [activePricingSection, setActivePricingSection] = useState('needs');
 
-  // Tracker les performances de la page application
+  // Tracker les performances de la page application avec contexte enrichi
   useEffect(() => {
     if (performanceMetrics?.loadTime && context?.applicationId) {
       trackPagePerformance(
         `application_${context.applicationId}`,
         performanceMetrics.loadTime,
         performanceMetrics.fromCache,
+        {
+          // Contexte enrichi avec les statistiques
+          template_id: context.templateId,
+          application_level: context.stats?.application?.level,
+          application_category: context.stats?.application?.category,
+          has_admin_link: context.stats?.application?.hasAdminLink,
+          images_count: context.stats?.application?.imagesCount,
+          template_total_apps: context.stats?.template?.totalApplications,
+          from_cache: performanceMetrics.fromCache,
+          query_duration: performanceMetrics.queryDuration,
+        },
       );
     }
   }, [performanceMetrics, context]);
+
+  // Tracker la vue initiale de l'application
+  useEffect(() => {
+    if (context?.applicationId && application?.application_name) {
+      trackEvent('application_page_view', {
+        event_category: 'application',
+        event_label: application.application_name,
+        application_id: context.applicationId,
+        template_id: context.templateId,
+        application_name: application.application_name,
+        application_level: application.application_level,
+        application_category: application.application_category,
+        has_images: images.length > 0,
+        images_count: images.length,
+      });
+    }
+  }, [context, application, images.length]);
+
+  // Handler pour la navigation dans la galerie avec tracking
+  const handleImageNavigation = (direction) => {
+    const currentIndex = images.findIndex((img) => img === selectedImage);
+    let nextIndex;
+
+    if (direction === 'next') {
+      nextIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+    } else {
+      nextIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+    }
+
+    setSelectedImage(images[nextIndex]);
+
+    // Tracker la navigation dans la galerie
+    trackEvent('gallery_navigation', {
+      event_category: 'gallery',
+      event_label: direction,
+      direction: direction,
+      application_id: context?.applicationId,
+      from_image_index: currentIndex,
+      to_image_index: nextIndex,
+      total_images: images.length,
+    });
+  };
+
+  // Handler pour les toggles de contenu avec tracking
+  const handleContentToggle = (targetSection, buttonElement) => {
+    // Tracker le toggle de contenu
+    trackEvent('content_toggle', {
+      event_category: 'ui_interaction',
+      event_label: targetSection,
+      section: targetSection,
+      application_id: context?.applicationId,
+      previous_section: buttonElement.classList.contains('active')
+        ? 'same'
+        : 'different',
+    });
+  };
+
+  // Handler pour les liens externes avec tracking
+  const handleExternalLink = (linkType, url, linkText) => {
+    trackEvent('external_link_click', {
+      event_category: 'navigation',
+      event_label: linkText,
+      link_type: linkType,
+      link_url: url,
+      application_id: context?.applicationId,
+      template_id: context?.templateId,
+      link_text: linkText,
+    });
+  };
+
+  // Handler pour les toggles de section pricing avec tracking
+  const handlePricingSectionToggle = (section) => {
+    trackEvent('pricing_section_toggle', {
+      event_category: 'ui_interaction',
+      event_label: section,
+      section: section,
+      application_id: context?.applicationId,
+      previous_section: activePricingSection,
+    });
+
+    setActivePricingSection(section);
+  };
 
   // Ajoutez ceci juste avant le return, après la fonction closeOrderModal
   useEffect(() => {
@@ -53,6 +150,9 @@ const SingleApplication = ({
 
     const handleToggle = (e) => {
       const target = e.currentTarget.getAttribute('data-target');
+
+      // Tracker le toggle avant de changer l'interface
+      handleContentToggle(target, e.currentTarget);
 
       // Supprimer la classe active de tous les boutons
       toggleButtons.forEach((btn) => btn.classList.remove('active'));
@@ -89,7 +189,7 @@ const SingleApplication = ({
     return `FDJ ${formatPrice(value)}`;
   };
 
-  // Remplacer la fonction openOrderModal
+  // Remplacer la fonction openOrderModal avec tracking amélioré
   const openOrderModal = () => {
     // Vérifier si platforms existe et n'est pas un objet vide
     if (
@@ -97,9 +197,28 @@ const SingleApplication = ({
       typeof platforms !== 'object' ||
       Object.keys(platforms).length === 0
     ) {
+      // Tracker l'échec d'ouverture de modal
+      trackEvent('order_modal_failed', {
+        event_category: 'ecommerce',
+        event_label: 'no_payment_methods',
+        application_id: context?.applicationId,
+        failure_reason: 'no_payment_methods_available',
+      });
+
       alert('Aucune méthode de paiement disponible pour le moment');
       return;
     }
+
+    // Tracker l'ouverture de la modal de commande
+    trackEvent('order_modal_open', {
+      event_category: 'ecommerce',
+      event_label: application.application_name,
+      application_id: context?.applicationId,
+      template_id: context?.templateId,
+      application_fee: application.application_fee,
+      application_rent: application.application_rent,
+      available_platforms: Object.keys(platforms).length,
+    });
 
     // Tracker le début de la commande
     trackOrderStart(application);
@@ -107,10 +226,60 @@ const SingleApplication = ({
     setIsModalOpen(true);
   };
 
-  // Function to close modal
+  // Function to close modal avec tracking
   const closeOrderModal = () => {
+    // Tracker la fermeture de modal
+    trackEvent('order_modal_close', {
+      event_category: 'ecommerce',
+      event_label: 'modal_closed',
+      application_id: context?.applicationId,
+      close_action: 'manual_close',
+    });
+
     setIsModalOpen(false);
   };
+
+  // Tracker les scrolls profonds (optionnel)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    let deepScrollTracked = false;
+    let midScrollTracked = false;
+
+    const handleScroll = () => {
+      const scrollPercent =
+        (window.scrollY /
+          (document.documentElement.scrollHeight - window.innerHeight)) *
+        100;
+
+      // Tracker le scroll à 50%
+      if (scrollPercent >= 50 && !midScrollTracked) {
+        midScrollTracked = true;
+        trackEvent('page_scroll_milestone', {
+          event_category: 'engagement',
+          event_label: '50_percent',
+          scroll_depth: 50,
+          application_id: context?.applicationId,
+          page_type: 'application_detail',
+        });
+      }
+
+      // Tracker le scroll à 90%
+      if (scrollPercent >= 90 && !deepScrollTracked) {
+        deepScrollTracked = true;
+        trackEvent('page_scroll_milestone', {
+          event_category: 'engagement',
+          event_label: '90_percent',
+          scroll_depth: 90,
+          application_id: context?.applicationId,
+          page_type: 'application_detail',
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [context?.applicationId]);
 
   return (
     <div>
@@ -163,18 +332,11 @@ const SingleApplication = ({
                 )}
               </div>
 
-              {/* Flèche gauche */}
+              {/* Flèche gauche avec tracking */}
               {images.length > 1 && (
                 <button
                   className="gallery-arrow gallery-arrow-left"
-                  onClick={() => {
-                    const currentIndex = images.findIndex(
-                      (img) => img === selectedImage,
-                    );
-                    const prevIndex =
-                      currentIndex > 0 ? currentIndex - 1 : images.length - 1;
-                    setSelectedImage(images[prevIndex]);
-                  }}
+                  onClick={() => handleImageNavigation('prev')}
                 >
                   <MdOutlineChevronLeft size={32} />
                 </button>
@@ -208,18 +370,11 @@ const SingleApplication = ({
                 )}
               </div>
 
-              {/* Flèche droite */}
+              {/* Flèche droite avec tracking */}
               {images.length > 1 && (
                 <button
                   className="gallery-arrow gallery-arrow-right"
-                  onClick={() => {
-                    const currentIndex = images.findIndex(
-                      (img) => img === selectedImage,
-                    );
-                    const nextIndex =
-                      currentIndex < images.length - 1 ? currentIndex + 1 : 0;
-                    setSelectedImage(images[nextIndex]);
-                  }}
+                  onClick={() => handleImageNavigation('next')}
                 >
                   <MdOutlineChevronRight size={32} />
                 </button>
@@ -375,6 +530,13 @@ const SingleApplication = ({
                               target="_blank"
                               rel="noopener noreferrer"
                               className="info-link"
+                              onClick={() =>
+                                handleExternalLink(
+                                  'store',
+                                  appDetails.application_link,
+                                  'Voir la boutique',
+                                )
+                              }
                             >
                               Voir la boutique
                             </Link>
@@ -389,6 +551,13 @@ const SingleApplication = ({
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="info-link"
+                                onClick={() =>
+                                  handleExternalLink(
+                                    'admin',
+                                    appDetails.application_admin_link,
+                                    'Interface admin',
+                                  )
+                                }
                               >
                                 Interface admin
                               </Link>
@@ -421,18 +590,18 @@ const SingleApplication = ({
         typeof appDetails === 'object' &&
         Object.keys(appDetails).length > 0 ? (
           <div className="app-details-container">
-            {/* Boutons de toggle mobile pour section 2 */}
+            {/* Boutons de toggle mobile pour section 2 avec tracking */}
             <div className="mobile-section-nav">
               <button
                 className={`section-btn ${activePricingSection === 'needs' ? 'active' : ''}`}
-                onClick={() => setActivePricingSection('needs')}
+                onClick={() => handlePricingSectionToggle('needs')}
               >
                 <span className="btn-icon">📋</span>
                 <span className="btn-text">Besoins spécifiques</span>
               </button>
               <button
                 className={`section-btn ${activePricingSection === 'pricing' ? 'active' : ''}`}
-                onClick={() => setActivePricingSection('pricing')}
+                onClick={() => handlePricingSectionToggle('pricing')}
               >
                 <span className="btn-icon">💰</span>
                 <span className="btn-text">Tarification</span>
