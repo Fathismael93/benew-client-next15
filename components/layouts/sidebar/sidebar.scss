@@ -219,7 +219,7 @@
     @include until('sm') {
       width: 2.75rem;
       height: 2.75rem;
-      top: 1.375rem; // = 22px (22 + 44/2 = 44px ≈ centre)
+      top: 1.4rem; // = 22px (22 + 44/2 = 44px ≈ centre)
       left: 1.375rem; // = 22px
     }
 
@@ -227,8 +227,8 @@
     @include from('md') {
       width: 2.5rem;
       height: 2.5rem;
-      top: 1.75rem; // = 28px (28 + 40/2 = 48px ≈ centre)
-      left: 1.75rem; // = 28px
+      top: 1.85rem; // = 28px (28 + 40/2 = 48px ≈ centre)
+      left: 1.85rem; // = 28px
     }
 
     @include from('xl') {
