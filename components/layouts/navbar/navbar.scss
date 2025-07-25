@@ -66,8 +66,8 @@
         object-fit: contain;
       }
 
-      // 📟 PETITS ÉCRANS - Logo complètement invisible
-      @include until('lg') {
+      // 📟 TRÈS PETITS ÉCRANS - Logo masqué pour économiser l'espace
+      @include until('sm') {
         display: none;
       }
 
