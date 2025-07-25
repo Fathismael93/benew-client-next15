@@ -200,6 +200,9 @@
 
   // 🔘 BOUTON TOGGLE - Optimisation mobile-first
   button {
+    // Ajouter ces propriétés dès le début
+    background-color: transparent;
+    border: none;
     z-index: 999;
 
     // 📱 MOBILE - Bouton plus grand et mieux positionné
