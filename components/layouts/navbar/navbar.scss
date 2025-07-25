@@ -66,14 +66,14 @@
         object-fit: contain;
       }
 
-      // 📟 TRÈS PETITS ÉCRANS - Logo masqué pour économiser l'espace
-      @include until('sm') {
+      // 📟 PETITS ÉCRANS - Logo complètement invisible
+      @include until('lg') {
         display: none;
       }
 
       // 🖥️ TABLET ET PLUS - Logo progressivement plus petit
       @include from('lg') {
-        margin-left: 1rem;
+        margin-left: 6rem;
 
         img {
           max-height: 2.5rem;
