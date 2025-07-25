@@ -210,8 +210,8 @@
     height: 3rem;
     border-radius: 50%;
     position: fixed;
-    top: 1.25rem; // Meilleur positionnement sur mobile
-    left: 1.25rem;
+    top: 1.625rem; // = 26px (26 + 48/2 = 50px centre)
+    left: 1.625rem; // = 26px
     cursor: pointer;
     transition: all 0.3s ease;
 
@@ -219,16 +219,16 @@
     @include until('sm') {
       width: 2.75rem;
       height: 2.75rem;
-      top: 1rem;
-      left: 1rem;
+      top: 1.375rem; // = 22px (22 + 44/2 = 44px ≈ centre)
+      left: 1.375rem; // = 22px
     }
 
     // 🖥️ TABLET ET PLUS - Réduction progressive
     @include from('md') {
       width: 2.5rem;
       height: 2.5rem;
-      top: 1.5rem;
-      left: 1.5rem;
+      top: 1.75rem; // = 28px (28 + 40/2 = 48px ≈ centre)
+      left: 1.75rem; // = 28px
     }
 
     @include from('xl') {
