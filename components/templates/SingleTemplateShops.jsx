@@ -308,6 +308,7 @@ const SingleTemplateShops = ({
                     disabled={!platforms || platforms.length === 0}
                   >
                     <FaDollarSign size={16} />
+                    <span className="btn-text">Commander</span>
                   </button>
                   <Link
                     href={`/templates/${templateID}/applications/${app.application_id}`}
