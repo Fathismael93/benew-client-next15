@@ -3,7 +3,6 @@
 import { useRef, useState } from 'react';
 import { useInView, motion } from 'framer-motion';
 import { MdMail, MdPhone, MdWhatsapp } from 'react-icons/md';
-import Image from 'next/image';
 import Parallax from '@/components/layouts/parallax';
 import { sendContactEmail } from '@/actions/sendContactEmail'; // Ajuste le chemin selon ton dossier
 import './contact.scss';
