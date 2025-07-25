@@ -553,84 +553,6 @@
         display: block; // Réapparaît sur desktop
       }
     }
-
-    .social {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-
-      // 📱 MOBILE FIRST
-      margin-top: 1.25rem;
-
-      @include until('sm') {
-        gap: 1.25rem;
-        margin-top: 1rem;
-      }
-
-      // 🖥️ TABLET ET PLUS
-      @include from('md') {
-        gap: 1.375rem;
-      }
-
-      @include from('xl') {
-        justify-content: flex-start; // Aligné à gauche sur desktop
-        gap: 1.25rem;
-        margin-top: 1rem;
-      }
-
-      .social-icon {
-        transition: all 0.3s ease;
-        filter: grayscale(0.2);
-        border-radius: 50%;
-        padding: 0.5rem;
-        background: rgba(css-var(primary-color), 0.1);
-
-        // 📱 MOBILE FIRST - Icônes tactiles
-        width: 2.5rem;
-        height: 2.5rem;
-
-        @include until('sm') {
-          width: 2.25rem;
-          height: 2.25rem;
-          padding: 0.375rem;
-        }
-
-        // 🖥️ TABLET ET PLUS
-        @include from('md') {
-          width: 2.25rem;
-          height: 2.25rem;
-        }
-
-        @include from('lg') {
-          width: 2rem;
-          height: 2rem;
-        }
-
-        @include from('xl') {
-          width: 1.3rem; // Valeur desktop originale
-          height: 1.3rem;
-          padding: 0;
-          background: transparent;
-        }
-
-        &:hover {
-          transform: scale(1.1);
-          filter: hue-rotate(20deg) brightness(1.2) grayscale(0);
-          background: rgba(css-var(primary-color), 0.2);
-
-          // 🖥️ DESKTOP - Effet original
-          @include from('xl') {
-            background: transparent;
-          }
-        }
-
-        &:active {
-          transform: scale(0.95);
-        }
-      }
-    }
   }
 }
 
@@ -709,11 +631,6 @@
           font-size: 0.8rem;
         }
       }
-
-      .social .social-icon {
-        width: 1.75rem;
-        height: 1.75rem;
-      }
     }
   }
 }
@@ -756,11 +673,6 @@
       .item {
         min-height: 48px;
       }
-
-      .social .social-icon {
-        min-width: 44px;
-        min-height: 44px;
-      }
     }
   }
 }
@@ -771,8 +683,7 @@
     .formContainer form input,
     .formContainer form textarea,
     .formContainer form button,
-    .textContainer .item,
-    .textContainer .social .social-icon {
+    .textContainer .item {
       transition: none;
 
       &:hover,
@@ -785,7 +696,7 @@
 
 // Support pour écrans haute densité
 @include high-density {
-  .contact .textContainer .social .social-icon {
+  .contact .textContainer {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }

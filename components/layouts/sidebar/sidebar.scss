@@ -209,10 +209,6 @@
     position: fixed;
     top: 1.25rem; // Meilleur positionnement sur mobile
     left: 1.25rem;
-
-    background-color: rgba(css-var(background-color), 0.1);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(css-var(primary-color), 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
 
@@ -242,9 +238,7 @@
     }
 
     &:hover {
-      background-color: rgba(css-var(primary-color), 0.2);
       transform: scale(1.1);
-      border-color: rgba(css-var(primary-color), 0.5);
 
       // 🖥️ DESKTOP - Comportement original
       @include from('xl') {

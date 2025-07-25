@@ -90,45 +90,6 @@ const Contact = () => {
               </div>
               <p>benew@gmail.com</p>
             </motion.div>
-            <motion.h2 variants={variants}>Comptes Sociaux</motion.h2>
-            <motion.div className="social" variants={variants}>
-              <motion.a href="#" variants={variants} title="Social link">
-                <Image
-                  src="/facebook.png"
-                  alt="Facebook logo"
-                  width={32}
-                  height={32}
-                  className="social-icon"
-                />
-              </motion.a>
-              <motion.a href="#" variants={variants} title="Social link">
-                <Image
-                  src="/instagram.png"
-                  alt="Instagram logo"
-                  width={32}
-                  height={32}
-                  className="social-icon"
-                />
-              </motion.a>
-              <motion.a href="#" variants={variants} title="Social link">
-                <Image
-                  src="/snapchat.png"
-                  alt="Snapchat logo"
-                  width={32}
-                  height={32}
-                  className="social-icon"
-                />
-              </motion.a>
-              <motion.a href="#" variants={variants} title="Social link">
-                <Image
-                  src="/twitter.png"
-                  alt="Twitter logo"
-                  width={32}
-                  height={32}
-                  className="social-icon"
-                />
-              </motion.a>
-            </motion.div>
           </motion.div>
           <div className="formContainer">
             <motion.div
