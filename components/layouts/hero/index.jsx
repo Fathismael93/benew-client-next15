@@ -51,14 +51,14 @@ function Hero() {
           initial="initial"
           animate="animate"
         >
-          <motion.h2 variants={textVariants}>Crois en toi,</motion.h2>
-          <motion.h1 variants={textVariants}>Commence ton histoire</motion.h1>
+          <motion.h2 variants={textVariants}>Construire et y Croire</motion.h2>
+          <motion.h1 variants={textVariants}>Commences ton histoire</motion.h1>
           <motion.div className="buttonGroup" variants={textVariants}>
             <motion.a href="/templates" className="primaryButton">
-              Découvrir nos boutiques
+              Découvres nos boutiques
             </motion.a>
             <motion.a href="/presentation" className="secondaryButton">
-              What&apos;s Benew
+              BENEW
             </motion.a>
           </motion.div>
           <motion.img
