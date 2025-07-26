@@ -1,7 +1,6 @@
-// ✅ APRÈS
-
 @use '../styles/abstracts' as *;
 
+// Garder les backgrounds
 .planets-background {
   background-image: url('/planets.png');
   background-size: cover;
@@ -32,133 +31,89 @@
   z-index: 1;
 }
 
+// Container principal
 .banner {
   width: 100%;
-  height: 100vh;
-  text-align: center;
-  overflow: hidden;
+  height: 100vh; // Strictement 100vh
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  z-index: 3;
 }
 
-.banner .slider {
-  position: absolute;
-  width: 150px;
-  height: 200px;
-  top: 15%;
-  left: calc(50% - 100px);
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  z-index: 3;
+// Container des cartes
+.cards-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
 
-  // Gestion des positions avec CSS variables et classes
-  &[data-quantity='3'] {
-    --quantity: 3;
+  // 🖥️ DESKTOP - Horizontal (par défaut)
+  flex-direction: row;
+
+  // 📱 MOBILE - Vertical
+  @include until('lg') {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @include until('sm') {
+    gap: 1rem;
   }
 }
 
-.banner .slider .item {
-  position: absolute;
-  inset: 0 0 0 0;
+// Styles des cartes
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(css-var(text-color), 0.05);
+  border: 2px solid transparent;
 
-  // Positions spécifiques pour chaque item
-  &.item-position-1 {
-    transform: rotateY(calc((1 - 1) * (360 / var(--quantity)) * 1deg))
-      translateZ(250px);
-  }
-
-  &.item-position-2 {
-    transform: rotateY(calc((2 - 1) * (360 / var(--quantity)) * 1deg))
-      translateZ(250px);
-  }
-
-  &.item-position-3 {
-    transform: rotateY(calc((3 - 1) * (360 / var(--quantity)) * 1deg))
-      translateZ(250px);
+  &:hover {
+    transform: translateY(-5px);
+    border-color: css-var(primary-color);
+    box-shadow: 0 8px 25px rgba(css-var(primary-color), 0.3);
   }
 
   h2 {
     color: css-var(text-color);
     text-shadow: 2px 2px 4px rgba(css-var(background-color), 0.8);
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
     transition: all 0.3s ease;
-  }
 
-  &:hover {
-    h2 {
-      color: css-var(primary-color);
-      transform: scale(1.05);
+    @include until('sm') {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
     }
   }
 
-  // Style pour l'item actif (au centre)
-  &.active {
-    h2 {
-      color: css-var(primary-color);
-      transform: scale(1.1);
-      text-shadow: 2px 2px 8px rgba(css-var(primary-color), 0.3);
-    }
-
-    .item-image {
-      border: 3px solid css-var(primary-color);
-      box-shadow: 0 0 20px rgba(css-var(primary-color), 0.4);
-      filter: brightness(1.1);
-    }
+  &:hover h2 {
+    color: css-var(primary-color);
+    transform: scale(1.05);
   }
 }
 
-.banner .slider .item .item-image {
-  width: 100%;
-  height: 100%;
+.card-image {
+  width: 150px;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+
+  @include until('sm') {
+    width: 120px;
+    height: 160px;
+  }
 
   &:hover {
-    padding: 0.3rem;
-    border: 3px solid css-var(primary-color);
-    box-shadow: 0 0 15px rgba(css-var(primary-color), 0.5);
     transform: scale(1.02);
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .banner .slider {
-    width: 100px;
-    height: 150px;
-    top: 25%;
-    left: calc(50% - 50px);
-  }
-
-  .banner .slider .item {
-    // Positions ajustées pour mobile
-    &.item-position-1 {
-      transform: rotateY(calc((1 - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(180px);
-    }
-
-    &.item-position-2 {
-      transform: rotateY(calc((2 - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(180px);
-    }
-
-    &.item-position-3 {
-      transform: rotateY(calc((3 - 1) * (360 / var(--quantity)) * 1deg))
-        translateZ(180px);
-    }
-
-    h2 {
-      font-size: 0.8rem;
-    }
-  }
-
-  .banner .slider .item .item-image {
-    &:hover {
-      padding: 0.2rem;
-      border: 2px solid css-var(primary-color);
-    }
+    box-shadow: 0 4px 15px rgba(css-var(primary-color), 0.2);
   }
 }
