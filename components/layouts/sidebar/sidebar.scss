@@ -176,24 +176,6 @@
             color: css-var(primary-color);
           }
         }
-
-        .icon {
-          color: css-var(primary-color);
-          margin-right: 1rem;
-
-          // 📱 MOBILE - Icônes plus grandes pour la visibilité
-          font-size: 1.5rem;
-
-          @include until('sm') {
-            font-size: 1.3rem;
-            margin-right: 0.75rem;
-          }
-
-          @include from('xl') {
-            font-size: 1.25rem;
-            margin-right: 1rem;
-          }
-        }
       }
     }
   }

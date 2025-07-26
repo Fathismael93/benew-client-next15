@@ -526,33 +526,6 @@
         }
       }
     }
-
-    h2 {
-      color: css-var(text-color);
-      margin: 0;
-
-      // 📱 MOBILE FIRST - Titre de section visible
-      font-size: 1.75rem;
-      line-height: 1.2;
-      margin-top: 1.5rem;
-
-      @include until('sm') {
-        font-size: 1.5rem;
-        margin-top: 1.25rem;
-      }
-
-      // 🖥️ TABLET ET PLUS
-      @include from('md') {
-        font-size: 1.875rem;
-      }
-
-      @include from('xl') {
-        font-size: 2rem; // Valeur desktop originale
-        line-height: 1rem;
-        margin-top: 1rem;
-        display: block; // Réapparaît sur desktop
-      }
-    }
   }
 }
 
