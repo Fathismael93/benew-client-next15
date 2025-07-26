@@ -588,21 +588,6 @@
   svg {
     transition: transform 0.2s ease;
     pointer-events: none; // ← Désactive les events sur le SVG
-
-    // 📱 MOBILE FIRST - Flèches plus grandes
-    font-size: 45px;
-
-    @include until('sm') {
-      font-size: 28px;
-    }
-
-    @include from('md') {
-      font-size: 34px;
-    }
-
-    @include from('xl') {
-      font-size: 36px; // ← Plus grand que les 32px originaux
-    }
   }
 }
 
