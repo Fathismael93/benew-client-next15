@@ -49,12 +49,11 @@
   align-items: center;
   justify-content: center;
 
-  // 🖥️ DESKTOP - Horizontal (par défaut)
+  // 🖥️ DESKTOP - Horizontal avec espacement normal
   flex-direction: row;
 
-  // 📱 MOBILE - Vertical
+  // 📱 MOBILE - Horizontal aussi mais plus compact
   @include until('lg') {
-    flex-direction: column;
     gap: 1.5rem;
   }
 
@@ -79,6 +78,10 @@
     transform: translateY(-5px);
     border-color: css-var(primary-color);
     box-shadow: 0 8px 25px rgba(css-var(primary-color), 0.3);
+  }
+
+  @include until('sm') {
+    padding: 0.75rem; // Padding réduit sur mobile
   }
 
   h2 {
@@ -108,8 +111,8 @@
   transition: all 0.3s ease;
 
   @include until('sm') {
-    width: 120px;
-    height: 160px;
+    width: 80px; // Plus petit
+    height: 110px; // Plus petit
   }
 
   &:hover {
