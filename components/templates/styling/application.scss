@@ -577,9 +577,20 @@
     box-shadow: 0 12px 35px rgba(246, 160, 55, 0.6);
   }
 
-  &:active {
-    transform: translateY(-50%) scale(0.95);
-    animation: arrowPulse 0.2s ease-out;
+  // 🔧 CORRECTION pour mobile/tablette
+  @include until('xl') {
+    &:active {
+      transform: translateY(-50%) scale(0.95) !important;
+      // Supprimer l'animation sur mobile/tablette
+    }
+  }
+
+  // 🖥️ DESKTOP - Garder l'animation
+  @include from('xl') {
+    &:active {
+      transform: translateY(-50%) scale(0.95);
+      animation: arrowPulse 0.2s ease-out;
+    }
   }
 
   svg {
