@@ -590,7 +590,7 @@
     pointer-events: none; // ← Désactive les events sur le SVG
 
     // 📱 MOBILE FIRST - Flèches plus grandes
-    font-size: 32px;
+    font-size: 45px;
 
     @include until('sm') {
       font-size: 28px;
