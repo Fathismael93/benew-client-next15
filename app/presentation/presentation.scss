@@ -31,24 +31,27 @@
   z-index: 1;
 }
 
-// Container principal
+// Container principal avec overflow hidden
 .banner {
   width: 100%;
-  height: 100vh; // Strictement 100vh
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 3;
+  overflow: hidden; // ← Empêche le débordement horizontal
 }
 
-// Container des cartes
+// Container des cartes avec largeur contrôlée
 .cards-container {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 100vw; // ← Largeur maximale de l'écran
   position: relative;
+  overflow: hidden; // ← Sécurité supplémentaire
 }
 
 // Desktop - layout horizontal classique
@@ -74,8 +77,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 100vw; // ← Largeur fixe 100vw
+  max-width: 100%; // ← Sécurité contre débordement
   position: relative;
+  padding: 0 60px; // ← Espace pour les flèches
 
   // 📱 MOBILE - Visible
   @include until('lg') {
@@ -86,6 +91,10 @@
   @include from('lg') {
     display: none;
   }
+
+  @include until('sm') {
+    padding: 0 50px; // ← Padding réduit sur très petits écrans
+  }
 }
 
 .slider-card-container {
@@ -93,10 +102,18 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 200px;
+  height: auto;
 
-  @include until('sm') {
-    max-width: 150px;
+  // Plus de max-width pour laisser la carte grandir
+  .card {
+    width: auto; // ← Largeur automatique
+    min-width: 200px; // ← Largeur minimale garantie
+    max-width: 280px; // ← Largeur maximale contrôlée
+
+    @include until('sm') {
+      min-width: 160px;
+      max-width: 220px;
+    }
   }
 }
 
@@ -141,18 +158,18 @@
 }
 
 .slider-arrow-left {
-  left: -50px;
+  left: 10px; // ← Repositionné à l'intérieur
 
   @include until('sm') {
-    left: -40px;
+    left: 8px;
   }
 }
 
 .slider-arrow-right {
-  right: -50px;
+  right: 10px; // ← Repositionné à l'intérieur
 
   @include until('sm') {
-    right: -40px;
+    right: 8px;
   }
 }
 
@@ -233,9 +250,23 @@
   border-radius: 8px;
   transition: all 0.3s ease;
 
-  @include until('sm') {
-    width: 80px;
-    height: 110px;
+  // 📱 MOBILE - Cartes plus grandes dans le slider
+  .cards-mobile-slider & {
+    width: 120px; // ← Plus grand que les 80px précédents
+    height: 160px; // ← Plus grand que les 110px précédents
+
+    @include until('sm') {
+      width: 100px;
+      height: 130px;
+    }
+  }
+
+  // 🖥️ DESKTOP - Taille normale
+  .cards-desktop & {
+    @include until('sm') {
+      width: 80px;
+      height: 110px;
+    }
   }
 
   &:hover {
