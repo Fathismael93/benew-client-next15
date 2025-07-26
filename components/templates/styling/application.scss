@@ -1420,24 +1420,11 @@
   justify-content: center;
   background: linear-gradient(135deg, #0c0c1d 0%, #1a0f2e 50%, #151528 100%);
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 
-  // 📱 MOBILE FIRST - Hauteur naturelle sans contrainte
-  min-height: auto;
-  height: auto;
-  padding: 3rem 0;
-
-  @include until('sm') {
-    padding: 2rem 0;
-  }
-
-  // 🖥️ DESKTOP - Hauteur naturelle aussi
-  @include from('xl') {
-    height: auto;
-    min-height: auto;
-    overflow: visible;
-    padding: 3rem 0;
-  }
+  // Hauteur fixe sur tous les écrans
+  height: 100vh;
+  padding: 0;
 
   // Effet de particules en arrière-plan différent
   &::before {
