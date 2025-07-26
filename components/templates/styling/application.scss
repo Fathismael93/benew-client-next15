@@ -547,24 +547,27 @@
   width: 56px;
   height: 56px;
   top: 50%;
-  transform: translateY(-50%);
+  margin-top: -28px; // ← Centrage avec margin au lieu de transform
   box-shadow: 0 8px 25px rgba(246, 160, 55, 0.5);
 
   // 📟 TRÈS PETITS ÉCRANS - Toujours utilisables
   @include until('sm') {
     width: 48px;
     height: 48px;
+    margin-top: -24px; // ← Ajuster selon la taille
   }
 
   // 🖥️ TABLET ET PLUS - Ajustements progressifs
   @include from('md') {
     width: 60px;
     height: 60px;
+    margin-top: -30px; // ← Ajuster selon la taille
   }
 
   @include from('xl') {
     width: 64px; // Valeur desktop originale
     height: 64px;
+    margin-top: -32px; // ← Ajuster selon la taille
   }
 
   &:hover {
@@ -573,20 +576,13 @@
       css-var(color-pink),
       css-var(color-orange)
     );
-    transform: translateY(-50%) scale(1.1);
+    transform: scale(1.1); // ← Plus de translateY
     box-shadow: 0 12px 35px rgba(246, 160, 55, 0.6);
   }
 
-  // 🔧 CORRECTION - Uniformiser pour tous les écrans
   &:active {
-    transform: translateY(-50%) scale(0.95) !important;
-    background: linear-gradient(
-      135deg,
-      css-var(color-pink),
-      css-var(color-orange)
-    );
-    box-shadow: 0 8px 20px rgba(246, 160, 55, 0.4);
-    transition: none; // Supprimer la transition pendant le clic
+    transform: scale(0.95); // ← Plus de translateY
+    animation: arrowPulse 0.2s ease-out;
   }
 
   svg {
