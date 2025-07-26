@@ -45,24 +45,147 @@
 // Container des cartes
 .cards-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+// Desktop - layout horizontal classique
+.cards-desktop {
+  display: flex;
   gap: 2rem;
   align-items: center;
   justify-content: center;
 
-  // 🖥️ DESKTOP - Horizontal avec espacement normal
-  flex-direction: row;
-
-  // 📱 MOBILE - Horizontal aussi mais plus compact
-  @include until('lg') {
-    gap: 1.5rem;
+  // 🖥️ DESKTOP - Visible par défaut
+  @include from('lg') {
+    gap: 2rem;
   }
 
-  @include until('sm') {
-    gap: 1rem;
+  // 📱 MOBILE - Caché
+  @include until('lg') {
+    display: none;
   }
 }
 
-// Styles des cartes
+// Mobile - slider
+.cards-mobile-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+
+  // 📱 MOBILE - Visible
+  @include until('lg') {
+    display: flex;
+  }
+
+  // 🖥️ DESKTOP - Caché
+  @include from('lg') {
+    display: none;
+  }
+}
+
+.slider-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 200px;
+
+  @include until('sm') {
+    max-width: 150px;
+  }
+}
+
+// Flèches du slider
+.slider-arrow {
+  position: absolute;
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    css-var(secondary-color)
+  );
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: css-var(background-color);
+
+  width: 40px;
+  height: 40px;
+
+  @include until('sm') {
+    width: 35px;
+    height: 35px;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(css-var(primary-color), 0.4);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+}
+
+.slider-arrow-left {
+  left: -50px;
+
+  @include until('sm') {
+    left: -40px;
+  }
+}
+
+.slider-arrow-right {
+  right: -50px;
+
+  @include until('sm') {
+    right: -40px;
+  }
+}
+
+// Indicateurs
+.slider-indicators {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+
+  .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(css-var(text-color), 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.active {
+      background: css-var(primary-color);
+      transform: scale(1.2);
+    }
+
+    &:hover {
+      background: rgba(css-var(primary-color), 0.7);
+    }
+  }
+}
+
+// Styles des cartes (communs)
 .card {
   display: flex;
   flex-direction: column;
@@ -81,7 +204,7 @@
   }
 
   @include until('sm') {
-    padding: 0.75rem; // Padding réduit sur mobile
+    padding: 0.75rem;
   }
 
   h2 {
@@ -111,8 +234,8 @@
   transition: all 0.3s ease;
 
   @include until('sm') {
-    width: 80px; // Plus petit
-    height: 110px; // Plus petit
+    width: 80px;
+    height: 110px;
   }
 
   &:hover {
