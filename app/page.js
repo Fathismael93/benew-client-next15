@@ -1,4 +1,3 @@
-import Parallax from '../components/layouts/parallax';
 import Hero from '../components/layouts/hero';
 import PageTracker from '../components/analytics/PageTracker';
 
@@ -67,41 +66,15 @@ export default function Home() {
         <Hero />
       </section>
 
-      <section className="others" data-section="products_intro">
-        <Parallax
-          bgColor="linear-gradient(180deg, #111132, #0c0c1d)"
-          title="Nos Produits..."
-          planets="/sun.png"
-        />
-      </section>
+      <section className="others" data-section="products_intro"></section>
 
-      <section className="others" data-section="services">
-        Services
-      </section>
+      <section className="others" data-section="services"></section>
 
-      <section className="others" data-section="portfolio_intro">
-        <Parallax
-          bgColor="linear-gradient(180deg, #111132, #505064)"
-          title="What We Did?"
-          planets="/planets.png"
-        />
-      </section>
+      <section className="others" data-section="portfolio_intro"></section>
 
-      <section className="others" data-section="portfolio_showcase">
-        Portfolio1
-      </section>
+      <section className="others" data-section="portfolio_showcase"></section>
 
-      <section className="others" data-section="portfolio_showcase">
-        Portfolio2
-      </section>
-
-      <section className="others" data-section="portfolio_showcase">
-        Portfolio3
-      </section>
-
-      <section className="others" data-section="contact_teaser">
-        Contact
-      </section>
+      <section className="others" data-section="portfolio_showcase"></section>
     </div>
   );
 }
