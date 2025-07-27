@@ -155,7 +155,8 @@
   // ✅ IMAGE DIRECTE - Plus de conteneur
   .profit-image {
     // ✅ CORRECTION - Hauteur 95vh comme demandé
-    height: 95vh;
+    max-height: 90vh;
+    height: auto;
     width: auto; // Maintient les proportions
 
     flex: 0 0 auto; // Ne grandit/rétrécit pas
