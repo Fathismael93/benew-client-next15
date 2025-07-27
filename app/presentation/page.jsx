@@ -17,32 +17,33 @@ function Presentation() {
     presentation: {
       title: 'Le Manifeste Benew',
       paragraphs: [
-        "Chez Benew, nous croyons en l'innovation. Nous croyons que nous sommes de faire des choses fabuleuses pour notre pays.",
-        'Nous croyons en notre pouvoir a le revolutionner et en notre pouvoir a nous sublimer nous-memes.',
-        'Nous croyons en notre potentiel a concurrencer les plus grandes nations de ce monde et nous croyons que nous avons ',
-        "des personnes fabuleuses avec des talents extraordinaires qui ne demandent qu'a s'exprimer parmi nous.",
-        'Nous avons la conviction que, dans ce monde en plein changement, nous devons etre des catalyseurs et non des attentistes, ',
-        'des producteurs et non des consommateurs, des pionniers et non des copieurs.',
-        "C'est pourquoi nous nous sommes donnes comme mission premiere de proposer des solutions modernes, innovantes et utiles ",
-        "et de montrer la voie vers l'excellence et l'amelioration continue.",
+        "Chez Benew, nous croyons en l'innovation. Nous croyons que nous sommes capables de faire des choses fabuleuses pour notre pays." +
+          'Nous croyons en notre pouvoir a le revolutionner et en notre pouvoir a nous sublimer nous-memes.' +
+          'Nous croyons en notre potentiel a concurrencer les plus grandes nations de ce monde et nous croyons que nous avons ' +
+          "des personnes fabuleuses avec des talents extraordinaires qui ne demandent qu'a s'exprimer parmi nous.",
+        'Nous avons la conviction que, dans ce monde en plein changement, nous devons etre des catalyseurs et non des attentistes, ' +
+          'des producteurs et non des consommateurs, des pionniers et non des copieurs.' +
+          "C'est pourquoi nous nous sommes donnes comme mission premiere de proposer des solutions modernes, innovantes et utiles " +
+          "et de montrer la voie vers l'excellence et l'amelioration continue.",
         'Chez Benew, nous croyons en vous. Croyez-vous en vous meme ?',
       ],
     },
     produit: {
       title: 'Nos Produits',
       paragraphs: [
-        'Nos boutiques sont pensees et concues pour le djiboutien lambda. Elles integrent les systemes de paiement ',
-        'electroniques existants actuellement. Elles ont ete creees avec les dernieres technologies pour vous offrir ',
-        'des performances inegalees et avec les meilleures pratiques de securite au standard international.',
-        'Elles ne sont pas cheres et chaque fonctionnalite a ete pensee pour simplifier votre quotidien ',
-        "et vous permettre d'atteindre vos objectifs plus facilement que jamais.",
+        'Nos boutiques sont pensees et concues pour le djiboutien lambda. Elles integrent les systemes de paiement ' +
+          'electroniques existants actuellement. Elles ont ete creees avec les dernieres technologies pour vous offrir ' +
+          'des performances inegalees et avec les meilleures pratiques de securite au standard international.' +
+          'Elles ne sont pas cheres et chaque fonctionnalite a ete pensee pour simplifier votre quotidien ' +
+          "et vous permettre d'atteindre vos objectifs plus facilement que jamais.",
       ],
     },
     fondateur: {
       title: 'Le Fondateur',
       paragraphs: [
-        "Passionne de mathematique, de technologie, d'entrepreneuriat et de design, ancien etudiant de l'universite de Lille, ",
-        'developpeur et footballeur a ses heures perdues et profondement patriote, je mets a votre disposition ma modeste contribution pour le developpement national.',
+        "Passionne de mathematique, de technologie, d'entrepreneuriat et de design, ancien etudiant de l'universite de Lille, " +
+          'developpeur et footballeur a ses heures perdues et profondement patriote, je mets a votre disposition ' +
+          'ma modeste contribution pour le developpement national.',
       ],
     },
   };
