@@ -209,7 +209,7 @@
 
       // ✅ Effet d'arrière-plan
       opacity: 0.3;
-      filter: blur(1px) brightness(0.8);
+      filter: blur(0.3px) brightness(0.8);
       border-radius: 20px;
 
       // ✅ Pas de box-shadow pour éviter la distraction
@@ -221,7 +221,7 @@
       @include until('sm') {
         height: 60vh;
         opacity: 0.25;
-        filter: blur(1.5px) brightness(0.7);
+        filter: blur(0.3px) brightness(0.7);
         border-radius: 16px;
       }
 
