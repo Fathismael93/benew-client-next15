@@ -150,7 +150,7 @@
       0 0 30px rgba($color-orange, 0.15);
 
     @include until('sm') {
-      height: 90vh; // Légèrement plus petit sur mobile
+      height: 60vh; // Légèrement plus petit sur mobile
       border-radius: 20px;
     }
 
