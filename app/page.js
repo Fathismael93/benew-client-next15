@@ -1,8 +1,8 @@
 import Hero from '../components/layouts/hero';
 import './styles/homePage.scss';
 import PageTracker from '../components/analytics/PageTracker';
-// import Image from 'next/image';
-import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
+import Image from 'next/image';
+// import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
 
 // =============================
 // MÉTADONNÉES SPÉCIFIQUES PAGE D'ACCUEIL
@@ -72,28 +72,27 @@ export default function Home() {
         className="others products-intro-section"
         data-section="products_intro"
       >
-        {/* <div className="main-content"> */}
-        {/* <Image
+        <div className="main-content">
+          <Image
             src="/tirelire.png"
             alt="Tirelire symbolisant l'économie et les profits"
             width={256}
             height={384}
             className="profit-image"
             priority
-          /> */}
+          />
 
-        {/* <div className="text-container">
+          <div className="text-container">
             <h2 className="main-title">GÉNÈRES PLUS DE PROFIT,</h2>
             <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
-          </div> */}
-        {/* </div> */}
+          </div>
+        </div>
       </section>
 
       <section className="others services-section" data-section="services">
-        <div className="services-card">
+        {/* <div className="services-card">
           <h2 className="main-title">Notre boutique est :</h2>
 
-          {/* GRILLE DES CARTES - Icônes seulement */}
           <div className="features-grid">
             <div className="feature-card">
               <MdPalette className="icon-main" />
@@ -112,7 +111,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* NOUVEAUX TEXTES SOUS LES CARTES */}
           <div className="features-labels">
             <div className="feature-label">Personnalisable</div>
             <div className="feature-label">
@@ -123,7 +121,7 @@ export default function Home() {
               Créée avec les meilleures pratiques des standards internationaux
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
 
       <section className="others" data-section="portfolio_intro"></section>
