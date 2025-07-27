@@ -14,52 +14,29 @@
   // Calcul précis : Hero(~94vh) + 5×sections(100vh) = ~594vh total
   background: linear-gradient(
     180deg,
-    // HERO ZONE (~0-16% du total = ~94vh)
     color.adjust($color-dark, $lightness: -3%) 0%,
-    // #0a0a16 - Matche parfaitement avec la fin du Hero
     color.adjust($color-dark, $lightness: -1%) 16%,
 
-    // #0b0b18 - Transition douce vers section 2
-    // SECTION 2 - Products intro (16-33% = 100vh)
     color.adjust($color-dark, $lightness: 1%) 18%,
-    // Base sombre stable
     rgba($primary-color, 0.15) 22%,
-    // Introduction de l'orange
     rgba($primary-color, 0.25) 28%,
-    // Orange plus présent
     rgba($primary-color, 0.3) 33%,
 
-    // Orange dominant en fin de section
-    // SECTION 3 - Services (33-50% = 100vh)
     rgba($color-orange, 0.25) 35%,
-    // Transition depuis l'orange
     rgba($color-pink, 0.15) 39%,
-    // Introduction du pink
     rgba($color-pink, 0.25) 44%,
-    // Pink plus présent
     rgba($color-pink, 0.3) 50%,
 
-    // Pink dominant en fin de section
-    // SECTION 4 - Portfolio intro (50-67% = 100vh)
     rgba($color-pink, 0.25) 52%,
-    // Transition depuis le pink
     rgba($color-purple, 0.15) 56%,
-    // Introduction du purple
     rgba($color-purple, 0.25) 61%,
-    // Purple plus présent
     rgba($color-purple, 0.3) 67%,
 
-    // Purple dominant en fin de section
-    // SECTIONS 5-6 - Portfolio showcase (67-100% = 200vh)
     rgba($color-purple, 0.25) 70%,
-    // Transition depuis le purple
     rgba($color-purple, 0.2) 78%,
-    // Purple qui s'atténue
     rgba($color-light, 0.08) 86%,
-    // Touch finale de light
     rgba($color-light, 0.05) 94%,
-    // Light qui s'atténue
-    color.adjust($color-dark, $lightness: 1%) 100% // Retour final à une base sombre
+    color.adjust($color-dark, $lightness: 1%) 100%
   );
 
   // Overlay subtil pour unifier l'ensemble
