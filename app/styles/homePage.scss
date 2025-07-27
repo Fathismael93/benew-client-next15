@@ -97,6 +97,334 @@
   }
 }
 
+.products-intro-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem 1rem;
+  text-align: center;
+  overflow: hidden;
+
+  // 📱 MOBILE FIRST - Layout optimisé
+  gap: 2rem;
+
+  @include until('sm') {
+    gap: 1.5rem;
+    padding: 1.5rem 0.75rem;
+  }
+
+  @include from('md') {
+    gap: 2.5rem;
+    padding: 2.5rem 1.5rem;
+  }
+
+  @include from('xl') {
+    gap: 3rem;
+    padding: 3rem 2rem;
+  }
+
+  // SOUS-TITRE - Petit caractère avec couleur orange contrastante
+  .subtitle {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba($color-orange, 0.8);
+    letter-spacing: 0.5px;
+    text-transform: lowercase;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+
+    @include until('sm') {
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+    }
+
+    @include from('md') {
+      font-size: 1rem;
+      letter-spacing: 0.6px;
+    }
+
+    @include from('xl') {
+      font-size: 1.1rem;
+      letter-spacing: 0.8px;
+    }
+  }
+
+  // CONTENU PRINCIPAL - Layout flexible
+  .main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+
+    // 📱 MOBILE - Layout vertical (image en haut, texte en bas)
+    flex-direction: column;
+    gap: 2rem;
+
+    @include until('sm') {
+      gap: 1.5rem;
+    }
+
+    // 🖥️ DESKTOP - Layout horizontal (texte à gauche, image à droite)
+    @include from('lg') {
+      flex-direction: row;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @include from('xl') {
+      gap: 5rem;
+    }
+  }
+
+  // CONTAINER TEXTE
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    // 📱 MOBILE - Full width
+    width: 100%;
+
+    // 🖥️ DESKTOP - Moitié de l'espace
+    @include from('lg') {
+      flex: 1;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  // TITRES PRINCIPAUX - En majuscules
+  .main-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin: 0;
+
+    // Couleur orange pour contraster avec le gradient de cette section
+    color: $color-orange;
+    text-shadow:
+      0 2px 4px rgba($color-dark, 0.5),
+      0 0 20px rgba($color-orange, 0.3);
+
+    // 📱 MOBILE FIRST
+    font-size: 2.5rem;
+
+    @include until('sm') {
+      font-size: 2rem;
+      letter-spacing: 0.8px;
+    }
+
+    @include from('md') {
+      font-size: 3rem;
+      letter-spacing: 1.2px;
+    }
+
+    @include from('lg') {
+      font-size: 3.5rem;
+    }
+
+    @include from('xl') {
+      font-size: 4rem;
+      letter-spacing: 1.5px;
+    }
+  }
+
+  // MOT "ET" - Style spécial au centre
+  .conjunction {
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: rgba($color-orange, 0.7);
+    text-transform: lowercase;
+    font-style: italic;
+    margin: 1rem 0;
+    position: relative;
+
+    @include until('sm') {
+      font-size: 1rem;
+      margin: 0.75rem 0;
+    }
+
+    @include from('md') {
+      font-size: 1.4rem;
+      margin: 1.25rem 0;
+    }
+
+    @include from('xl') {
+      font-size: 1.6rem;
+      margin: 1.5rem 0;
+    }
+
+    // Décorations subtiles
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba($color-orange, 0.4),
+        transparent
+      );
+
+      @include until('sm') {
+        width: 20px;
+      }
+    }
+
+    &::before {
+      left: -40px;
+
+      @include until('sm') {
+        left: -30px;
+      }
+    }
+
+    &::after {
+      right: -40px;
+
+      @include until('sm') {
+        right: -30px;
+      }
+    }
+  }
+
+  // CONTAINER IMAGE
+  .image-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // 📱 MOBILE - Taille adaptée
+    width: 100%;
+    max-width: 350px;
+
+    @include until('sm') {
+      max-width: 280px;
+    }
+
+    // 🖥️ DESKTOP - Moitié de l'espace
+    @include from('lg') {
+      flex: 1;
+      max-width: 500px;
+    }
+
+    @include from('xl') {
+      max-width: 600px;
+    }
+
+    // Effet de halo autour de l'image
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(
+        circle,
+        rgba($color-orange, 0.1) 0%,
+        rgba($color-orange, 0.05) 30%,
+        transparent 70%
+      );
+      border-radius: 50%;
+      z-index: -1;
+    }
+  }
+
+  // IMAGE PRINCIPALE
+  .profit-image {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow:
+      0 10px 30px rgba($color-dark, 0.4),
+      0 0 20px rgba($color-orange, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow:
+        0 15px 40px rgba($color-dark, 0.5),
+        0 0 30px rgba($color-orange, 0.3);
+    }
+
+    @include until('sm') {
+      border-radius: 12px;
+    }
+  }
+}
+
+// =============================
+// ANIMATIONS ENTRÉE
+// =============================
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Application des animations
+.products-intro-section {
+  .subtitle {
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+  }
+
+  .text-container {
+    animation: fadeInLeft 0.8s ease-out 0.4s both;
+
+    @include until('lg') {
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+  }
+
+  .image-container {
+    animation: fadeInRight 0.8s ease-out 0.6s both;
+
+    @include until('lg') {
+      animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+  }
+}
+
 // =============================
 // AMÉLIORATION POUR LES SECTIONS VIDES
 // =============================
@@ -150,5 +478,19 @@
 @include reduced-motion {
   .home-container::before {
     display: none; // Supprime l'overlay radial pour les utilisateurs sensibles aux mouvements
+  }
+}
+
+@include reduced-motion {
+  .products-intro-section {
+    .subtitle,
+    .text-container,
+    .image-container {
+      animation: none;
+    }
+
+    .profit-image:hover {
+      transform: none;
+    }
   }
 }

@@ -1,6 +1,7 @@
 import Hero from '../components/layouts/hero';
 import './styles/homePage.scss';
 import PageTracker from '../components/analytics/PageTracker';
+import Image from 'next/image';
 
 // =============================
 // MÉTADONNÉES SPÉCIFIQUES PAGE D'ACCUEIL
@@ -67,7 +68,31 @@ export default function Home() {
         <Hero />
       </section>
 
-      <section className="others" data-section="products_intro"></section>
+      <section
+        className="others products-intro-section"
+        data-section="products_intro"
+      >
+        <p className="subtitle">avec la boutique en ligne,</p>
+
+        <div className="main-content">
+          <div className="text-container">
+            <h2 className="main-title">GÉNÈRES PLUS DE PROFIT</h2>
+            <p className="conjunction">et</p>
+            <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
+          </div>
+
+          <div className="image-container">
+            <Image
+              src="/images/profit-illustration.jpg" // Remplacez par votre image
+              alt="Illustration génération de profit avec boutique en ligne"
+              width={500}
+              height={400}
+              className="profit-image"
+              priority
+            />
+          </div>
+        </div>
+      </section>
 
       <section className="others" data-section="services"></section>
 
