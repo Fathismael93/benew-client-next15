@@ -78,7 +78,7 @@ export default function Home() {
             <Image
               src="/tirelire.png"
               alt="Tirelire symbolisant l'économie et les profits"
-              width={300}
+              width={150}
               height={400}
               className="profit-image"
               priority
@@ -87,8 +87,8 @@ export default function Home() {
 
           {/* BLOC TEXTE - Droite */}
           <div className="text-container">
-            <h2 className="main-title">GÉNÈRES PLUS DE PROFIT...</h2>
-            <h2 className="main-title">...PAIES MOINS DE CHARGES</h2>
+            <h2 className="main-title">GÉNÈRES PLUS DE PROFIT ...</h2>
+            <h2 className="main-title">... PAIES MOINS DE CHARGES</h2>
           </div>
         </div>
       </section>
