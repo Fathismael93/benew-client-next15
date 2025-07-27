@@ -511,7 +511,7 @@
 
     // ✅ AMÉLIORATIONS SPÉCIFIQUES MOBILE
     @include until('sm') {
-      font-size: 1.1rem; // ✅ Encore plus petit pour tenir sur une ligne
+      font-size: 0.9rem; // ✅ Encore plus petit pour tenir sur une ligne
       margin: 0 0 1rem 0; // ✅ Marge réduite
       letter-spacing: 0.5px; // ✅ Espacement lettres réduit
       line-height: 1.1; // ✅ Interligne réduit
