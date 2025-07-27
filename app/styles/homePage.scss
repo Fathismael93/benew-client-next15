@@ -208,7 +208,7 @@
       width: auto;
 
       // ✅ Effet d'arrière-plan
-      opacity: 0.3;
+      opacity: 0.6;
       filter: blur(0.3px) brightness(0.8);
       border-radius: 20px;
 
@@ -220,7 +220,7 @@
 
       @include until('sm') {
         height: 60vh;
-        opacity: 0.25;
+        opacity: 0.5;
         filter: blur(0.3px) brightness(0.7);
         border-radius: 16px;
       }
