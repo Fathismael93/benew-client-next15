@@ -2,7 +2,7 @@ import Hero from '../components/layouts/hero';
 import './styles/homePage.scss';
 import PageTracker from '../components/analytics/PageTracker';
 import Image from 'next/image';
-// import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
+import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
 
 // =============================
 // MÉTADONNÉES SPÉCIFIQUES PAGE D'ACCUEIL
@@ -89,7 +89,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* <section className="others services-section" data-section="services">
+      <section className="others services-section" data-section="services">
         <div className="services-card">
           <h2 className="main-title">Notre boutique est :</h2>
 
@@ -122,7 +122,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       <section className="others" data-section="portfolio_intro"></section>
       <section className="others" data-section="portfolio_showcase"></section>
