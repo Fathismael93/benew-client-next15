@@ -23,11 +23,11 @@
     // SECTION 2 - Products intro (16-33% = 100vh)
     color.adjust($color-dark, $lightness: 1%) 18%,
     // Base sombre stable
-    rgba($color-orange, 0.15) 22%,
+    rgba($primary-color, 0.15) 22%,
     // Introduction de l'orange
-    rgba($color-orange, 0.25) 28%,
+    rgba($primary-color, 0.25) 28%,
     // Orange plus présent
-    rgba($color-orange, 0.3) 33%,
+    rgba($primary-color, 0.3) 33%,
 
     // Orange dominant en fin de section
     // SECTION 3 - Services (33-50% = 100vh)
