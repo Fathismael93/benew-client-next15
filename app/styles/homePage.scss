@@ -75,11 +75,11 @@
 }
 
 // =============================
-// SECTION PRODUCTS INTRO - CORRIGÉE
+// SECTION PRODUCTS INTRO - RESPONSIVE AVANCÉ
 // =============================
 
 .products-intro-section {
-  // ✅ CORRECTION - Dimensions strictes
+  // ✅ Dimensions strictes
   width: 100%;
   height: 100vh;
   max-width: 100%;
@@ -90,131 +90,230 @@
   justify-content: center;
   position: relative;
 
-  // ✅ CORRECTION - Suppression des paddings/margins verticaux
-  padding: 0 2vw; // Seulement padding horizontal
-  margin: 0; // Aucun margin
+  // ✅ Padding horizontal seulement
+  padding: 0 2vw;
+  margin: 0;
 
-  // ✅ CORRECTION - Empêcher débordement
+  // ✅ Empêcher débordement
   overflow: hidden;
   box-sizing: border-box;
 
-  // CONTENU PRINCIPAL - 2 éléments côte à côte
-  .main-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    // ✅ CORRECTION - Dimensions contrôlées
-    width: 100%;
-    max-width: 100%; // Éviter débordement
-    height: 100%;
-    max-height: 100vh;
-
-    gap: 2rem;
-
-    // ✅ CORRECTION - Box-sizing
-    box-sizing: border-box;
-
-    @include until('md') {
-      flex-direction: column;
-      gap: 1rem;
-      justify-content: center;
-    }
-
-    @include from('xl') {
-      max-width: 100%;
-      gap: 3rem;
-    }
-  }
-
-  // ✅ IMAGE DIRECTE - Plus de conteneur
-  .profit-image {
-    // ✅ CORRECTION - Hauteur 95vh comme demandé
-    max-height: 90vh;
-    height: auto;
-    width: auto; // Maintient les proportions
-
-    flex: 0 0 auto; // Ne grandit/rétrécit pas
-
-    // ✅ CORRECTION - Aucun padding/margin vertical
-    margin: 0;
-    padding: 0;
-
-    opacity: 0.9;
-    border-radius: 24px;
-    filter: none;
-    transition: all 0.3s ease;
-    box-shadow:
-      0 20px 40px rgba($color-dark, 0.3),
-      0 0 30px rgba($color-orange, 0.15);
-
-    @include until('sm') {
-      height: 90vh; // Légèrement plus petit sur mobile
-      border-radius: 20px;
-    }
-
-    @include until('md') {
-      height: 40vh; // En mode colonne sur tablette
-    }
-
-    @include from('xl') {
-      border-radius: 28px;
-    }
-
-    &:hover {
-      transform: scale(1.02);
-      opacity: 1;
-      box-shadow:
-        0 25px 50px rgba($color-dark, 0.4),
-        0 0 40px rgba($color-orange, 0.2);
-    }
-  }
-
-  // BLOC TEXTE - Droite
-  .text-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    justify-content: center;
-
-    // ✅ CORRECTION - Aucun padding/margin vertical
-    margin: 0;
-    padding: 0 1rem; // Seulement padding horizontal
-
-    position: relative;
-    z-index: 10;
-
-    @include until('md') {
+  // =============================
+  // STRUCTURE DESKTOP/TABLETTE (md et plus)
+  // =============================
+  @include from('md') {
+    .main-content {
+      display: flex;
       align-items: center;
-      text-align: center;
-      padding: 0 0.5rem;
+      justify-content: space-between;
+
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      max-height: 100vh;
+
+      gap: 2rem;
+      box-sizing: border-box;
+
+      @include from('xl') {
+        gap: 3rem;
+      }
+    }
+
+    // IMAGE À GAUCHE (desktop)
+    .profit-image {
+      max-height: 90vh;
+      height: auto;
+      width: auto;
+      flex: 0 0 auto;
+
+      margin: 0;
+      padding: 0;
+
+      opacity: 0.9;
+      border-radius: 24px;
+      filter: none;
+      transition: all 0.3s ease;
+      box-shadow:
+        0 20px 40px rgba($color-dark, 0.3),
+        0 0 30px rgba($color-orange, 0.15);
+
+      // Position normale dans le flux
+      position: relative;
+      z-index: 5;
+
+      @include from('xl') {
+        border-radius: 28px;
+      }
+
+      &:hover {
+        transform: scale(1.02);
+        opacity: 1;
+        box-shadow:
+          0 25px 50px rgba($color-dark, 0.4),
+          0 0 40px rgba($color-orange, 0.2);
+      }
+    }
+
+    // TEXTE À DROITE (desktop)
+    .text-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      justify-content: center;
+
+      margin: 0;
+      padding: 0 1rem;
+
+      position: relative;
+      z-index: 10;
     }
   }
 
-  // TITRES PRINCIPAUX - Tailles réduites
+  // =============================
+  // STRUCTURE MOBILE (jusqu'à md exclu)
+  // =============================
+  @include until('md') {
+    // Conteneur principal en mode superposition
+    .main-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      // Pas de gap en mode superposition
+      gap: 0;
+      box-sizing: border-box;
+    }
+
+    // IMAGE EN ARRIÈRE-PLAN (mobile)
+    .profit-image {
+      // ✅ POSITIONNEMENT ABSOLU EN ARRIÈRE-PLAN
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      // ✅ Z-INDEX INFÉRIEUR
+      z-index: 1;
+
+      // ✅ Taille optimisée pour arrière-plan
+      height: 70vh;
+      width: auto;
+
+      // ✅ Effet d'arrière-plan
+      opacity: 0.3;
+      filter: blur(1px) brightness(0.8);
+      border-radius: 20px;
+
+      // ✅ Pas de box-shadow pour éviter la distraction
+      box-shadow: none;
+
+      // ✅ Transition douce
+      transition: all 0.4s ease;
+
+      @include until('sm') {
+        height: 60vh;
+        opacity: 0.25;
+        filter: blur(1.5px) brightness(0.7);
+        border-radius: 16px;
+      }
+
+      // ✅ Effet hover subtil en arrière-plan
+      &:hover {
+        opacity: 0.4;
+        filter: blur(0.5px) brightness(0.9);
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+    }
+
+    // TEXTE AU PREMIER PLAN (mobile)
+    .text-container {
+      // ✅ POSITIONNEMENT AU PREMIER PLAN
+      position: relative;
+      z-index: 10;
+
+      // ✅ CENTRAGE PARFAIT
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      // ✅ Occupe tout l'espace disponible
+      width: 100%;
+      height: 100%;
+
+      // ✅ Padding pour éviter les bords
+      padding: 2rem 1rem;
+      margin: 0;
+
+      // ✅ ARRIÈRE-PLAN SEMI-TRANSPARENT pour la lisibilité
+      background: rgba($color-dark, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+
+      // ✅ Bordure subtile
+      border: 1px solid rgba($color-orange, 0.2);
+
+      // ✅ Ombre pour détacher du fond
+      box-shadow:
+        0 10px 30px rgba($color-dark, 0.6),
+        0 0 20px rgba($color-orange, 0.1);
+
+      @include until('sm') {
+        padding: 1.5rem 0.8rem;
+        border-radius: 16px;
+        backdrop-filter: blur(8px);
+        background: rgba($color-dark, 0.8);
+      }
+    }
+  }
+
+  // =============================
+  // STYLES DES TITRES (communs mais adaptés)
+  // =============================
   .main-title {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
     line-height: 1.2;
-
-    // ✅ CORRECTION - Marges réduites
     margin: 0 0 0.8rem 0;
 
     color: $color-orange;
     text-shadow:
-      0 3px 6px rgba($color-dark, 0.6),
-      0 0 25px rgba($color-orange, 0.4);
+      0 3px 6px rgba($color-dark, 0.8),
+      0 0 25px rgba($color-orange, 0.5);
 
-    // Tailles réduites
+    // Tailles responsives
     font-size: 2.2rem;
 
     @include until('sm') {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       letter-spacing: 0.8px;
-      margin: 0 0 0.6rem 0;
+      margin: 0 0 0.5rem 0;
+
+      // ✅ Text-shadow renforcé pour mobile (lisibilité sur image)
+      text-shadow:
+        0 2px 4px rgba($color-dark, 0.9),
+        0 0 15px rgba($color-orange, 0.7),
+        0 0 30px rgba($color-orange, 0.4);
+    }
+
+    @include between('sm', 'md') {
+      font-size: 1.9rem;
+
+      // ✅ Text-shadow renforcé pour tablette portrait
+      text-shadow:
+        0 3px 6px rgba($color-dark, 0.9),
+        0 0 20px rgba($color-orange, 0.6),
+        0 0 35px rgba($color-orange, 0.3);
     }
 
     @include from('md') {
@@ -235,12 +334,66 @@
     // Premier titre
     &:first-of-type {
       margin-bottom: 0.3rem;
+
+      @include until('md') {
+        margin-bottom: 0.2rem;
+      }
     }
 
-    // Deuxième titre
+    // Deuxième titre avec couleur légèrement différente
     &:last-of-type {
       color: lighten($color-orange, 8%);
       margin-bottom: 0;
+
+      @include until('md') {
+        // ✅ Couleur encore plus contrastée sur mobile
+        color: lighten($color-orange, 12%);
+      }
+    }
+  }
+
+  // =============================
+  // BREAKPOINT DE TRANSITION SPÉCIAL
+  // =============================
+
+  // ✅ Gestion spéciale pour tablettes en portrait (768px-1023px)
+  @include between('lg', 'xl') {
+    .main-content {
+      gap: 1.5rem;
+    }
+
+    .profit-image {
+      max-height: 85vh;
+    }
+
+    .text-container {
+      padding: 0 0.8rem;
+    }
+
+    .main-title {
+      font-size: 2.4rem;
+    }
+  }
+}
+
+// =============================
+// AMÉLIORATIONS POUR L'ACCESSIBILITÉ
+// =============================
+
+@include reduced-motion {
+  .products-intro-section {
+    .profit-image {
+      transition: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+
+    @include until('md') {
+      .profit-image:hover {
+        transform: translate(-50%, -50%); // Garde seulement le centrage
+      }
     }
   }
 }
