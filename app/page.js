@@ -72,15 +72,13 @@ export default function Home() {
         className="others products-intro-section"
         data-section="products_intro"
       >
-        <p className="subtitle">avec la boutique en ligne,</p>
-
         <div className="main-content">
           {/* BLOC IMAGE - Gauche */}
           <div className="image-container">
             <Image
               src="/tirelire.png"
               alt="Tirelire symbolisant l'économie et les profits"
-              width={500}
+              width={300}
               height={400}
               className="profit-image"
               priority

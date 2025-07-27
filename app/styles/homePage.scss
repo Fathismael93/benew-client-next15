@@ -368,7 +368,7 @@
 }
 
 // =============================
-// SECTION PRODUCTS INTRO - NOUVELLE STRUCTURE 2 BLOCS
+// SECTION PRODUCTS INTRO - AJUSTEMENTS TEXTES SEULEMENT
 // =============================
 
 .products-intro-section {
@@ -381,40 +381,7 @@
   // CONTRAINTE STRICTE - 100vh exact
   height: 100vh;
   max-height: 100vh;
-  padding: 0 5vw; // Padding horizontal seulement
-
-  // SOUS-TITRE - Repositionné en haut de la section
-  .subtitle {
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: rgba($color-orange, 0.8);
-    letter-spacing: 0.5px;
-    text-transform: lowercase;
-    opacity: 0.9;
-    position: absolute;
-    top: 8vh;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 15;
-
-    @include until('sm') {
-      font-size: 0.8rem;
-      letter-spacing: 0.3px;
-      top: 6vh;
-    }
-
-    @include from('md') {
-      font-size: 1rem;
-      letter-spacing: 0.6px;
-      top: 10vh;
-    }
-
-    @include from('xl') {
-      font-size: 1.1rem;
-      letter-spacing: 0.8px;
-      top: 12vh;
-    }
-  }
+  padding: 0 5vw;
 
   // CONTENU PRINCIPAL - 2 blocs égaux côte à côte
   .main-content {
@@ -423,7 +390,7 @@
     justify-content: space-between;
     width: 100%;
     max-width: 1200px;
-    height: 85vh; // Hauteur fixe dans les 100vh
+    height: 85vh;
     gap: 3rem;
 
     @include until('md') {
@@ -472,15 +439,15 @@
     }
   }
 
-  // IMAGE PRINCIPALE - Plus visible maintenant
+  // IMAGE PRINCIPALE - Configuration originale conservée
   .profit-image {
     width: 100%;
     height: auto;
     max-height: 70%;
     max-width: 90%;
-    opacity: 0.9; // Plus visible qu'avant
+    opacity: 0.9;
     border-radius: 24px;
-    filter: none; // Suppression du flou
+    filter: none;
     transition: all 0.3s ease;
     box-shadow:
       0 20px 40px rgba($color-dark, 0.3),
@@ -524,47 +491,46 @@
     }
   }
 
-  // TITRES PRINCIPAUX - En majuscules, alignés à gauche
+  // TITRES PRINCIPAUX - ✅ TAILLES RÉDUITES
   .main-title {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
     line-height: 1.2;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1.2rem 0; // Espacement légèrement réduit
 
-    // Couleur orange pour contraster
     color: $color-orange;
     text-shadow:
       0 3px 6px rgba($color-dark, 0.6),
       0 0 25px rgba($color-orange, 0.4);
 
-    // Responsive
-    font-size: 2.8rem;
+    // ✅ TAILLES RÉDUITES (environ 20% plus petit)
+    font-size: 2.2rem; // Était 2.8rem
 
     @include until('sm') {
-      font-size: 2.2rem;
+      font-size: 1.8rem; // Était 2.2rem
       letter-spacing: 0.8px;
-      margin: 0 0 1rem 0;
+      margin: 0 0 0.8rem 0;
     }
 
     @include from('md') {
-      font-size: 3.2rem;
+      font-size: 2.6rem; // Était 3.2rem
       letter-spacing: 1.2px;
     }
 
     @include from('lg') {
-      font-size: 3.6rem;
+      font-size: 2.9rem; // Était 3.6rem
     }
 
     @include from('xl') {
-      font-size: 4.2rem;
+      font-size: 3.4rem; // Était 4.2rem
       letter-spacing: 1.5px;
-      margin: 0 0 2rem 0;
+      margin: 0 0 1.5rem 0; // Était 2rem
     }
 
     // Premier titre (GÉNÈRES PLUS DE PROFIT)
     &:first-of-type {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem; // Était 0.5rem
     }
 
     // Deuxième titre (PAIES MOINS DE CHARGES)
