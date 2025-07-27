@@ -380,8 +380,7 @@
 
   // CONTRAINTE STRICTE - 100vh exact
   height: 100vh;
-  max-height: 100vh;
-  padding: 0 5vw;
+  padding: 0 1vw;
 
   // CONTENU PRINCIPAL - 2 blocs égaux côte à côte
   .main-content {
@@ -390,8 +389,7 @@
     justify-content: space-between;
     width: 98%;
     height: 95vh;
-    max-height: 100vh;
-    gap: 3rem;
+    gap: 1rem;
 
     @include until('md') {
       flex-direction: column;
