@@ -11,6 +11,8 @@
   position: relative;
   // ✅ CORRECTION - Empêcher le scroll horizontal
   overflow-x: hidden;
+  overflow-y: scroll; // ✅ AJOUTÉ : enable scroll sur home-container
+  scroll-snap-type: y mandatory; // ✅ AJOUTÉ : scroll snap sur le bon conteneur
 
   // GRADIENT GLOBAL - Continuité avec le Hero
   // Calcul précis : Hero(~94vh) + 5×sections(100vh) = ~594vh total
