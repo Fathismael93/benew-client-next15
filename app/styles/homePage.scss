@@ -107,29 +107,15 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 2rem 1rem;
   text-align: center;
   overflow: hidden;
 
-  // 📱 MOBILE FIRST - Layout optimisé
-  gap: 2rem;
+  // CONTRAINTE STRICTE - Tout le contenu dans 90vh maximum
+  height: 100vh; // Section fixe
+  max-height: 100vh; // Sécurité
+  padding: 0; // Suppression du padding qui fait déborder
 
-  @include until('sm') {
-    gap: 1.5rem;
-    padding: 1.5rem 0.75rem;
-  }
-
-  @include from('md') {
-    gap: 2.5rem;
-    padding: 2.5rem 1.5rem;
-  }
-
-  @include from('xl') {
-    gap: 3rem;
-    padding: 3rem 2rem;
-  }
-
-  // SOUS-TITRE - Petit caractère avec couleur orange contrastante
+  // SOUS-TITRE - Repositionné en haut de la section
   .subtitle {
     font-size: 0.9rem;
     font-weight: 400;
@@ -137,46 +123,56 @@
     letter-spacing: 0.5px;
     text-transform: lowercase;
     opacity: 0.9;
-    margin-bottom: 0.5rem;
+    position: absolute;
+    top: 8vh; // Position fixe en haut (8% de la hauteur viewport)
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
 
     @include until('sm') {
       font-size: 0.8rem;
       letter-spacing: 0.3px;
+      top: 6vh; // Plus haut sur mobile
     }
 
     @include from('md') {
       font-size: 1rem;
       letter-spacing: 0.6px;
+      top: 10vh;
     }
 
     @include from('xl') {
       font-size: 1.1rem;
       letter-spacing: 0.8px;
+      top: 12vh;
     }
   }
 
-  // CONTENU PRINCIPAL - Un seul bloc centré avec image en arrière-plan
+  // CONTENU PRINCIPAL - Centré dans les 90vh disponibles
   .main-content {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     max-width: 800px;
-    position: relative;
-    min-height: 400px; // Hauteur minimale pour contenir l'image et le texte
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 70vh; // Hauteur fixe pour contenir image + texte
 
     @include until('sm') {
-      min-height: 300px;
-      max-width: 100%;
+      height: 65vh;
+      max-width: 95%;
     }
 
     @include from('md') {
-      min-height: 450px;
+      height: 75vh;
       max-width: 900px;
     }
 
     @include from('xl') {
-      min-height: 500px;
+      height: 80vh;
       max-width: 1000px;
     }
   }

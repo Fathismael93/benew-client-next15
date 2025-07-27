@@ -83,7 +83,7 @@ export default function Home() {
 
           <div className="image-container">
             <Image
-              src="/tirelire.jpg" // ✅ Changé de e-commerce2 à tirelire
+              src="/tirelire.jpeg" // ✅ Changé de e-commerce2 à tirelire
               alt="Tirelire symbolisant l'économie et les profits"
               width={500}
               height={400}
