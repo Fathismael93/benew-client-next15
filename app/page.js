@@ -89,8 +89,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="others services-section" data-section="services">
-        {/* <div className="services-card">
+      {/* <section className="others services-section" data-section="services">
+        <div className="services-card">
           <h2 className="main-title">Notre boutique est :</h2>
 
           <div className="features-grid">
@@ -121,8 +121,8 @@ export default function Home() {
               Créée avec les meilleures pratiques des standards internationaux
             </div>
           </div>
-        </div> */}
-      </section>
+        </div>
+      </section> */}
 
       <section className="others" data-section="portfolio_intro"></section>
       <section className="others" data-section="portfolio_showcase"></section>
