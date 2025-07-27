@@ -1,7 +1,7 @@
 import Hero from '../components/layouts/hero';
 import './styles/homePage.scss';
 import PageTracker from '../components/analytics/PageTracker';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
 
 // =============================
