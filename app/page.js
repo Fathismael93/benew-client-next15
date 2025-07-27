@@ -78,8 +78,8 @@ export default function Home() {
             <Image
               src="/tirelire.png"
               alt="Tirelire symbolisant l'économie et les profits"
-              width={400}
-              height={600}
+              width={300}
+              height={450}
               className="profit-image"
               priority
             />
