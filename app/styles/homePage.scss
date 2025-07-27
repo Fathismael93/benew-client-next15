@@ -97,6 +97,10 @@
   }
 }
 
+// =============================
+// SECTION PRODUCTS INTRO
+// =============================
+
 .products-intro-section {
   display: flex;
   flex-direction: column;
@@ -151,51 +155,41 @@
     }
   }
 
-  // CONTENU PRINCIPAL - Layout flexible
+  // CONTENU PRINCIPAL - Un seul bloc centré avec image en arrière-plan
   .main-content {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 1200px;
+    max-width: 800px;
     position: relative;
-
-    // 📱 MOBILE - Layout vertical (image en haut, texte en bas)
-    flex-direction: column;
-    gap: 2rem;
+    min-height: 400px; // Hauteur minimale pour contenir l'image et le texte
 
     @include until('sm') {
-      gap: 1.5rem;
+      min-height: 300px;
+      max-width: 100%;
     }
 
-    // 🖥️ DESKTOP - Layout horizontal (texte à gauche, image à droite)
-    @include from('lg') {
-      flex-direction: row;
-      gap: 4rem;
-      align-items: center;
+    @include from('md') {
+      min-height: 450px;
+      max-width: 900px;
     }
 
     @include from('xl') {
-      gap: 5rem;
+      min-height: 500px;
+      max-width: 1000px;
     }
   }
 
-  // CONTAINER TEXTE
+  // CONTAINER TEXTE - Centré au-dessus de l'image
   .text-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-
-    // 📱 MOBILE - Full width
+    position: relative;
+    z-index: 10;
     width: 100%;
-
-    // 🖥️ DESKTOP - Moitié de l'espace
-    @include from('lg') {
-      flex: 1;
-      align-items: flex-start;
-      text-align: left;
-    }
   }
 
   // TITRES PRINCIPAUX - En majuscules
@@ -297,44 +291,32 @@
     }
   }
 
-  // CONTAINER IMAGE
+  // CONTAINER IMAGE - En arrière-plan, centré avec opacité réduite
   .image-container {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 
-    // 📱 MOBILE - Taille adaptée
-    width: 100%;
-    max-width: 350px;
-
-    @include until('sm') {
-      max-width: 280px;
-    }
-
-    // 🖥️ DESKTOP - Moitié de l'espace
-    @include from('lg') {
-      flex: 1;
-      max-width: 500px;
-    }
-
-    @include from('xl') {
-      max-width: 600px;
-    }
-
-    // Effet de halo autour de l'image
+    // Effet de halo subtil autour de l'image
     &::before {
       content: '';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 120%;
-      height: 120%;
+      width: 130%;
+      height: 130%;
       background: radial-gradient(
         circle,
-        rgba($color-orange, 0.1) 0%,
-        rgba($color-orange, 0.05) 30%,
+        rgba($color-orange, 0.08) 0%,
+        rgba($color-orange, 0.03) 30%,
         transparent 70%
       );
       border-radius: 50%;
@@ -342,86 +324,33 @@
     }
   }
 
-  // IMAGE PRINCIPALE
+  // IMAGE PRINCIPALE - En arrière-plan avec opacité réduite
   .profit-image {
-    width: 100%;
-    height: auto;
-    border-radius: 16px;
-    box-shadow:
-      0 10px 30px rgba($color-dark, 0.4),
-      0 0 20px rgba($color-orange, 0.2);
+    width: auto;
+    height: 60%;
+    max-width: 90%;
+    opacity: 0.3; // Opacité réduite pour servir d'arrière-plan
+    border-radius: 20px;
+    filter: blur(1px); // Léger flou pour l'effet arrière-plan
     transition: all 0.3s ease;
 
-    &:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow:
-        0 15px 40px rgba($color-dark, 0.5),
-        0 0 30px rgba($color-orange, 0.3);
-    }
-
     @include until('sm') {
-      border-radius: 12px;
+      height: 50%;
+      opacity: 0.25;
+      border-radius: 16px;
     }
-  }
-}
 
-// =============================
-// ANIMATIONS ENTRÉE
-// =============================
-
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-// Application des animations
-.products-intro-section {
-  .subtitle {
-    animation: fadeInUp 0.6s ease-out 0.2s both;
-  }
-
-  .text-container {
-    animation: fadeInLeft 0.8s ease-out 0.4s both;
-
-    @include until('lg') {
-      animation: fadeInUp 0.8s ease-out 0.4s both;
+    @include from('md') {
+      height: 65%;
+      opacity: 0.35;
     }
-  }
 
-  .image-container {
-    animation: fadeInRight 0.8s ease-out 0.6s both;
-
-    @include until('lg') {
-      animation: fadeInUp 0.8s ease-out 0.6s both;
+    @include from('xl') {
+      height: 70%;
+      opacity: 0.4;
     }
+
+    // Pas d'effet hover car c'est un arrière-plan
   }
 }
 
@@ -479,18 +408,10 @@
   .home-container::before {
     display: none; // Supprime l'overlay radial pour les utilisateurs sensibles aux mouvements
   }
-}
 
-@include reduced-motion {
   .products-intro-section {
-    .subtitle,
-    .text-container,
-    .image-container {
-      animation: none;
-    }
-
-    .profit-image:hover {
-      transform: none;
+    .profit-image {
+      transition: none;
     }
   }
 }
