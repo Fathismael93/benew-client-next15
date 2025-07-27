@@ -2,6 +2,7 @@ import Hero from '../components/layouts/hero';
 import './styles/homePage.scss';
 import PageTracker from '../components/analytics/PageTracker';
 import Image from 'next/image';
+import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
 
 // =============================
 // MÉTADONNÉES SPÉCIFIQUES PAGE D'ACCUEIL
@@ -83,7 +84,7 @@ export default function Home() {
 
           <div className="image-container">
             <Image
-              src="/tirelire.jpeg" // ✅ Changé de e-commerce2 à tirelire
+              src="/tirelire.png" // ✅ Changé de e-commerce2 à tirelire
               alt="Tirelire symbolisant l'économie et les profits"
               width={500}
               height={400}
@@ -94,7 +95,41 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="others" data-section="services"></section>
+      <section className="others services-section" data-section="services">
+        <div className="services-card">
+          <h2 className="main-title">Notre boutique est :</h2>
+
+          <div className="features-grid">
+            <div className="feature-card">
+              <MdPalette className="icon-background" />
+              <MdPalette className="icon-main" />
+              <p className="feature-text">Personnalisable</p>
+            </div>
+
+            <div className="feature-card">
+              <MdPayment className="icon-background" />
+              <MdPayment className="icon-main" />
+              <p className="feature-text">
+                Avec les paiements électroniques intégrés
+              </p>
+            </div>
+
+            <div className="feature-card">
+              <MdSecurity className="icon-background" />
+              <MdSecurity className="icon-main" />
+              <p className="feature-text">Rapide et sécurisée</p>
+            </div>
+
+            <div className="feature-card">
+              <MdVerified className="icon-background" />
+              <MdVerified className="icon-main" />
+              <p className="feature-text">
+                Créée avec les meilleures pratiques des standards internationaux
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="others" data-section="portfolio_intro"></section>
 
