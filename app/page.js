@@ -83,7 +83,7 @@ export default function Home() {
 
           <div className="image-container">
             <Image
-              src="/images/profit-illustration.jpg" // Remplacez par votre image
+              src="/e-commerce2.jpg" // Remplacez par votre image
               alt="Illustration génération de profit avec boutique en ligne"
               width={500}
               height={400}
