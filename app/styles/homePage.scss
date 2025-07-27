@@ -368,22 +368,20 @@
 }
 
 // =============================
-// SECTION PRODUCTS INTRO
+// SECTION PRODUCTS INTRO - NOUVELLE STRUCTURE 2 BLOCS
 // =============================
 
 .products-intro-section {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  text-align: center;
   overflow: hidden;
 
-  // CONTRAINTE STRICTE - Tout le contenu dans 90vh maximum
-  height: 100vh; // Section fixe
-  max-height: 100vh; // Sécurité
-  padding: 0; // Suppression du padding qui fait déborder
+  // CONTRAINTE STRICTE - 100vh exact
+  height: 100vh;
+  max-height: 100vh;
+  padding: 0 5vw; // Padding horizontal seulement
 
   // SOUS-TITRE - Repositionné en haut de la section
   .subtitle {
@@ -394,7 +392,7 @@
     text-transform: lowercase;
     opacity: 0.9;
     position: absolute;
-    top: 8vh; // Position fixe en haut (8% de la hauteur viewport)
+    top: 8vh;
     left: 50%;
     transform: translateX(-50%);
     z-index: 15;
@@ -402,7 +400,7 @@
     @include until('sm') {
       font-size: 0.8rem;
       letter-spacing: 0.3px;
-      top: 6vh; // Plus haut sur mobile
+      top: 6vh;
     }
 
     @include from('md') {
@@ -418,157 +416,41 @@
     }
   }
 
-  // CONTENU PRINCIPAL - Centré dans les 90vh disponibles
+  // CONTENU PRINCIPAL - 2 blocs égaux côte à côte
   .main-content {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
-    max-width: 800px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 70vh; // Hauteur fixe pour contenir image + texte
+    max-width: 1200px;
+    height: 85vh; // Hauteur fixe dans les 100vh
+    gap: 3rem;
 
-    @include until('sm') {
-      height: 65vh;
-      max-width: 95%;
-    }
-
-    @include from('md') {
-      height: 75vh;
-      max-width: 900px;
-    }
-
-    @include from('xl') {
+    @include until('md') {
+      flex-direction: column;
       height: 80vh;
-      max-width: 1000px;
-    }
-  }
-
-  // CONTAINER TEXTE - Centré au-dessus de l'image
-  .text-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    z-index: 10;
-    width: 100%;
-  }
-
-  // TITRES PRINCIPAUX - En majuscules
-  .main-title {
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    line-height: 1.1;
-    margin: 0;
-
-    // Couleur orange pour contraster avec le gradient de cette section
-    color: $color-orange;
-    text-shadow:
-      0 2px 4px rgba($color-dark, 0.5),
-      0 0 20px rgba($color-orange, 0.3);
-
-    // 📱 MOBILE FIRST
-    font-size: 2.5rem;
-
-    @include until('sm') {
-      font-size: 2rem;
-      letter-spacing: 0.8px;
-    }
-
-    @include from('md') {
-      font-size: 3rem;
-      letter-spacing: 1.2px;
-    }
-
-    @include from('lg') {
-      font-size: 3.5rem;
+      gap: 2rem;
     }
 
     @include from('xl') {
-      font-size: 4rem;
-      letter-spacing: 1.5px;
+      max-width: 1400px;
+      gap: 4rem;
     }
   }
 
-  // MOT "ET" - Style spécial au centre
-  .conjunction {
-    font-weight: 300;
-    font-size: 1.2rem;
-    color: rgba($color-orange, 0.7);
-    text-transform: lowercase;
-    font-style: italic;
-    margin: 1rem 0;
-    position: relative;
-
-    @include until('sm') {
-      font-size: 1rem;
-      margin: 0.75rem 0;
-    }
-
-    @include from('md') {
-      font-size: 1.4rem;
-      margin: 1.25rem 0;
-    }
-
-    @include from('xl') {
-      font-size: 1.6rem;
-      margin: 1.5rem 0;
-    }
-
-    // Décorations subtiles
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 30px;
-      height: 1px;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba($color-orange, 0.4),
-        transparent
-      );
-
-      @include until('sm') {
-        width: 20px;
-      }
-    }
-
-    &::before {
-      left: -40px;
-
-      @include until('sm') {
-        left: -30px;
-      }
-    }
-
-    &::after {
-      right: -40px;
-
-      @include until('sm') {
-        right: -30px;
-      }
-    }
-  }
-
-  // CONTAINER IMAGE - En arrière-plan, centré avec opacité réduite
+  // BLOC IMAGE - Gauche, 50% de largeur
   .image-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    height: 100%;
+    position: relative;
+
+    @include until('md') {
+      flex: 0 0 40%;
+      height: 40%;
+    }
 
     // Effet de halo subtil autour de l'image
     &::before {
@@ -577,12 +459,12 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 130%;
-      height: 130%;
+      width: 120%;
+      height: 120%;
       background: radial-gradient(
         circle,
-        rgba($color-orange, 0.08) 0%,
-        rgba($color-orange, 0.03) 30%,
+        rgba($color-orange, 0.12) 0%,
+        rgba($color-orange, 0.06) 30%,
         transparent 70%
       );
       border-radius: 50%;
@@ -590,33 +472,389 @@
     }
   }
 
-  // IMAGE PRINCIPALE - En arrière-plan avec opacité réduite
+  // IMAGE PRINCIPALE - Plus visible maintenant
   .profit-image {
-    width: auto;
-    height: 60%;
+    width: 100%;
+    height: auto;
+    max-height: 70%;
     max-width: 90%;
-    opacity: 0.3; // Opacité réduite pour servir d'arrière-plan
-    border-radius: 20px;
-    filter: blur(1px); // Léger flou pour l'effet arrière-plan
+    opacity: 0.9; // Plus visible qu'avant
+    border-radius: 24px;
+    filter: none; // Suppression du flou
     transition: all 0.3s ease;
+    box-shadow:
+      0 20px 40px rgba($color-dark, 0.3),
+      0 0 30px rgba($color-orange, 0.15);
 
     @include until('sm') {
-      height: 50%;
-      opacity: 0.25;
-      border-radius: 16px;
-    }
-
-    @include from('md') {
-      height: 65%;
-      opacity: 0.35;
+      border-radius: 20px;
+      max-height: 80%;
     }
 
     @include from('xl') {
-      height: 70%;
-      opacity: 0.4;
+      border-radius: 28px;
     }
 
-    // Pas d'effet hover car c'est un arrière-plan
+    &:hover {
+      transform: scale(1.02);
+      opacity: 1;
+      box-shadow:
+        0 25px 50px rgba($color-dark, 0.4),
+        0 0 40px rgba($color-orange, 0.2);
+    }
+  }
+
+  // BLOC TEXTE - Droite, 50% de largeur
+  .text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    height: 100%;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+
+    @include until('md') {
+      flex: 0 0 60%;
+      align-items: center;
+      text-align: center;
+      height: 60%;
+    }
+  }
+
+  // TITRES PRINCIPAUX - En majuscules, alignés à gauche
+  .main-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin: 0 0 1.5rem 0;
+
+    // Couleur orange pour contraster
+    color: $color-orange;
+    text-shadow:
+      0 3px 6px rgba($color-dark, 0.6),
+      0 0 25px rgba($color-orange, 0.4);
+
+    // Responsive
+    font-size: 2.8rem;
+
+    @include until('sm') {
+      font-size: 2.2rem;
+      letter-spacing: 0.8px;
+      margin: 0 0 1rem 0;
+    }
+
+    @include from('md') {
+      font-size: 3.2rem;
+      letter-spacing: 1.2px;
+    }
+
+    @include from('lg') {
+      font-size: 3.6rem;
+    }
+
+    @include from('xl') {
+      font-size: 4.2rem;
+      letter-spacing: 1.5px;
+      margin: 0 0 2rem 0;
+    }
+
+    // Premier titre (GÉNÈRES PLUS DE PROFIT)
+    &:first-of-type {
+      margin-bottom: 0.5rem;
+    }
+
+    // Deuxième titre (PAIES MOINS DE CHARGES)
+    &:last-of-type {
+      color: lighten($color-orange, 8%);
+      margin-bottom: 0;
+    }
+  }
+
+  // Suppression du mot "et" - plus nécessaire
+  .conjunction {
+    display: none;
+  }
+}
+
+// =============================
+// SECTION SERVICES - STRUCTURE INSPIRÉE DE L'IMAGE
+// =============================
+
+.services-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+
+  // CONTRAINTE STRICTE
+  height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
+  padding: 5vh 5vw;
+
+  @include until('sm') {
+    padding: 3vh 3vw;
+  }
+
+  // CARTE PRINCIPALE - Plus compacte
+  .services-card {
+    width: 100%;
+    max-width: 85vw; // Réduit de 90vw à 85vw
+    height: 100%;
+    max-height: 85vh; // Réduit de 90vh à 85vh
+    background: rgba($color-pink, 0.08);
+    backdrop-filter: blur(15px);
+    border-radius: 24px;
+    border: 1px solid rgba($color-pink, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem; // Réduit le padding
+    box-shadow:
+      0 20px 40px rgba($color-dark, 0.4),
+      0 0 30px rgba($color-pink, 0.1);
+    position: relative;
+    overflow: hidden;
+
+    @include until('sm') {
+      padding: 2rem 1.5rem;
+      border-radius: 20px;
+      max-width: 90vw;
+      max-height: 88vh;
+    }
+
+    @include from('xl') {
+      max-width: 75vw; // Plus compact sur desktop
+      max-height: 80vh;
+      padding: 3rem 2.5rem;
+    }
+
+    // Effet de brillance
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba($color-pink, 0.6),
+        rgba($color-purple, 0.6),
+        transparent
+      );
+    }
+  }
+
+  // TITRE PRINCIPAL
+  .main-title {
+    font-weight: 800;
+    font-size: 2.8rem; // Légèrement réduit
+    line-height: 1.2;
+    margin: 0 0 2.5rem 0; // Réduit l'espacement
+    color: $color-pink;
+    text-shadow:
+      0 2px 4px rgba($color-dark, 0.5),
+      0 0 20px rgba($color-pink, 0.3);
+
+    @include until('sm') {
+      font-size: 1.8rem;
+      margin: 0 0 1.5rem 0;
+    }
+
+    @include from('md') {
+      font-size: 2.2rem;
+      margin: 0 0 2rem 0;
+    }
+
+    @include from('xl') {
+      font-size: 3.2rem;
+      margin: 0 0 3rem 0;
+    }
+  }
+
+  // GRILLE DES CARTES - Plus compacte
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); // 4 colonnes sur desktop
+    gap: 1.5rem; // Espacement réduit
+    width: 100%;
+    max-width: 700px; // Largeur réduite
+
+    @include until('md') {
+      grid-template-columns: repeat(2, 1fr); // 2x2 sur tablette
+      gap: 1.2rem;
+      max-width: 500px;
+    }
+
+    @include until('sm') {
+      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr); // 2x2 sur mobile aussi
+      max-width: 350px;
+    }
+
+    @include from('xl') {
+      gap: 2rem;
+      max-width: 800px;
+    }
+  }
+
+  // NOUVELLES CARTES - Plus petites, icônes seulement
+  .feature-card {
+    background: rgba($color-light, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba($color-pink, 0.15);
+    padding: 1.5rem 1rem; // Padding réduit
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    min-height: 120px; // Hauteur réduite
+    max-height: 120px; // Hauteur fixe
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    @include until('sm') {
+      padding: 1.2rem 0.8rem;
+      min-height: 100px;
+      max-height: 100px;
+      border-radius: 12px;
+    }
+
+    @include from('xl') {
+      padding: 1.8rem 1.2rem;
+      min-height: 140px;
+      max-height: 140px;
+    }
+
+    &:hover {
+      transform: translateY(-8px);
+      border-color: rgba($color-pink, 0.4);
+      box-shadow: 0 15px 35px rgba($color-pink, 0.25);
+      background: rgba($color-pink, 0.12);
+    }
+
+    // Suppression de l'icône de fond
+    .icon-background {
+      display: none;
+    }
+
+    // Icône principale - plus grande et centrée
+    .icon-main {
+      font-size: 3rem; // Plus grande
+      z-index: 10;
+      position: relative;
+      filter: drop-shadow(0 3px 6px rgba($color-dark, 0.4));
+      margin-bottom: 0; // Suppression de l'espacement
+
+      @include until('sm') {
+        font-size: 2.5rem;
+      }
+
+      @include from('xl') {
+        font-size: 3.5rem;
+      }
+    }
+
+    // Suppression du texte dans les cartes
+    .feature-text {
+      display: none;
+    }
+  }
+
+  // TEXTES SOUS LES CARTES - Nouveaux éléments
+  .features-labels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 700px;
+    margin-top: 1.5rem;
+
+    @include until('md') {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+      max-width: 500px;
+    }
+
+    @include until('sm') {
+      gap: 1rem;
+      max-width: 350px;
+      margin-top: 1rem;
+    }
+
+    @include from('xl') {
+      gap: 2rem;
+      max-width: 800px;
+      margin-top: 2rem;
+    }
+  }
+
+  .feature-label {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $color-light;
+    line-height: 1.4;
+    text-shadow: 0 1px 3px rgba($color-dark, 0.6);
+
+    @include until('sm') {
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    @include from('md') {
+      font-size: 1rem;
+    }
+
+    @include from('xl') {
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+  }
+
+  // Variantes de couleurs pour chaque carte (gardées)
+  .feature-card:nth-child(1) .icon-main {
+    color: $color-orange;
+  }
+  .feature-card:nth-child(1):hover {
+    border-color: rgba($color-orange, 0.4);
+    box-shadow: 0 15px 35px rgba($color-orange, 0.25);
+    background: rgba($color-orange, 0.12);
+  }
+
+  .feature-card:nth-child(2) .icon-main {
+    color: $color-pink;
+  }
+
+  .feature-card:nth-child(3) .icon-main {
+    color: $color-purple;
+  }
+  .feature-card:nth-child(3):hover {
+    border-color: rgba($color-purple, 0.4);
+    box-shadow: 0 15px 35px rgba($color-purple, 0.25);
+    background: rgba($color-purple, 0.12);
+  }
+
+  .feature-card:nth-child(4) .icon-main {
+    color: lighten($color-pink, 15%);
+  }
+  .feature-card:nth-child(4):hover {
+    border-color: rgba(lighten($color-pink, 15%), 0.4);
+    box-shadow: 0 15px 35px rgba(lighten($color-pink, 15%), 0.25);
+    background: rgba(lighten($color-pink, 15%), 0.12);
   }
 }
 

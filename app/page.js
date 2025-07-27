@@ -64,7 +64,6 @@ export default function Home() {
           'contact_teaser',
         ]}
       />
-
       <section className="first" data-section="hero">
         <Hero />
       </section>
@@ -76,15 +75,10 @@ export default function Home() {
         <p className="subtitle">avec la boutique en ligne,</p>
 
         <div className="main-content">
-          <div className="text-container">
-            <h2 className="main-title">GÉNÈRES PLUS DE PROFIT</h2>
-            <p className="conjunction">et</p>
-            <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
-          </div>
-
+          {/* BLOC IMAGE - Gauche */}
           <div className="image-container">
             <Image
-              src="/tirelire.png" // ✅ Changé de e-commerce2 à tirelire
+              src="/tirelire.png"
               alt="Tirelire symbolisant l'économie et les profits"
               width={500}
               height={400}
@@ -92,49 +86,52 @@ export default function Home() {
               priority
             />
           </div>
+
+          {/* BLOC TEXTE - Droite */}
+          <div className="text-container">
+            <h2 className="main-title">GÉNÈRES PLUS DE PROFIT</h2>
+            <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
+          </div>
         </div>
       </section>
-
       <section className="others services-section" data-section="services">
         <div className="services-card">
           <h2 className="main-title">Notre boutique est :</h2>
 
+          {/* GRILLE DES CARTES - Icônes seulement */}
           <div className="features-grid">
             <div className="feature-card">
-              <MdPalette className="icon-background" />
               <MdPalette className="icon-main" />
-              <p className="feature-text">Personnalisable</p>
             </div>
 
             <div className="feature-card">
-              <MdPayment className="icon-background" />
               <MdPayment className="icon-main" />
-              <p className="feature-text">
-                Avec les paiements électroniques intégrés
-              </p>
             </div>
 
             <div className="feature-card">
-              <MdSecurity className="icon-background" />
               <MdSecurity className="icon-main" />
-              <p className="feature-text">Rapide et sécurisée</p>
             </div>
 
             <div className="feature-card">
-              <MdVerified className="icon-background" />
               <MdVerified className="icon-main" />
-              <p className="feature-text">
-                Créée avec les meilleures pratiques des standards internationaux
-              </p>
+            </div>
+          </div>
+
+          {/* NOUVEAUX TEXTES SOUS LES CARTES */}
+          <div className="features-labels">
+            <div className="feature-label">Personnalisable</div>
+            <div className="feature-label">
+              Avec les paiements électroniques intégrés
+            </div>
+            <div className="feature-label">Rapide et sécurisée</div>
+            <div className="feature-label">
+              Créée avec les meilleures pratiques des standards internationaux
             </div>
           </div>
         </div>
       </section>
-
       <section className="others" data-section="portfolio_intro"></section>
-
       <section className="others" data-section="portfolio_showcase"></section>
-
       <section className="others" data-section="portfolio_showcase"></section>
     </div>
   );
