@@ -389,8 +389,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1200px;
-    height: 85vh;
+    height: 95vh;
+    max-height: 100vh;
     gap: 3rem;
 
     @include until('md') {
