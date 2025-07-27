@@ -292,7 +292,6 @@
   margin: 0;
 
   // ✅ CORRECTION - Empêcher débordement
-  overflow: visible;
   box-sizing: border-box;
 
   @include until('sm') {
