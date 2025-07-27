@@ -95,7 +95,8 @@
   margin: 0; // Aucun margin
 
   // ✅ CORRECTION - Empêcher débordement
-  // box-sizing: border-box;
+  overflow: hidden;
+  box-sizing: border-box;
 
   // CONTENU PRINCIPAL - 2 éléments côte à côte
   .main-content {
@@ -112,7 +113,7 @@
     gap: 2rem;
 
     // ✅ CORRECTION - Box-sizing
-    // box-sizing: border-box;
+    box-sizing: border-box;
 
     @include until('md') {
       flex-direction: column;
