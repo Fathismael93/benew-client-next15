@@ -72,23 +72,21 @@ export default function Home() {
         className="others products-intro-section"
         data-section="products_intro"
       >
-        <div className="main-content">
-          {/* ✅ IMAGE DIRECTEMENT - Suppression du conteneur */}
-          <Image
+        {/* <div className="main-content"> */}
+        {/* <Image
             src="/tirelire.png"
             alt="Tirelire symbolisant l'économie et les profits"
             width={256}
             height={384}
             className="profit-image"
             priority
-          />
+          /> */}
 
-          {/* BLOC TEXTE - Droite */}
-          <div className="text-container">
+        {/* <div className="text-container">
             <h2 className="main-title">GÉNÈRES PLUS DE PROFIT,</h2>
             <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
       </section>
 
       <section className="others services-section" data-section="services">
