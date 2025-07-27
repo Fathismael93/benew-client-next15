@@ -399,7 +399,7 @@
 }
 
 // =============================
-// SECTION SERVICES - AMÉLIORÉE
+// SECTION SERVICES - AMÉLIORATIONS MOBILE
 // =============================
 
 .services-section {
@@ -480,7 +480,7 @@
     }
   }
 
-  // ✅ TITRE PRINCIPAL - TAILLES RÉDUITES
+  // ✅ TITRE PRINCIPAL - AMÉLIORATIONS MOBILE
   .main-title {
     font-weight: 800;
     line-height: 1.2;
@@ -489,18 +489,29 @@
       0 2px 4px rgba($color-dark, 0.5),
       0 0 20px rgba($color-pink, 0.3);
 
-    // ✅ Tailles réduites par rapport à avant
+    // Tailles réduites par rapport à avant
     font-size: 2.2rem;
     margin: 0 0 2rem 0;
 
+    // ✅ AMÉLIORATIONS SPÉCIFIQUES MOBILE
     @include until('sm') {
-      font-size: 1.4rem;
-      margin: 0 0 1.2rem 0;
+      font-size: 1.2rem; // ✅ Encore plus petit pour tenir sur une ligne
+      margin: 0 0 1rem 0; // ✅ Marge réduite
+      letter-spacing: 0.5px; // ✅ Espacement lettres réduit
+      line-height: 1.1; // ✅ Interligne réduit
+
+      // ✅ Assurer le centrage et la place
+      width: 100%;
+      text-align: center;
+      white-space: nowrap; // ✅ Empêche le retour à la ligne
+      overflow: hidden;
+      text-overflow: ellipsis; // ✅ Au cas où (sécurité)
     }
 
     @include between('sm', 'md') {
-      font-size: 1.8rem;
-      margin: 0 0 1.5rem 0;
+      font-size: 1.6rem; // ✅ Taille intermédiaire pour tablettes portrait
+      margin: 0 0 1.3rem 0;
+      letter-spacing: 0.8px;
     }
 
     @include from('md') {
@@ -514,24 +525,36 @@
     }
   }
 
-  // ✅ GRILLE DES CARTES AVEC LABELS INTÉGRÉS
+  // ✅ GRILLE DES CARTES - CENTRAGE AMÉLIORÉ
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;
     width: 100%;
+
+    // ✅ CENTRAGE PARFAIT
+    justify-items: center; // ✅ Centre chaque carte dans sa cellule
+    justify-content: center; // ✅ Centre la grille elle-même
+
+    // Desktop : 4 colonnes
+    grid-template-columns: repeat(4, 1fr);
     max-width: 700px;
 
     @include until('md') {
+      // ✅ Tablette/Mobile : 2x2 avec centrage optimal
       grid-template-columns: repeat(2, 1fr);
       gap: 1.2rem;
-      max-width: 500px;
+      max-width: 400px; // ✅ Largeur réduite pour meilleur centrage
+
+      // ✅ Centrage horizontal parfait
+      margin: 0 auto;
     }
 
     @include until('sm') {
       gap: 1rem;
-      grid-template-columns: repeat(2, 1fr);
-      max-width: 350px;
+      max-width: 320px; // ✅ Encore plus petit sur mobile
+
+      // ✅ Assurer le centrage même sur très petits écrans
+      padding: 0 0.5rem;
     }
 
     @include from('xl') {
@@ -540,7 +563,7 @@
     }
   }
 
-  // ✅ CARTES AVEC LABELS INTÉGRÉS - HAUTEUR AUGMENTÉE
+  // ✅ CARTES AVEC CENTRAGE AMÉLIORÉ
   .feature-card {
     background: rgba($color-light, 0.08);
     backdrop-filter: blur(12px);
@@ -551,26 +574,38 @@
     position: relative;
     transition: all 0.3s ease;
 
-    // ✅ Hauteur augmentée pour accueillir le label
+    // Hauteur augmentée pour accueillir le label
     min-height: 180px;
     max-height: 180px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; // ✅ Distribution égale icône/label
+    justify-content: space-between;
+
+    // ✅ ASSURER LA LARGEUR CONSTANTE
+    width: 100%;
+    max-width: 160px; // ✅ Largeur fixe pour uniformité
 
     @include until('sm') {
-      padding: 1.2rem 0.8rem;
-      min-height: 150px;
-      max-height: 150px;
+      padding: 1rem 0.8rem;
+      min-height: 140px; // ✅ Hauteur réduite sur mobile
+      max-height: 140px;
       border-radius: 12px;
+      max-width: 140px; // ✅ Plus petit sur mobile
+    }
+
+    @include between('sm', 'md') {
+      min-height: 160px;
+      max-height: 160px;
+      max-width: 150px;
     }
 
     @include from('xl') {
       padding: 1.8rem 1.2rem;
       min-height: 200px;
       max-height: 200px;
+      max-width: 180px;
     }
 
     &:hover {
@@ -580,16 +615,22 @@
       background: rgba($color-pink, 0.12);
     }
 
-    // ✅ ICÔNE PRINCIPALE - PARTIE HAUTE
+    // ✅ ICÔNE PRINCIPALE - AJUSTEMENTS MOBILES
     .icon-main {
-      font-size: 3rem;
       z-index: 10;
       position: relative;
       filter: drop-shadow(0 3px 6px rgba($color-dark, 0.4));
-      margin-bottom: 1rem; // ✅ Espace entre icône et label
+
+      font-size: 3rem;
+      margin-bottom: 1rem;
 
       @include until('sm') {
-        font-size: 2.2rem;
+        font-size: 2rem; // ✅ Icône plus petite sur mobile
+        margin-bottom: 0.6rem;
+      }
+
+      @include between('sm', 'md') {
+        font-size: 2.5rem;
         margin-bottom: 0.8rem;
       }
 
@@ -599,7 +640,7 @@
       }
     }
 
-    // ✅ LABEL INTÉGRÉ - PARTIE BASSE
+    // ✅ LABEL INTÉGRÉ - AJUSTEMENTS MOBILES
     .feature-label {
       text-align: center;
       font-weight: 600;
@@ -607,16 +648,26 @@
       line-height: 1.3;
       text-shadow: 0 1px 3px rgba($color-dark, 0.6);
 
-      // ✅ Flexibilité pour textes de longueurs différentes
+      // Flexibilité pour textes de longueurs différentes
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
 
+      // ✅ Permettre retour à la ligne pour longs textes
+      word-wrap: break-word;
+      hyphens: auto;
+
       font-size: 0.85rem;
 
       @include until('sm') {
-        font-size: 0.75rem;
+        font-size: 0.7rem; // ✅ Plus petit sur mobile
+        line-height: 1.2;
+        padding: 0 0.2rem; // ✅ Padding latéral pour éviter les bords
+      }
+
+      @include between('sm', 'md') {
+        font-size: 0.8rem;
         line-height: 1.2;
       }
 
@@ -631,10 +682,7 @@
     }
   }
 
-  // ✅ SUPPRESSION DE L'ANCIENNE GRILLE LABELS (plus nécessaire)
-  // L'ancienne .features-labels est supprimée car intégrée dans les cartes
-
-  // ✅ VARIANTES DE COULEURS PAR CARTE (avec hover cohérent)
+  // ✅ VARIANTES DE COULEURS PAR CARTE (inchangées)
   .feature-card:nth-child(1) {
     .icon-main {
       color: $color-orange;
@@ -680,6 +728,33 @@
       border-color: rgba(lighten($color-pink, 15%), 0.4);
       box-shadow: 0 15px 35px rgba(lighten($color-pink, 15%), 0.25);
       background: rgba(lighten($color-pink, 15%), 0.12);
+    }
+  }
+
+  // ✅ GESTION SPÉCIALE TRÈS PETITS ÉCRANS (320px)
+  @media (max-width: 360px) {
+    .main-title {
+      font-size: 1.1rem; // ✅ Encore plus petit si nécessaire
+    }
+
+    .features-grid {
+      max-width: 280px;
+      gap: 0.8rem;
+    }
+
+    .feature-card {
+      max-width: 130px;
+      min-height: 130px;
+      max-height: 130px;
+      padding: 0.8rem 0.6rem;
+
+      .icon-main {
+        font-size: 1.8rem;
+      }
+
+      .feature-label {
+        font-size: 0.65rem;
+      }
     }
   }
 }
