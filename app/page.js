@@ -73,17 +73,15 @@ export default function Home() {
         data-section="products_intro"
       >
         <div className="main-content">
-          {/* BLOC IMAGE - Gauche */}
-          <div className="image-container">
-            <Image
-              src="/tirelire.png"
-              alt="Tirelire symbolisant l'économie et les profits"
-              width={256}
-              height={384}
-              className="profit-image"
-              priority
-            />
-          </div>
+          {/* ✅ IMAGE DIRECTEMENT - Suppression du conteneur */}
+          <Image
+            src="/tirelire.png"
+            alt="Tirelire symbolisant l'économie et les profits"
+            width={256}
+            height={384}
+            className="profit-image"
+            priority
+          />
 
           {/* BLOC TEXTE - Droite */}
           <div className="text-container">
@@ -92,6 +90,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className="others services-section" data-section="services">
         <div className="services-card">
           <h2 className="main-title">Notre boutique est :</h2>
@@ -128,6 +127,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       <section className="others" data-section="portfolio_intro"></section>
       <section className="others" data-section="portfolio_showcase"></section>
       <section className="others" data-section="portfolio_showcase"></section>
