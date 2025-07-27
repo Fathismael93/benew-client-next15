@@ -120,7 +120,7 @@
   margin: 0; // Aucun margin
 
   // ✅ CORRECTION - Empêcher débordement
-  overflow: hidden;
+  overflow: visible;
   box-sizing: border-box;
 
   // CONTENU PRINCIPAL - 2 éléments côte à côte
@@ -292,7 +292,7 @@
   margin: 0;
 
   // ✅ CORRECTION - Empêcher débordement
-  overflow: hidden;
+  overflow: visible;
   box-sizing: border-box;
 
   @include until('sm') {
