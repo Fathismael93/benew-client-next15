@@ -399,7 +399,7 @@
 }
 
 // =============================
-// SECTION SERVICES - CORRIGÉE
+// SECTION SERVICES - AMÉLIORÉE
 // =============================
 
 .services-section {
@@ -410,24 +410,24 @@
   position: relative;
   text-align: center;
 
-  // ✅ CORRECTION - Dimensions strictes
+  // Dimensions strictes
   width: 100%;
   height: 100vh;
   max-width: 100%;
   max-height: 100vh;
 
-  // ✅ CORRECTION - Padding contrôlé
+  // Padding contrôlé
   padding: 3vh 3vw;
   margin: 0;
 
-  // ✅ CORRECTION - Empêcher débordement
+  // Empêcher débordement
   box-sizing: border-box;
 
   @include until('sm') {
     padding: 2vh 2vw;
   }
 
-  // CARTE PRINCIPALE - Plus compacte
+  // CARTE PRINCIPALE
   .services-card {
     width: 100%;
     max-width: 85vw;
@@ -480,34 +480,41 @@
     }
   }
 
-  // TITRE PRINCIPAL
+  // ✅ TITRE PRINCIPAL - TAILLES RÉDUITES
   .main-title {
     font-weight: 800;
-    font-size: 2.8rem;
     line-height: 1.2;
-    margin: 0 0 2.5rem 0;
     color: $color-pink;
     text-shadow:
       0 2px 4px rgba($color-dark, 0.5),
       0 0 20px rgba($color-pink, 0.3);
 
+    // ✅ Tailles réduites par rapport à avant
+    font-size: 2.2rem;
+    margin: 0 0 2rem 0;
+
     @include until('sm') {
+      font-size: 1.4rem;
+      margin: 0 0 1.2rem 0;
+    }
+
+    @include between('sm', 'md') {
       font-size: 1.8rem;
       margin: 0 0 1.5rem 0;
     }
 
     @include from('md') {
-      font-size: 2.2rem;
-      margin: 0 0 2rem 0;
+      font-size: 1.9rem;
+      margin: 0 0 1.8rem 0;
     }
 
     @include from('xl') {
-      font-size: 3.2rem;
-      margin: 0 0 3rem 0;
+      font-size: 2.4rem;
+      margin: 0 0 2.2rem 0;
     }
   }
 
-  // GRILLE DES CARTES
+  // ✅ GRILLE DES CARTES AVEC LABELS INTÉGRÉS
   .features-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -533,7 +540,7 @@
     }
   }
 
-  // CARTES - Plus petites, icônes seulement
+  // ✅ CARTES AVEC LABELS INTÉGRÉS - HAUTEUR AUGMENTÉE
   .feature-card {
     background: rgba($color-light, 0.08);
     backdrop-filter: blur(12px);
@@ -543,24 +550,27 @@
     text-align: center;
     position: relative;
     transition: all 0.3s ease;
-    min-height: 120px;
-    max-height: 120px;
+
+    // ✅ Hauteur augmentée pour accueillir le label
+    min-height: 180px;
+    max-height: 180px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; // ✅ Distribution égale icône/label
 
     @include until('sm') {
       padding: 1.2rem 0.8rem;
-      min-height: 100px;
-      max-height: 100px;
+      min-height: 150px;
+      max-height: 150px;
       border-radius: 12px;
     }
 
     @include from('xl') {
       padding: 1.8rem 1.2rem;
-      min-height: 140px;
-      max-height: 140px;
+      min-height: 200px;
+      max-height: 200px;
     }
 
     &:hover {
@@ -570,105 +580,107 @@
       background: rgba($color-pink, 0.12);
     }
 
-    // Icône principale
+    // ✅ ICÔNE PRINCIPALE - PARTIE HAUTE
     .icon-main {
       font-size: 3rem;
       z-index: 10;
       position: relative;
       filter: drop-shadow(0 3px 6px rgba($color-dark, 0.4));
-      margin-bottom: 0;
+      margin-bottom: 1rem; // ✅ Espace entre icône et label
 
       @include until('sm') {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        margin-bottom: 0.8rem;
       }
 
       @include from('xl') {
         font-size: 3.5rem;
+        margin-bottom: 1.2rem;
+      }
+    }
+
+    // ✅ LABEL INTÉGRÉ - PARTIE BASSE
+    .feature-label {
+      text-align: center;
+      font-weight: 600;
+      color: $color-light;
+      line-height: 1.3;
+      text-shadow: 0 1px 3px rgba($color-dark, 0.6);
+
+      // ✅ Flexibilité pour textes de longueurs différentes
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 0.85rem;
+
+      @include until('sm') {
+        font-size: 0.75rem;
+        line-height: 1.2;
+      }
+
+      @include from('md') {
+        font-size: 0.9rem;
+      }
+
+      @include from('xl') {
+        font-size: 1rem;
+        line-height: 1.4;
       }
     }
   }
 
-  // TEXTES SOUS LES CARTES
-  .features-labels {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 700px;
-    margin-top: 1.5rem;
+  // ✅ SUPPRESSION DE L'ANCIENNE GRILLE LABELS (plus nécessaire)
+  // L'ancienne .features-labels est supprimée car intégrée dans les cartes
 
-    @include until('md') {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.2rem;
-      max-width: 500px;
+  // ✅ VARIANTES DE COULEURS PAR CARTE (avec hover cohérent)
+  .feature-card:nth-child(1) {
+    .icon-main {
+      color: $color-orange;
     }
 
-    @include until('sm') {
-      gap: 1rem;
-      max-width: 350px;
-      margin-top: 1rem;
-    }
-
-    @include from('xl') {
-      gap: 2rem;
-      max-width: 800px;
-      margin-top: 2rem;
+    &:hover {
+      border-color: rgba($color-orange, 0.4);
+      box-shadow: 0 15px 35px rgba($color-orange, 0.25);
+      background: rgba($color-orange, 0.12);
     }
   }
 
-  .feature-label {
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: $color-light;
-    line-height: 1.4;
-    text-shadow: 0 1px 3px rgba($color-dark, 0.6);
-
-    @include until('sm') {
-      font-size: 0.8rem;
-      line-height: 1.3;
+  .feature-card:nth-child(2) {
+    .icon-main {
+      color: $color-pink;
     }
 
-    @include from('md') {
-      font-size: 1rem;
-    }
-
-    @include from('xl') {
-      font-size: 1.1rem;
-      line-height: 1.5;
+    &:hover {
+      border-color: rgba($color-pink, 0.4);
+      box-shadow: 0 15px 35px rgba($color-pink, 0.25);
+      background: rgba($color-pink, 0.12);
     }
   }
 
-  // Variantes de couleurs pour chaque carte
-  .feature-card:nth-child(1) .icon-main {
-    color: $color-orange;
-  }
-  .feature-card:nth-child(1):hover {
-    border-color: rgba($color-orange, 0.4);
-    box-shadow: 0 15px 35px rgba($color-orange, 0.25);
-    background: rgba($color-orange, 0.12);
+  .feature-card:nth-child(3) {
+    .icon-main {
+      color: $color-purple;
+    }
+
+    &:hover {
+      border-color: rgba($color-purple, 0.4);
+      box-shadow: 0 15px 35px rgba($color-purple, 0.25);
+      background: rgba($color-purple, 0.12);
+    }
   }
 
-  .feature-card:nth-child(2) .icon-main {
-    color: $color-pink;
-  }
+  .feature-card:nth-child(4) {
+    .icon-main {
+      color: lighten($color-pink, 15%);
+    }
 
-  .feature-card:nth-child(3) .icon-main {
-    color: $color-purple;
-  }
-  .feature-card:nth-child(3):hover {
-    border-color: rgba($color-purple, 0.4);
-    box-shadow: 0 15px 35px rgba($color-purple, 0.25);
-    background: rgba($color-purple, 0.12);
-  }
-
-  .feature-card:nth-child(4) .icon-main {
-    color: lighten($color-pink, 15%);
-  }
-  .feature-card:nth-child(4):hover {
-    border-color: rgba(lighten($color-pink, 15%), 0.4);
-    box-shadow: 0 15px 35px rgba(lighten($color-pink, 15%), 0.25);
-    background: rgba(lighten($color-pink, 15%), 0.12);
+    &:hover {
+      border-color: rgba(lighten($color-pink, 15%), 0.4);
+      box-shadow: 0 15px 35px rgba(lighten($color-pink, 15%), 0.25);
+      background: rgba(lighten($color-pink, 15%), 0.12);
+    }
   }
 }
 

@@ -96,29 +96,26 @@ export default function Home() {
           <div className="features-grid">
             <div className="feature-card">
               <MdPalette className="icon-main" />
+              <div className="feature-label">Personnalisable</div>
             </div>
 
             <div className="feature-card">
               <MdPayment className="icon-main" />
+              <div className="feature-label">
+                Avec les paiements électroniques intégrés
+              </div>
             </div>
 
             <div className="feature-card">
               <MdSecurity className="icon-main" />
+              <div className="feature-label">Rapide et sécurisée</div>
             </div>
 
             <div className="feature-card">
               <MdVerified className="icon-main" />
-            </div>
-          </div>
-
-          <div className="features-labels">
-            <div className="feature-label">Personnalisable</div>
-            <div className="feature-label">
-              Avec les paiements électroniques intégrés
-            </div>
-            <div className="feature-label">Rapide et sécurisée</div>
-            <div className="feature-label">
-              Créée avec les meilleures pratiques des standards internationaux
+              <div className="feature-label">
+                Créée avec les meilleures pratiques des standards internationaux
+              </div>
             </div>
           </div>
         </div>
