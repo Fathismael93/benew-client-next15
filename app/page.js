@@ -1,4 +1,5 @@
 import Hero from '../components/layouts/hero';
+import './styles/homePage.scss';
 import PageTracker from '../components/analytics/PageTracker';
 
 // =============================
@@ -47,7 +48,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <div>
+    <div className="home-container">
       {/* Tracking spécifique à la page d'accueil */}
       <PageTracker
         pageName="home"
