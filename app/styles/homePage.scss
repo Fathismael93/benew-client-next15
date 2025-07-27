@@ -424,7 +424,7 @@
   box-sizing: border-box;
 
   @include until('sm') {
-    padding: 1vh 1vw; // ✅ Padding réduit pour maximiser l'espace
+    padding: 0; // ✅ AUCUN padding pour occuper tout l'écran
   }
 
   // CARTE PRINCIPALE
@@ -451,11 +451,13 @@
 
     @include until('sm') {
       padding: 2rem 1.5rem;
-      border-radius: 20px;
-      max-width: 100vw; // ✅ 100% au lieu de 90vw
-      max-height: 100vh; // ✅ 100% au lieu de 88vh
-      width: 100%; // ✅ Ajout pour forcer 100%
-      height: 100%; // ✅ Ajout pour forcer 100%
+      border-radius: 0; // ✅ SUPPRIME les bordures arrondies
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 100vw; // ✅ Force 100% de la largeur viewport
+      height: 100vh; // ✅ Force 100% de la hauteur viewport
+      border: none; // ✅ SUPPRIME les bordures pour gagner de l'espace
+      box-shadow: none; // ✅ SUPPRIME les ombres pour l'effet fullscreen
     }
 
     @include from('xl') {
