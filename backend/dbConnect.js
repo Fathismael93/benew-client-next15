@@ -8,165 +8,6 @@ import { Pool } from 'pg';
 import logger from '@utils/logger';
 import { captureMessage, captureDatabaseError } from '../instrumentation.js';
 import { initializeBenewConfig } from '@/utils/doppler';
-import * as Sentry from '@sentry/nextjs';
-
-// =============================================
-// UTILITAIRES SENTRY INTÉGRÉS
-// =============================================
-
-/**
- * Détecte les données sensibles spécifiques à la DB
- */
-function containsSensitiveData(str) {
-  if (!str || typeof str !== 'string') return false;
-
-  const patterns = [
-    /password/i,
-    /mot\s*de\s*passe/i,
-    /account[_-]?number/i,
-    /payment[_-]?method/i,
-    /db[_-]?password/i,
-    /database[_-]?password/i,
-    /connection[_-]?string/i,
-    /db[_-]?ca/i,
-    /sentry[_-]?dsn/i,
-    /client[_-]?email/i,
-    /client[_-]?phone/i,
-    /\b(?:\d{4}[ -]?){3}\d{4}\b/, // Numéros de carte
-    /\b(?:\d{3}[ -]?){2}\d{4}\b/, // Numéros de téléphone
-    /\b\d{8,}\b/, // Numéros de compte génériques
-  ];
-
-  return patterns.some((pattern) => pattern.test(str));
-}
-
-/**
- * Classification des erreurs de base de données
- */
-function categorizeDatabaseError(error) {
-  if (!error) return 'unknown';
-
-  const message = error.message || '';
-  const name = error.name || '';
-  const code = error.code || '';
-  const combinedText = (message + name + code).toLowerCase();
-
-  if (/connection|connect|timeout|econnrefused|enotfound/i.test(combinedText)) {
-    return 'db_connection';
-  }
-  if (/pool|acquire|release|client/i.test(combinedText)) {
-    return 'db_pool';
-  }
-  if (/query|syntax|sql|invalid/i.test(combinedText)) {
-    return 'db_query';
-  }
-  if (/permission|auth|access|denied/i.test(combinedText)) {
-    return 'db_permission';
-  }
-  if (/network|socket|hang|reset/i.test(combinedText)) {
-    return 'db_network';
-  }
-
-  return 'db_general';
-}
-
-/**
- * Anonymise les données d'utilisateur dans les logs DB
- */
-function anonymizeUserData(userData) {
-  if (!userData || typeof userData !== 'object') return userData;
-
-  const anonymized = { ...userData };
-
-  // Supprimer données très sensibles
-  delete anonymized.ip_address;
-  delete anonymized.account_number;
-  delete anonymized.payment_method;
-
-  // Anonymiser email
-  if (anonymized.email) {
-    const email = anonymized.email;
-    const atIndex = email.indexOf('@');
-    if (atIndex > 0) {
-      const domain = email.slice(atIndex);
-      anonymized.email = `${email[0]}***${domain}`;
-    } else {
-      anonymized.email = '[FILTERED_EMAIL]';
-    }
-  }
-
-  // Anonymiser nom
-  if (anonymized.firstName) {
-    anonymized.firstName = anonymized.firstName[0] + '***';
-  }
-  if (anonymized.lastName) {
-    anonymized.lastName = anonymized.lastName[0] + '***';
-  }
-
-  // Anonymiser téléphone
-  if (anonymized.phone) {
-    const phone = anonymized.phone;
-    anonymized.phone =
-      phone.length > 4
-        ? phone.substring(0, 2) + '***' + phone.slice(-2)
-        : '[PHONE]';
-  }
-
-  return anonymized;
-}
-
-/**
- * Filtre les requêtes SQL sensibles
- */
-function filterSQLQuery(query) {
-  if (!query || typeof query !== 'string') return query;
-
-  if (containsSensitiveData(query)) {
-    // Masquer les valeurs dans les requêtes SQL
-    return query.replace(
-      /(password|token|secret|account_number|email|phone)\s*=\s*['"][^'"]*['"]/gi,
-      "$1 = '[FILTERED]'",
-    );
-  }
-
-  return query;
-}
-
-/**
- * Capture spécialisée pour les erreurs de base de données
- */
-function captureEnhancedDatabaseError(error, context = {}) {
-  const dbContext = {
-    tags: {
-      error_category: categorizeDatabaseError(error),
-      database_type: 'postgresql',
-      component: 'database_pool',
-      ...context.tags,
-    },
-    extra: {
-      postgres_code: error.code,
-      table: context.table || 'unknown',
-      operation: context.operation || 'unknown',
-      query_type: context.queryType || 'unknown',
-      duration: context.duration,
-      poolMetrics: context.poolMetrics,
-      ...context.extra,
-    },
-    level: 'error',
-  };
-
-  // Filtrer les informations sensibles de la DB
-  if (dbContext.extra.query) {
-    dbContext.extra.query = filterSQLQuery(dbContext.extra.query);
-  }
-
-  // Anonymiser les données utilisateur si présentes
-  if (context.userData) {
-    dbContext.extra.userData = anonymizeUserData(context.userData);
-  }
-
-  captureDatabaseError(error, dbContext);
-}
 
 // Configuration simplifiée
 const isProduction = process.env.NODE_ENV === 'production';
@@ -420,28 +261,24 @@ function logPoolMetrics() {
   // Log seulement si problèmes détectés ou en développement
   if (health.alerts.length > 0 || isDevelopment) {
     if (isDevelopment) {
-      // Filtrer les logs de développement pour données sensibles
-      const poolInfo =
-        `Pool: Total=${metrics.totalCount}, Idle=${metrics.idleCount}, ` +
-        `Waiting=${metrics.waitingCount}, Util=${(metrics.utilizationRate * 100).toFixed(1)}%`;
-
-      console.log(`[${getTimestamp()}] 📊 ${poolInfo}`);
+      console.log(
+        `[${getTimestamp()}] 📊 Pool: Total=${metrics.totalCount}, Idle=${metrics.idleCount}, ` +
+          `Waiting=${metrics.waitingCount}, Util=${(metrics.utilizationRate * 100).toFixed(1)}%`,
+      );
 
       if (metrics.avgAcquisitionTime !== undefined) {
-        const perfInfo = `Performance: Avg=${metrics.avgAcquisitionTime.toFixed(0)}ms, Max=${metrics.maxAcquisitionTime.toFixed(0)}ms`;
-        console.log(`[${getTimestamp()}] ⏱️ ${perfInfo}`);
+        console.log(
+          `[${getTimestamp()}] ⏱️ Performance: Avg=${metrics.avgAcquisitionTime.toFixed(0)}ms, Max=${metrics.maxAcquisitionTime.toFixed(0)}ms`,
+        );
       }
     }
 
-    // Log des alertes (toujours) avec filtrage
+    // Log des alertes (toujours)
     if (health.alerts.length > 0) {
       health.alerts.forEach((alert) => {
         const emoji = alert.level === 'critical' ? '🚨' : '⚠️';
-        const filteredMessage = containsSensitiveData(alert.message)
-          ? '[Alert message filtered for security]'
-          : alert.message;
         console.warn(
-          `[${getTimestamp()}] ${emoji} Pool Alert [${alert.level.toUpperCase()}]: ${filteredMessage}`,
+          `[${getTimestamp()}] ${emoji} Pool Alert [${alert.level.toUpperCase()}]: ${alert.message}`,
         );
       });
     }
@@ -449,17 +286,10 @@ function logPoolMetrics() {
 
   const exportedMetrics = poolMetrics.exportMetrics(metrics, health);
 
-  // Sentry : Seulement pour les problèmes critiques avec filtrage
+  // Sentry : Seulement pour les problèmes critiques
   if (health.status === 'critical') {
-    const filteredAlerts = health.alerts.map((alert) => ({
-      ...alert,
-      message: containsSensitiveData(alert.message)
-        ? '[Alert filtered for security]'
-        : alert.message,
-    }));
-
     captureMessage(
-      `Critical Database Pool Issue: ${filteredAlerts.map((a) => a.message).join(', ')}`,
+      `Critical Database Pool Issue: ${health.alerts.map((a) => a.message).join(', ')}`,
       {
         level: 'error',
         tags: {
@@ -563,15 +393,11 @@ const createPool = async () => {
     );
   }
 
-  // Gestion d'erreurs critiques uniquement avec filtrage Sentry
+  // Gestion d'erreurs critiques uniquement
   pool.on('error', (err, client) => {
-    const errorMessage = containsSensitiveData(err.message)
-      ? '[Pool error message filtered for security]'
-      : err.message;
-
     console.error(
       `[${getTimestamp()}] 🚨 Unexpected database pool error:`,
-      errorMessage,
+      err.message,
     );
 
     const metrics = poolMetrics.collectMetrics();
@@ -582,7 +408,7 @@ const createPool = async () => {
       );
     }
 
-    captureEnhancedDatabaseError(err, {
+    captureDatabaseError(err, {
       tags: { issue_type: 'pool_error', operation: 'pool_event' },
       extra: {
         poolMetrics: metrics,
@@ -608,16 +434,12 @@ const createPool = async () => {
 
   pool.on('release', (err) => {
     if (err) {
-      const errorMessage = containsSensitiveData(err.message)
-        ? '[Client release error filtered for security]'
-        : err.message;
-
       console.error(
         `[${getTimestamp()}] ❌ Client release error:`,
-        errorMessage,
+        err.message,
       );
 
-      captureEnhancedDatabaseError(err, {
+      captureDatabaseError(err, {
         tags: { issue_type: 'client_release_error', operation: 'pool_release' },
         extra: { poolMetrics: poolMetrics.collectMetrics() },
       });
@@ -718,7 +540,7 @@ const reconnectPool = async (attempt = 1) => {
       err.message,
     );
 
-    captureEnhancedDatabaseError(err, {
+    captureDatabaseError(err, {
       tags: {
         issue_type: 'reconnection_attempt_failed',
         operation: 'pool_reconnect',
@@ -773,10 +595,11 @@ export const getClient = async () => {
       );
     }
 
-    // Avertissement pour acquisition lente avec filtrage
+    // Avertissement pour acquisition lente
     if (acquisitionTime > CONFIG.thresholds.slowAcquisition) {
-      const warningMessage = `Slow client acquisition: ${acquisitionTime}ms`;
-      console.warn(`[${getTimestamp()}] ⚠️ ${warningMessage}`);
+      console.warn(
+        `[${getTimestamp()}] ⚠️ Slow client acquisition: ${acquisitionTime}ms`,
+      );
 
       captureMessage(`Slow database client acquisition: ${acquisitionTime}ms`, {
         level: 'warning',
@@ -795,13 +618,9 @@ export const getClient = async () => {
     return client;
   } catch (err) {
     const acquisitionTime = Date.now() - acquisitionStart;
-    const errorMessage = containsSensitiveData(err.message)
-      ? '[Database client acquisition error filtered]'
-      : err.message;
-
     console.error(
       `[${getTimestamp()}] ❌ Error acquiring database client after ${acquisitionTime}ms:`,
-      errorMessage,
+      err.message,
     );
 
     const metrics = poolMetrics.collectMetrics();
@@ -812,7 +631,7 @@ export const getClient = async () => {
       );
     }
 
-    captureEnhancedDatabaseError(err, {
+    captureDatabaseError(err, {
       tags: {
         issue_type: 'client_acquisition_failed',
         operation: 'get_client',
@@ -883,7 +702,7 @@ export const getClient = async () => {
       console.error(err);
     }
 
-    captureEnhancedDatabaseError(err, {
+    captureDatabaseError(err, {
       tags: { issue_type: 'initialization_failed', operation: 'startup_test' },
       extra: { retryAction: 'attempting_reconnection' },
     });
@@ -917,16 +736,12 @@ const shutdown = async () => {
       tags: { component: 'database_pool', issue_type: 'shutdown_success' },
     });
   } catch (err) {
-    const errorMessage = containsSensitiveData(err.message)
-      ? '[Database shutdown error filtered]'
-      : err.message;
-
     console.error(
       `[${getTimestamp()}] ❌ Error closing database pool:`,
-      errorMessage,
+      err.message,
     );
 
-    captureEnhancedDatabaseError(err, {
+    captureDatabaseError(err, {
       tags: { issue_type: 'shutdown_error', operation: 'pool_end' },
     });
   }
