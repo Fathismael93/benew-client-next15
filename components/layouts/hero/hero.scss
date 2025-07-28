@@ -415,17 +415,17 @@
 
   // 🖼️ CONTENEUR IMAGE - Mobile-first ADAPTÉ AUX PETITS ÉCRANS
   .imageContainer {
-    // 📱 MOBILE - Image centrée en arrière-plan
-    height: 100vh; // ← CHANGER : hauteur complète
+    // 📱 MOBILE - Image présente mais optimisée
+    height: auto; // ✅ CHANGEMENT CRITIQUE : hauteur flexible
+    min-height: 35vh; // ✅ Hauteur minimale réduite
     width: 100%;
     position: absolute;
-    top: 50%; // ← CHANGER
-    left: 50%; // ← CHANGER
-    transform: translate(-50%, -50%); // ← AJOUTER : centrage parfait
+    bottom: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1; // Reste en arrière-plan
+    z-index: 1;
 
     // 📟 TRÈS PETITS ÉCRANS - IMAGE ENCORE PLUS RÉDUITE
     @media (max-width: 400px) and (max-height: 680px) {
