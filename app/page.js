@@ -101,7 +101,9 @@ export default function Home() {
 
             <div className="feature-card">
               <MdPayment className="icon-main" />
-              <div className="feature-label">Avec les paiements intégrés</div>
+              <div className="feature-label">
+                Avec les paiements electroniques intégrés
+              </div>
             </div>
 
             <div className="feature-card">
@@ -112,7 +114,7 @@ export default function Home() {
             <div className="feature-card">
               <MdVerified className="icon-main" />
               <div className="feature-label">
-                Créée avec les pratiques des standards internationaux
+                Créée avec les meilleurs pratiques des standards internationaux
               </div>
             </div>
           </div>
