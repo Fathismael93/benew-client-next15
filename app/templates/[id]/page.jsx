@@ -1,13 +1,13 @@
 // app/templates/[id]/page.jsx
-// Server Component production-ready pour un template spécifique
-// Next.js 15 + PostgreSQL + Cache + Monitoring + Rate Limiting + Validation
+// Server Component optimisé pour un template spécifique
+// Next.js 15 + PostgreSQL + Cache + Monitoring essentiel
 
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
-import { getClient, monitoring } from '@/backend/dbConnect';
+import { getClient } from '@/backend/dbConnect';
 import {
   projectCache,
   generateCacheKey,
@@ -19,93 +19,36 @@ import {
   captureMessage,
   captureValidationError,
 } from '@/instrumentation';
-import {
-  optimizeApiCall,
-  getSitePerformanceStats,
-  getAdaptiveSiteConfig,
-} from '@/utils/performance';
+import { optimizeApiCall, getAdaptiveSiteConfig } from '@/utils/performance';
 import { limitBenewAPI } from '@/backend/rateLimiter';
 import { templateIdSchema } from '@/utils/schemas/schema';
 
-// =============================
-// CONFIGURATION PRODUCTION
-// =============================
-
-const SINGLE_TEMPLATE_CONFIG = {
-  // Cache configuration - Plus long pour template spécifique
-  cache: {
-    ttl: 15 * 60 * 1000, // 15 minutes
-    staleWhileRevalidate: 10 * 60 * 1000, // 10 minutes
-    maxSize: 300,
-    entityType: 'single_template',
-  },
-
-  // Database configuration
-  database: {
-    timeout: 10000, // 10 secondes pour requête complexe
-    retryAttempts: 3,
-    retryDelay: 1500,
-  },
-
-  // Performance thresholds
-  performance: {
-    slowQueryThreshold: 1500, // 1.5 secondes
-    alertThreshold: 3000, // 3 secondes
-  },
-
-  // Rate limiting
-  rateLimiting: {
-    enabled: true,
-    preset: 'TEMPLATES_API',
-  },
-
-  // Validation
-  validation: {
-    strictMode: true,
-    sanitizeInputs: true,
-  },
+// Configuration simplifiée
+const CONFIG = {
+  cache: { ttl: 15 * 60 * 1000, entityType: 'single_template' },
+  database: { timeout: 10000, retryAttempts: 3, retryDelay: 1500 },
+  performance: { slowQueryThreshold: 1500, alertThreshold: 3000 },
+  rateLimiting: { enabled: true, preset: 'TEMPLATES_API' },
+  validation: { strictMode: true, sanitizeInputs: true },
 };
 
-// =============================
-// VALIDATION & HELPERS
-// =============================
-
-/**
- * Valide et sanitise l'ID du template
- * @param {string} id - L'ID du template à valider
- * @returns {Object} Résultat de validation
- */
+// Validation et sanitisation de l'ID
 async function validateTemplateId(id) {
   const startTime = performance.now();
 
   try {
-    // Validation avec Yup schema
     const validatedData = await templateIdSchema.validate(
       { id },
       {
-        strict: SINGLE_TEMPLATE_CONFIG.validation.strictMode,
+        strict: CONFIG.validation.strictMode,
         stripUnknown: true,
       },
     );
 
-    const validationDuration = performance.now() - startTime;
-
-    captureMessage('Template ID validation successful', {
-      level: 'debug',
-      tags: {
-        component: 'single_template_page',
-        operation: 'validation',
-      },
-      extra: {
-        templateId: validatedData.id,
-        validationDuration,
-      },
-    });
-
     return {
       isValid: true,
       templateId: validatedData.id,
-      validationDuration,
+      validationDuration: performance.now() - startTime,
     };
   } catch (validationError) {
     const validationDuration = performance.now() - startTime;
@@ -113,14 +56,8 @@ async function validateTemplateId(id) {
     captureValidationError(validationError, {
       inputData: { id },
       schema: 'templateIdSchema',
-      tags: {
-        component: 'single_template_page',
-        validation_failed: true,
-      },
-      extra: {
-        rawId: id,
-        validationDuration,
-      },
+      tags: { component: 'single_template_page', validation_failed: true },
+      extra: { rawId: id, validationDuration },
     });
 
     return {
@@ -131,14 +68,9 @@ async function validateTemplateId(id) {
   }
 }
 
-/**
- * Requête optimisée pour récupérer les données du template et applications
- * @param {string} templateId - ID du template validé
- * @returns {Object} Requête SQL optimisée
- */
+// Requêtes optimisées
 function getTemplateDataQuery(templateId) {
   return {
-    // Requête principale avec JOIN optimisé
     applicationsQuery: {
       query: `
         SELECT 
@@ -161,7 +93,6 @@ function getTemplateDataQuery(templateId) {
       params: [templateId],
     },
 
-    // Requête pour les plateformes (toujours la même)
     platformsQuery: {
       query: `
         SELECT 
@@ -176,7 +107,6 @@ function getTemplateDataQuery(templateId) {
       params: [],
     },
 
-    // Requête pour vérifier l'existence du template
     templateExistsQuery: {
       query: `
         SELECT 
@@ -194,47 +124,22 @@ function getTemplateDataQuery(templateId) {
   };
 }
 
-// =============================
-// FONCTION PRINCIPALE DE RÉCUPÉRATION
-// =============================
-
-/**
- * Récupère les données du template avec toutes les optimisations production
- * @param {string} templateId - ID du template validé
- * @returns {Promise<Object>} Données du template avec métadonnées
- */
+// Fonction principale de récupération
 async function getSingleTemplateWithOptimizations(templateId) {
   const startTime = performance.now();
   const cacheKey = generateCacheKey('single_template', { templateId });
 
   try {
-    // 1. Vérifier le cache en premier
+    // Vérifier le cache
     const cachedResult = await projectCache.singleTemplate.get(cacheKey);
     if (cachedResult) {
-      captureMessage('Single template served from cache', {
-        level: 'debug',
-        tags: {
-          component: 'single_template_page',
-          cache_hit: true,
-        },
-        extra: {
-          templateId,
-          cacheKey: cacheKey.substring(0, 50),
-          duration: performance.now() - startTime,
-        },
-      });
-
       return {
         ...cachedResult,
-        metadata: {
-          ...cachedResult.metadata,
-          fromCache: true,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        metadata: { ...cachedResult.metadata, fromCache: true },
       };
     }
 
-    // 2. Récupération depuis la base de données
+    // Récupération depuis la DB
     const client = await getClient();
     let templateData = null;
 
@@ -242,7 +147,7 @@ async function getSingleTemplateWithOptimizations(templateId) {
       const queries = getTemplateDataQuery(templateId);
       const queryStartTime = performance.now();
 
-      // Exécuter toutes les requêtes en parallèle pour optimiser les performances
+      // Exécuter toutes les requêtes en parallèle
       const [templateExistsResult, applicationsResult, platformsResult] =
         await Promise.all([
           client.query(
@@ -263,18 +168,6 @@ async function getSingleTemplateWithOptimizations(templateId) {
 
       // Vérifier si le template existe
       if (templateExistsResult.rows.length === 0) {
-        captureMessage('Template not found', {
-          level: 'warning',
-          tags: {
-            component: 'single_template_page',
-            template_not_found: true,
-          },
-          extra: {
-            templateId,
-            queryDuration,
-          },
-        });
-
         return {
           template: null,
           applications: [],
@@ -289,15 +182,12 @@ async function getSingleTemplateWithOptimizations(templateId) {
         };
       }
 
-      // Extraire les données du template du premier résultat d'applications
       const templateInfo = templateExistsResult.rows[0];
       const applications = applicationsResult.rows;
       const platforms = platformsResult.rows;
 
-      // Log des requêtes lentes
-      if (
-        queryDuration > SINGLE_TEMPLATE_CONFIG.performance.slowQueryThreshold
-      ) {
+      // Log seulement si lent
+      if (queryDuration > CONFIG.performance.slowQueryThreshold) {
         captureMessage('Slow single template query detected', {
           level: 'warning',
           tags: {
@@ -314,7 +204,7 @@ async function getSingleTemplateWithOptimizations(templateId) {
       }
 
       // Alerte pour requêtes très lentes
-      if (queryDuration > SINGLE_TEMPLATE_CONFIG.performance.alertThreshold) {
+      if (queryDuration > CONFIG.performance.alertThreshold) {
         captureMessage('Critical: Very slow single template query', {
           level: 'error',
           tags: {
@@ -324,12 +214,11 @@ async function getSingleTemplateWithOptimizations(templateId) {
           extra: {
             templateId,
             duration: queryDuration,
-            threshold: SINGLE_TEMPLATE_CONFIG.performance.alertThreshold,
+            threshold: CONFIG.performance.alertThreshold,
           },
         });
       }
 
-      // 3. Préparer les résultats avec métadonnées enrichies
       templateData = {
         template: templateInfo,
         applications,
@@ -348,47 +237,24 @@ async function getSingleTemplateWithOptimizations(templateId) {
         },
       };
 
-      // 4. Mettre en cache le résultat
+      // Mettre en cache
       await projectCache.singleTemplate.set(cacheKey, templateData, {
-        ttl: SINGLE_TEMPLATE_CONFIG.cache.ttl,
-      });
-
-      captureMessage('Single template loaded from database', {
-        level: 'info',
-        tags: {
-          component: 'single_template_page',
-          cache_miss: true,
-        },
-        extra: {
-          templateId,
-          duration: queryDuration,
-          applicationsCount: applications.length,
-          platformsCount: platforms.length,
-        },
+        ttl: CONFIG.cache.ttl,
       });
 
       return templateData;
     } finally {
-      // Toujours libérer le client
       client.release();
     }
   } catch (error) {
     const errorDuration = performance.now() - startTime;
 
-    // Gestion spécialisée des erreurs de base de données
     if (/postgres|pg|database|db|connection/i.test(error.message)) {
       captureDatabaseError(error, {
         table: 'catalog.templates, catalog.applications, admin.platforms',
         operation: 'select_single_template_with_applications',
-        queryType: 'complex_join',
-        tags: {
-          component: 'single_template_page',
-        },
-        extra: {
-          templateId,
-          duration: errorDuration,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        tags: { component: 'single_template_page' },
+        extra: { templateId, duration: errorDuration },
       });
     } else {
       captureException(error, {
@@ -396,15 +262,10 @@ async function getSingleTemplateWithOptimizations(templateId) {
           component: 'single_template_page',
           error_type: 'single_template_fetch_error',
         },
-        extra: {
-          templateId,
-          duration: errorDuration,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        extra: { templateId, duration: errorDuration },
       });
     }
 
-    // Retourner un fallback gracieux
     return {
       template: null,
       applications: [],
@@ -422,58 +283,35 @@ async function getSingleTemplateWithOptimizations(templateId) {
   }
 }
 
-// =============================
-// FONCTION OPTIMISÉE AVEC PERFORMANCE
-// =============================
-
-// Créer une version optimisée avec toutes les améliorations
+// Version optimisée avec performance
 const getOptimizedSingleTemplate = optimizeApiCall(
   getSingleTemplateWithOptimizations,
   {
     entityType: 'single_template',
-    cacheTTL: SINGLE_TEMPLATE_CONFIG.cache.ttl,
-    throttleDelay: 200, // 200ms entre les appels
-    retryAttempts: SINGLE_TEMPLATE_CONFIG.database.retryAttempts,
-    retryDelay: SINGLE_TEMPLATE_CONFIG.database.retryDelay,
+    cacheTTL: CONFIG.cache.ttl,
+    throttleDelay: 200,
+    retryAttempts: CONFIG.database.retryAttempts,
+    retryDelay: CONFIG.database.retryDelay,
   },
 );
 
-// =============================
-// COMPOSANT PRINCIPAL
-// =============================
-
-/**
- * Server Component pour une page de template spécifique
- * Production-ready avec validation, cache et monitoring
- */
+// Composant principal
 async function SingleTemplatePage({ params }) {
   const requestStartTime = performance.now();
   const { id: rawId } = await params;
 
   try {
-    // 1. Validation stricte de l'ID du template
+    // Validation stricte de l'ID
     const validationResult = await validateTemplateId(rawId);
 
     if (!validationResult.isValid) {
-      captureMessage('Single template page: Invalid template ID', {
-        level: 'warning',
-        tags: {
-          component: 'single_template_page',
-          issue_type: 'invalid_id',
-        },
-        extra: {
-          rawId,
-          validationError: validationResult.error,
-        },
-      });
-
       return notFound();
     }
 
     const templateId = validationResult.templateId;
 
-    // 2. Rate Limiting (protection contre l'abus)
-    if (SINGLE_TEMPLATE_CONFIG.rateLimiting.enabled) {
+    // Rate Limiting
+    if (CONFIG.rateLimiting.enabled) {
       const headersList = headers();
       const rateLimitCheck = await limitBenewAPI('templates')({
         headers: headersList,
@@ -482,60 +320,30 @@ async function SingleTemplatePage({ params }) {
       });
 
       if (rateLimitCheck) {
-        // Rate limit dépassé
         return notFound();
       }
     }
 
-    // 3. Configuration adaptative selon les performances réseau
     const adaptiveConfig = getAdaptiveSiteConfig();
-
-    // 4. Récupération des données avec toutes les optimisations
     const templateData = await getOptimizedSingleTemplate(templateId);
 
-    // 5. Vérification des résultats - Template inexistant
+    // Vérification des résultats
     if (
       !templateData ||
       !templateData.template ||
       templateData.metadata?.templateExists === false
     ) {
-      captureMessage('Single template page: Template not found', {
-        level: 'info',
-        tags: {
-          component: 'single_template_page',
-          issue_type: 'template_not_found',
-        },
-        extra: {
-          templateId,
-          adaptiveConfig: adaptiveConfig.networkInfo,
-        },
-      });
-
       return notFound();
     }
 
-    // 6. Vérification des erreurs de données
     if (templateData.metadata?.error) {
-      captureMessage('Single template page: Data error', {
-        level: 'error',
-        tags: {
-          component: 'single_template_page',
-          issue_type: 'data_error',
-        },
-        extra: {
-          templateId,
-          errorMessage: templateData.metadata.errorMessage,
-        },
-      });
-
       return notFound();
     }
 
-    // 7. Métriques de performance
     const totalDuration = performance.now() - requestStartTime;
 
+    // Log seulement si très lent
     if (totalDuration > 3000) {
-      // Plus de 3 secondes pour page spécifique
       captureMessage('Slow single template page load', {
         level: 'warning',
         tags: {
@@ -548,24 +356,10 @@ async function SingleTemplatePage({ params }) {
           queryDuration: templateData.metadata?.queryDuration,
           applicationsCount: templateData.applications?.length,
           fromCache: templateData.metadata?.fromCache,
-          networkInfo: adaptiveConfig.networkInfo,
         },
       });
     }
 
-    // 8. Log de succès en développement
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`[Single Template Page] Loaded successfully:`, {
-        templateId,
-        templateName: templateData.template?.template_name,
-        applicationsCount: templateData.applications?.length || 0,
-        platformsCount: templateData.platforms?.length || 0,
-        totalDuration: `${totalDuration.toFixed(2)}ms`,
-        fromCache: templateData.metadata?.fromCache,
-      });
-    }
-
-    // 9. Retourner le composant avec les données
     return (
       <Suspense fallback={<SingleTemplatePageSkeleton />}>
         <SingleTemplateShops
@@ -577,30 +371,20 @@ async function SingleTemplatePage({ params }) {
             loadTime: totalDuration,
             fromCache: templateData.metadata?.fromCache,
             queryDuration: templateData.metadata?.queryDuration,
+            applicationsCount: templateData.applications?.length || 0,
           }}
         />
       </Suspense>
     );
   } catch (error) {
-    const errorDuration = performance.now() - requestStartTime;
-
     captureException(error, {
       tags: {
         component: 'single_template_page',
         error_type: 'page_render_error',
       },
-      extra: {
-        rawId,
-        duration: errorDuration,
-      },
+      extra: { rawId, duration: performance.now() - requestStartTime },
     });
 
-    // Log en développement
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('[Single Template Page] Error:', error);
-    }
-
-    // Fallback gracieux
     return (
       <div className="single-template-error-fallback">
         <h1>Template temporairement indisponible</h1>
@@ -614,10 +398,7 @@ async function SingleTemplatePage({ params }) {
   }
 }
 
-// =============================
-// COMPOSANT DE LOADING SKELETON
-// =============================
-
+// Skeleton component
 function SingleTemplatePageSkeleton() {
   return (
     <div className="single-template-page-skeleton">
@@ -656,10 +437,7 @@ function SingleTemplatePageSkeleton() {
   );
 }
 
-// =============================
-// CONFIGURATION DES METADATA
-// =============================
-
+// Metadata
 export const metadata = {
   title: 'One Template Benew | Application Web & Mobile',
   description:
@@ -673,32 +451,25 @@ export const metadata = {
     'Benew',
     'Djibouti',
   ],
-
   openGraph: {
     title: 'Template Premium Benew - Applications Disponibles',
     description:
       'Explorez ce template et ses applications web et mobile. Designs professionnels et fonctionnalités avancées.',
     url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates/[id]`,
   },
-
   twitter: {
     card: 'summary_large_image',
     title: 'Template Premium Benew',
     description:
       'Template professionnel avec applications web et mobile disponibles.',
   },
-
-  // Données structurées pour le SEO
   other: {
     'application-name': 'Benew Template',
     'theme-color': '#f6a037',
   },
-
-  // URL canonique (sera dynamique avec l'ID réel)
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
   },
-
   robots: {
     index: true,
     follow: true,
@@ -712,17 +483,9 @@ export const metadata = {
   },
 };
 
-// =============================
-// UTILITAIRES D'INVALIDATION
-// =============================
-
-/**
- * Fonction pour invalider le cache d'un template spécifique
- * @param {string} templateId - ID du template à invalider
- */
+// Utilitaires d'invalidation
 export async function invalidateSingleTemplateCache(templateId) {
   try {
-    // Valider l'ID avant invalidation
     const validationResult = await validateTemplateId(templateId);
     if (!validationResult.isValid) {
       throw new Error(
@@ -735,19 +498,6 @@ export async function invalidateSingleTemplateCache(templateId) {
       'single_template',
       validTemplateId,
     );
-
-    captureMessage('Single template cache invalidated', {
-      level: 'info',
-      tags: {
-        component: 'single_template_page',
-        action: 'cache_invalidation',
-      },
-      extra: {
-        templateId: validTemplateId,
-        invalidatedCount,
-        timestamp: new Date().toISOString(),
-      },
-    });
 
     return { success: true, templateId: validTemplateId, invalidatedCount };
   } catch (error) {
@@ -763,10 +513,6 @@ export async function invalidateSingleTemplateCache(templateId) {
   }
 }
 
-/**
- * Fonction pour invalider le cache des applications d'un template
- * @param {string} templateId - ID du template
- */
 export async function invalidateTemplateApplicationsCache(templateId) {
   try {
     const validationResult = await validateTemplateId(templateId);
@@ -774,7 +520,6 @@ export async function invalidateTemplateApplicationsCache(templateId) {
       throw new Error(`Invalid template ID: ${templateId}`);
     }
 
-    // Invalider à la fois le cache du template et celui des applications
     const templateInvalidated = invalidateProjectCache(
       'single_template',
       validationResult.templateId,
@@ -785,21 +530,6 @@ export async function invalidateTemplateApplicationsCache(templateId) {
     );
 
     const totalInvalidated = templateInvalidated + applicationsInvalidated;
-
-    captureMessage('Template applications cache invalidated', {
-      level: 'info',
-      tags: {
-        component: 'single_template_page',
-        action: 'applications_cache_invalidation',
-      },
-      extra: {
-        templateId: validationResult.templateId,
-        totalInvalidated,
-        templateInvalidated,
-        applicationsInvalidated,
-        timestamp: new Date().toISOString(),
-      },
-    });
 
     return {
       success: true,
@@ -821,68 +551,98 @@ export async function invalidateTemplateApplicationsCache(templateId) {
   }
 }
 
-// =============================
-// MONITORING ET DIAGNOSTICS
-// =============================
-
-/**
- * Fonction de diagnostic pour le monitoring (développement)
- */
-export async function getSingleTemplatePageDiagnostics(templateId) {
-  if (process.env.NODE_ENV === 'production') {
-    return { error: 'Diagnostics not available in production' };
-  }
-
+// Statistiques simplifiées
+export async function getSingleTemplateStats(templateId) {
   try {
-    // Valider l'ID
     const validationResult = await validateTemplateId(templateId);
     if (!validationResult.isValid) {
-      return {
-        error: 'Invalid template ID',
-        validationError: validationResult.error,
-      };
+      throw new Error(`Invalid template ID: ${templateId}`);
     }
 
     const validTemplateId = validationResult.templateId;
-
-    const [cacheStats, performanceStats, dbHealth] = await Promise.all([
-      projectCache.singleTemplate.getStats(),
-      getSitePerformanceStats(),
-      monitoring.getHealth(),
-    ]);
-
-    // Vérifier le cache spécifique
-    const cacheKey = generateCacheKey('single_template', {
+    const cacheKey = generateCacheKey('single_template_stats', {
       templateId: validTemplateId,
     });
-    const cachedData = await projectCache.singleTemplate.get(cacheKey);
+    const cachedStats = await projectCache.singleTemplate.get(
+      `${cacheKey}_stats`,
+    );
+
+    if (cachedStats) {
+      return cachedStats;
+    }
+
+    const client = await getClient();
+    try {
+      const statsQuery = `
+        SELECT 
+          t.template_id,
+          t.template_name,
+          COUNT(a.application_id) as total_applications,
+          COUNT(a.application_id) FILTER (WHERE a.is_active = true) as active_applications,
+          AVG(a.application_fee) as avg_fee,
+          AVG(a.application_rent) as avg_rent,
+          COUNT(DISTINCT a.application_category) as categories_count,
+          MIN(a.application_level) as min_level,
+          MAX(a.application_level) as max_level
+        FROM catalog.templates t
+        LEFT JOIN catalog.applications a ON t.template_id = a.application_template_id
+        WHERE t.template_id = $1 AND t.is_active = true
+        GROUP BY t.template_id, t.template_name
+      `;
+
+      const result = await client.query(statsQuery, [validTemplateId]);
+      const stats = result.rows[0];
+
+      if (!stats) {
+        return {
+          error: 'Template not found',
+          templateId: validTemplateId,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      const enrichedStats = {
+        ...stats,
+        total_applications: parseInt(stats.total_applications),
+        active_applications: parseInt(stats.active_applications),
+        avg_fee: parseFloat(stats.avg_fee) || 0,
+        avg_rent: parseFloat(stats.avg_rent) || 0,
+        categories_count: parseInt(stats.categories_count),
+        min_level: parseInt(stats.min_level) || 0,
+        max_level: parseInt(stats.max_level) || 0,
+        active_ratio:
+          stats.total_applications > 0
+            ? (stats.active_applications / stats.total_applications).toFixed(3)
+            : 0,
+        timestamp: new Date().toISOString(),
+      };
+
+      await projectCache.singleTemplate.set(
+        `${cacheKey}_stats`,
+        enrichedStats,
+        {
+          ttl: 10 * 60 * 1000,
+        },
+      );
+
+      return enrichedStats;
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    captureException(error, {
+      tags: {
+        component: 'single_template_page',
+        action: 'get_template_stats_error',
+      },
+      extra: { templateId },
+    });
 
     return {
-      templateId: validTemplateId,
-      validation: validationResult,
-      cache: {
-        ...cacheStats,
-        specificTemplate: {
-          cached: !!cachedData,
-          cacheKey: cacheKey.substring(0, 50),
-          data: cachedData
-            ? {
-                template: !!cachedData.template,
-                applicationsCount: cachedData.applications?.length || 0,
-                platformsCount: cachedData.platforms?.length || 0,
-                fromCache: cachedData.metadata?.fromCache,
-                timestamp: cachedData.metadata?.timestamp,
-              }
-            : null,
-        },
-      },
-      performance: performanceStats,
-      database: dbHealth,
-      config: SINGLE_TEMPLATE_CONFIG,
+      error: error.message,
+      templateId,
       timestamp: new Date().toISOString(),
     };
-  } catch (error) {
-    return { error: error.message };
   }
 }
 
