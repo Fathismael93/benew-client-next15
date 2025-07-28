@@ -476,8 +476,8 @@
       opacity: inherit;
 
       // ✅ EFFET BLUR ET OPACITÉ RÉDUITE
-      opacity: 0.3;
-      filter: blur(2px);
+      // opacity: 0.3;
+      // filter: blur(2px);
 
       // 📟 TRÈS PETITS ÉCRANS - IMAGE TRÈS COMPACTE
       @media (max-width: 400px) and (max-height: 680px) {
