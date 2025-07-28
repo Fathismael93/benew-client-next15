@@ -260,6 +260,26 @@
     }
   }
 
+  // Premier titre
+  &:first-of-type {
+    margin-bottom: 0.3rem;
+
+    @include until('md') {
+      margin-bottom: 0.2rem;
+    }
+  }
+
+  // Deuxième titre avec couleur légèrement différente
+  &:last-of-type {
+    color: lighten($color-orange, 8%);
+    margin-bottom: 0;
+
+    @include until('md') {
+      // ✅ Couleur encore plus contrastée sur mobile
+      color: lighten($color-orange, 12%);
+    }
+  }
+
   // =============================
   // BREAKPOINT DE TRANSITION SPÉCIAL
   // =============================
@@ -287,6 +307,24 @@
 // =============================
 // AMÉLIORATIONS POUR L'ACCESSIBILITÉ
 // =============================
+
+@include reduced-motion {
+  .products-intro-section {
+    .profit-image {
+      transition: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+
+    @include until('md') {
+      .profit-image:hover {
+        transform: translate(-50%, -50%); // Garde seulement le centrage
+      }
+    }
+  }
+}
 
 // =============================
 // SECTION SERVICES - AMÉLIORATIONS MOBILE
