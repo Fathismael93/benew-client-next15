@@ -369,6 +369,8 @@
   // Padding contrôlé
   padding: 0;
   margin: 0;
+  // ✅ Empêcher débordement
+  overflow: hidden;
   box-sizing: border-box;
 
   @include until('sm') {
