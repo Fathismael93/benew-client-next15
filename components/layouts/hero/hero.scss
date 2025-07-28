@@ -62,26 +62,32 @@
 
       // 📟 TRÈS PETITS ÉCRANS - OPTIMISATIONS DRASTIQUES
       @media (max-width: 400px) and (max-height: 680px) {
-        min-height: 55vh; // Encore moins de hauteur
-        gap: 0.75rem; // ✅ Gap très réduit
+        height: 100vh; // ← CHANGER
+        gap: 0.75rem;
         padding: 0.5rem 0.15rem;
-        justify-content: flex-start; // Alignement en haut pour éviter coupures
-        padding-top: 1rem; // Un peu d'espace en haut
+        justify-content: center; // ← CHANGER : centrage vertical
+        align-items: center; // ← AJOUTER : centrage horizontal
+        z-index: 10; // ← AJOUTER : au premier plan
       }
 
       // 📟 ÉCRANS ULTRA-COMPACTS (comme 384x640)
       @media (max-width: 390px) and (max-height: 650px) {
-        min-height: 50vh;
-        gap: 0.5rem; // ✅ Gap minimal
+        height: 100vh; // ← CHANGER
+        gap: 0.5rem;
         padding: 0.25rem 0.1rem;
-        padding-top: 0.75rem;
+        justify-content: center; // ← AJOUTER
+        align-items: center; // ← AJOUTER
+        z-index: 10; // ← AJOUTER
       }
 
       // 📟 TRÈS PETITS ÉCRANS - Autres tailles courantes
       @include until('sm') {
-        min-height: 58vh;
+        height: 100vh; // ← CHANGER
         gap: 1rem;
         padding: 0.5rem 0.2rem;
+        justify-content: center; // ← AJOUTER
+        align-items: center; // ← AJOUTER
+        z-index: 10; // ← AJOUTER
       }
 
       // 🖥️ TABLET ET PLUS - Transition progressive vers desktop
@@ -409,17 +415,17 @@
 
   // 🖼️ CONTENEUR IMAGE - Mobile-first ADAPTÉ AUX PETITS ÉCRANS
   .imageContainer {
-    // 📱 MOBILE - Image présente mais optimisée
-    height: auto; // ✅ CHANGEMENT CRITIQUE : hauteur flexible
-    min-height: 35vh; // ✅ Hauteur minimale réduite
+    // 📱 MOBILE - Image centrée en arrière-plan
+    height: 100vh; // ← CHANGER : hauteur complète
     width: 100%;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    top: 50%; // ← CHANGER
+    left: 50%; // ← CHANGER
+    transform: translate(-50%, -50%); // ← AJOUTER : centrage parfait
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    z-index: 1; // Reste en arrière-plan
 
     // 📟 TRÈS PETITS ÉCRANS - IMAGE ENCORE PLUS RÉDUITE
     @media (max-width: 400px) and (max-height: 680px) {
