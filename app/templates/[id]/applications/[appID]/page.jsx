@@ -1,13 +1,13 @@
 // app/templates/[id]/applications/[appID]/page.jsx
-// Server Component production-ready pour une application spécifique
-// Next.js 15 + PostgreSQL + Cache + Monitoring + Rate Limiting + Validation
+// Server Component optimisé pour une application spécifique
+// Next.js 15 + PostgreSQL + Cache + Monitoring essentiel
 
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import SingleApplication from '@/components/templates/SingleApplication';
-import { getClient, monitoring } from '@/backend/dbConnect';
+import { getClient } from '@/backend/dbConnect';
 import {
   projectCache,
   generateCacheKey,
@@ -19,106 +19,50 @@ import {
   captureMessage,
   captureValidationError,
 } from '@/instrumentation';
-import {
-  optimizeApiCall,
-  getSitePerformanceStats,
-  getAdaptiveSiteConfig,
-} from '@/utils/performance';
+import { optimizeApiCall, getAdaptiveSiteConfig } from '@/utils/performance';
 import { limitBenewAPI } from '@/backend/rateLimiter';
 import { applicationIdSchema, templateIdSchema } from '@/utils/schemas/schema';
 
-// =============================
-// CONFIGURATION PRODUCTION
-// =============================
-
-const SINGLE_APPLICATION_CONFIG = {
-  // Cache configuration - Plus long pour application spécifique
-  cache: {
-    ttl: 20 * 60 * 1000, // 20 minutes
-    staleWhileRevalidate: 15 * 60 * 1000, // 15 minutes
-    maxSize: 400,
-    entityType: 'single_application',
-  },
-
-  // Database configuration
-  database: {
-    timeout: 12000, // 12 secondes pour requête complexe avec template
-    retryAttempts: 3,
-    retryDelay: 2000,
-  },
-
-  // Performance thresholds
-  performance: {
-    slowQueryThreshold: 1800, // 1.8 secondes
-    alertThreshold: 3500, // 3.5 secondes
-  },
-
-  // Rate limiting
-  rateLimiting: {
-    enabled: true,
-    preset: 'TEMPLATES_API',
-  },
-
-  // Validation
+// Configuration simplifiée
+const CONFIG = {
+  cache: { ttl: 20 * 60 * 1000, entityType: 'single_application' },
+  database: { timeout: 12000, retryAttempts: 3, retryDelay: 2000 },
+  performance: { slowQueryThreshold: 1800, alertThreshold: 3500 },
+  rateLimiting: { enabled: true, preset: 'TEMPLATES_API' },
   validation: {
     strictMode: true,
     sanitizeInputs: true,
-    validateTemplateContext: true, // Valider cohérence template/application
+    validateTemplateContext: true,
   },
 };
 
-// =============================
-// VALIDATION & HELPERS
-// =============================
-
-/**
- * Valide et sanitise l'ID de l'application et du template
- * @param {string} appId - L'ID de l'application à valider
- * @param {string} templateId - L'ID du template à valider
- * @returns {Object} Résultat de validation
- */
+// Validation et sanitisation des IDs
 async function validateApplicationAndTemplateIds(appId, templateId) {
   const startTime = performance.now();
 
   try {
-    // Validation simultanée des deux IDs
     const [appValidation, templateValidation] = await Promise.all([
       applicationIdSchema.validate(
         { id: appId },
         {
-          strict: SINGLE_APPLICATION_CONFIG.validation.strictMode,
+          strict: CONFIG.validation.strictMode,
           stripUnknown: true,
         },
       ),
       templateIdSchema.validate(
         { id: templateId },
         {
-          strict: SINGLE_APPLICATION_CONFIG.validation.strictMode,
+          strict: CONFIG.validation.strictMode,
           stripUnknown: true,
         },
       ),
     ]);
 
-    const validationDuration = performance.now() - startTime;
-
-    captureMessage('Application and Template IDs validation successful', {
-      level: 'debug',
-      tags: {
-        component: 'single_application_page',
-        operation: 'validation',
-      },
-      extra: {
-        applicationId: appValidation.id,
-        templateId: templateValidation.id,
-        validationDuration,
-      },
-    });
-
     return {
       isValid: true,
       applicationId: appValidation.id,
       templateId: templateValidation.id,
-      validationDuration,
+      validationDuration: performance.now() - startTime,
     };
   } catch (validationError) {
     const validationDuration = performance.now() - startTime;
@@ -126,15 +70,8 @@ async function validateApplicationAndTemplateIds(appId, templateId) {
     captureValidationError(validationError, {
       inputData: { appId, templateId },
       schema: 'applicationIdSchema + templateIdSchema',
-      tags: {
-        component: 'single_application_page',
-        validation_failed: true,
-      },
-      extra: {
-        rawAppId: appId,
-        rawTemplateId: templateId,
-        validationDuration,
-      },
+      tags: { component: 'single_application_page', validation_failed: true },
+      extra: { rawAppId: appId, rawTemplateId: templateId, validationDuration },
     });
 
     return {
@@ -145,18 +82,9 @@ async function validateApplicationAndTemplateIds(appId, templateId) {
   }
 }
 
-/**
- * Requête optimisée pour récupérer les données de l'application avec contexte template
- * @param {string} applicationId - ID de l'application validé
- * @param {string} templateId - ID du template validé
- * @returns {Object} Requêtes SQL optimisées
- */
+// Requêtes optimisées
 function getApplicationDataQuery(applicationId, templateId) {
-  console.log(
-    `Generating queries for applicationId: ${applicationId}, templateId: ${templateId}`,
-  );
   return {
-    // Requête principale avec JOIN enrichi pour récupérer application + template + autres apps du template
     applicationWithContextQuery: {
       query: `
         SELECT 
@@ -211,7 +139,6 @@ function getApplicationDataQuery(applicationId, templateId) {
       params: [applicationId, templateId],
     },
 
-    // Requête pour récupérer les autres applications du même template (suggestions)
     relatedApplicationsQuery: {
       query: `
         SELECT 
@@ -232,7 +159,6 @@ function getApplicationDataQuery(applicationId, templateId) {
       params: [templateId, applicationId],
     },
 
-    // Requête pour les plateformes (optimisée)
     platformsQuery: {
       query: `
         SELECT 
@@ -246,7 +172,6 @@ function getApplicationDataQuery(applicationId, templateId) {
       params: [],
     },
 
-    // Requête de vérification d'existence et cohérence
     existenceCheckQuery: {
       query: `
         SELECT 
@@ -264,21 +189,11 @@ function getApplicationDataQuery(applicationId, templateId) {
   };
 }
 
-// =============================
-// FONCTION PRINCIPALE DE RÉCUPÉRATION
-// =============================
-
-/**
- * Récupère les données de l'application avec toutes les optimisations production
- * @param {string} applicationId - ID de l'application validé
- * @param {string} templateId - ID du template validé
- * @returns {Promise<Object>} Données de l'application avec métadonnées
- */
+// Fonction principale de récupération
 async function getSingleApplicationWithOptimizations(
   applicationId,
   templateId,
 ) {
-  console.log('We are in the getSingleApplicationWithOptimizations method');
   const startTime = performance.now();
   const cacheKey = generateCacheKey('single_application', {
     applicationId,
@@ -286,45 +201,24 @@ async function getSingleApplicationWithOptimizations(
   });
 
   try {
-    // 1. Vérifier le cache en premier
+    // Vérifier le cache
     const cachedResult = await projectCache.singleApplication.get(cacheKey);
     if (cachedResult) {
-      captureMessage('Single application served from cache', {
-        level: 'debug',
-        tags: {
-          component: 'single_application_page',
-          cache_hit: true,
-        },
-        extra: {
-          applicationId,
-          templateId,
-          cacheKey: cacheKey.substring(0, 50),
-          duration: performance.now() - startTime,
-        },
-      });
-
       return {
         ...cachedResult,
-        metadata: {
-          ...cachedResult.metadata,
-          fromCache: true,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        metadata: { ...cachedResult.metadata, fromCache: true },
       };
     }
 
-    // 2. Récupération depuis la base de données
+    // Récupération depuis la DB
     const client = await getClient();
     let applicationData = null;
 
     try {
-      console.log('Getting Queries');
       const queries = getApplicationDataQuery(applicationId, templateId);
       const queryStartTime = performance.now();
 
-      console.log('Queries', queries);
-
-      // Exécuter toutes les requêtes en parallèle pour optimiser les performances
+      // Exécuter toutes les requêtes en parallèle
       const [
         existenceResult,
         applicationResult,
@@ -351,21 +245,8 @@ async function getSingleApplicationWithOptimizations(
 
       const queryDuration = performance.now() - queryStartTime;
 
-      // Vérifier l'existence et la cohérence
+      // Vérifier l'existence
       if (existenceResult.rows.length === 0) {
-        captureMessage('Application not found', {
-          level: 'warning',
-          tags: {
-            component: 'single_application_page',
-            application_not_found: true,
-          },
-          extra: {
-            applicationId,
-            templateId,
-            queryDuration,
-          },
-        });
-
         return {
           application: null,
           template: null,
@@ -384,20 +265,6 @@ async function getSingleApplicationWithOptimizations(
       // Vérifier la cohérence template/application
       const existenceData = existenceResult.rows[0];
       if (!existenceData.template_match) {
-        captureMessage('Template/Application mismatch detected', {
-          level: 'error',
-          tags: {
-            component: 'single_application_page',
-            template_mismatch: true,
-          },
-          extra: {
-            applicationId,
-            templateId,
-            actualTemplateId: existenceData.application_template_id,
-            queryDuration,
-          },
-        });
-
         return {
           application: null,
           template: null,
@@ -417,19 +284,6 @@ async function getSingleApplicationWithOptimizations(
 
       // Vérifier si l'application avec contexte existe
       if (applicationResult.rows.length === 0) {
-        captureMessage('Application context not found', {
-          level: 'warning',
-          tags: {
-            component: 'single_application_page',
-            application_context_not_found: true,
-          },
-          extra: {
-            applicationId,
-            templateId,
-            queryDuration,
-          },
-        });
-
         return {
           application: null,
           template: null,
@@ -446,14 +300,9 @@ async function getSingleApplicationWithOptimizations(
         };
       }
 
-      // Extraire et structurer les données
       const mainData = applicationResult.rows[0];
       const relatedApplications = relatedAppsResult.rows;
       const platforms = platformsResult.rows;
-
-      console.log('Main Data', mainData);
-      console.log('Related Applications', relatedApplications);
-      console.log('Platforms', platforms);
 
       // Séparer les données application et template
       const application = {
@@ -466,30 +315,20 @@ async function getSingleApplicationWithOptimizations(
         application_fee: mainData.application_fee,
         application_rent: mainData.application_rent,
         application_images: mainData.application_images,
-        application_other_versions: mainData.application_other_versions,
         application_level: mainData.application_level,
         application_sales: mainData.application_sales,
-        application_created: mainData.application_created,
-        application_updated: mainData.application_updated,
       };
 
       const template = {
         template_id: mainData.template_id,
         template_name: mainData.template_name,
-        template_image: mainData.template_image,
-        template_has_web: mainData.template_has_web,
-        template_has_mobile: mainData.template_has_mobile,
-        template_added: mainData.template_added,
-        template_sales: mainData.template_sales,
         template_total_applications: mainData.template_total_applications,
         template_web_applications: mainData.template_web_applications,
         template_mobile_applications: mainData.template_mobile_applications,
       };
 
-      // Log des requêtes lentes
-      if (
-        queryDuration > SINGLE_APPLICATION_CONFIG.performance.slowQueryThreshold
-      ) {
+      // Log seulement si lent
+      if (queryDuration > CONFIG.performance.slowQueryThreshold) {
         captureMessage('Slow single application query detected', {
           level: 'warning',
           tags: {
@@ -507,9 +346,7 @@ async function getSingleApplicationWithOptimizations(
       }
 
       // Alerte pour requêtes très lentes
-      if (
-        queryDuration > SINGLE_APPLICATION_CONFIG.performance.alertThreshold
-      ) {
+      if (queryDuration > CONFIG.performance.alertThreshold) {
         captureMessage('Critical: Very slow single application query', {
           level: 'error',
           tags: {
@@ -520,12 +357,11 @@ async function getSingleApplicationWithOptimizations(
             applicationId,
             templateId,
             duration: queryDuration,
-            threshold: SINGLE_APPLICATION_CONFIG.performance.alertThreshold,
+            threshold: CONFIG.performance.alertThreshold,
           },
         });
       }
 
-      // 3. Préparer les résultats avec métadonnées enrichies
       applicationData = {
         application,
         template,
@@ -542,69 +378,39 @@ async function getSingleApplicationWithOptimizations(
           templateId,
           relatedAppsCount: relatedApplications.length,
           platformsCount: platforms.length,
-          // Statistiques enrichies
           applicationStats: {
             level: application.application_level,
             category: application.application_category,
             salesCount: application.application_sales,
             hasAdminLink: !!application.application_admin_link,
             imagesCount: application.application_images?.length || 0,
-            versionsCount: application.application_other_versions?.length || 0,
           },
           templateStats: {
             totalApplications: template.template_total_applications,
             webApplications: template.template_web_applications,
             mobileApplications: template.template_mobile_applications,
-            templateSales: template.template_sales,
           },
         },
       };
 
-      // 4. Mettre en cache le résultat
+      // Mettre en cache
       await projectCache.singleApplication.set(cacheKey, applicationData, {
-        ttl: SINGLE_APPLICATION_CONFIG.cache.ttl,
-      });
-
-      captureMessage('Single application loaded from database', {
-        level: 'info',
-        tags: {
-          component: 'single_application_page',
-          cache_miss: true,
-        },
-        extra: {
-          applicationId,
-          templateId,
-          duration: queryDuration,
-          applicationName: application.application_name,
-          templateName: template.template_name,
-          relatedAppsCount: relatedApplications.length,
-          platformsCount: platforms.length,
-        },
+        ttl: CONFIG.cache.ttl,
       });
 
       return applicationData;
     } finally {
-      // Toujours libérer le client
       client.release();
     }
   } catch (error) {
     const errorDuration = performance.now() - startTime;
 
-    // Gestion spécialisée des erreurs de base de données
     if (/postgres|pg|database|db|connection/i.test(error.message)) {
       captureDatabaseError(error, {
         table: 'catalog.applications, catalog.templates, admin.platforms',
         operation: 'select_single_application_with_context',
-        queryType: 'complex_join_with_stats',
-        tags: {
-          component: 'single_application_page',
-        },
-        extra: {
-          applicationId,
-          templateId,
-          duration: errorDuration,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        tags: { component: 'single_application_page' },
+        extra: { applicationId, templateId, duration: errorDuration },
       });
     } else {
       captureException(error, {
@@ -612,16 +418,10 @@ async function getSingleApplicationWithOptimizations(
           component: 'single_application_page',
           error_type: 'single_application_fetch_error',
         },
-        extra: {
-          applicationId,
-          templateId,
-          duration: errorDuration,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        extra: { applicationId, templateId, duration: errorDuration },
       });
     }
 
-    // Retourner un fallback gracieux
     return {
       application: null,
       template: null,
@@ -640,70 +440,38 @@ async function getSingleApplicationWithOptimizations(
   }
 }
 
-// =============================
-// FONCTION OPTIMISÉE AVEC PERFORMANCE
-// =============================
-
-// Créer une version optimisée avec toutes les améliorations
+// Version optimisée avec performance
 const getOptimizedSingleApplication = optimizeApiCall(
   getSingleApplicationWithOptimizations,
   {
     entityType: 'single_application',
-    cacheTTL: SINGLE_APPLICATION_CONFIG.cache.ttl,
-    throttleDelay: 150, // 150ms entre les appels (plus rapide pour UX)
-    retryAttempts: SINGLE_APPLICATION_CONFIG.database.retryAttempts,
-    retryDelay: SINGLE_APPLICATION_CONFIG.database.retryDelay,
+    cacheTTL: CONFIG.cache.ttl,
+    throttleDelay: 150,
+    retryAttempts: CONFIG.database.retryAttempts,
+    retryDelay: CONFIG.database.retryDelay,
   },
 );
 
-// =============================
-// COMPOSANT PRINCIPAL
-// =============================
-
-/**
- * Server Component pour une page d'application spécifique
- * Production-ready avec validation, cache et monitoring
- */
+// Composant principal
 async function SingleApplicationPage({ params }) {
-  console.log('[Single Application Page] Rendering...');
   const requestStartTime = performance.now();
   const { id: rawTemplateId, appID: rawAppId } = await params;
 
-  console.log(`[Single Application Page] Params:`, {
-    rawTemplateId,
-    rawAppId,
-  });
-
   try {
-    // 1. Validation stricte des IDs de l'application et du template
+    // Validation stricte des IDs
     const validationResult = await validateApplicationAndTemplateIds(
       rawAppId,
       rawTemplateId,
     );
 
-    console.log('Validation Result', validationResult);
-
     if (!validationResult.isValid) {
-      captureMessage('Single application page: Invalid IDs', {
-        level: 'warning',
-        tags: {
-          component: 'single_application_page',
-          issue_type: 'invalid_ids',
-        },
-        extra: {
-          rawAppId,
-          rawTemplateId,
-          validationError: validationResult.error,
-        },
-      });
-
       return notFound();
     }
 
     const { applicationId, templateId } = validationResult;
 
-    // 2. Rate Limiting (protection contre l'abus)
-    if (SINGLE_APPLICATION_CONFIG.rateLimiting.enabled) {
+    // Rate Limiting
+    if (CONFIG.rateLimiting.enabled) {
       const headersList = await headers();
       const rateLimitCheck = await limitBenewAPI('templates')({
         headers: headersList,
@@ -712,85 +480,37 @@ async function SingleApplicationPage({ params }) {
       });
 
       if (rateLimitCheck) {
-        // Rate limit dépassé
         return notFound();
       }
     }
 
-    // 3. Configuration adaptative selon les performances réseau
     const adaptiveConfig = getAdaptiveSiteConfig();
-
-    console.log('Starting to get data');
-
-    // 4. Récupération des données avec toutes les optimisations
     const applicationData = await getOptimizedSingleApplication(
       applicationId,
       templateId,
     );
 
-    // 5. Vérifications des résultats - Application inexistante
+    // Vérifications des résultats
     if (
       !applicationData ||
       !applicationData.application ||
       applicationData.metadata?.applicationExists === false
     ) {
-      captureMessage('Single application page: Application not found', {
-        level: 'info',
-        tags: {
-          component: 'single_application_page',
-          issue_type: 'application_not_found',
-        },
-        extra: {
-          applicationId,
-          templateId,
-          adaptiveConfig: adaptiveConfig.networkInfo,
-        },
-      });
-
       return notFound();
     }
 
-    // 6. Vérification de la cohérence template/application
     if (applicationData.metadata?.templateMatch === false) {
-      captureMessage('Single application page: Template mismatch', {
-        level: 'warning',
-        tags: {
-          component: 'single_application_page',
-          issue_type: 'template_mismatch',
-        },
-        extra: {
-          applicationId,
-          templateId,
-          errorMessage: applicationData.metadata.errorMessage,
-        },
-      });
-
       return notFound();
     }
 
-    // 7. Vérification des erreurs de données
     if (applicationData.metadata?.error) {
-      captureMessage('Single application page: Data error', {
-        level: 'error',
-        tags: {
-          component: 'single_application_page',
-          issue_type: 'data_error',
-        },
-        extra: {
-          applicationId,
-          templateId,
-          errorMessage: applicationData.metadata.errorMessage,
-        },
-      });
-
       return notFound();
     }
 
-    // 8. Métriques de performance
     const totalDuration = performance.now() - requestStartTime;
 
+    // Log seulement si très lent
     if (totalDuration > 4000) {
-      // Plus de 4 secondes pour page d'application (plus complexe)
       captureMessage('Slow single application page load', {
         level: 'warning',
         tags: {
@@ -804,26 +524,10 @@ async function SingleApplicationPage({ params }) {
           queryDuration: applicationData.metadata?.queryDuration,
           relatedAppsCount: applicationData.relatedApplications?.length,
           fromCache: applicationData.metadata?.fromCache,
-          networkInfo: adaptiveConfig.networkInfo,
         },
       });
     }
 
-    // 9. Log de succès en développement
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`[Single Application Page] Loaded successfully:`, {
-        applicationId,
-        templateId,
-        applicationName: applicationData.application?.application_name,
-        templateName: applicationData.template?.template_name,
-        relatedAppsCount: applicationData.relatedApplications?.length || 0,
-        platformsCount: applicationData.platforms?.length || 0,
-        totalDuration: `${totalDuration.toFixed(2)}ms`,
-        fromCache: applicationData.metadata?.fromCache,
-      });
-    }
-
-    // 10. Retourner le composant avec les données enrichies
     return (
       <Suspense fallback={<SingleApplicationPageSkeleton />}>
         <SingleApplication
@@ -836,6 +540,7 @@ async function SingleApplicationPage({ params }) {
             loadTime: totalDuration,
             fromCache: applicationData.metadata?.fromCache,
             queryDuration: applicationData.metadata?.queryDuration,
+            relatedAppsCount: applicationData.relatedApplications?.length || 0,
           }}
           context={{
             templateId,
@@ -849,8 +554,6 @@ async function SingleApplicationPage({ params }) {
       </Suspense>
     );
   } catch (error) {
-    const errorDuration = performance.now() - requestStartTime;
-
     captureException(error, {
       tags: {
         component: 'single_application_page',
@@ -859,16 +562,10 @@ async function SingleApplicationPage({ params }) {
       extra: {
         rawAppId,
         rawTemplateId,
-        duration: errorDuration,
+        duration: performance.now() - requestStartTime,
       },
     });
 
-    // Log en développement
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('[Single Application Page] Error:', error);
-    }
-
-    // Fallback gracieux
     return (
       <div className="single-application-error-fallback">
         <h1>Application temporairement indisponible</h1>
@@ -882,10 +579,7 @@ async function SingleApplicationPage({ params }) {
   }
 }
 
-// =============================
-// COMPOSANT DE LOADING SKELETON
-// =============================
-
+// Skeleton component
 function SingleApplicationPageSkeleton() {
   return (
     <div className="single-application-page-skeleton">
@@ -953,15 +647,11 @@ function SingleApplicationPageSkeleton() {
   );
 }
 
-// =============================
-// CONFIGURATION DES METADATA
-// =============================
-
+// Metadata dynamique
 export async function generateMetadata({ params }) {
   const { id: rawTemplateId, appID: rawAppId } = await params;
 
   try {
-    // Validation rapide pour metadata
     const validationResult = await validateApplicationAndTemplateIds(
       rawAppId,
       rawTemplateId,
@@ -992,10 +682,7 @@ export async function generateMetadata({ params }) {
         description:
           app.application_description ||
           `Découvrez l'application ${app.application_name} du template ${template.template_name} sur Benew.`,
-        robots: {
-          index: true,
-          follow: true,
-        },
+        robots: { index: true, follow: true },
         alternates: {
           canonical: `/templates/${templateId}/applications/${applicationId}`,
         },
@@ -1007,9 +694,7 @@ export async function generateMetadata({ params }) {
           images:
             app.application_images?.length > 0
               ? [app.application_images[0]]
-              : template.template_image
-                ? [template.template_image]
-                : [],
+              : [],
           type: 'website',
         },
         other: {
@@ -1020,14 +705,10 @@ export async function generateMetadata({ params }) {
       };
     }
 
-    // Fallback metadata si pas de cache
     return {
       title: 'Application Benew',
       description: 'Découvrez cette application sur Benew.',
-      robots: {
-        index: true,
-        follow: true,
-      },
+      robots: { index: true, follow: true },
       alternates: {
         canonical: `/templates/${templateId}/applications/${applicationId}`,
       },
@@ -1048,21 +729,12 @@ export async function generateMetadata({ params }) {
   }
 }
 
-// =============================
-// UTILITAIRES D'INVALIDATION
-// =============================
-
-/**
- * Fonction pour invalider le cache d'une application spécifique
- * @param {string} applicationId - ID de l'application à invalider
- * @param {string} templateId - ID du template (optionnel pour validation)
- */
+// Utilitaires d'invalidation
 export async function invalidateSingleApplicationCache(
   applicationId,
   templateId = null,
 ) {
   try {
-    // Valider l'ID de l'application
     const appValidation = await applicationIdSchema.validate({
       id: applicationId,
     });
@@ -1072,7 +744,6 @@ export async function invalidateSingleApplicationCache(
       );
     }
 
-    // Valider l'ID du template si fourni
     if (templateId) {
       const templateValidation = await templateIdSchema.validate({
         id: templateId,
@@ -1089,20 +760,6 @@ export async function invalidateSingleApplicationCache(
       'single_application',
       validApplicationId,
     );
-
-    captureMessage('Single application cache invalidated', {
-      level: 'info',
-      tags: {
-        component: 'single_application_page',
-        action: 'cache_invalidation',
-      },
-      extra: {
-        applicationId: validApplicationId,
-        templateId,
-        invalidatedCount,
-        timestamp: new Date().toISOString(),
-      },
-    });
 
     return {
       success: true,
@@ -1123,10 +780,6 @@ export async function invalidateSingleApplicationCache(
   }
 }
 
-/**
- * Fonction pour invalider le cache de toutes les applications d'un template
- * @param {string} templateId - ID du template
- */
 export async function invalidateTemplateApplicationsCache(templateId) {
   try {
     const validationResult = await templateIdSchema.validate({
@@ -1136,7 +789,6 @@ export async function invalidateTemplateApplicationsCache(templateId) {
       throw new Error(`Invalid template ID: ${templateId}`);
     }
 
-    // Invalider le cache des applications individuelles et du template
     const applicationInvalidated = invalidateProjectCache(
       'single_application',
       validationResult.id,
@@ -1154,22 +806,6 @@ export async function invalidateTemplateApplicationsCache(templateId) {
       applicationInvalidated +
       templateInvalidated +
       applicationsListInvalidated;
-
-    captureMessage('Template applications cache invalidated', {
-      level: 'info',
-      tags: {
-        component: 'single_application_page',
-        action: 'template_applications_cache_invalidation',
-      },
-      extra: {
-        templateId: validationResult.id,
-        totalInvalidated,
-        applicationInvalidated,
-        templateInvalidated,
-        applicationsListInvalidated,
-        timestamp: new Date().toISOString(),
-      },
-    });
 
     return {
       success: true,
@@ -1194,15 +830,8 @@ export async function invalidateTemplateApplicationsCache(templateId) {
   }
 }
 
-/**
- * Fonction pour invalider le cache des applications liées (suggestions)
- * @param {string} applicationId - ID de l'application
- * @param {string} templateId - ID du template
- */
-export async function invalidateRelatedApplicationsCache(
-  applicationId,
-  templateId,
-) {
+// Statistiques simplifiées
+export async function getSingleApplicationStats(applicationId, templateId) {
   try {
     const validationResult = await validateApplicationAndTemplateIds(
       applicationId,
@@ -1212,239 +841,103 @@ export async function invalidateRelatedApplicationsCache(
       throw new Error(`Invalid IDs: ${validationResult.error}`);
     }
 
-    // Invalider le cache de l'application principale et des applications liées du template
-    const mainAppInvalidated = invalidateProjectCache(
-      'single_application',
-      validationResult.applicationId,
-    );
-    const relatedAppsInvalidated = invalidateProjectCache(
-      'application',
-      validationResult.templateId,
-    );
-
-    const totalInvalidated = mainAppInvalidated + relatedAppsInvalidated;
-
-    captureMessage('Related applications cache invalidated', {
-      level: 'info',
-      tags: {
-        component: 'single_application_page',
-        action: 'related_applications_cache_invalidation',
-      },
-      extra: {
-        applicationId: validationResult.applicationId,
-        templateId: validationResult.templateId,
-        totalInvalidated,
-        mainAppInvalidated,
-        relatedAppsInvalidated,
-        timestamp: new Date().toISOString(),
-      },
-    });
-
-    return {
-      success: true,
-      applicationId: validationResult.applicationId,
-      templateId: validationResult.templateId,
-      totalInvalidated,
-      breakdown: {
-        mainApplication: mainAppInvalidated,
-        relatedApplications: relatedAppsInvalidated,
-      },
-    };
-  } catch (error) {
-    captureException(error, {
-      tags: {
-        component: 'single_application_page',
-        action: 'related_applications_cache_invalidation_error',
-      },
-      extra: { applicationId, templateId },
-    });
-
-    return { success: false, error: error.message };
-  }
-}
-
-// =============================
-// MONITORING ET DIAGNOSTICS
-// =============================
-
-/**
- * Fonction de diagnostic pour le monitoring (développement)
- */
-export async function getSingleApplicationPageDiagnostics(
-  applicationId,
-  templateId,
-) {
-  if (process.env.NODE_ENV === 'production') {
-    return { error: 'Diagnostics not available in production' };
-  }
-
-  try {
-    // Valider les IDs
-    const validationResult = await validateApplicationAndTemplateIds(
-      applicationId,
-      templateId,
-    );
-    if (!validationResult.isValid) {
-      return {
-        error: 'Invalid IDs',
-        validationError: validationResult.error,
-      };
-    }
-
     const { applicationId: validAppId, templateId: validTemplateId } =
       validationResult;
-
-    const [cacheStats, performanceStats, dbHealth] = await Promise.all([
-      projectCache.singleApplication.getStats(),
-      getSitePerformanceStats(),
-      monitoring.getHealth(),
-    ]);
-
-    // Vérifier le cache spécifique
-    const cacheKey = generateCacheKey('single_application', {
+    const cacheKey = generateCacheKey('single_application_stats', {
       applicationId: validAppId,
       templateId: validTemplateId,
     });
-    const cachedData = await projectCache.singleApplication.get(cacheKey);
+    const cachedStats = await projectCache.singleApplication.get(
+      `${cacheKey}_stats`,
+    );
 
-    return {
-      applicationId: validAppId,
-      templateId: validTemplateId,
-      validation: validationResult,
-      cache: {
-        ...cacheStats,
-        specificApplication: {
-          cached: !!cachedData,
-          cacheKey: cacheKey.substring(0, 50),
-          data: cachedData
-            ? {
-                application: !!cachedData.application,
-                template: !!cachedData.template,
-                relatedAppsCount: cachedData.relatedApplications?.length || 0,
-                platformsCount: cachedData.platforms?.length || 0,
-                fromCache: cachedData.metadata?.fromCache,
-                timestamp: cachedData.metadata?.timestamp,
-                stats: {
-                  application: cachedData.metadata?.applicationStats,
-                  template: cachedData.metadata?.templateStats,
-                },
-              }
-            : null,
+    if (cachedStats) {
+      return cachedStats;
+    }
+
+    const client = await getClient();
+    try {
+      const statsQuery = `
+        SELECT 
+          a.application_id,
+          a.application_name,
+          a.application_category,
+          a.application_level,
+          a.application_fee,
+          a.application_rent,
+          a.sales_count,
+          t.template_id,
+          t.template_name,
+          (SELECT COUNT(*) FROM catalog.applications WHERE application_template_id = t.template_id AND is_active = true) as template_total_apps,
+          (SELECT AVG(application_fee) FROM catalog.applications WHERE application_template_id = t.template_id AND is_active = true) as template_avg_fee,
+          (SELECT AVG(sales_count) FROM catalog.applications WHERE application_template_id = t.template_id AND is_active = true) as template_avg_sales
+        FROM catalog.applications a
+        JOIN catalog.templates t ON a.application_template_id = t.template_id
+        WHERE a.application_id = $1 AND t.template_id = $2 AND a.is_active = true AND t.is_active = true
+      `;
+
+      const result = await client.query(statsQuery, [
+        validAppId,
+        validTemplateId,
+      ]);
+      const stats = result.rows[0];
+
+      if (!stats) {
+        return {
+          error: 'Application not found',
+          applicationId: validAppId,
+          templateId: validTemplateId,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      const enrichedStats = {
+        ...stats,
+        sales_count: parseInt(stats.sales_count) || 0,
+        template_total_apps: parseInt(stats.template_total_apps) || 0,
+        template_avg_fee: parseFloat(stats.template_avg_fee) || 0,
+        template_avg_sales: parseFloat(stats.template_avg_sales) || 0,
+        performance_vs_template: {
+          fee_ratio:
+            stats.template_avg_fee > 0
+              ? (stats.application_fee / stats.template_avg_fee).toFixed(3)
+              : 0,
+          sales_ratio:
+            stats.template_avg_sales > 0
+              ? (stats.sales_count / stats.template_avg_sales).toFixed(3)
+              : 0,
         },
-      },
-      performance: performanceStats,
-      database: dbHealth,
-      config: SINGLE_APPLICATION_CONFIG,
-      timestamp: new Date().toISOString(),
-    };
-  } catch (error) {
-    return { error: error.message };
-  }
-}
+        timestamp: new Date().toISOString(),
+      };
 
-/**
- * Fonction pour obtenir les statistiques d'usage d'une application
- * @param {string} applicationId - ID de l'application
- * @param {string} templateId - ID du template
- */
-export async function getApplicationUsageStats(applicationId, templateId) {
-  if (process.env.NODE_ENV === 'production') {
-    return { error: 'Usage stats not available in production' };
-  }
+      await projectCache.singleApplication.set(
+        `${cacheKey}_stats`,
+        enrichedStats,
+        {
+          ttl: 10 * 60 * 1000,
+        },
+      );
 
-  try {
-    const validationResult = await validateApplicationAndTemplateIds(
-      applicationId,
-      templateId,
-    );
-    if (!validationResult.isValid) {
-      return { error: 'Invalid IDs', validationError: validationResult.error };
+      return enrichedStats;
+    } finally {
+      client.release();
     }
-
-    const { applicationId: validAppId, templateId: validTemplateId } =
-      validationResult;
-
-    // Simuler des statistiques d'usage (en production, ces données viendraient d'analytics)
-    const stats = {
-      applicationId: validAppId,
-      templateId: validTemplateId,
-      views: {
-        today: Math.floor(Math.random() * 100),
-        thisWeek: Math.floor(Math.random() * 500),
-        thisMonth: Math.floor(Math.random() * 2000),
-      },
-      cacheHitRate: {
-        application: Math.random() * 100,
-        template: Math.random() * 100,
-      },
-      performanceMetrics: {
-        averageLoadTime: Math.random() * 1000 + 500,
-        slowestLoadTime: Math.random() * 2000 + 1000,
-        fastestLoadTime: Math.random() * 300 + 100,
-      },
-      relatedApplicationsViews: Math.floor(Math.random() * 200),
-      timestamp: new Date().toISOString(),
-    };
-
-    captureMessage('Application usage stats generated', {
-      level: 'debug',
-      tags: {
-        component: 'single_application_page',
-        action: 'usage_stats',
-      },
-      extra: stats,
-    });
-
-    return stats;
   } catch (error) {
     captureException(error, {
       tags: {
         component: 'single_application_page',
-        action: 'usage_stats_error',
+        action: 'get_application_stats_error',
       },
       extra: { applicationId, templateId },
     });
 
-    return { error: error.message };
+    return {
+      error: error.message,
+      applicationId,
+      templateId,
+      timestamp: new Date().toISOString(),
+    };
   }
 }
-
-// =============================
-// GENERATION STATIQUE (OPTIONNEL)
-// =============================
-
-/**
- * Fonction pour générer des paramètres statiques (si nécessaire)
- * Utile pour pré-générer les pages les plus populaires
- */
-// export async function generateStaticParams() {
-//   let results = [];
-//   // En production, on pourrait récupérer les applications les plus populaires
-//   // pour les pré-générer statiquement
-//   if (process.env.NODE_ENV !== 'production') {
-//     return results;
-//   }
-
-//   try {
-//     // Cette fonction pourrait récupérer les top applications depuis la DB
-//     // const popularApps = await getPopularApplications();
-//     // return popularApps.map(app => ({
-//     //   id: app.template_id,
-//     //   appID: app.application_id
-//     // }));
-//     // return [];
-//   } catch (error) {
-//     captureException(error, {
-//       tags: {
-//         component: 'single_application_page',
-//         action: 'generate_static_params_error',
-//       },
-//     });
-
-//     results = [];
-//   }
-
-//   return results;
-// }
 
 export default SingleApplicationPage;
