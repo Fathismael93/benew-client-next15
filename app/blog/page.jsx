@@ -1,13 +1,13 @@
 // app/blog/page.jsx
-// Server Component production-ready pour la liste des articles de blog
-// Next.js 15 + PostgreSQL + Cache + Monitoring + Rate Limiting
+// Server Component optimisé pour la liste des articles de blog
+// Next.js 15 + PostgreSQL + Cache + Monitoring essentiel
 
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import ListBlog from '@/components/blog/ListBlog';
-import { getClient, monitoring } from '@/backend/dbConnect';
+import { getClient } from '@/backend/dbConnect';
 import {
   projectCache,
   generateCacheKey,
@@ -18,53 +18,18 @@ import {
   captureException,
   captureMessage,
 } from '@/instrumentation';
-import {
-  optimizeApiCall,
-  getSitePerformanceStats,
-  getAdaptiveSiteConfig,
-} from '@/utils/performance';
+import { optimizeApiCall, getAdaptiveSiteConfig } from '@/utils/performance';
 import { limitBenewAPI } from '@/backend/rateLimiter';
 
-// =============================
-// CONFIGURATION PRODUCTION
-// =============================
-
-const BLOG_CONFIG = {
-  // Cache configuration
-  cache: {
-    ttl: 5 * 60 * 1000, // 5 minutes (contenu plus dynamique que templates)
-    staleWhileRevalidate: 2 * 60 * 1000, // 2 minutes
-    maxSize: 150,
-    entityType: 'blog_article',
-  },
-
-  // Database configuration
-  database: {
-    timeout: 6000, // 6 secondes max
-    retryAttempts: 2,
-    retryDelay: 1000,
-  },
-
-  // Performance thresholds
-  performance: {
-    slowQueryThreshold: 800, // 800ms pour blog (plus rapide que templates)
-  },
-
-  // Rate limiting
-  rateLimiting: {
-    enabled: true,
-    preset: 'BLOG_API',
-  },
+// Configuration simplifiée
+const CONFIG = {
+  cache: { ttl: 5 * 60 * 1000, entityType: 'blog_article' },
+  database: { timeout: 6000, retryAttempts: 2 },
+  performance: { slowQueryThreshold: 800 },
+  rateLimiting: { enabled: true, preset: 'BLOG_API' },
 };
 
-// =============================
-// VALIDATION & HELPERS
-// =============================
-
-/**
- * Fonction optimisée pour récupérer tous les articles actifs
- * @returns {Object} Requête SQL optimisée avec index
- */
+// Requête optimisée
 function getBlogArticlesQuery() {
   return {
     query: `
@@ -82,89 +47,52 @@ function getBlogArticlesQuery() {
   };
 }
 
-/**
- * Validation et enrichissement des données d'articles
- * @param {Array} articles - Articles bruts de la DB
- * @returns {Array} Articles validés et enrichis
- */
+// Validation et enrichissement
 function validateAndEnrichArticles(articles) {
   if (!Array.isArray(articles)) return [];
 
   return articles
-    .filter((article) => {
-      // Validation basique des données critiques
-      return (
+    .filter(
+      (article) =>
         article.article_id &&
         article.article_title &&
         article.article_image &&
-        article.created
-      );
-    })
-    .map((article) => {
-      // Enrichissement avec métadonnées
-      return {
-        ...article,
-        // URL canonique pour SEO
-        canonical_url: `/blog/${article.article_id}`,
-        // Image optimisée Cloudinary pour liste
-        optimized_image: article.article_image.includes('cloudinary.com')
-          ? article.article_image.replace(
-              '/upload/',
-              '/upload/w_400,h_300,c_fill,q_auto:low,f_auto/',
-            )
-          : article.article_image,
-        // Métadonnées pour cache
-        cache_key: `article_${article.article_id}`,
-        // Type d'entité pour invalidation
-        entity_type: 'blog_article',
-      };
-    });
+        article.created,
+    )
+    .map((article) => ({
+      ...article,
+      canonical_url: `/blog/${article.article_id}`,
+      optimized_image: article.article_image.includes('cloudinary.com')
+        ? article.article_image.replace(
+            '/upload/',
+            '/upload/w_400,h_300,c_fill,q_auto:low,f_auto/',
+          )
+        : article.article_image,
+      cache_key: `article_${article.article_id}`,
+      entity_type: 'blog_article',
+    }));
 }
 
-// =============================
-// FONCTION PRINCIPALE DE RÉCUPÉRATION
-// =============================
-
-/**
- * Récupère tous les articles avec toutes les optimisations production
- * @returns {Promise<Object>} Liste des articles avec métadonnées
- */
+// Fonction principale de récupération
 async function getBlogArticlesWithOptimizations() {
   const startTime = performance.now();
   const cacheKey = generateCacheKey('blog_articles_list', {});
 
   try {
-    // 1. Vérifier le cache en premier
+    // Vérifier le cache
     const cachedResult = await projectCache.blogArticles.get(cacheKey);
     if (cachedResult) {
-      captureMessage('Blog articles served from cache', {
-        level: 'debug',
-        tags: {
-          component: 'blog_page',
-          cache_hit: true,
-        },
-        extra: {
-          cacheKey: cacheKey.substring(0, 50),
-          duration: performance.now() - startTime,
-        },
-      });
-
       return {
         ...cachedResult,
-        metadata: {
-          ...cachedResult.metadata,
-          fromCache: true,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        metadata: { ...cachedResult.metadata, fromCache: true },
       };
     }
 
-    // 2. Récupération depuis la base de données
+    // Récupération depuis la DB
     const client = await getClient();
     let articles = [];
 
     try {
-      // Exécuter la requête optimisée
       const articlesQuery = getBlogArticlesQuery();
       const articlesResult = await client.query(
         articlesQuery.query,
@@ -174,34 +102,25 @@ async function getBlogArticlesWithOptimizations() {
       const rawArticles = articlesResult.rows;
       const queryDuration = performance.now() - startTime;
 
-      // Log des requêtes lentes
-      if (queryDuration > BLOG_CONFIG.performance.slowQueryThreshold) {
+      // Log seulement si lent
+      if (queryDuration > CONFIG.performance.slowQueryThreshold) {
         captureMessage('Slow blog query detected', {
           level: 'warning',
-          tags: {
-            component: 'blog_page',
-            performance_issue: 'slow_query',
-          },
-          extra: {
-            duration: queryDuration,
-            articlesCount: rawArticles.length,
-          },
+          tags: { component: 'blog_page', performance_issue: 'slow_query' },
+          extra: { duration: queryDuration, articlesCount: rawArticles.length },
         });
       }
 
-      // 3. Validation et enrichissement des données
       articles = validateAndEnrichArticles(rawArticles);
 
-      // 4. Préparer les résultats avec métadonnées enrichies
       const result = {
         articles,
         metadata: {
-          queryDuration: queryDuration,
+          queryDuration,
           fromCache: false,
           timestamp: new Date().toISOString(),
           resultCount: articles.length,
           validationPassed: articles.length === rawArticles.length,
-          // Métriques spécifiques au blog
           blogMetrics: {
             totalArticles: articles.length,
             recentArticles: articles.filter((article) => {
@@ -216,60 +135,32 @@ async function getBlogArticlesWithOptimizations() {
         },
       };
 
-      // 5. Mettre en cache le résultat
+      // Mettre en cache
       await projectCache.blogArticles.set(cacheKey, result, {
-        ttl: BLOG_CONFIG.cache.ttl,
-      });
-
-      captureMessage('Blog articles loaded from database', {
-        level: 'info',
-        tags: {
-          component: 'blog_page',
-          cache_miss: true,
-        },
-        extra: {
-          duration: queryDuration,
-          articlesCount: articles.length,
-          validationIssues: rawArticles.length - articles.length,
-        },
+        ttl: CONFIG.cache.ttl,
       });
 
       return result;
     } finally {
-      // Toujours libérer le client
       client.release();
     }
   } catch (error) {
     const errorDuration = performance.now() - startTime;
 
-    // Gestion spécialisée des erreurs de base de données
     if (/postgres|pg|database|db|connection/i.test(error.message)) {
       captureDatabaseError(error, {
         table: 'admin.articles',
         operation: 'select_blog_articles_list',
-        queryType: 'select_all',
-        tags: {
-          component: 'blog_page',
-        },
-        extra: {
-          duration: errorDuration,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        tags: { component: 'blog_page' },
+        extra: { duration: errorDuration },
       });
     } else {
       captureException(error, {
-        tags: {
-          component: 'blog_page',
-          error_type: 'blog_fetch_error',
-        },
-        extra: {
-          duration: errorDuration,
-          cacheKey: cacheKey.substring(0, 50),
-        },
+        tags: { component: 'blog_page', error_type: 'blog_fetch_error' },
+        extra: { duration: errorDuration },
       });
     }
 
-    // Retourner un fallback gracieux
     return {
       articles: [],
       metadata: {
@@ -279,42 +170,30 @@ async function getBlogArticlesWithOptimizations() {
         resultCount: 0,
         error: true,
         errorMessage: 'Failed to load blog articles',
-        errorType: error.code || 'unknown',
       },
     };
   }
 }
 
-// =============================
-// FONCTION OPTIMISÉE AVEC PERFORMANCE
-// =============================
-
-// Créer une version optimisée avec toutes les améliorations
+// Version optimisée avec performance
 const getOptimizedBlogArticles = optimizeApiCall(
   getBlogArticlesWithOptimizations,
   {
     entityType: 'blog_article',
-    cacheTTL: BLOG_CONFIG.cache.ttl,
-    throttleDelay: 200, // 200ms entre les appels (plus rapide pour blog)
-    retryAttempts: BLOG_CONFIG.database.retryAttempts,
-    retryDelay: BLOG_CONFIG.database.retryDelay,
+    cacheTTL: CONFIG.cache.ttl,
+    throttleDelay: 200,
+    retryAttempts: CONFIG.database.retryAttempts,
+    retryDelay: 1000,
   },
 );
 
-// =============================
-// COMPOSANT PRINCIPAL
-// =============================
-
-/**
- * Server Component pour la page du blog
- * Production-ready avec toutes les optimisations
- */
+// Composant principal
 async function BlogPage() {
   const requestStartTime = performance.now();
 
   try {
-    // 1. Rate Limiting (protection contre l'abus)
-    if (BLOG_CONFIG.rateLimiting.enabled) {
+    // Rate Limiting
+    if (CONFIG.rateLimiting.enabled) {
       const headersList = headers();
       const rateLimitCheck = await limitBenewAPI('blog')({
         headers: headersList,
@@ -323,68 +202,33 @@ async function BlogPage() {
       });
 
       if (rateLimitCheck) {
-        // Rate limit dépassé, le middleware a déjà envoyé la réponse
         return notFound();
       }
     }
 
-    // 2. Configuration adaptative selon les performances réseau
     const adaptiveConfig = getAdaptiveSiteConfig();
-
-    // 3. Récupération des données avec toutes les optimisations
     const blogData = await getOptimizedBlogArticles();
 
-    // 4. Vérification des résultats
     if (!blogData || (!blogData.articles && blogData.metadata?.error)) {
-      captureMessage('Blog page: No data available', {
-        level: 'warning',
-        tags: {
-          component: 'blog_page',
-          issue_type: 'no_data',
-        },
-        extra: {
-          adaptiveConfig: adaptiveConfig.networkInfo,
-          errorDetails: blogData?.metadata,
-        },
-      });
-
       return notFound();
     }
 
-    // 5. Métriques de performance
     const totalDuration = performance.now() - requestStartTime;
 
+    // Log seulement si très lent
     if (totalDuration > 1500) {
-      // Plus de 1.5 secondes (plus strict pour blog)
       captureMessage('Slow blog page load', {
         level: 'warning',
-        tags: {
-          component: 'blog_page',
-          performance_issue: 'slow_page_load',
-        },
+        tags: { component: 'blog_page', performance_issue: 'slow_page_load' },
         extra: {
           totalDuration,
           queryDuration: blogData.metadata?.queryDuration,
           articlesCount: blogData.articles?.length,
           fromCache: blogData.metadata?.fromCache,
-          networkInfo: adaptiveConfig.networkInfo,
-          blogMetrics: blogData.metadata?.blogMetrics,
         },
       });
     }
 
-    // 6. Log de succès en développement
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`[Blog Page] Loaded successfully:`, {
-        articlesCount: blogData.articles?.length || 0,
-        totalDuration: `${totalDuration.toFixed(2)}ms`,
-        fromCache: blogData.metadata?.fromCache,
-        recentArticles: blogData.metadata?.blogMetrics?.recentArticles || 0,
-        validationPassed: blogData.metadata?.validationPassed,
-      });
-    }
-
-    // 7. Retourner le composant avec les données
     return (
       <Suspense fallback={<BlogPageSkeleton />}>
         <ListBlog
@@ -400,24 +244,10 @@ async function BlogPage() {
       </Suspense>
     );
   } catch (error) {
-    const errorDuration = performance.now() - requestStartTime;
-
     captureException(error, {
-      tags: {
-        component: 'blog_page',
-        error_type: 'page_render_error',
-      },
-      extra: {
-        duration: errorDuration,
-      },
+      tags: { component: 'blog_page', error_type: 'page_render_error' },
     });
 
-    // Log en développement
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('[Blog Page] Error:', error);
-    }
-
-    // Fallback gracieux
     return (
       <div className="blog-error-fallback">
         <h1>Blog temporairement indisponible</h1>
@@ -427,10 +257,7 @@ async function BlogPage() {
   }
 }
 
-// =============================
-// COMPOSANT DE LOADING SKELETON
-// =============================
-
+// Skeleton component
 function BlogPageSkeleton() {
   return (
     <div className="blog-page-skeleton">
@@ -454,22 +281,14 @@ function BlogPageSkeleton() {
   );
 }
 
-// =============================
-// CONFIGURATION DES METADATA
-// =============================
-
+// Metadata
 export async function generateMetadata() {
   return {
     title: 'Blog Benew - Articles et Actualités',
     description:
       'Découvrez nos derniers articles sur le développement web, les templates et les applications mobiles.',
-    robots: {
-      index: true,
-      follow: true,
-    },
-    alternates: {
-      canonical: '/blog',
-    },
+    robots: { index: true, follow: true },
+    alternates: { canonical: '/blog' },
     openGraph: {
       title: 'Blog Benew',
       description: 'Articles et actualités sur le développement web et mobile',
@@ -479,76 +298,32 @@ export async function generateMetadata() {
   };
 }
 
-// =============================
-// UTILITAIRES D'INVALIDATION
-// =============================
-
-/**
- * Fonction pour invalider le cache des articles (export pour les Server Actions)
- * @param {string} articleId - ID spécifique de l'article (optionnel)
- */
+// Utilitaires d'invalidation
 export async function invalidateBlogCache(articleId = null) {
   try {
     const invalidatedCount = invalidateProjectCache('blog_article', articleId);
-
-    captureMessage('Blog cache invalidated', {
-      level: 'info',
-      tags: {
-        component: 'blog_page',
-        action: 'cache_invalidation',
-      },
-      extra: {
-        articleId,
-        invalidatedCount,
-        timestamp: new Date().toISOString(),
-      },
-    });
-
     return { success: true, invalidatedCount };
   } catch (error) {
     captureException(error, {
-      tags: {
-        component: 'blog_page',
-        action: 'cache_invalidation_error',
-      },
+      tags: { component: 'blog_page', action: 'cache_invalidation_error' },
       extra: { articleId },
     });
-
     return { success: false, error: error.message };
   }
 }
 
-/**
- * Fonction pour invalider un article spécifique (pour Server Actions)
- * @param {string} articleId - ID de l'article à invalider
- */
 export async function invalidateSpecificArticle(articleId) {
   if (!articleId) {
     throw new Error('Article ID is required for specific invalidation');
   }
 
   try {
-    // Invalider le cache de la liste des articles
     await invalidateBlogCache();
 
-    // Invalider le cache de l'article spécifique
     const singleArticleKey = generateCacheKey('single_blog_article', {
       id: articleId,
     });
     await projectCache.singleBlogArticle.delete(singleArticleKey);
-
-    captureMessage('Specific blog article cache invalidated', {
-      level: 'info',
-      tags: {
-        component: 'blog_page',
-        action: 'specific_article_invalidation',
-      },
-      extra: {
-        articleId,
-        cacheKey: singleArticleKey.substring(0, 50),
-        timestamp: new Date().toISOString(),
-      },
-    });
 
     return { success: true, articleId };
   } catch (error) {
@@ -559,61 +334,18 @@ export async function invalidateSpecificArticle(articleId) {
       },
       extra: { articleId },
     });
-
     return { success: false, error: error.message, articleId };
   }
 }
 
-// =============================
-// MONITORING ET DIAGNOSTICS
-// =============================
-
-/**
- * Fonction de diagnostic pour le monitoring (développement)
- */
-export async function getBlogPageDiagnostics() {
-  if (process.env.NODE_ENV === 'production') {
-    return { error: 'Diagnostics not available in production' };
-  }
-
-  try {
-    const [cacheStats, performanceStats, dbHealth] = await Promise.all([
-      projectCache.blogArticles.getStats(),
-      getSitePerformanceStats(),
-      monitoring.getHealth(),
-    ]);
-
-    return {
-      cache: cacheStats,
-      performance: performanceStats,
-      database: dbHealth,
-      config: BLOG_CONFIG,
-      timestamp: new Date().toISOString(),
-      // Spécifique au blog
-      blogSpecific: {
-        averageArticleLoadTime:
-          performanceStats.metrics?.apiCallTimes?.blog_article?.average || 0,
-        cacheHitRate: cacheStats.hitRate || 0,
-        recentErrors:
-          performanceStats.metrics?.componentRenderTimes?.blog || [],
-      },
-    };
-  } catch (error) {
-    return { error: error.message };
-  }
-}
-
-/**
- * Fonction pour obtenir les statistiques du blog (monitoring externe)
- */
+// Statistiques simplifiées
 export async function getBlogStats() {
   try {
     const cacheKey = generateCacheKey('blog_stats', {});
-
-    // Vérifier le cache d'abord (stats moins critiques)
     const cachedStats = await projectCache.blogArticles.get(
       `${cacheKey}_stats`,
     );
+
     if (cachedStats) {
       return cachedStats;
     }
@@ -634,7 +366,6 @@ export async function getBlogStats() {
       const result = await client.query(statsQuery);
       const stats = result.rows[0];
 
-      // Enrichir avec des métriques calculées
       const enrichedStats = {
         ...stats,
         total_articles: parseInt(stats.total_articles),
@@ -652,7 +383,6 @@ export async function getBlogStats() {
         timestamp: new Date().toISOString(),
       };
 
-      // Mettre en cache pour 10 minutes
       await projectCache.blogArticles.set(`${cacheKey}_stats`, enrichedStats, {
         ttl: 10 * 60 * 1000,
       });
@@ -663,10 +393,7 @@ export async function getBlogStats() {
     }
   } catch (error) {
     captureException(error, {
-      tags: {
-        component: 'blog_page',
-        action: 'get_blog_stats_error',
-      },
+      tags: { component: 'blog_page', action: 'get_blog_stats_error' },
     });
 
     return {
