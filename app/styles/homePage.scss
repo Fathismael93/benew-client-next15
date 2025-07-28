@@ -131,12 +131,12 @@
       padding: 0;
 
       opacity: 0.9;
-      border-radius: 24px;
+      // border-radius: 24px;
       filter: none;
       transition: all 0.3s ease;
-      box-shadow:
-        0 20px 40px rgba($color-dark, 0.3),
-        0 0 30px rgba($color-orange, 0.15);
+      // box-shadow:
+      //   0 20px 40px rgba($color-dark, 0.3),
+      //   0 0 30px rgba($color-orange, 0.15);
 
       // Position normale dans le flux
       position: relative;
@@ -175,106 +175,6 @@
   // =============================
   // STRUCTURE MOBILE (jusqu'à md exclu)
   // =============================
-  @include until('md') {
-    // Conteneur principal en mode superposition
-    .main-content {
-      position: relative;
-      width: 100%;
-      height: 100%;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      // Pas de gap en mode superposition
-      gap: 0;
-      box-sizing: border-box;
-    }
-
-    // IMAGE EN ARRIÈRE-PLAN (mobile)
-    .profit-image {
-      // ✅ POSITIONNEMENT ABSOLU EN ARRIÈRE-PLAN
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-
-      // ✅ Z-INDEX INFÉRIEUR
-      z-index: 1;
-
-      // ✅ Taille optimisée pour arrière-plan
-      height: 70vh;
-      width: auto;
-
-      // ✅ Effet d'arrière-plan
-      // opacity: 0.9;
-      // filter: brightness(0.9);
-      border-radius: 20px;
-
-      // ✅ Pas de box-shadow pour éviter la distraction
-      box-shadow: none;
-
-      // ✅ Transition douce
-      transition: all 0.4s ease;
-
-      @include until('sm') {
-        height: 60vh;
-        // opacity: 0.9;
-        // filter: brightness(0.9);
-        border-radius: 16px;
-      }
-
-      // ✅ Effet hover subtil en arrière-plan
-      &:hover {
-        opacity: 0.4;
-        filter: blur(0.5px) brightness(0.9);
-        transform: translate(-50%, -50%) scale(1.05);
-      }
-    }
-
-    // TEXTE AU PREMIER PLAN (mobile)
-    .text-container {
-      // ✅ POSITIONNEMENT AU PREMIER PLAN
-      position: relative;
-      z-index: 10;
-
-      // ✅ CENTRAGE PARFAIT
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-
-      // ✅ Occupe tout l'espace disponible
-      width: 100%;
-      height: 100%;
-
-      // ✅ Padding pour éviter les bords
-      padding: 2rem 1rem;
-      margin: 0;
-
-      // ✅ ARRIÈRE-PLAN SEMI-TRANSPARENT pour la lisibilité
-      background: rgba($color-dark, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-
-      // ✅ Bordure subtile
-      border: 1px solid rgba($color-orange, 0.2);
-
-      // ✅ Ombre pour détacher du fond
-      box-shadow:
-        0 10px 30px rgba($color-dark, 0.6),
-        0 0 20px rgba($color-orange, 0.1);
-
-      @include until('sm') {
-        padding: 1.5rem 0.8rem;
-        border-radius: 16px;
-        backdrop-filter: blur(8px);
-        background: rgba($color-dark, 0.8);
-      }
-    }
-  }
 
   // =============================
   // STYLES DES TITRES (communs mais adaptés)
@@ -294,28 +194,6 @@
     // Tailles responsives
     font-size: 2.2rem;
 
-    @include until('sm') {
-      font-size: 1.6rem;
-      letter-spacing: 0.8px;
-      margin: 0 0 0.5rem 0;
-
-      // ✅ Text-shadow renforcé pour mobile (lisibilité sur image)
-      text-shadow:
-        0 2px 4px rgba($color-dark, 0.9),
-        0 0 15px rgba($color-orange, 0.7),
-        0 0 30px rgba($color-orange, 0.4);
-    }
-
-    @include between('sm', 'md') {
-      font-size: 1.9rem;
-
-      // ✅ Text-shadow renforcé pour tablette portrait
-      text-shadow:
-        0 3px 6px rgba($color-dark, 0.9),
-        0 0 20px rgba($color-orange, 0.6),
-        0 0 35px rgba($color-orange, 0.3);
-    }
-
     @include from('md') {
       font-size: 2.6rem;
       letter-spacing: 1.2px;
@@ -329,26 +207,6 @@
       font-size: 3.4rem;
       letter-spacing: 1.5px;
       margin: 0 0 1rem 0;
-    }
-
-    // Premier titre
-    &:first-of-type {
-      margin-bottom: 0.3rem;
-
-      @include until('md') {
-        margin-bottom: 0.2rem;
-      }
-    }
-
-    // Deuxième titre avec couleur légèrement différente
-    &:last-of-type {
-      color: lighten($color-orange, 8%);
-      margin-bottom: 0;
-
-      @include until('md') {
-        // ✅ Couleur encore plus contrastée sur mobile
-        color: lighten($color-orange, 12%);
-      }
     }
   }
 
@@ -379,24 +237,6 @@
 // =============================
 // AMÉLIORATIONS POUR L'ACCESSIBILITÉ
 // =============================
-
-@include reduced-motion {
-  .products-intro-section {
-    .profit-image {
-      transition: none;
-
-      &:hover {
-        transform: none;
-      }
-    }
-
-    @include until('md') {
-      .profit-image:hover {
-        transform: translate(-50%, -50%); // Garde seulement le centrage
-      }
-    }
-  }
-}
 
 // =============================
 // SECTION SERVICES - AMÉLIORATIONS MOBILE
