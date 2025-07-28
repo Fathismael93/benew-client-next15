@@ -80,11 +80,9 @@ const HomeComponent = () => {
           'contact_teaser',
         ]}
       />
-
       <section className="first" data-section="hero">
         <Hero />
       </section>
-
       <section
         className="others products-intro-section"
         data-section="products_intro"
@@ -107,9 +105,13 @@ const HomeComponent = () => {
       </section>
 
       <section className="others services-section" data-section="services">
-        <h2 className="section-main-title">Une boutique :</h2>
+        {/* BLOC 1 : TITRE SEUL */}
+        <div className="services-title-block">
+          <h2 className="section-main-title">Une boutique :</h2>
+        </div>
 
-        <div className="services-slider-container">
+        {/* BLOC 2 : CARTES SEULES - CENTRAGE PARFAIT */}
+        <div className="services-cards-block">
           <div className="service-card-container">
             {services.map((service, index) => {
               const IconComponent = service.icon;
@@ -126,7 +128,10 @@ const HomeComponent = () => {
               );
             })}
           </div>
+        </div>
 
+        {/* BLOC 3 : DOTS SEULS - EN BAS */}
+        <div className="services-dots-block">
           <div className="slider-dots">
             {services.map((_, index) => (
               <button
@@ -139,7 +144,6 @@ const HomeComponent = () => {
           </div>
         </div>
       </section>
-
       <section className="others" data-section="portfolio_intro"></section>
       <section className="others" data-section="portfolio_showcase"></section>
       <section className="others" data-section="portfolio_showcase"></section>
