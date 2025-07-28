@@ -107,7 +107,7 @@ const HomeComponent = () => {
       </section>
 
       <section className="others services-section" data-section="services">
-        <h2 className="section-main-title">Notre boutique est :</h2>
+        <h2 className="section-main-title">Une boutique :</h2>
 
         <div className="services-slider-container">
           <div className="service-card-container">
