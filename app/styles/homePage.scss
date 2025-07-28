@@ -146,13 +146,13 @@
         border-radius: 28px;
       }
 
-      &:hover {
-        transform: scale(1.02);
-        opacity: 1;
-        box-shadow:
-          0 25px 50px rgba($color-dark, 0.4),
-          0 0 40px rgba($color-orange, 0.2);
-      }
+      // &:hover {
+      //   transform: scale(1.02);
+      //   opacity: 1;
+      //   box-shadow:
+      //     0 25px 50px rgba($color-dark, 0.4),
+      //     0 0 40px rgba($color-orange, 0.2);
+      // }
     }
 
     // TEXTE À DROITE (desktop)
