@@ -356,29 +356,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   position: relative;
   text-align: center;
 
   // Dimensions strictes
   width: 100%;
   max-width: 100%;
-  min-height: 100vh; // ← AJOUTER : Hauteur minimale
-  max-height: 100vh; // ← GARDE : Hauteur maximale stricte
+  min-height: 100vh;
+  max-height: 100vh;
 
   margin: 0;
-  // ✅ Empêcher débordement
   overflow: hidden;
   box-sizing: border-box;
-  // ✅ AJOUT DE PADDING MINIMAL POUR ÉVITER LES BORDS
-  padding: 1rem 0.5rem; // ← CHANGEMENT : De "0" à un padding minimal
+
+  // ✅ AJUSTEMENT DU CENTRAGE VERTICAL ET ESPACEMENT
+  justify-content: flex-start;
+  padding-top: 2rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 1rem;
 
   @include until('sm') {
-    padding: 0.75rem 0.25rem; // ← CHANGEMENT
+    padding-top: 1.5rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding-bottom: 0.75rem;
+  }
+
+  @include between('sm', 'md') {
+    padding-top: 2.5rem;
   }
 
   @include from('xl') {
-    padding: 1.5rem 1rem; // ← CHANGEMENT
+    justify-content: center;
+    padding-top: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1.25rem;
   }
 
   // =============================
@@ -392,32 +406,32 @@
       0 2px 4px rgba($color-dark, 0.5),
       0 0 20px rgba($color-pink, 0.3);
     position: relative;
-    flex-shrink: 0; // ← AJOUTER : Empêche le titre de se comprimer
+    flex-shrink: 0;
 
-    // ✅ MARGES DRASTIQUEMENT RÉDUITES
-    margin: 1rem 0 1.5rem 0; // ← CHANGEMENT : De "3rem" à "1.5rem"
+    // ✅ MARGES AJUSTÉES POUR MEILLEUR POSITIONNEMENT
+    margin: 0 0 2rem 0;
 
     // 📱 MOBILE FIRST - TAILLES RÉDUITES
-    font-size: 1.8rem; // ← CHANGEMENT : De "2.2rem" à "1.8rem"
+    font-size: 1.8rem;
 
     @include until('sm') {
-      font-size: 1.4rem; // ← CHANGEMENT : De "1.8rem" à "1.4rem"
-      margin: 0.75rem 0 1rem 0; // ← CHANGEMENT : Marges encore plus petites
+      font-size: 1.4rem;
+      margin: 0 0 1.5rem 0;
     }
 
     @include between('sm', 'md') {
-      font-size: 1.6rem; // ← CHANGEMENT : De "2rem" à "1.6rem"
-      margin: 0.75rem 0 1.25rem 0; // ← CHANGEMENT
+      font-size: 1.6rem;
+      margin: 0 0 1.75rem 0;
     }
 
     @include from('md') {
-      font-size: 1.9rem; // ← CHANGEMENT : De "2.4rem" à "1.9rem"
-      margin: 1rem 0 1.5rem 0; // ← CHANGEMENT
+      font-size: 1.9rem;
+      margin: 0 0 2rem 0;
     }
 
     @include from('xl') {
-      font-size: 2.2rem; // ← CHANGEMENT : De "2.8rem" à "2.2rem"
-      margin: 1.25rem 0 2rem 0; // ← CHANGEMENT : De "4rem" à "2rem"
+      font-size: 2.2rem;
+      margin: 0 0 2.5rem 0;
     }
 
     // Effet de soulignement - TAILLES RÉDUITES
@@ -430,20 +444,20 @@
       border-radius: 3px;
 
       // ✅ POSITIONS ET TAILLES AJUSTÉES
-      bottom: -0.5rem; // ← CHANGEMENT : De "-1rem" à "-0.5rem"
-      width: 60px; // ← CHANGEMENT : De "80px" à "60px"
-      height: 2px; // ← CHANGEMENT : De "3px" à "2px"
+      bottom: -0.5rem;
+      width: 60px;
+      height: 2px;
 
       @include until('sm') {
-        width: 40px; // ← CHANGEMENT : De "60px" à "40px"
-        height: 2px; // ← GARDE
-        bottom: -0.4rem; // ← CHANGEMENT
+        width: 40px;
+        height: 2px;
+        bottom: -0.4rem;
       }
 
       @include from('xl') {
-        width: 70px; // ← CHANGEMENT : De "100px" à "70px"
-        height: 3px; // ← CHANGEMENT : De "4px" à "3px"
-        bottom: -0.75rem; // ← CHANGEMENT : De "-1.5rem" à "-0.75rem"
+        width: 70px;
+        height: 3px;
+        bottom: -0.75rem;
       }
     }
   }
@@ -458,17 +472,24 @@
     justify-content: center;
     width: 100%;
     flex: 1;
-    min-height: 0; // ← AJOUTER : Permet la compression si nécessaire
+    min-height: 0;
 
     // ✅ GAPS DRASTIQUEMENT RÉDUITS
-    gap: 1.5rem; // ← CHANGEMENT : De "3rem" à "1.5rem"
+    gap: 1.5rem;
 
     @include until('sm') {
-      gap: 1rem; // ← CHANGEMENT : De "2rem" à "1rem"
+      gap: 1rem;
     }
 
     @include from('xl') {
-      gap: 2rem; // ← CHANGEMENT : De "4rem" à "2rem"
+      gap: 2rem;
+    }
+
+    // ✅ CENTRAGE FORCÉ POUR MOBILE/TABLETTE
+    @include until('lg') {
+      height: auto;
+      flex: 1;
+      min-height: 0;
     }
   }
 
@@ -481,21 +502,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; // ← AJOUTER : Empêche la compression
+    flex-shrink: 0;
 
     // ✅ HAUTEURS RÉDUITES POUR TENIR DANS 100VH
-    height: 280px; // ← CHANGEMENT : De "350px" à "280px"
+    height: 280px;
 
     @include until('sm') {
-      height: 220px; // ← CHANGEMENT : De "280px" à "220px"
+      height: 220px;
     }
 
     @include from('md') {
-      height: 300px; // ← CHANGEMENT : De "380px" à "300px"
+      height: 300px;
     }
 
     @include from('xl') {
-      height: 320px; // ← CHANGEMENT : De "420px" à "320px"
+      height: 320px;
+    }
+
+    // ✅ CENTRAGE ABSOLU POUR MOBILE/TABLETTE
+    @include until('lg') {
+      position: relative;
+      margin: 0 auto;
+      max-width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
@@ -528,37 +559,46 @@
     visibility: hidden;
     transform: translate(-50%, -50%) scale(0.8);
 
-    // 📱 MOBILE FIRST - Cartes beaucoup plus grandes
-    width: 300px; // ← CHANGEMENT : De "320px" à "300px"
-    height: 220px; // ← CHANGEMENT : De "240px" à "220px"
-    padding: 1.5rem 1rem; // ← CHANGEMENT : Padding réduit
-    gap: 1.5rem; // ← CHANGEMENT : De "2rem" à "1.5rem"
+    // ✅ TAILLES RÉDUITES POUR S'ADAPTER AUX NOUVEAUX CONTENEURS
+    width: 300px;
+    height: 220px;
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
 
     @include until('sm') {
-      width: 260px; // ← CHANGEMENT : De "280px" à "260px"
-      height: 180px; // ← CHANGEMENT : De "200px" à "180px"
-      padding: 1.25rem 0.75rem; // ← CHANGEMENT
-      gap: 1rem; // ← CHANGEMENT : De "1.5rem" à "1rem"
+      width: 260px;
+      height: 180px;
+      padding: 1.25rem 0.75rem;
+      gap: 1rem;
     }
 
     @include from('md') {
-      width: 350px; // ← CHANGEMENT : De "400px" à "350px"
-      height: 250px; // ← CHANGEMENT : De "280px" à "250px"
-      padding: 2rem 1.5rem; // ← CHANGEMENT
-      gap: 2rem; // ← CHANGEMENT : De "2.5rem" à "2rem"
+      width: 350px;
+      height: 250px;
+      padding: 2rem 1.5rem;
+      gap: 2rem;
     }
 
     @include from('lg') {
-      width: 380px; // ← CHANGEMENT : De "450px" à "380px"
-      height: 270px; // ← CHANGEMENT : De "320px" à "270px"
-      padding: 2.25rem 2rem; // ← CHANGEMENT
+      width: 380px;
+      height: 270px;
+      padding: 2.25rem 2rem;
     }
 
     @include from('xl') {
-      width: 420px; // ← CHANGEMENT : De "500px" à "420px"
-      height: 290px; // ← CHANGEMENT : De "350px" à "290px"
-      padding: 2.5rem 2.25rem; // ← CHANGEMENT
-      gap: 2.5rem; // ← CHANGEMENT : De "3rem" à "2.5rem"
+      width: 420px;
+      height: 290px;
+      padding: 2.5rem 2.25rem;
+      gap: 2.5rem;
+    }
+
+    // ✅ CENTRAGE RENFORCÉ POUR MOBILE/TABLETTE
+    @include until('lg') {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: calc(100vw - 2rem);
     }
 
     // Carte active
@@ -566,6 +606,10 @@
       opacity: 1;
       visibility: visible;
       transform: translate(-50%, -50%) scale(1);
+
+      @include until('lg') {
+        transform: translate(-50%, -50%) scale(1);
+      }
     }
 
     // =============================
@@ -715,49 +759,83 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; // ← AJOUTER : Empêche la compression
-    margin-top: auto; // ← AJOUTER : Pousse vers le bas si nécessaire
-    padding-bottom: 1rem; // ← AJOUTER : Espace en bas pour sécurité
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-bottom: 1rem;
     gap: 1rem;
 
     @include until('sm') {
       gap: 0.75rem;
-      padding-bottom: 0.75rem; // ← AJOUTER
+      padding-bottom: 0.75rem;
     }
 
     @include from('xl') {
       gap: 1.25rem;
-      padding-bottom: 1.25rem; // ← AJOUTER
+      padding-bottom: 1.25rem;
     }
 
     .dot {
-      width: 12px;
-      height: 12px;
       border-radius: 50%;
-      border: 2px solid rgba($color-light, 0.3);
       background: rgba($color-light, 0.1);
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
 
+      // ✅ TAILLES DRASTIQUEMENT RÉDUITES
+      width: 8px;
+      height: 8px;
+      border: 1px solid rgba($color-light, 0.3);
+
       @include until('sm') {
+        width: 6px;
+        height: 6px;
+        border: 1px solid rgba($color-light, 0.3);
+      }
+
+      @include between('sm', 'md') {
+        width: 7px;
+        height: 7px;
+        border: 1px solid rgba($color-light, 0.3);
+      }
+
+      @include from('lg') {
         width: 10px;
         height: 10px;
+        border: 2px solid rgba($color-light, 0.3);
       }
 
       @include from('xl') {
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
       }
 
       &:hover {
         border-color: rgba($color-light, 0.5);
         background: rgba($color-light, 0.2);
-        transform: scale(1.2);
+
+        // ✅ AJUSTEMENT DU SCALE POUR LES PETITES TAILLES
+        @include until('lg') {
+          transform: scale(1.5);
+        }
+
+        @include from('lg') {
+          transform: scale(1.2);
+        }
       }
 
       &.active {
-        transform: scale(1.3);
+        // ✅ AJUSTEMENT DU SCALE ACTIF
+        @include until('sm') {
+          transform: scale(1.8);
+        }
+
+        @include between('sm', 'md') {
+          transform: scale(1.6);
+        }
+
+        @include from('lg') {
+          transform: scale(1.3);
+        }
 
         // Couleurs selon la carte active
         &.color-orange {
@@ -790,14 +868,25 @@
       &.active::after {
         content: '';
         position: absolute;
-        top: -4px;
-        left: -4px;
-        right: -4px;
-        bottom: -4px;
         border-radius: 50%;
         border: 1px solid;
         opacity: 0.3;
         animation: dotPulse 2s infinite;
+
+        // ✅ ANIMATION PULSE AJUSTÉE
+        @include until('lg') {
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+        }
+
+        @include from('lg') {
+          top: -4px;
+          left: -4px;
+          right: -4px;
+          bottom: -4px;
+        }
 
         // Couleurs de l'animation selon la carte active
         .color-orange & {
@@ -811,6 +900,36 @@
         }
         .color-light-pink & {
           border-color: lighten($color-pink, 15%);
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// AJUSTEMENTS SPÉCIAUX POUR TRÈS PETITS ÉCRANS
+// =============================
+@media (max-width: 360px) {
+  .services-section {
+    padding-top: 1rem;
+
+    .section-main-title {
+      margin: 0 0 1.25rem 0;
+    }
+
+    .services-slider-container {
+      gap: 0.75rem;
+    }
+
+    .slider-dots {
+      padding-bottom: 0.5rem;
+
+      .dot {
+        width: 5px;
+        height: 5px;
+
+        &.active {
+          transform: scale(2);
         }
       }
     }
@@ -884,23 +1003,27 @@
 // Mode paysage sur mobile
 @include mobile-landscape {
   .services-section {
+    padding-top: 1rem;
+
+    .section-main-title {
+      margin: 0 0 1rem 0;
+    }
+
+    .services-slider-container {
+      gap: 0.75rem;
+    }
+
     .service-card-container {
-      height: 250px;
+      height: 200px;
     }
 
     .service-card {
-      width: 300px;
-      height: 180px;
-      padding: 1.5rem;
-      gap: 1rem;
+      height: 160px;
+      gap: 0.75rem;
+    }
 
-      .service-icon {
-        font-size: 2.5rem;
-      }
-
-      .service-label {
-        font-size: 0.9rem;
-      }
+    .slider-dots {
+      padding-bottom: 0.5rem;
     }
   }
 }
