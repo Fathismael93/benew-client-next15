@@ -475,22 +475,32 @@
       max-height: 80%; // ✅ Hauteur réduite
       opacity: inherit;
 
+      // ✅ EFFET BLUR ET OPACITÉ RÉDUITE
+      opacity: 0.3;
+      filter: blur(2px);
+
       // 📟 TRÈS PETITS ÉCRANS - IMAGE TRÈS COMPACTE
       @media (max-width: 400px) and (max-height: 680px) {
         max-width: 70%; // ✅ Encore plus petite
         max-height: 70%;
+        opacity: 0.25;
+        filter: blur(1.5px);
       }
 
       // 📟 ÉCRANS ULTRA-COMPACTS
       @media (max-width: 390px) and (max-height: 650px) {
         max-width: 65%; // ✅ Taille minimale
         max-height: 65%;
+        opacity: 0.25;
+        filter: blur(1.5px);
       }
 
       // 📟 AUTRES TRÈS PETITS ÉCRANS
       @include until('sm') {
         max-width: 75%;
         max-height: 75%;
+        opacity: 0.25;
+        filter: blur(1.5px);
       }
 
       // 🖥️ TABLET ET PLUS - Plus visible progressivement
