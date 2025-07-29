@@ -126,7 +126,6 @@ const HomeComponent = () => {
           'hero',
           'products_intro',
           'services',
-          'portfolio_intro',
           'portfolio_showcase',
           'contact_teaser',
         ]}
@@ -192,30 +191,6 @@ const HomeComponent = () => {
               />
             ))}
           </div>
-        </div>
-      </section>
-      <section
-        className="others portfolio-intro-section"
-        data-section="portfolio_intro"
-      >
-        <div className="main-content">
-          {/* TEXTE À GAUCHE sur desktop */}
-          <div className="text-container">
-            <p className="portfolio-text">
-              Notre offre est concue pour votre reussite. Vous avez 75% des
-              charges obligatoires et necessaires qui sont exonérées.
-            </p>
-          </div>
-
-          {/* IMAGE À DROITE sur desktop */}
-          <Image
-            src="/success_1.png"
-            alt="Illustration du succès et des réalisations"
-            width={1536}
-            height={1024}
-            className="success-image"
-            priority={false}
-          />
         </div>
       </section>
 
