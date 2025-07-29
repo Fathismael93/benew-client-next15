@@ -321,7 +321,7 @@ const HomeComponent = () => {
           <div className="contact-image-block">
             <div className="contact-logo-container">
               <Image
-                src="/benew_head_only.png"
+                src="/benew_head_only_transparent_fixed.png"
                 alt="BENEW"
                 fill
                 className="contact-logo-image"
