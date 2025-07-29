@@ -1491,6 +1491,7 @@
   @include until('sm') {
     width: 50px;
     height: 50px;
+    opacity: 0.6;
     background: none;
     transform: none;
     transition: none;
@@ -1504,6 +1505,7 @@
   @include between('sm', 'md') {
     width: 55px;
     height: 55px;
+    opacity: 0.6;
     background: none;
     transform: none;
     transition: none;
