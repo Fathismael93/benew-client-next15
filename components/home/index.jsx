@@ -73,7 +73,7 @@ const HomeComponent = () => {
   useEffect(() => {
     const portfolioInterval = setInterval(() => {
       setActivePortfolioIndex((prev) => (prev + 1) % portfolioItems.length);
-    }, 4000); // Change toutes les 4 secondes
+    }, 7000); // Change toutes les 4 secondes
 
     return () => clearInterval(portfolioInterval);
   }, [portfolioItems.length]);
