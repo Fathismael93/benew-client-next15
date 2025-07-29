@@ -4,6 +4,7 @@ import './homePage.scss';
 import PageTracker from 'components/analytics/PageTracker';
 import Hero from 'components/layouts/hero';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
   MdArrowBackIos,
@@ -220,6 +221,9 @@ const HomeComponent = () => {
 
                 <div className="slide-text-card">
                   <p className="slide-description">{item.description}</p>
+                  <Link href="/boutique" className="portfolio-shop-link">
+                    Visiter notre boutique
+                  </Link>
                 </div>
               </div>
             ))}
@@ -271,6 +275,9 @@ const HomeComponent = () => {
                 {/* Section texte - 40% de la hauteur */}
                 <div className="mobile-text-section">
                   <p className="slide-description">{item.description}</p>
+                  <Link href="/boutique" className="portfolio-shop-link">
+                    Visiter notre boutique
+                  </Link>
                 </div>
               </div>
             ))}
