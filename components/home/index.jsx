@@ -103,7 +103,6 @@ const HomeComponent = () => {
           </div>
         </div>
       </section>
-
       <section className="others services-section" data-section="services">
         {/* BLOC 1 : TITRE SEUL */}
         <div className="services-title-block">
@@ -144,7 +143,31 @@ const HomeComponent = () => {
           </div>
         </div>
       </section>
-      <section className="others" data-section="portfolio_intro"></section>
+
+      <section
+        className="others portfolio-intro-section"
+        data-section="portfolio_intro"
+      >
+        <div className="main-content">
+          {/* TEXTE À GAUCHE sur desktop */}
+          <div className="text-container">
+            <p className="portfolio-text">
+              N&apos;attends plus, tu peux te lancer dès maintenant avec la
+              location de notre premier modèle de boutique pour 15 000 fdj/mois
+            </p>
+          </div>
+
+          {/* IMAGE À DROITE sur desktop */}
+          <Image
+            src="/success.png"
+            alt="Illustration du succès et des réalisations"
+            width={256}
+            height={384}
+            className="success-image"
+            priority={false}
+          />
+        </div>
+      </section>
       <section className="others" data-section="portfolio_showcase"></section>
       <section className="others" data-section="portfolio_showcase"></section>
     </div>
