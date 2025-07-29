@@ -149,12 +149,23 @@ const HomeComponent = () => {
         data-section="portfolio_intro"
       >
         <div className="main-content">
+          {/* TEXTE À GAUCHE sur desktop */}
           <div className="text-container">
             <p className="portfolio-text">
               Notre offre est concue pour votre reussite. Vous avez 75% des
               charges obligatoires et necessaires qui sont exonérées.
             </p>
           </div>
+
+          {/* IMAGE À DROITE sur desktop */}
+          <Image
+            src="/success_1.png"
+            alt="Illustration du succès et des réalisations"
+            width={1536}
+            height={1024}
+            className="success-image"
+            priority={false}
+          />
         </div>
       </section>
       <section className="others" data-section="portfolio_showcase"></section>
