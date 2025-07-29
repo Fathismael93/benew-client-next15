@@ -1456,6 +1456,8 @@
   @include until('sm') {
     width: 50px;
     height: 50px;
+    background: none;
+    transform: none;
 
     svg {
       font-size: 1.2rem;
@@ -1465,6 +1467,8 @@
   @include between('sm', 'md') {
     width: 55px;
     height: 55px;
+    background: none;
+    transform: none;
 
     svg {
       font-size: 1.3rem;
@@ -1709,6 +1713,7 @@
     // =============================
     @include until('md') {
       flex-direction: column;
+      flex-direction: column-reverse;
     }
   }
 
@@ -1919,13 +1924,6 @@
 
         // Effet subtil pour s'harmoniser avec le design
         filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
-        transition: all 0.3s ease;
-
-        &:hover {
-          filter: drop-shadow(0 15px 40px rgba($color-dark, 0.4))
-            drop-shadow(0 0 20px rgba($color-orange, 0.2));
-          transform: scale(1.02);
-        }
       }
     }
   }
