@@ -161,8 +161,8 @@ const HomeComponent = () => {
           <Image
             src="/success.png"
             alt="Illustration du succès et des réalisations"
-            width={256}
-            height={384}
+            width={1536}
+            height={1024}
             className="success-image"
             priority={false}
           />
