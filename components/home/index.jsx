@@ -152,8 +152,8 @@ const HomeComponent = () => {
           {/* TEXTE À GAUCHE sur desktop */}
           <div className="text-container">
             <p className="portfolio-text">
-              N&apos;attends plus, tu peux te lancer dès maintenant avec la
-              location de notre premier modèle de boutique pour 15 000 fdj/mois
+              Notre offre est concue pour votre reussite. Vous avez 75% des
+              charges obligatoires et necessaires qui sont exonérées.
             </p>
           </div>
 
