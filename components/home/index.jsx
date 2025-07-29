@@ -194,7 +194,6 @@ const HomeComponent = () => {
           </div>
         </div>
       </section>
-
       <section
         className="others portfolio-intro-section"
         data-section="portfolio_intro"
@@ -224,52 +223,104 @@ const HomeComponent = () => {
         className="others portfolio-showcase-section"
         data-section="portfolio_showcase"
       >
-        <div className="portfolio-slider-container">
-          {/* Items du slider */}
-          {portfolioItems.map((item, index) => (
-            <div
-              key={item.id}
-              className={`portfolio-slide ${
-                index === activePortfolioIndex ? 'active' : ''
-              }`}
-            >
-              <Image
-                src={item.image}
-                alt={`Portfolio item ${item.id}`}
-                fill
-                className="slide-image"
-                sizes="(max-width: 768px) 92vw, (max-width: 1024px) 88vw, 85vw"
-                priority={index === 0} // Priority pour la première image seulement
-              />
+        {/* VERSION DESKTOP (≥ xl) - STRUCTURE OVERLAY */}
+        <div className="portfolio-slider-desktop">
+          <div className="portfolio-slider-container">
+            {/* Items du slider desktop */}
+            {portfolioItems.map((item, index) => (
+              <div
+                key={`desktop-${item.id}`}
+                className={`portfolio-slide ${
+                  index === activePortfolioIndex ? 'active' : ''
+                }`}
+              >
+                <Image
+                  src={item.image}
+                  alt={`Portfolio item ${item.id}`}
+                  fill
+                  className="slide-image"
+                  sizes="85vw"
+                  priority={index === 0}
+                />
 
-              <div className="slide-text-card">
-                <p className="slide-description">{item.description}</p>
+                <div className="slide-text-card">
+                  <p className="slide-description">{item.description}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          {/* Flèche précédente */}
-          <button
-            className="portfolio-nav-arrow prev"
-            onClick={goToPreviousPortfolioSlide}
-            aria-label="Slide précédent"
-            type="button"
-          >
-            <MdArrowBackIos />
-          </button>
+            {/* Flèches desktop */}
+            <button
+              className="portfolio-nav-arrow prev"
+              onClick={goToPreviousPortfolioSlide}
+              aria-label="Slide précédent"
+              type="button"
+            >
+              <MdArrowBackIos />
+            </button>
 
-          {/* Flèche suivante */}
-          <button
-            className="portfolio-nav-arrow next"
-            onClick={goToNextPortfolioSlide}
-            aria-label="Slide suivant"
-            type="button"
-          >
-            <MdArrowForwardIos />
-          </button>
+            <button
+              className="portfolio-nav-arrow next"
+              onClick={goToNextPortfolioSlide}
+              aria-label="Slide suivant"
+              type="button"
+            >
+              <MdArrowForwardIos />
+            </button>
+          </div>
+        </div>
+
+        {/* VERSION MOBILE/TABLETTE (< xl) - STRUCTURE SÉPARÉE */}
+        <div className="portfolio-slider-mobile">
+          <div className="portfolio-slider-container">
+            {/* Items du slider mobile */}
+            {portfolioItems.map((item, index) => (
+              <div
+                key={`mobile-${item.id}`}
+                className={`portfolio-slide ${
+                  index === activePortfolioIndex ? 'active' : ''
+                }`}
+              >
+                {/* Section image - 60% de la hauteur */}
+                <div className="mobile-image-section">
+                  <Image
+                    src={item.image}
+                    alt={`Portfolio item ${item.id}`}
+                    fill
+                    className="slide-image"
+                    sizes="(max-width: 768px) 92vw, (max-width: 1024px) 88vw"
+                    priority={index === 0}
+                  />
+                </div>
+
+                {/* Section texte - 40% de la hauteur */}
+                <div className="mobile-text-section">
+                  <p className="slide-description">{item.description}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* Flèches mobile */}
+            <button
+              className="portfolio-nav-arrow prev"
+              onClick={goToPreviousPortfolioSlide}
+              aria-label="Slide précédent"
+              type="button"
+            >
+              <MdArrowBackIos />
+            </button>
+
+            <button
+              className="portfolio-nav-arrow next"
+              onClick={goToNextPortfolioSlide}
+              aria-label="Slide suivant"
+              type="button"
+            >
+              <MdArrowForwardIos />
+            </button>
+          </div>
         </div>
       </section>
-
       <section className="others" data-section="portfolio_showcase"></section>
     </div>
   );

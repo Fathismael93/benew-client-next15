@@ -1229,7 +1229,7 @@
 }
 
 // =============================
-// SECTION PORTFOLIO SHOWCASE - SLIDER AVEC FLÈCHES
+// SECTION PORTFOLIO SHOWCASE - STRUCTURES DUALES
 // =============================
 
 .portfolio-showcase-section {
@@ -1253,7 +1253,35 @@
   box-sizing: border-box;
 
   // =============================
-  // CONTENEUR PRINCIPAL DU SLIDER - 85% × 85%
+  // GESTION D'AFFICHAGE PAR BREAKPOINT
+  // =============================
+
+  // VERSION DESKTOP - Visible seulement sur grands écrans
+  .portfolio-slider-desktop {
+    @include until('xl') {
+      display: none; // Caché sur petits/moyens écrans
+    }
+    @include from('xl') {
+      display: block; // Visible sur grands écrans
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // VERSION MOBILE/TABLETTE - Visible seulement sur petits/moyens écrans
+  .portfolio-slider-mobile {
+    @include until('xl') {
+      display: block; // Visible sur petits/moyens écrans
+      width: 100%;
+      height: 100%;
+    }
+    @include from('xl') {
+      display: none; // Caché sur grands écrans
+    }
+  }
+
+  // =============================
+  // CONTENEUR PRINCIPAL DU SLIDER - COMMUN
   // =============================
   .portfolio-slider-container {
     position: relative;
@@ -1289,10 +1317,13 @@
       border-radius: 24px;
     }
   }
+}
 
-  // =============================
-  // ITEMS DU SLIDER
-  // =============================
+// =============================
+// STYLES DESKTOP - LAYOUT OVERLAY
+// =============================
+
+.portfolio-slider-desktop {
   .portfolio-slide {
     position: absolute;
     top: 0;
@@ -1310,31 +1341,22 @@
       visibility: visible;
     }
 
-    // =============================
     // IMAGE DE FOND - 100% × 100%
-    // =============================
     .slide-image {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover; // Couvre tout l'espace sans déformation
+      object-fit: cover;
       object-position: center;
 
       // ✅ Image nette - pas de filtres
       filter: none;
       opacity: 1;
-
-      // Optimisation responsive
-      @include until('sm') {
-        object-fit: cover;
-      }
     }
 
-    // =============================
-    // CARTE TEXTE - CENTRÉE SUR L'IMAGE
-    // =============================
+    // CARTE TEXTE - CENTRÉE SUR L'IMAGE (OVERLAY)
     .slide-text-card {
       position: absolute;
       top: 50%;
@@ -1342,15 +1364,15 @@
       transform: translate(-50%, -50%);
 
       // Style glass-morphism avec color-dark
-      background: rgba($color-dark, 0.75); // Gris foncé avec opacité
+      background: rgba($color-dark, 0.75);
       backdrop-filter: blur(20px);
-      border-radius: 20px;
+      border-radius: 24px;
       border: 2px solid rgba($color-light, 0.2);
 
       // Dimensions et espacement
-      padding: 2rem;
-      max-width: 80%;
-      min-width: 300px;
+      padding: 2.5rem;
+      max-width: 70%;
+      min-width: 400px;
 
       // Centrage du contenu
       display: flex;
@@ -1363,214 +1385,252 @@
         0 20px 60px rgba($color-dark, 0.4),
         0 0 40px rgba($color-light, 0.1);
 
-      // Responsive
-      @include until('sm') {
-        padding: 1.5rem;
-        max-width: 85%;
-        min-width: 280px;
-        border-radius: 16px;
-      }
-
-      @include between('sm', 'md') {
-        padding: 1.75rem;
-        max-width: 82%;
-        min-width: 290px;
-        border-radius: 18px;
-      }
-
-      @include from('md') {
-        padding: 2.25rem;
-        max-width: 75%;
-        min-width: 350px;
-      }
-
-      @include from('xl') {
-        padding: 2.5rem;
-        max-width: 70%;
-        min-width: 400px;
-        border-radius: 24px;
-      }
-
-      // =============================
-      // TEXTE DE DESCRIPTION
-      // =============================
       .slide-description {
         color: $color-light;
         font-weight: 500;
-        line-height: 1.6;
-        letter-spacing: 0.3px;
+        line-height: 1.7;
+        letter-spacing: 0.4px;
         margin: 0;
 
-        // Ombre pour meilleure lisibilité
+        // Ombre pour meilleure lisibilité sur overlay
         text-shadow:
           0 2px 4px rgba($color-dark, 0.8),
           0 0 15px rgba($color-dark, 0.5);
 
-        // Tailles responsives
-        font-size: 1.1rem;
-
-        @include until('sm') {
-          font-size: 0.95rem;
-          line-height: 1.5;
-          letter-spacing: 0.2px;
-        }
-
-        @include between('sm', 'md') {
-          font-size: 1rem;
-          line-height: 1.55;
-        }
-
-        @include from('md') {
-          font-size: 1.2rem;
-          line-height: 1.65;
-        }
-
-        @include from('xl') {
-          font-size: 1.3rem;
-          line-height: 1.7;
-          letter-spacing: 0.4px;
-        }
-      }
-    }
-  }
-
-  // =============================
-  // FLÈCHES DE NAVIGATION - SEMI-TRANSPARENTES
-  // =============================
-  .portfolio-nav-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-
-    // Style des boutons avec color-dark
-    background: rgba($color-dark, 0.7); // Même couleur que la carte
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba($color-light, 0.25);
-    border-radius: 50%;
-
-    color: $color-light;
-    cursor: pointer;
-
-    // Dimensions
-    width: 60px;
-    height: 60px;
-
-    // Centrage de l'icône
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    // Transitions
-    transition: all 0.3s ease;
-    opacity: 0.7; // Semi-transparent par défaut
-
-    // Effets hover et focus
-    &:hover {
-      opacity: 1;
-      background: rgba($color-dark, 0.85); // Plus opaque au hover
-      border-color: rgba($color-light, 0.4);
-      transform: translateY(-50%) scale(1.05);
-    }
-
-    &:focus {
-      outline: 2px solid rgba($color-orange, 0.6);
-      outline-offset: 2px;
-    }
-
-    &:active {
-      transform: translateY(-50%) scale(0.98);
-    }
-
-    // Icônes des flèches
-    svg {
-      font-size: 1.5rem;
-      filter: drop-shadow(0 2px 4px rgba($color-dark, 0.5));
-    }
-
-    // Responsive
-    @include until('sm') {
-      width: 50px;
-      height: 50px;
-
-      svg {
-        font-size: 1.2rem;
-      }
-    }
-
-    @include between('sm', 'md') {
-      width: 55px;
-      height: 55px;
-
-      svg {
+        // Taille normale pour grands écrans
         font-size: 1.3rem;
       }
     }
+  }
+
+  // Animation pour les cartes texte desktop
+  .portfolio-slide.active .slide-text-card {
+    animation: textCardFadeIn 0.6s ease-out 0.3s both;
+  }
+}
+
+// =============================
+// STYLES MOBILE/TABLETTE - LAYOUT SÉPARÉ
+// =============================
+
+.portfolio-slider-mobile {
+  .portfolio-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    // ✅ Layout en colonne
+    display: flex;
+    flex-direction: column;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    // Slide active
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    // SECTION IMAGE - 60% de la hauteur
+    .mobile-image-section {
+      width: 100%;
+      height: 60%;
+      position: relative;
+
+      .slide-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; // Garde les proportions
+        object-position: center;
+
+        // ✅ Image nette - pas de filtres
+        filter: none;
+        opacity: 1;
+      }
+    }
+
+    // SECTION TEXTE - 40% de la hauteur
+    .mobile-text-section {
+      width: 100%;
+      height: 40%;
+
+      // ✅ Pas de background sur petits/moyens écrans
+      background: none;
+      backdrop-filter: none;
+      border: none;
+      box-shadow: none;
+
+      // Centrage du contenu
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      // Padding selon la taille d'écran
+      padding: 1rem;
+
+      @include until('sm') {
+        padding: 0.75rem;
+      }
+
+      @include between('sm', 'md') {
+        padding: 1rem;
+      }
+
+      @include between('md', 'xl') {
+        padding: 1.25rem;
+      }
+
+      .slide-description {
+        color: $color-light;
+        font-weight: 500;
+        line-height: 1.5;
+        letter-spacing: 0.2px;
+        margin: 0;
+
+        // Text-shadow renforcé (pas de background)
+        text-shadow:
+          0 2px 4px rgba($color-dark, 0.9),
+          0 0 20px rgba($color-dark, 0.6),
+          0 0 30px rgba($color-dark, 0.3);
+
+        // Tailles réduites pour layout séparé
+        @include until('sm') {
+          font-size: 0.8rem;
+          line-height: 1.4;
+        }
+
+        @include between('sm', 'md') {
+          font-size: 0.85rem;
+          line-height: 1.45;
+        }
+
+        @include between('md', 'xl') {
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// FLÈCHES DE NAVIGATION - COMMUNES
+// =============================
+
+.portfolio-showcase-section .portfolio-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  // Style des boutons avec color-dark
+  background: rgba($color-dark, 0.7);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba($color-light, 0.25);
+  border-radius: 50%;
+
+  color: $color-light;
+  cursor: pointer;
+
+  // Dimensions
+  width: 60px;
+  height: 60px;
+
+  // Centrage de l'icône
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Transitions
+  transition: all 0.3s ease;
+  opacity: 0.7;
+
+  // Effets hover et focus
+  &:hover {
+    opacity: 1;
+    background: rgba($color-dark, 0.85);
+    border-color: rgba($color-light, 0.4);
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  &:focus {
+    outline: 2px solid rgba($color-orange, 0.6);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.98);
+  }
+
+  // Icônes des flèches
+  svg {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 2px 4px rgba($color-dark, 0.5));
+  }
+
+  // Responsive
+  @include until('sm') {
+    width: 50px;
+    height: 50px;
+
+    svg {
+      font-size: 1.2rem;
+    }
+  }
+
+  @include between('sm', 'md') {
+    width: 55px;
+    height: 55px;
+
+    svg {
+      font-size: 1.3rem;
+    }
+  }
+
+  @include from('xl') {
+    width: 70px;
+    height: 70px;
+
+    svg {
+      font-size: 1.8rem;
+    }
+  }
+
+  // Position des flèches
+  &.prev {
+    left: 2rem;
+
+    @include until('sm') {
+      left: 1rem;
+    }
 
     @include from('xl') {
-      width: 70px;
-      height: 70px;
+      left: 3rem;
+    }
+  }
 
-      svg {
-        font-size: 1.8rem;
-      }
+  &.next {
+    right: 2rem;
+
+    @include until('sm') {
+      right: 1rem;
     }
 
-    // Position des flèches
-    &.prev {
-      left: 2rem;
-
-      @include until('sm') {
-        left: 1rem;
-      }
-
-      @include from('xl') {
-        left: 3rem;
-      }
-    }
-
-    &.next {
-      right: 2rem;
-
-      @include until('sm') {
-        right: 1rem;
-      }
-
-      @include from('xl') {
-        right: 3rem;
-      }
+    @include from('xl') {
+      right: 3rem;
     }
   }
 }
 
 // =============================
-// ANIMATIONS ET TRANSITIONS
+// ANIMATIONS
 // =============================
 
-// Animation d'entrée pour les slides
-@keyframes slideInFromRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInFromLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-// Animation pour les cartes texte - SEULEMENT pour grands écrans (overlay)
 @keyframes textCardFadeIn {
   from {
     opacity: 0;
@@ -1582,62 +1642,8 @@
   }
 }
 
-// Animation appliquée seulement sur grands écrans
-@include from('xl') {
-  .portfolio-slide.active .slide-text-card {
-    animation: textCardFadeIn 0.6s ease-out 0.3s both;
-  }
-}
-
 // =============================
-// ACCESSIBILITÉ ET REDUCED MOTION
-// =============================
-
-@include reduced-motion {
-  .portfolio-slide {
-    transition: opacity 0.3s ease;
-  }
-
-  .portfolio-nav-arrow {
-    transition: none;
-
-    &:hover {
-      transform: translateY(-50%);
-    }
-
-    &:active {
-      transform: translateY(-50%);
-    }
-  }
-
-  .portfolio-slide.active .slide-text-card {
-    animation: none;
-  }
-}
-
-// =============================
-// SUPPORT TACTILE
-// =============================
-
-@media (pointer: coarse) {
-  .portfolio-nav-arrow {
-    // Augmenter la zone tactile
-    min-width: 44px;
-    min-height: 44px;
-
-    &:hover {
-      transform: translateY(-50%); // Pas de scale sur tactile
-    }
-
-    &:active {
-      opacity: 0.8;
-      transform: translateY(-50%) scale(0.95);
-    }
-  }
-}
-
-// =============================
-// ÉCRANS TRÈS PETITS (< 360px)
+// ÉCRANS TRÈS PETITS - MOBILE
 // =============================
 
 @media (max-width: 360px) {
@@ -1647,14 +1653,15 @@
       height: 92%;
     }
 
-    .portfolio-slide .slide-text-card {
-      padding: 1.25rem;
-      min-width: 260px;
-      max-width: 90%;
+    // Mobile seulement
+    .portfolio-slider-mobile {
+      .mobile-text-section {
+        padding: 0.5rem;
 
-      .slide-description {
-        font-size: 0.9rem;
-        line-height: 1.4;
+        .slide-description {
+          font-size: 0.75rem;
+          line-height: 1.3;
+        }
       }
     }
 
@@ -1683,14 +1690,63 @@
 
 @include mobile-landscape {
   .portfolio-showcase-section {
-    .portfolio-slide .slide-text-card {
-      padding: 1.5rem;
-      max-width: 70%;
+    .portfolio-slider-mobile {
+      .mobile-text-section {
+        padding: 0.75rem;
 
-      .slide-description {
-        font-size: 0.95rem;
-        line-height: 1.5;
+        .slide-description {
+          font-size: 0.8rem;
+          line-height: 1.4;
+        }
       }
+    }
+  }
+}
+
+// =============================
+// ACCESSIBILITÉ ET REDUCED MOTION
+// =============================
+
+@include reduced-motion {
+  .portfolio-slide {
+    transition: opacity 0.3s ease;
+  }
+
+  .portfolio-nav-arrow {
+    transition: none;
+
+    &:hover {
+      transform: translateY(-50%);
+    }
+
+    &:active {
+      transform: translateY(-50%);
+    }
+  }
+
+  // Animation désactivée pour reduced motion
+  .portfolio-slider-desktop .portfolio-slide.active .slide-text-card {
+    animation: none;
+  }
+}
+
+// =============================
+// SUPPORT TACTILE
+// =============================
+
+@media (pointer: coarse) {
+  .portfolio-nav-arrow {
+    // Augmenter la zone tactile
+    min-width: 44px;
+    min-height: 44px;
+
+    &:hover {
+      transform: translateY(-50%);
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: translateY(-50%) scale(0.95);
     }
   }
 }
