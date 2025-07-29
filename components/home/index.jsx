@@ -5,35 +5,60 @@ import PageTracker from 'components/analytics/PageTracker';
 import Hero from 'components/layouts/hero';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
+import {
+  MdArrowBackIos,
+  MdArrowForwardIos,
+  MdPalette,
+  MdPayment,
+  MdSecurity,
+  MdVerified,
+} from 'react-icons/md';
+
+// Données des services
+const services = [
+  {
+    icon: MdPalette,
+    label: 'Personnalisable',
+    color: 'orange',
+  },
+  {
+    icon: MdPayment,
+    label: 'Avec les paiements electroniques intégrés',
+    color: 'pink',
+  },
+  {
+    icon: MdSecurity,
+    label: 'Rapide et sécurisée',
+    color: 'purple',
+  },
+  {
+    icon: MdVerified,
+    label: 'Créée avec les meilleurs pratiques des standards internationaux',
+    color: 'light-pink',
+  },
+];
+
+// Données du portfolio à ajouter après les données des services
+const portfolioItems = [
+  {
+    id: 1,
+    image: '/buyitnow_1.png',
+    description:
+      'Notre plateforme e-commerce vous permet de créer facilement votre boutique en ligne avec tous les outils nécessaires pour réussir dans le commerce électronique.',
+  },
+  {
+    id: 2,
+    image: '/buyitnow_2.png',
+    description:
+      'Interface moderne et intuitive pour vos clients, avec des fonctionnalités avancées de paiement et de gestion des commandes intégrées.',
+  },
+];
 
 const HomeComponent = () => {
   // État pour le slider des services
   const [activeServiceIndex, setActiveServiceIndex] = useState(0);
-
-  // Données des services
-  const services = [
-    {
-      icon: MdPalette,
-      label: 'Personnalisable',
-      color: 'orange',
-    },
-    {
-      icon: MdPayment,
-      label: 'Avec les paiements electroniques intégrés',
-      color: 'pink',
-    },
-    {
-      icon: MdSecurity,
-      label: 'Rapide et sécurisée',
-      color: 'purple',
-    },
-    {
-      icon: MdVerified,
-      label: 'Créée avec les meilleurs pratiques des standards internationaux',
-      color: 'light-pink',
-    },
-  ];
+  // État pour le slider portfolio à ajouter avec les autres useState
+  const [activePortfolioIndex, setActivePortfolioIndex] = useState(0);
 
   // Auto-play du slider
   useEffect(() => {
@@ -44,26 +69,57 @@ const HomeComponent = () => {
     return () => clearInterval(interval);
   }, [services.length]);
 
-  // Navigation du slider
-  const goToService = (index) => {
-    setActiveServiceIndex(index);
-  };
+  // Auto-play du slider portfolio à ajouter après l'auto-play des services
+  useEffect(() => {
+    const portfolioInterval = setInterval(() => {
+      setActivePortfolioIndex((prev) => (prev + 1) % portfolioItems.length);
+    }, 4000); // Change toutes les 4 secondes
 
-  // Navigation clavier
+    return () => clearInterval(portfolioInterval);
+  }, [portfolioItems.length]);
+
+  // Navigation clavier pour le portfolio à ajouter dans le useEffect existant
   useEffect(() => {
     const handleKeyDown = (event) => {
+      // Navigation services (existant)
       if (event.key === 'ArrowLeft') {
         setActiveServiceIndex((prev) =>
           prev === 0 ? services.length - 1 : prev - 1,
         );
+        // Navigation portfolio
+        setActivePortfolioIndex((prev) =>
+          prev === 0 ? portfolioItems.length - 1 : prev - 1,
+        );
       } else if (event.key === 'ArrowRight') {
         setActiveServiceIndex((prev) => (prev + 1) % services.length);
+        // Navigation portfolio
+        setActivePortfolioIndex((prev) => (prev + 1) % portfolioItems.length);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [services.length]);
+  }, [services.length, portfolioItems.length]);
+
+  // Navigation du slider
+  const goToService = (index) => {
+    setActiveServiceIndex(index);
+  };
+
+  // Navigation du slider portfolio à ajouter après les fonctions de navigation des services
+  const goToPortfolioSlide = (index) => {
+    setActivePortfolioIndex(index);
+  };
+
+  const goToPreviousPortfolioSlide = () => {
+    setActivePortfolioIndex((prev) =>
+      prev === 0 ? portfolioItems.length - 1 : prev - 1,
+    );
+  };
+
+  const goToNextPortfolioSlide = () => {
+    setActivePortfolioIndex((prev) => (prev + 1) % portfolioItems.length);
+  };
 
   return (
     <div className="home-container">
@@ -168,7 +224,57 @@ const HomeComponent = () => {
           />
         </div>
       </section>
-      <section className="others" data-section="portfolio_showcase"></section>
+
+      <section
+        className="others portfolio-showcase-section"
+        data-section="portfolio_showcase"
+      >
+        <div className="portfolio-slider-container">
+          {/* Items du slider */}
+          {portfolioItems.map((item, index) => (
+            <div
+              key={item.id}
+              className={`portfolio-slide ${
+                index === activePortfolioIndex ? 'active' : ''
+              }`}
+            >
+              <Image
+                src={item.image}
+                alt={`Portfolio item ${item.id}`}
+                fill
+                className="slide-image"
+                sizes="(max-width: 768px) 92vw, (max-width: 1024px) 88vw, 85vw"
+                priority={index === 0} // Priority pour la première image seulement
+              />
+
+              <div className="slide-text-card">
+                <p className="slide-description">{item.description}</p>
+              </div>
+            </div>
+          ))}
+
+          {/* Flèche précédente */}
+          <button
+            className="portfolio-nav-arrow prev"
+            onClick={goToPreviousPortfolioSlide}
+            aria-label="Slide précédent"
+            type="button"
+          >
+            <MdArrowBackIos />
+          </button>
+
+          {/* Flèche suivante */}
+          <button
+            className="portfolio-nav-arrow next"
+            onClick={goToNextPortfolioSlide}
+            aria-label="Slide suivant"
+            type="button"
+          >
+            <MdArrowForwardIos />
+          </button>
+        </div>
+      </section>
+
       <section className="others" data-section="portfolio_showcase"></section>
     </div>
   );
