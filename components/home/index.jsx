@@ -135,8 +135,8 @@ const HomeComponent = () => {
         <Hero />
       </section>
       <section
-        className="others products-intro-section"
-        data-section="products_intro"
+        className="others profits_section"
+        data-section="profits_section"
       >
         <div className="main-content">
           <Image
@@ -154,7 +154,7 @@ const HomeComponent = () => {
           </div>
         </div>
       </section>
-      <section className="others services-section" data-section="services">
+      <section className="others some_qualities" data-section="some_qualities">
         {/* BLOC 1 : TITRE SEUL */}
         <div className="services-title-block">
           <h2 className="section-main-title">Une boutique :</h2>
@@ -195,13 +195,10 @@ const HomeComponent = () => {
         </div>
       </section>
 
-      <section
-        className="others portfolio-showcase-section"
-        data-section="portfolio_showcase"
-      >
+      <section className="others app_examples" data-section="app_examples">
         {/* VERSION DESKTOP (≥ xl) - STRUCTURE OVERLAY */}
-        <div className="portfolio-slider-desktop">
-          <div className="portfolio-slider-container">
+        <div className="app_examples-slider-desktop">
+          <div className="app_examples-slider-container">
             {/* Items du slider desktop */}
             {portfolioItems.map((item, index) => (
               <div
@@ -303,7 +300,7 @@ const HomeComponent = () => {
           </div>
         </div>
       </section>
-      <section className="others" data-section="portfolio_showcase"></section>
+      <section className="others" data-section="contact"></section>
     </div>
   );
 };
