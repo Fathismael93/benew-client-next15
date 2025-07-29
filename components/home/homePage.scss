@@ -1754,6 +1754,8 @@
     // =============================
     @include until('md') {
       flex-direction: column-reverse;
+      justify-content: center;
+      align-items: center;
     }
   }
 
