@@ -994,63 +994,64 @@
   // =============================
   // STRUCTURE DESKTOP/TABLETTE (md et plus)
   // =============================
+
   @include from('md') {
     .main-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
+      position: relative;
       width: 100%;
-      max-width: 100%;
       height: 100%;
-      max-height: 100vh;
 
-      gap: 2rem;
-      box-sizing: border-box;
-
-      @include from('xl') {
-        gap: 3rem;
-      }
-    }
-
-    // TEXTE À GAUCHE (desktop) - 50% de l'espace
-    .text-container {
-      flex: 0 0 50%; // 50% de la largeur fixe
-      width: 50%;
-      height: 50vh; // 50% de la hauteur
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
+      align-items: center;
       justify-content: center;
 
-      margin: 0;
-      padding: 0 1rem;
-
-      position: relative;
-      z-index: 10;
+      gap: 0;
+      box-sizing: border-box;
     }
 
-    // IMAGE À DROITE (desktop) - 50% de l'espace
+    // IMAGE EN ARRIÈRE-PLAN (desktop) - 80% de la section
     .success-image {
-      flex: 0 0 50%; // 50% de la largeur fixe
-      width: 50%;
-      height: 50vh; // 50% de la hauteur
-      object-fit: contain; // Garde les proportions dans l'espace alloué
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      z-index: 1; // En arrière-plan
+
+      width: 80%; // 80% de la largeur
+      height: 80%; // 80% de la hauteur
+      object-fit: contain; // Garde les proportions
 
       margin: 0;
       padding: 0;
 
-      opacity: 0.9;
+      // ✅ PAS DE BLUR, PAS DE FILTRE, PAS D'OPACITÉ
+      opacity: 1;
       filter: none;
       transition: all 0.3s ease;
-
-      position: relative;
-      z-index: 5;
 
       @include from('xl') {
         border-radius: 28px;
       }
+    }
+
+    // TEXTE AU PREMIER PLAN (desktop) - CENTRÉ
+    .text-container {
+      position: relative;
+      z-index: 10; // Au premier plan
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      width: 100%;
+      height: 100%;
+
+      padding: 2rem 1rem;
+      margin: 0;
     }
   }
 
@@ -1182,16 +1183,13 @@
 
   // ✅ Gestion spéciale pour tablettes en portrait (768px-1023px)
   @include between('lg', 'xl') {
-    .main-content {
-      gap: 1.5rem;
-    }
-
     .success-image {
-      height: 45vh; // Légèrement réduit pour tablettes
+      width: 75%; // Légèrement réduit pour tablettes
+      height: 75%;
     }
 
     .text-container {
-      padding: 0 0.8rem;
+      padding: 1.5rem 1rem;
     }
 
     .portfolio-text {
