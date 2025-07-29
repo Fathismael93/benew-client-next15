@@ -1341,8 +1341,8 @@
       left: 50%;
       transform: translate(-50%, -50%);
 
-      // Style glass-morphism cohérent avec les services
-      background: rgba($color-light, 0.12);
+      // Style glass-morphism avec color-dark
+      background: rgba($color-dark, 0.75); // Gris foncé avec opacité
       backdrop-filter: blur(20px);
       border-radius: 20px;
       border: 2px solid rgba($color-light, 0.2);
@@ -1443,8 +1443,8 @@
     transform: translateY(-50%);
     z-index: 10;
 
-    // Style des boutons
-    background: rgba($color-light, 0.15);
+    // Style des boutons avec color-dark
+    background: rgba($color-dark, 0.7); // Même couleur que la carte
     backdrop-filter: blur(10px);
     border: 2px solid rgba($color-light, 0.25);
     border-radius: 50%;
@@ -1468,7 +1468,7 @@
     // Effets hover et focus
     &:hover {
       opacity: 1;
-      background: rgba($color-light, 0.2);
+      background: rgba($color-dark, 0.85); // Plus opaque au hover
       border-color: rgba($color-light, 0.4);
       transform: translateY(-50%) scale(1.05);
     }
