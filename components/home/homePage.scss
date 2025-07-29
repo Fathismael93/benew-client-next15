@@ -1435,15 +1435,50 @@
     background: rgba($color-dark, 0.85);
     border-color: rgba($color-light, 0.4);
     transform: translateY(-50%) scale(1.05);
+
+    // Responsive
+    @include until('sm') {
+      background: none;
+      transform: none;
+      transition: none;
+      border: none;
+    }
+
+    @include between('sm', 'md') {
+      background: none;
+      transform: none;
+      transition: none;
+      border: none;
+    }
   }
 
   &:focus {
     outline: 2px solid rgba($color-orange, 0.6);
     outline-offset: 2px;
+
+    // Responsive
+    @include until('sm') {
+      outline: none;
+      outline-offset: none;
+    }
+
+    @include between('sm', 'md') {
+      outline: none;
+      outline-offset: none;
+    }
   }
 
   &:active {
     transform: translateY(-50%) scale(0.98);
+
+    // Responsive
+    @include until('sm') {
+      transform: none;
+    }
+
+    @include between('sm', 'md') {
+      transform: none;
+    }
   }
 
   // Icônes des flèches
