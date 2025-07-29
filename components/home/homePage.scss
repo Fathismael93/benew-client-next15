@@ -1328,7 +1328,7 @@
 
       // Optimisation responsive
       @include until('sm') {
-        object-fit: contain;
+        object-fit: cover;
       }
     }
 
