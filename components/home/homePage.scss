@@ -1013,9 +1013,11 @@
       }
     }
 
-    // TEXTE À GAUCHE (desktop) - INVERSÉ par rapport à products-intro
+    // TEXTE À GAUCHE (desktop) - 50% de l'espace
     .text-container {
-      flex: 1;
+      flex: 0 0 50%; // 50% de la largeur fixe
+      width: 50%;
+      height: 50vh; // 50% de la hauteur
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -1029,12 +1031,12 @@
       z-index: 10;
     }
 
-    // IMAGE À DROITE (desktop) - INVERSÉ par rapport à products-intro
+    // IMAGE À DROITE (desktop) - 50% de l'espace
     .success-image {
-      max-height: 90vh;
-      height: auto;
-      width: auto;
-      flex: 0 0 auto;
+      flex: 0 0 50%; // 50% de la largeur fixe
+      width: 50%;
+      height: 50vh; // 50% de la hauteur
+      object-fit: contain; // Garde les proportions dans l'espace alloué
 
       margin: 0;
       padding: 0;
@@ -1043,7 +1045,6 @@
       filter: none;
       transition: all 0.3s ease;
 
-      // Position normale dans le flux
       position: relative;
       z-index: 5;
 
@@ -1186,7 +1187,7 @@
     }
 
     .success-image {
-      max-height: 85vh;
+      height: 45vh; // Légèrement réduit pour tablettes
     }
 
     .text-container {
