@@ -106,11 +106,6 @@ const HomeComponent = () => {
     setActiveServiceIndex(index);
   };
 
-  // Navigation du slider portfolio à ajouter après les fonctions de navigation des services
-  const goToPortfolioSlide = (index) => {
-    setActivePortfolioIndex(index);
-  };
-
   const goToPreviousPortfolioSlide = () => {
     setActivePortfolioIndex((prev) =>
       prev === 0 ? portfolioItems.length - 1 : prev - 1,
