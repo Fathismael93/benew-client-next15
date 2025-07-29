@@ -1026,9 +1026,9 @@
       margin: 0;
       padding: 0;
 
-      // ✅ PAS DE BLUR, PAS DE FILTRE, PAS D'OPACITÉ
-      opacity: 1;
-      filter: none;
+      // ✅ AJOUT D'OPACITÉ ET BLUR LÉGERS
+      opacity: 0.7;
+      filter: blur(1px);
       transition: all 0.3s ease;
 
       @include from('xl') {
@@ -1036,7 +1036,7 @@
       }
     }
 
-    // TEXTE AU PREMIER PLAN (desktop) - CENTRÉ
+    // TEXTE AU PREMIER PLAN (desktop) - CENTRÉ AVEC LARGEUR RÉDUITE
     .text-container {
       position: relative;
       z-index: 10; // Au premier plan
@@ -1047,11 +1047,17 @@
       justify-content: center;
       text-align: center;
 
-      width: 100%;
+      width: 60%; // Largeur réduite à 60% au lieu de 100%
+      max-width: 500px; // Largeur maximum pour très grands écrans
       height: 100%;
 
       padding: 2rem 1rem;
       margin: 0;
+
+      @include from('xl') {
+        width: 50%; // Encore plus réduit sur très grands écrans
+        max-width: 600px;
+      }
     }
   }
 
@@ -1189,6 +1195,8 @@
     }
 
     .text-container {
+      width: 65%; // Légèrement plus large sur tablettes
+      max-width: 450px;
       padding: 1.5rem 1rem;
     }
 
