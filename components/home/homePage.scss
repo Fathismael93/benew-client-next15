@@ -1570,7 +1570,7 @@
   }
 }
 
-// Animation pour les cartes texte
+// Animation pour les cartes texte - SEULEMENT pour grands écrans (overlay)
 @keyframes textCardFadeIn {
   from {
     opacity: 0;
@@ -1582,8 +1582,11 @@
   }
 }
 
-.portfolio-slide.active .slide-text-card {
-  animation: textCardFadeIn 0.6s ease-out 0.3s both;
+// Animation appliquée seulement sur grands écrans
+@include from('xl') {
+  .portfolio-slide.active .slide-text-card {
+    animation: textCardFadeIn 0.6s ease-out 0.3s both;
+  }
 }
 
 // =============================
