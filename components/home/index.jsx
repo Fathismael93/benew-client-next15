@@ -159,7 +159,7 @@ const HomeComponent = () => {
 
           {/* IMAGE À DROITE sur desktop */}
           <Image
-            src="/success.png"
+            src="/success_1.png"
             alt="Illustration du succès et des réalisations"
             width={1536}
             height={1024}
