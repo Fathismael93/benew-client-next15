@@ -1288,10 +1288,11 @@
     width: 85%;
     height: 85%;
 
-    // Centrage parfait
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    // ✅ CENTRAGE PARFAIT - ABSOLU
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
     // Style du conteneur
     border-radius: 20px;
