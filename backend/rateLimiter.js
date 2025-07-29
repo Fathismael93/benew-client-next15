@@ -1,76 +1,122 @@
 /**
- * Système de rate limiting avancé pour BENEW - Next.js 15
+ * Système de rate limiting avancé pour BENEW - Next.js 15 - OPTIMISÉ
  * Adapté aux spécificités du projet : Server Actions, blog, templates, commandes
- * Sans dépendances externes - Version avec monitoring Sentry
+ * Sans dépendances externes - Version optimisée avec gestion mémoire et logging conditionnel
  */
 
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 
+// Configuration adaptative selon l'environnement
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+// Configuration de logging et mémoire
+const CONFIG = {
+  logging: {
+    enabled: isDevelopment || process.env.BENEW_RATE_LIMIT_LOGS === 'true',
+    verboseAllowed: isDevelopment,
+    onlyErrors: isProduction,
+  },
+  memory: {
+    maxCacheSize: parseInt(process.env.BENEW_RATE_LIMIT_MAX_CACHE) || 10000,
+    maxBlockedIps: parseInt(process.env.BENEW_RATE_LIMIT_MAX_BLOCKED) || 1000,
+    maxSuspiciousBehavior:
+      parseInt(process.env.BENEW_RATE_LIMIT_MAX_SUSPICIOUS) || 5000,
+    maxOrderAttempts: parseInt(process.env.BENEW_RATE_LIMIT_MAX_ORDERS) || 2000,
+    cleanupInterval: isProduction ? 15 * 60 * 1000 : 10 * 60 * 1000, // 15min prod, 10min dev
+  },
+  sentry: {
+    enabled: typeof window !== 'undefined' && window.Sentry,
+    onlyWarningsAndErrors: isProduction,
+  },
+};
+
+/**
+ * Fonction de logging conditionnelle optimisée
+ */
+function logConditional(level, message, data = {}) {
+  if (!CONFIG.logging.enabled) return;
+
+  // En production, seulement warn et error
+  if (CONFIG.logging.onlyErrors && !['warn', 'error'].includes(level)) return;
+
+  // Logging sélectif
+  if (level === 'info' && CONFIG.logging.verboseAllowed) {
+    console.log(`[BENEW Rate Limit] ${message}`, data);
+  } else if (level === 'warn') {
+    console.warn(`[BENEW Rate Limit] ${message}`, data);
+  } else if (level === 'error') {
+    console.error(`[BENEW Rate Limit] ${message}`, data);
+  }
+}
+
+/**
+ * Fonction Sentry conditionnelle optimisée
+ */
+function reportToSentry(message, level = 'info', extra = {}) {
+  if (!CONFIG.sentry.enabled) return;
+
+  // En production, seulement les avertissements et erreurs
+  if (CONFIG.sentry.onlyWarningsAndErrors && level === 'info') return;
+
+  window.Sentry.captureMessage(message, {
+    level,
+    tags: { component: 'benew-rate-limit' },
+    extra,
+  });
+}
+
 /**
  * Préréglages spécifiques aux endpoints BENEW
- * @enum {Object}
  */
 export const BENEW_RATE_LIMIT_PRESETS = {
-  // Pages publiques (blog, templates)
   PUBLIC_PAGES: {
-    windowMs: 60 * 1000, // 1 minute
-    max: 50, // 50 requêtes par minute
+    windowMs: 60 * 1000,
+    max: 50,
     message: 'Trop de requêtes sur cette page, veuillez réessayer plus tard',
     skipSuccessfulRequests: false,
     skipFailedRequests: false,
   },
-
-  // Server Actions de commande (createOrder)
   ORDER_ACTIONS: {
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    max: 3, // 3 commandes par 5 minutes max
+    windowMs: 5 * 60 * 1000,
+    max: 3,
     message:
       'Trop de tentatives de commande, veuillez patienter avant de réessayer',
-    skipSuccessfulRequests: true, // Ne pas compter les commandes réussies
+    skipSuccessfulRequests: true,
     skipFailedRequests: false,
   },
-
-  // Formulaire de contact (EmailJS)
   CONTACT_FORM: {
-    windowMs: 10 * 60 * 1000, // 10 minutes
-    max: 5, // 5 messages par 10 minutes
+    windowMs: 10 * 60 * 1000,
+    max: 5,
     message: 'Trop de messages envoyés, veuillez patienter avant de renvoyer',
     skipSuccessfulRequests: true,
     skipFailedRequests: false,
   },
-
-  // Images Cloudinary (galeries d'applications)
   IMAGE_REQUESTS: {
-    windowMs: 2 * 60 * 1000, // 2 minutes
-    max: 100, // 100 images par 2 minutes
+    windowMs: 2 * 60 * 1000,
+    max: 100,
     message: "Trop de requêtes d'images, veuillez réessayer plus tard",
     skipSuccessfulRequests: false,
     skipFailedRequests: true,
   },
-
-  // API du blog (articles)
   BLOG_API: {
-    windowMs: 60 * 1000, // 1 minute
-    max: 30, // 30 articles par minute
+    windowMs: 60 * 1000,
+    max: 30,
     message: 'Trop de requêtes sur le blog, veuillez réessayer plus tard',
     skipSuccessfulRequests: false,
     skipFailedRequests: false,
   },
-
-  // API des templates et applications
   TEMPLATES_API: {
-    windowMs: 60 * 1000, // 1 minute
-    max: 40, // 40 requêtes par minute
+    windowMs: 60 * 1000,
+    max: 40,
     message: 'Trop de requêtes sur les templates, veuillez réessayer plus tard',
     skipSuccessfulRequests: false,
     skipFailedRequests: false,
   },
-
-  // Présentation interactive (slider 3D)
   PRESENTATION_INTERACTIONS: {
-    windowMs: 60 * 1000, // 1 minute
-    max: 200, // 200 interactions par minute (slider très interactif)
+    windowMs: 60 * 1000,
+    max: 200,
     message: "Trop d'interactions, veuillez ralentir",
     skipSuccessfulRequests: false,
     skipFailedRequests: false,
@@ -78,60 +124,84 @@ export const BENEW_RATE_LIMIT_PRESETS = {
 };
 
 /**
- * Niveaux de violation spécifiques à BENEW
- * @enum {Object}
+ * Niveaux de violation optimisés pour BENEW
  */
 export const BENEW_VIOLATION_LEVELS = {
   LOW: {
-    threshold: 1.3, // Dépassement de 30% (plus tolérant pour UX)
+    threshold: 1.3,
     blockDuration: 0,
     severity: 'low',
     logLevel: 'info',
     sentryLevel: 'info',
   },
   MEDIUM: {
-    threshold: 2.5, // 2.5x la limite
-    blockDuration: 3 * 60 * 1000, // 3 minutes (plus court pour e-commerce)
+    threshold: 2.5,
+    blockDuration: 3 * 60 * 1000,
     severity: 'medium',
     logLevel: 'warning',
     sentryLevel: 'warning',
   },
   HIGH: {
-    threshold: 5, // 5x la limite
-    blockDuration: 15 * 60 * 1000, // 15 minutes
+    threshold: 5,
+    blockDuration: 15 * 60 * 1000,
     severity: 'high',
     logLevel: 'warning',
     sentryLevel: 'warning',
   },
   SEVERE: {
-    threshold: 10, // 10x la limite
-    blockDuration: 60 * 60 * 1000, // 1 heure (commerce critique)
+    threshold: 10,
+    blockDuration: 60 * 60 * 1000,
     severity: 'severe',
     logLevel: 'error',
     sentryLevel: 'error',
   },
 };
 
-// Stockage en mémoire
-const requestCache = new Map();
-const blockedIPs = new Map();
-const suspiciousBehavior = new Map();
-const orderAttempts = new Map(); // Spécial pour tracking des commandes
-
-// Liste blanche des IPs (développeurs, admin)
-const BENEW_IP_WHITELIST = new Set([
-  '127.0.0.1',
-  '::1',
-  // Ajoutez les IPs de votre équipe BENEW
-]);
+// =============================================
+// STOCKAGE EN MÉMOIRE AVEC GESTION DE TAILLE
+// =============================================
 
 /**
- * Extraction d'IP adaptée aux déploiements BENEW (Vercel/Cloudflare)
- * @param {Object} req - La requête HTTP
- * @returns {string} L'IP réelle du client
+ * Map avec limitation de taille et éviction LRU
+ */
+class LimitedMap extends Map {
+  constructor(maxSize) {
+    super();
+    this.maxSize = maxSize;
+  }
+
+  set(key, value) {
+    // Si la clé existe déjà, la supprimer pour la remettre à la fin
+    if (this.has(key)) {
+      this.delete(key);
+    }
+    // Si on dépasse la taille maximale, supprimer le plus ancien
+    else if (this.size >= this.maxSize) {
+      const firstKey = this.keys().next().value;
+      this.delete(firstKey);
+    }
+
+    return super.set(key, value);
+  }
+}
+
+// Stockage optimisé avec limitations
+const requestCache = new LimitedMap(CONFIG.memory.maxCacheSize);
+const blockedIPs = new LimitedMap(CONFIG.memory.maxBlockedIps);
+const suspiciousBehavior = new LimitedMap(CONFIG.memory.maxSuspiciousBehavior);
+const orderAttempts = new LimitedMap(CONFIG.memory.maxOrderAttempts);
+
+// Liste blanche externalisée
+const BENEW_IP_WHITELIST = new Set(
+  (process.env.BENEW_WHITELIST_IPS || '127.0.0.1,::1')
+    .split(',')
+    .map((ip) => ip.trim()),
+);
+
+/**
+ * Extraction d'IP optimisée pour déploiements BENEW
  */
 function extractRealIp(req) {
-  // Headers spécifiques à Vercel et Cloudflare (utilisés par BENEW)
   const vercelForwardedFor =
     req.headers.get?.('x-vercel-forwarded-for') ||
     req.headers['x-vercel-forwarded-for'];
@@ -157,7 +227,7 @@ function extractRealIp(req) {
     ip = req.ip;
   }
 
-  // Nettoyer l'IP (enlever les préfixes IPv6)
+  // Nettoyer l'IP
   if (ip.startsWith('::ffff:')) {
     ip = ip.substring(7);
   }
@@ -166,15 +236,12 @@ function extractRealIp(req) {
 }
 
 /**
- * Anonymisation d'IP pour les logs BENEW
- * @param {string} ip - L'adresse IP à anonymiser
- * @returns {string} L'IP anonymisée
+ * Anonymisation d'IP optimisée
  */
 function anonymizeIp(ip) {
   if (!ip || typeof ip !== 'string') return '0.0.0.0';
 
   if (ip.includes('.')) {
-    // IPv4: Masquer les deux derniers octets pour plus de confidentialité
     const parts = ip.split('.');
     if (parts.length === 4) {
       parts[2] = 'xx';
@@ -182,7 +249,6 @@ function anonymizeIp(ip) {
       return parts.join('.');
     }
   } else if (ip.includes(':')) {
-    // IPv6: Ne garder que le préfixe
     const parts = ip.split(':');
     if (parts.length >= 4) {
       return parts.slice(0, 3).join(':') + '::xxx';
@@ -193,17 +259,13 @@ function anonymizeIp(ip) {
 }
 
 /**
- * Génération de clé spécifique aux endpoints BENEW
- * @param {Object} req - Requête Next.js
- * @param {string} prefix - Préfixe pour la clé
- * @param {Object} options - Options supplémentaires
- * @returns {string} Clé unique
+ * Génération de clé optimisée
  */
 function generateBenewKey(req, prefix = 'benew') {
   const ip = extractRealIp(req);
   const path = req.url || req.nextUrl?.pathname || '';
 
-  // Pour les Server Actions de commande, inclure plus de contexte
+  // Pour les Server Actions de commande
   if (prefix === 'order' && req.body) {
     try {
       const body =
@@ -215,7 +277,7 @@ function generateBenewKey(req, prefix = 'benew') {
         return `${prefix}:email:${emailHash}:ip:${ip}`;
       }
     } catch (e) {
-      // Ignore les erreurs de parsing
+      // Ignore silencieusement
     }
   }
 
@@ -231,26 +293,22 @@ function generateBenewKey(req, prefix = 'benew') {
         return `${prefix}:contact:${emailHash}:ip:${ip}`;
       }
     } catch (e) {
-      // Ignore
+      // Ignore silencieusement
     }
   }
 
-  // Pour les templates/applications, inclure l'ID
+  // Pour les templates/applications
   if (path.includes('/templates/') || path.includes('/applications/')) {
     const pathSegments = path.split('/').filter(Boolean);
     const resourceId = pathSegments[pathSegments.length - 1];
     return `${prefix}:resource:${resourceId}:ip:${ip}`;
   }
 
-  // Clé par défaut avec IP
   return `${prefix}:ip:${ip}:path:${path.replace(/[^a-zA-Z0-9]/g, '_')}`;
 }
 
 /**
- * Analyse comportementale spécifique au e-commerce BENEW
- * @param {string} key - Clé d'identification
- * @param {string} endpoint - Endpoint appelé
- * @returns {Object} Résultat de l'analyse
+ * Analyse comportementale optimisée
  */
 function analyzeBenewBehavior(key, endpoint = '') {
   const data = suspiciousBehavior.get(key);
@@ -260,7 +318,7 @@ function analyzeBenewBehavior(key, endpoint = '') {
   let threatScore = 0;
   const results = { detectionPoints: [] };
 
-  // Violations multiples sur les commandes (très suspect)
+  // Violations multiples sur les commandes
   if (data.violations >= 20 && endpoint.includes('order')) {
     threatScore += 6;
     results.detectionPoints.push('multiple_order_violations');
@@ -269,7 +327,7 @@ function analyzeBenewBehavior(key, endpoint = '') {
     results.detectionPoints.push('high_violation_count');
   }
 
-  // Scan rapide de templates (comportement de bot)
+  // Scan rapide de templates
   if (
     data.endpoints.size >= 15 &&
     [...data.endpoints].some((ep) => ep.includes('template'))
@@ -278,7 +336,7 @@ function analyzeBenewBehavior(key, endpoint = '') {
     results.detectionPoints.push('template_scanning_behavior');
   }
 
-  // Requêtes rapides sur le slider présentation (automation)
+  // Requêtes rapides sur le slider présentation
   const presentationEndpoints = [...data.endpoints].filter((ep) =>
     ep.includes('presentation'),
   );
@@ -294,7 +352,7 @@ function analyzeBenewBehavior(key, endpoint = '') {
     results.detectionPoints.push('multiple_failed_orders');
   }
 
-  // Taux d'erreur élevé sur des endpoints critiques
+  // Taux d'erreur élevé
   if (
     data.errorRequests / Math.max(data.totalRequests, 1) > 0.4 &&
     data.totalRequests > 3
@@ -303,7 +361,7 @@ function analyzeBenewBehavior(key, endpoint = '') {
     results.detectionPoints.push('high_error_rate_critical_endpoints');
   }
 
-  // Accès aux endpoints sensibles BENEW
+  // Accès aux endpoints sensibles
   const sensitiveEndpoints = [
     '/contact',
     '/templates',
@@ -327,15 +385,13 @@ function analyzeBenewBehavior(key, endpoint = '') {
     results.detectionPoints.push('image_scraping_pattern');
   }
 
-  results.isSuspicious = threatScore >= 4; // Seuil plus bas pour e-commerce
+  results.isSuspicious = threatScore >= 4;
   results.threatLevel = threatScore;
   return results;
 }
 
 /**
- * Tracking spécialisé pour les tentatives de commande
- * @param {string} key - Clé d'identification
- * @param {boolean} success - Si la commande a réussi
+ * Tracking optimisé pour les commandes
  */
 function trackOrderAttempt(key, success = false) {
   const existing = orderAttempts.get(key) || {
@@ -359,16 +415,12 @@ function trackOrderAttempt(key, success = false) {
 }
 
 /**
- * Middleware de rate limiting principal pour BENEW
- * @param {string|Object} presetOrOptions - Préréglage ou options personnalisées
- * @param {Object} additionalOptions - Options supplémentaires
- * @returns {Function} Middleware Next.js
+ * Middleware principal optimisé
  */
 export function applyBenewRateLimit(
   presetOrOptions = 'PUBLIC_PAGES',
   additionalOptions = {},
 ) {
-  // Déterminer la configuration
   let config;
   if (typeof presetOrOptions === 'string') {
     config = {
@@ -389,31 +441,30 @@ export function applyBenewRateLimit(
     const ip = extractRealIp(req);
 
     try {
-      // 1. Vérifier si l'IP est en liste blanche BENEW
+      // Vérifier liste blanche
       if (BENEW_IP_WHITELIST.has(ip)) {
-        console.log(
-          `[BENEW Rate Limit] Request allowed from whitelisted IP: ${anonymizeIp(ip)}`,
+        logConditional(
+          'info',
+          `Request allowed from whitelisted IP: ${anonymizeIp(ip)}`,
         );
         return null;
       }
 
-      // 2. Vérifier si l'IP est bloquée
+      // Vérifier IP bloquée
       const blockInfo = blockedIPs.get(ip);
       if (blockInfo && blockInfo.until > Date.now()) {
         const eventId = uuidv4();
 
-        console.warn(
-          `[BENEW Rate Limit] Blocked IP request rejected: ${anonymizeIp(ip)}`,
+        logConditional(
+          'warn',
+          `Blocked IP request rejected: ${anonymizeIp(ip)}`,
         );
 
-        // Log vers Sentry si disponible
-        if (typeof window !== 'undefined' && window.Sentry) {
-          window.Sentry.captureMessage('BENEW: Request from blocked IP', {
-            level: 'warning',
-            tags: { component: 'benew-rate-limit' },
-            extra: { eventId, ip: anonymizeIp(ip), path },
-          });
-        }
+        reportToSentry('BENEW: Request from blocked IP', 'warning', {
+          eventId,
+          ip: anonymizeIp(ip),
+          path,
+        });
 
         return NextResponse.json(
           {
@@ -434,7 +485,7 @@ export function applyBenewRateLimit(
         );
       }
 
-      // 3. Générer une clé spécifique BENEW
+      // Générer clé
       const key = generateBenewKey(
         req,
         additionalOptions.prefix ||
@@ -444,7 +495,7 @@ export function applyBenewRateLimit(
         additionalOptions,
       );
 
-      // 4. Gérer le cache des requêtes
+      // Gérer cache des requêtes
       const now = Date.now();
       const windowStart = now - config.windowMs;
       let requestData = requestCache.get(key) || {
@@ -453,19 +504,19 @@ export function applyBenewRateLimit(
         errorCount: 0,
       };
 
-      // Supprimer les requêtes expirées
+      // Supprimer requêtes expirées
       requestData.requests = requestData.requests.filter(
         (timestamp) => timestamp > windowStart,
       );
 
-      // 5. Vérifier la limite
+      // Vérifier limite
       const currentRequests = requestData.requests.length;
 
       if (currentRequests >= config.max) {
-        // Analyser le comportement spécifique BENEW
+        // Analyser comportement
         const behavior = analyzeBenewBehavior(key, path);
 
-        // Déterminer le niveau de violation
+        // Déterminer niveau de violation
         let violationLevel = BENEW_VIOLATION_LEVELS.LOW;
         const violationRatio = currentRequests / config.max;
 
@@ -475,7 +526,7 @@ export function applyBenewRateLimit(
           }
         }
 
-        // Calculer la durée de blocage
+        // Calculer durée de blocage
         let blockDuration = violationLevel.blockDuration;
         if (behavior.isSuspicious) {
           blockDuration *= 1 + Math.min(behavior.threatLevel, 8) / 4;
@@ -483,10 +534,12 @@ export function applyBenewRateLimit(
 
         const eventId = uuidv4();
 
-        // Logging spécialisé BENEW
-        console[violationLevel.logLevel](
-          `[BENEW Rate Limit] Violation detected`,
-          {
+        // Logging optimisé selon severity
+        if (
+          violationLevel.severity === 'severe' ||
+          violationLevel.severity === 'high'
+        ) {
+          logConditional(violationLevel.logLevel, 'Violation detected', {
             eventId,
             ip: anonymizeIp(ip),
             path,
@@ -495,8 +548,20 @@ export function applyBenewRateLimit(
             violationLevel: violationLevel.severity,
             suspicious: behavior.isSuspicious,
             detectionPoints: behavior.detectionPoints,
-          },
-        );
+          });
+
+          reportToSentry(
+            'BENEW: Rate limit violation',
+            violationLevel.sentryLevel,
+            {
+              eventId,
+              ip: anonymizeIp(ip),
+              path,
+              violationLevel: violationLevel.severity,
+              threatLevel: behavior.threatLevel,
+            },
+          );
+        }
 
         // Bloquer pour violations sévères
         if (
@@ -511,7 +576,7 @@ export function applyBenewRateLimit(
           });
         }
 
-        // Message personnalisé selon le contexte BENEW
+        // Message contextualisé
         let message = config.message;
         if (path.includes('/order') || path.includes('createOrder')) {
           message =
@@ -548,40 +613,36 @@ export function applyBenewRateLimit(
         );
       }
 
-      // 6. Enregistrer cette requête
+      // Enregistrer requête
       requestData.requests.push(now);
       requestCache.set(key, requestData);
 
-      // 7. Tracking spécialisé pour commandes
+      // Tracking spécialisé pour commandes
       if (path.includes('order') || path.includes('createOrder')) {
-        trackOrderAttempt(key, true); // Assume success à ce stade
+        trackOrderAttempt(key, true);
       }
 
-      console.log(
-        `[BENEW Rate Limit] Request allowed: ${anonymizeIp(ip)} -> ${path}`,
-      );
+      logConditional('info', `Request allowed: ${anonymizeIp(ip)} -> ${path}`);
       return null;
     } catch (error) {
-      console.error('[BENEW Rate Limit] Error in middleware:', error.message);
+      logConditional('error', 'Error in middleware:', {
+        message: error.message,
+      });
 
-      // Log vers Sentry si disponible
-      if (typeof window !== 'undefined' && window.Sentry) {
-        window.Sentry.captureException(error, {
-          tags: { component: 'benew-rate-limit', type: 'middleware-error' },
-          extra: { path, ip: anonymizeIp(ip) },
-        });
-      }
+      reportToSentry('BENEW Rate Limit: Middleware error', 'error', {
+        path,
+        ip: anonymizeIp(ip),
+        error: error.message,
+      });
 
-      // Fail open pour l'expérience utilisateur BENEW
+      // Fail open pour UX
       return null;
     }
   };
 }
 
 /**
- * Middleware spécialisé pour les Server Actions BENEW
- * @param {string} actionType - Type d'action ('order', 'contact', etc.)
- * @returns {Function} Middleware pour Server Actions
+ * Middleware pour Server Actions
  */
 export function applyBenewServerActionLimit(actionType = 'order') {
   const presets = {
@@ -596,9 +657,7 @@ export function applyBenewServerActionLimit(actionType = 'order') {
 }
 
 /**
- * Fonction utilitaire pour les routes API BENEW
- * @param {string} apiType - Type d'API ('blog', 'templates', etc.)
- * @returns {Function} Fonction de rate limiting
+ * Fonction pour routes API
  */
 export function limitBenewAPI(apiType = 'blog') {
   const presets = {
@@ -614,34 +673,45 @@ export function limitBenewAPI(apiType = 'blog') {
 }
 
 /**
- * Ajouter une IP à la liste blanche BENEW
- * @param {string} ip - Adresse IP à ajouter
+ * Ajouter IP à la liste blanche
  */
 export function addToBenewWhitelist(ip) {
   BENEW_IP_WHITELIST.add(ip);
-  console.log(`[BENEW Rate Limit] Added IP to whitelist: ${anonymizeIp(ip)}`);
+  logConditional('info', `Added IP to whitelist: ${anonymizeIp(ip)}`);
 }
 
 /**
- * Obtenir les statistiques du rate limiting BENEW
- * @returns {Object} Statistiques
+ * Statistiques optimisées
  */
 export function getBenewRateLimitStats() {
   const stats = {
-    activeKeys: requestCache.size,
-    suspiciousBehaviors: suspiciousBehavior.size,
-    blockedIPs: blockedIPs.size,
-    orderAttempts: orderAttempts.size,
-    whitelistedIPs: BENEW_IP_WHITELIST.size,
+    memory: {
+      activeKeys: requestCache.size,
+      maxCacheSize: CONFIG.memory.maxCacheSize,
+      memoryUsage: `${((requestCache.size / CONFIG.memory.maxCacheSize) * 100).toFixed(1)}%`,
+    },
+    security: {
+      suspiciousBehaviors: suspiciousBehavior.size,
+      blockedIPs: blockedIPs.size,
+      whitelistedIPs: BENEW_IP_WHITELIST.size,
+    },
+    business: {
+      orderAttempts: orderAttempts.size,
+    },
+    config: {
+      environment: process.env.NODE_ENV,
+      loggingEnabled: CONFIG.logging.enabled,
+      sentryEnabled: CONFIG.sentry.enabled,
+    },
     timestamp: new Date().toISOString(),
   };
 
-  console.log('[BENEW Rate Limit] Current statistics:', stats);
+  logConditional('info', 'Current statistics:', stats);
   return stats;
 }
 
 /**
- * Réinitialiser toutes les données BENEW
+ * Réinitialisation optimisée
  */
 export function resetBenewRateLimitData() {
   const beforeStats = {
@@ -656,62 +726,57 @@ export function resetBenewRateLimitData() {
   suspiciousBehavior.clear();
   orderAttempts.clear();
 
-  console.log('[BENEW Rate Limit] All data reset', { beforeStats });
+  logConditional('info', 'All data reset', { beforeStats });
 }
 
-// Nettoyage périodique adapté à BENEW
-if (
-  typeof setInterval !== 'undefined' &&
-  process.env.NODE_ENV !== 'production'
-) {
-  const cleanupInterval = setInterval(
-    () => {
-      try {
-        const now = Date.now();
-        let cleaned = 0;
+// =============================================
+// NETTOYAGE PÉRIODIQUE OPTIMISÉ
+// =============================================
 
-        // Nettoyer les IPs bloquées expirées
-        for (const [ip, blockInfo] of blockedIPs.entries()) {
-          if (blockInfo.until <= now) {
-            blockedIPs.delete(ip);
-            cleaned++;
-          }
-        }
+if (typeof setInterval !== 'undefined') {
+  const cleanupInterval = setInterval(() => {
+    try {
+      const now = Date.now();
+      let cleaned = 0;
 
-        // Nettoyer les tentatives de commande anciennes (1 heure)
-        for (const [key, data] of orderAttempts.entries()) {
-          if (now - data.lastAttempt > 60 * 60 * 1000) {
-            orderAttempts.delete(key);
-            cleaned++;
-          }
+      // Nettoyer IPs bloquées expirées
+      for (const [ip, blockInfo] of blockedIPs.entries()) {
+        if (blockInfo.until <= now) {
+          blockedIPs.delete(ip);
+          cleaned++;
         }
-
-        // Nettoyer les comportements suspects anciens (2 heures)
-        for (const [key, data] of suspiciousBehavior.entries()) {
-          if (now - data.lastSeen > 2 * 60 * 60 * 1000) {
-            suspiciousBehavior.delete(key);
-            cleaned++;
-          }
-        }
-
-        if (cleaned > 0) {
-          console.log(
-            `[BENEW Rate Limit] Cleanup completed: ${cleaned} items removed`,
-          );
-        }
-      } catch (error) {
-        console.error('[BENEW Rate Limit] Cleanup error:', error.message);
       }
-    },
-    10 * 60 * 1000,
-  ); // Toutes les 10 minutes
+
+      // Nettoyer tentatives de commande anciennes (1 heure)
+      for (const [key, data] of orderAttempts.entries()) {
+        if (now - data.lastAttempt > 60 * 60 * 1000) {
+          orderAttempts.delete(key);
+          cleaned++;
+        }
+      }
+
+      // Nettoyer comportements suspects anciens (2 heures)
+      for (const [key, data] of suspiciousBehavior.entries()) {
+        if (now - data.lastSeen > 2 * 60 * 60 * 1000) {
+          suspiciousBehavior.delete(key);
+          cleaned++;
+        }
+      }
+
+      if (cleaned > 0 && CONFIG.logging.enabled) {
+        logConditional('info', `Cleanup completed: ${cleaned} items removed`);
+      }
+    } catch (error) {
+      logConditional('error', 'Cleanup error:', { message: error.message });
+    }
+  }, CONFIG.memory.cleanupInterval);
 
   if (cleanupInterval.unref) {
     cleanupInterval.unref();
   }
 }
 
-// Export par défaut pour compatibilité
+// Export par défaut
 export default {
   applyBenewRateLimit,
   applyBenewServerActionLimit,

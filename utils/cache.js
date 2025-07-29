@@ -1,6 +1,6 @@
 /**
- * Système de cache avancé optimisé pour Next.js 15, PostgreSQL et Cloudinary
- * Intègre les dernières bonnes pratiques 2025 et améliorations identifiées
+ * Système de cache avancé optimisé pour Next.js 15, PostgreSQL et Cloudinary - OPTIMISÉ
+ * Version optimisée avec logging conditionnel et performance améliorée
  *
  * Features:
  * - Support Next.js 15 (cache opt-in par défaut)
@@ -8,7 +8,7 @@
  * - Métriques Core Web Vitals
  * - Support Edge Runtime
  * - Invalidation intelligente pour Server Actions
- * - Monitoring temps réel avec Sentry
+ * - Monitoring optimisé avec Sentry
  * - Cache PostgreSQL optimisé
  * - Gestion Cloudinary avancée
  */
@@ -17,34 +17,89 @@ import { captureException } from 'instrumentation';
 import { LRUCache } from 'lru-cache';
 import { compress, decompress } from 'lz-string';
 
+// =============================================
+// CONFIGURATION ADAPTATIVE
+// =============================================
+
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+const CONFIG = {
+  logging: {
+    enabled: isDevelopment || process.env.BENEW_CACHE_LOGS === 'true',
+    verboseAllowed: isDevelopment,
+    onlyErrors: isProduction,
+  },
+  monitoring: {
+    cacheStatsInterval: isProduction ? 30 * 60 * 1000 : 10 * 60 * 1000, // 30min prod, 10min dev
+    globalStatsInterval: isProduction ? 30 * 60 * 1000 : 10 * 60 * 1000, // 30min prod, 10min dev
+    enableDetailedEvents: isDevelopment,
+  },
+  compression: {
+    threshold: 4000, // 4KB seuil de compression
+    aggressive: isProduction, // Compression plus agressive en prod
+  },
+  sentry: {
+    enabled: typeof captureException === 'function',
+    onlyWarningsAndErrors: isProduction,
+  },
+};
+
+/**
+ * Fonction de logging conditionnelle optimisée
+ */
+function logConditional(level, message, data = {}) {
+  if (!CONFIG.logging.enabled) return;
+
+  // En production, seulement warn et error
+  if (CONFIG.logging.onlyErrors && !['warn', 'error'].includes(level)) return;
+
+  if (level === 'info' && CONFIG.logging.verboseAllowed) {
+    console.log(`[Cache] ${message}`, data);
+  } else if (level === 'warn') {
+    console.warn(`[Cache] ${message}`, data);
+  } else if (level === 'error') {
+    console.error(`[Cache] ${message}`, data);
+  }
+}
+
+/**
+ * Fonction Sentry conditionnelle optimisée
+ */
+function reportToSentry(error, context = {}) {
+  if (!CONFIG.sentry.enabled) return;
+
+  // En production, seulement les erreurs importantes
+  if (CONFIG.sentry.onlyWarningsAndErrors && context.level === 'info') return;
+
+  captureException(error, {
+    tags: { component: 'advanced_cache', ...context.tags },
+    extra: context.extra,
+  });
+}
+
 // =============================
 // CONFIGURATION DE CACHE 2025
 // =============================
 
 export const CACHE_CONFIGS = {
   // === DONNÉES CRITIQUES (TTL COURT) ===
-
-  // Server Actions (Next.js 15 - pas de cache par défaut)
   serverActions: {
-    maxAge: 0, // Pas de cache pour les Server Actions
+    maxAge: 0,
     staleWhileRevalidate: 0,
     mustRevalidate: true,
-    noStore: true, // Forcer no-store
+    noStore: true,
     private: true,
   },
-
-  // Commandes (données financières sensibles)
   orders: {
-    maxAge: 30, // 30 secondes seulement
+    maxAge: 30,
     staleWhileRevalidate: 15,
     mustRevalidate: true,
     private: true,
-    sMaxAge: 0, // Pas de cache CDN
+    sMaxAge: 0,
   },
-
-  // Sessions utilisateur
   userSessions: {
-    maxAge: 2 * 60, // 2 minutes
+    maxAge: 2 * 60,
     staleWhileRevalidate: 30,
     mustRevalidate: true,
     private: true,
@@ -52,75 +107,57 @@ export const CACHE_CONFIGS = {
   },
 
   // === DONNÉES MODÉRÉMENT SENSIBLES ===
-
-  // Templates (changent peu souvent)
   templates: {
-    maxAge: 10 * 60, // 10 minutes
-    staleWhileRevalidate: 5 * 60,
-    sMaxAge: 30 * 60, // 30 min CDN
-    revalidateOnFocus: true,
-  },
-
-  // Template spécifique
-  singleTemplate: {
-    maxAge: 15 * 60, // 15 minutes
-    staleWhileRevalidate: 10 * 60,
-    sMaxAge: 1 * 60 * 60, // 1h CDN
-  },
-
-  // Applications
-  applications: {
-    maxAge: 15 * 60, // 15 minutes
+    maxAge: 10 * 60,
     staleWhileRevalidate: 5 * 60,
     sMaxAge: 30 * 60,
     revalidateOnFocus: true,
   },
-
-  // Application spécifique
-  singleApplication: {
-    maxAge: 20 * 60, // 20 minutes
+  singleTemplate: {
+    maxAge: 15 * 60,
     staleWhileRevalidate: 10 * 60,
-    sMaxAge: 2 * 60 * 60, // 2h CDN
+    sMaxAge: 1 * 60 * 60,
   },
-
-  // Plateformes de paiement
+  applications: {
+    maxAge: 15 * 60,
+    staleWhileRevalidate: 5 * 60,
+    sMaxAge: 30 * 60,
+    revalidateOnFocus: true,
+  },
+  singleApplication: {
+    maxAge: 20 * 60,
+    staleWhileRevalidate: 10 * 60,
+    sMaxAge: 2 * 60 * 60,
+  },
   platforms: {
-    maxAge: 5 * 60, // 5 minutes (données sensibles)
+    maxAge: 5 * 60,
     staleWhileRevalidate: 2 * 60,
     mustRevalidate: true,
     sMaxAge: 10 * 60,
   },
 
-  // === CONTENU BLOG (MODÉRÉMENT STABLE) ===
-
-  // Liste des articles
+  // === CONTENU BLOG ===
   blogArticles: {
-    maxAge: 5 * 60, // 5 minutes
+    maxAge: 5 * 60,
     staleWhileRevalidate: 2 * 60,
-    sMaxAge: 15 * 60, // 15 min CDN
+    sMaxAge: 15 * 60,
     revalidateOnFocus: true,
   },
-
-  // Article spécifique
   singleBlogArticle: {
-    maxAge: 30 * 60, // 30 minutes
+    maxAge: 30 * 60,
     staleWhileRevalidate: 15 * 60,
-    sMaxAge: 2 * 60 * 60, // 2h CDN
+    sMaxAge: 2 * 60 * 60,
   },
 
   // === DONNÉES CLOUDINARY ===
-
-  // Métadonnées images
   cloudinaryImages: {
-    maxAge: 1 * 60 * 60, // 1 heure
+    maxAge: 1 * 60 * 60,
     staleWhileRevalidate: 30 * 60,
-    sMaxAge: 24 * 60 * 60, // 24h CDN
-    immutable: false, // Peuvent changer
+    sMaxAge: 24 * 60 * 60,
+    immutable: false,
   },
-
-  // Signatures upload Cloudinary
   cloudinarySignatures: {
-    maxAge: 5 * 60, // 5 minutes (sécurité)
+    maxAge: 5 * 60,
     staleWhileRevalidate: 0,
     mustRevalidate: true,
     private: true,
@@ -128,46 +165,40 @@ export const CACHE_CONFIGS = {
   },
 
   // === DONNÉES STATIQUES ===
-
-  // Assets statiques
   staticAssets: {
-    maxAge: 7 * 24 * 60 * 60, // 1 semaine
-    sMaxAge: 30 * 24 * 60 * 60, // 30 jours CDN
+    maxAge: 7 * 24 * 60 * 60,
+    sMaxAge: 30 * 24 * 60 * 60,
     immutable: true,
   },
-
-  // Pages statiques
   staticPages: {
-    maxAge: 15 * 60, // 15 minutes
+    maxAge: 15 * 60,
     staleWhileRevalidate: 10 * 60,
-    sMaxAge: 1 * 60 * 60, // 1h CDN
+    sMaxAge: 1 * 60 * 60,
   },
 
   // === CONFIGURATION EDGE RUNTIME ===
-
   edge: {
-    maxSize: 50, // Limite pour Edge
-    maxBytes: 5 * 1024 * 1024, // 5MB
-    compress: false, // Éviter compression intensive
-    ttl: 5 * 60, // 5 minutes max
+    maxSize: 50,
+    maxBytes: 5 * 1024 * 1024,
+    compress: false,
+    ttl: 5 * 60,
   },
 };
 
 // =============================
-// COMPRESSION MODERNE 2025
+// COMPRESSION MODERNE OPTIMISÉE
 // =============================
 
-/**
- * Système de compression hybride utilisant les APIs natives modernes
- * avec fallback vers lz-string pour compatibilité
- */
 class ModernCompression {
   static async compress(value) {
     const serialized = JSON.stringify(value);
     const size = serialized.length;
 
-    // Seuil de compression adapté (4KB)
-    if (size < 4000) {
+    // Seuil de compression adaptatif
+    const threshold = CONFIG.compression.aggressive
+      ? 2000
+      : CONFIG.compression.threshold;
+    if (size < threshold) {
       return {
         value: serialized,
         size,
@@ -188,10 +219,13 @@ class ModernCompression {
           method: 'native',
         };
       } catch (error) {
-        console.warn(
-          'Native compression failed, fallback to lz-string:',
-          error,
-        );
+        if (CONFIG.logging.verboseAllowed) {
+          logConditional(
+            'warn',
+            'Native compression failed, fallback to lz-string:',
+            { error: error.message },
+          );
+        }
       }
     }
 
@@ -206,7 +240,9 @@ class ModernCompression {
         method: 'lz-string',
       };
     } catch (error) {
-      console.error('All compression methods failed:', error);
+      logConditional('error', 'All compression methods failed:', {
+        error: error.message,
+      });
       return {
         value: serialized,
         size,
@@ -233,7 +269,9 @@ class ModernCompression {
 
       return JSON.parse(decompressed);
     } catch (error) {
-      console.error('Decompression failed:', error);
+      logConditional('error', 'Decompression failed:', {
+        error: error.message,
+      });
       throw new Error(`Failed to decompress cache value: ${error.message}`);
     }
   }
@@ -278,7 +316,7 @@ class ModernCompression {
 }
 
 // =============================
-// SYSTÈME D'ÉVÉNEMENTS AVANCÉ
+// SYSTÈME D'ÉVÉNEMENTS OPTIMISÉ
 // =============================
 
 export const cacheEvents = (() => {
@@ -302,26 +340,32 @@ export const cacheEvents = (() => {
       const start = performance.now();
       metrics.events++;
 
-      if (listeners.has(event)) {
-        listeners.get(event).forEach((callback) => {
-          try {
-            callback(data);
-          } catch (error) {
-            metrics.errors++;
-            console.error(`Cache event error [${event}]:`, error);
+      // Émettre seulement les événements importants en production
+      if (
+        CONFIG.monitoring.enableDetailedEvents ||
+        [
+          'cache_error',
+          'cache_invalidate_pattern',
+          'project_cache_invalidation',
+        ].includes(event)
+      ) {
+        if (listeners.has(event)) {
+          listeners.get(event).forEach((callback) => {
+            try {
+              callback(data);
+            } catch (error) {
+              metrics.errors++;
+              logConditional('error', `Cache event error [${event}]:`, {
+                error: error.message,
+              });
 
-            // Report to Sentry in production
-            if (
-              process.env.NODE_ENV === 'production' &&
-              typeof captureException === 'function'
-            ) {
-              captureException(error, {
+              reportToSentry(error, {
                 tags: { component: 'cache_events', event },
                 extra: { data },
               });
             }
-          }
-        });
+          });
+        }
       }
 
       const duration = performance.now() - start;
@@ -358,7 +402,7 @@ export const cacheEvents = (() => {
 })();
 
 // =============================
-// CLASSE CACHE AVANCÉE 2025
+// CLASSE CACHE AVANCÉE OPTIMISÉE
 // =============================
 
 export class AdvancedMemoryCache {
@@ -366,10 +410,10 @@ export class AdvancedMemoryCache {
     const opts = typeof options === 'number' ? { ttl: options } : options;
 
     this.config = {
-      ttl: opts.ttl || 5 * 60 * 1000, // 5 minutes par défaut
+      ttl: opts.ttl || 5 * 60 * 1000,
       maxSize: opts.maxSize || 500,
-      maxBytes: opts.maxBytes || 100 * 1024 * 1024, // 100MB
-      compress: opts.compress !== false, // Activé par défaut
+      maxBytes: opts.maxBytes || 100 * 1024 * 1024,
+      compress: opts.compress !== false,
       name: opts.name || 'advanced-cache',
       entityType: opts.entityType || 'generic',
       edgeCompatible: opts.edgeCompatible || false,
@@ -388,7 +432,7 @@ export class AdvancedMemoryCache {
       this.config.compress = CACHE_CONFIGS.edge.compress;
     }
 
-    // Métriques avancées
+    // Métriques optimisées
     this.metrics = {
       hits: 0,
       misses: 0,
@@ -397,15 +441,14 @@ export class AdvancedMemoryCache {
       errors: 0,
       compressionSavings: 0,
       totalSize: 0,
-      // Core Web Vitals impact
       coreWebVitals: {
-        lcp: 0, // Largest Contentful Paint impact
-        fid: 0, // First Input Delay impact
-        cls: 0, // Cumulative Layout Shift impact (cache doesn't affect this)
+        lcp: 0,
+        fid: 0,
+        cls: 0,
       },
     };
 
-    // Initialiser LRU Cache avec options optimisées
+    // Initialiser LRU Cache
     this.cache = new LRUCache({
       max: this.config.maxSize,
       ttl: this.config.ttl,
@@ -414,7 +457,6 @@ export class AdvancedMemoryCache {
       allowStale: false,
       updateAgeOnGet: true,
       updateAgeOnHas: false,
-      // Nouveau: fetchMethod pour async operations
       fetchMethod: opts.fetchMethod,
       noDeleteOnFetchRejection: true,
       ignoreFetchAbort: true,
@@ -430,15 +472,12 @@ export class AdvancedMemoryCache {
       },
     });
 
-    // Système de verrouillage pour éviter conditions de course
     this.locks = new Map();
-
-    // Démarrer monitoring
-    this._startAdvancedMonitoring();
+    this._startOptimizedMonitoring();
   }
 
   // =============================
-  // MÉTHODES PRINCIPALES
+  // MÉTHODES PRINCIPALES OPTIMISÉES
   // =============================
 
   async get(key) {
@@ -496,10 +535,10 @@ export class AdvancedMemoryCache {
       // Compression moderne
       const compressed = await ModernCompression.compress(value);
 
-      // Vérification taille
+      // Vérification taille avec log conditionnel
       if (compressed.size > this.config.maxBytes * 0.1) {
-        // 10% max
-        console.warn(
+        logConditional(
+          'warn',
           `Cache entry too large: ${key} (${compressed.size} bytes)`,
         );
         return false;
@@ -662,21 +701,18 @@ export class AdvancedMemoryCache {
   }
 
   // =============================
-  // MÉTRIQUES ET MONITORING
+  // MÉTRIQUES ET MONITORING OPTIMISÉS
   // =============================
 
   getStats() {
     const hitRate = this._calculateHitRate();
 
     return {
-      // Métriques de base
       entries: this.cache.size,
       bytes: this.metrics.totalSize,
       maxEntries: this.config.maxSize,
       maxBytes: this.config.maxBytes,
       hitRate,
-
-      // Métriques avancées
       operations: {
         hits: this.metrics.hits,
         misses: this.metrics.misses,
@@ -684,16 +720,10 @@ export class AdvancedMemoryCache {
         deletes: this.metrics.deletes,
         errors: this.metrics.errors,
       },
-
-      // Performance
       efficiency: this._calculateEfficiency(hitRate),
       compressionSavings: this.metrics.compressionSavings,
       utilization: this.metrics.totalSize / this.config.maxBytes,
-
-      // Core Web Vitals impact
       coreWebVitals: { ...this.metrics.coreWebVitals },
-
-      // Métadonnées
       name: this.config.name,
       entityType: this.config.entityType,
       edgeCompatible: this.config.edgeCompatible,
@@ -703,21 +733,20 @@ export class AdvancedMemoryCache {
 
   getCoreWebVitalsImpact() {
     return {
-      lcp: this.metrics.coreWebVitals.lcp, // Impact sur LCP
-      fid: this.metrics.coreWebVitals.fid, // Impact sur FID
-      cls: 0, // Cache n'affecte pas CLS
+      lcp: this.metrics.coreWebVitals.lcp,
+      fid: this.metrics.coreWebVitals.fid,
+      cls: 0,
       hitRate: this._calculateHitRate(),
     };
   }
 
   // =============================
-  // MÉTHODES PRIVÉES
+  // MÉTHODES PRIVÉES OPTIMISÉES
   // =============================
 
   _detectEntityType(value) {
     if (!value || typeof value !== 'object') return 'primitive';
 
-    // Détection basée sur les propriétés du projet
     if (value.article_id || value.article_title) return 'blog_article';
     if (value.template_id || value.template_name) return 'template';
     if (value.application_id || value.application_name) return 'application';
@@ -734,14 +763,12 @@ export class AdvancedMemoryCache {
   }
 
   _updateCoreWebVitals(operation, duration) {
-    // Impact sur LCP (Largest Contentful Paint)
     if (operation === 'hit' && duration < 100) {
-      this.metrics.coreWebVitals.lcp += 0.1; // Amélioration
+      this.metrics.coreWebVitals.lcp += 0.1;
     } else if (operation === 'miss') {
-      this.metrics.coreWebVitals.lcp -= 0.05; // Dégradation
+      this.metrics.coreWebVitals.lcp -= 0.05;
     }
 
-    // Impact sur FID (First Input Delay)
     if (duration < 50) {
       this.metrics.coreWebVitals.fid += 0.1;
     } else if (duration > 200) {
@@ -762,29 +789,26 @@ export class AdvancedMemoryCache {
   }
 
   _logError(operation, key, error) {
-    console.error(
+    logConditional(
+      'error',
       `Cache error [${this.config.name}] during ${operation} for key '${key}':`,
-      error,
+      {
+        error: error.message,
+      },
     );
 
-    // Sentry reporting en production
-    if (
-      process.env.NODE_ENV === 'production' &&
-      typeof captureException === 'function'
-    ) {
-      captureException(error, {
-        tags: {
-          component: 'advanced_cache',
-          operation,
-          cache: this.config.name,
-        },
-        extra: {
-          key,
-          entityType: this.config.entityType,
-          stats: this.getStats(),
-        },
-      });
-    }
+    reportToSentry(error, {
+      tags: {
+        component: 'advanced_cache',
+        operation,
+        cache: this.config.name,
+      },
+      extra: {
+        key,
+        entityType: this.config.entityType,
+        stats: this.getStats(),
+      },
+    });
 
     cacheEvents.emit('cache_error', {
       error,
@@ -795,34 +819,46 @@ export class AdvancedMemoryCache {
     });
   }
 
-  _startAdvancedMonitoring() {
-    // Monitoring périodique (toutes les 5 minutes)
+  _startOptimizedMonitoring() {
+    // Monitoring adaptatif selon l'environnement
     if (typeof setInterval !== 'undefined') {
-      const interval = setInterval(
-        () => {
-          const stats = this.getStats();
+      const interval = setInterval(() => {
+        const stats = this.getStats();
 
-          // Log stats en développement
-          if (process.env.NODE_ENV !== 'production' && stats.entries > 0) {
-            console.log(`[Cache ${this.config.name}] Stats:`, {
-              entries: stats.entries,
-              hitRate: `${(stats.hitRate * 100).toFixed(1)}%`,
-              efficiency: stats.efficiency,
-              compressionSavings: `${(stats.compressionSavings / 1024).toFixed(1)}KB`,
-            });
-          }
-
-          // Émettre métriques pour monitoring externe
-          cacheEvents.emit('cache_metrics', {
-            cache: this,
-            stats,
-            timestamp: Date.now(),
+        // Log stats seulement en développement ou si problèmes détectés
+        if (CONFIG.logging.verboseAllowed && stats.entries > 0) {
+          logConditional('info', `Cache [${this.config.name}] Stats:`, {
+            entries: stats.entries,
+            hitRate: `${(stats.hitRate * 100).toFixed(1)}%`,
+            efficiency: stats.efficiency,
+            compressionSavings: `${(stats.compressionSavings / 1024).toFixed(1)}KB`,
           });
-        },
-        5 * 60 * 1000,
-      );
+        }
 
-      interval.unref?.(); // Éviter de bloquer le process
+        // Alertes pour problèmes de performance
+        if (
+          stats.efficiency === 'poor' &&
+          stats.operations.hits + stats.operations.misses > 10
+        ) {
+          logConditional(
+            'warn',
+            `Cache [${this.config.name}] poor efficiency detected:`,
+            {
+              hitRate: `${(stats.hitRate * 100).toFixed(1)}%`,
+              operations: stats.operations.hits + stats.operations.misses,
+            },
+          );
+        }
+
+        // Émettre métriques pour monitoring externe
+        cacheEvents.emit('cache_metrics', {
+          cache: this,
+          stats,
+          timestamp: Date.now(),
+        });
+      }, CONFIG.monitoring.cacheStatsInterval);
+
+      interval.unref?.();
     }
   }
 }
@@ -831,9 +867,6 @@ export class AdvancedMemoryCache {
 // UTILITAIRES NEXT.JS 15
 // =============================
 
-/**
- * Génère les headers de cache optimisés pour Next.js 15
- */
 export function getNextJS15CacheHeaders(resourceType) {
   const config = CACHE_CONFIGS[resourceType] || CACHE_CONFIGS.staticPages;
 
@@ -870,7 +903,6 @@ export function getNextJS15CacheHeaders(resourceType) {
     'Next-Cache-Tags': resourceType,
   };
 
-  // Headers CDN spécifiques
   if (config.sMaxAge && !config.private) {
     headers['CDN-Cache-Control'] = `s-maxage=${config.sMaxAge}`;
     headers['Vercel-CDN-Cache-Control'] = `s-maxage=${config.sMaxAge}`;
@@ -879,9 +911,6 @@ export function getNextJS15CacheHeaders(resourceType) {
   return headers;
 }
 
-/**
- * Génère une clé de cache canonique pour le projet
- */
 export function generateCacheKey(prefix, params = {}) {
   const cleanParams = {};
 
@@ -919,24 +948,20 @@ export function generateCacheKey(prefix, params = {}) {
 // =============================
 
 export const projectCache = {
-  // === DONNÉES CRITIQUES ===
-
   orders: new AdvancedMemoryCache({
     ttl: CACHE_CONFIGS.orders.maxAge * 1000,
-    maxSize: 100, // Limité pour données sensibles
+    maxSize: 100,
     compress: true,
     name: 'orders',
     entityType: 'order',
   }),
 
   serverActions: new AdvancedMemoryCache({
-    ttl: 0, // Pas de cache
+    ttl: 0,
     maxSize: 0,
     name: 'server-actions',
     entityType: 'server_action',
   }),
-
-  // === CONTENU ===
 
   templates: new AdvancedMemoryCache({
     ttl: CACHE_CONFIGS.templates.maxAge * 1000,
@@ -978,8 +1003,6 @@ export const projectCache = {
     entityType: 'platform',
   }),
 
-  // === BLOG ===
-
   blogArticles: new AdvancedMemoryCache({
     ttl: CACHE_CONFIGS.blogArticles.maxAge * 1000,
     maxSize: 200,
@@ -995,8 +1018,6 @@ export const projectCache = {
     name: 'single-blog-article',
     entityType: 'single_blog_article',
   }),
-
-  // === CLOUDINARY ===
 
   cloudinaryImages: new AdvancedMemoryCache({
     ttl: CACHE_CONFIGS.cloudinaryImages.maxAge * 1000,
@@ -1014,8 +1035,6 @@ export const projectCache = {
     entityType: 'cloudinary_signature',
   }),
 
-  // === SESSIONS ET USERS ===
-
   userSessions: new AdvancedMemoryCache({
     ttl: CACHE_CONFIGS.userSessions.maxAge * 1000,
     maxSize: 200,
@@ -1023,8 +1042,6 @@ export const projectCache = {
     name: 'user-sessions',
     entityType: 'user_session',
   }),
-
-  // === EDGE CACHE (pour deployment edge) ===
 
   edge: new AdvancedMemoryCache({
     ...CACHE_CONFIGS.edge,
@@ -1036,12 +1053,9 @@ export const projectCache = {
 };
 
 // =============================
-// FONCTIONS D'INVALIDATION
+// FONCTIONS D'INVALIDATION OPTIMISÉES
 // =============================
 
-/**
- * Invalide intelligemment le cache selon le type d'entité
- */
 export function invalidateProjectCache(entityType, entityId = null) {
   let invalidatedCount = 0;
 
@@ -1070,9 +1084,12 @@ export function invalidateProjectCache(entityType, entityId = null) {
     }
   });
 
-  console.log(
-    `Cache invalidated: ${invalidatedCount} entries for ${entityType}${entityId ? ` (ID: ${entityId})` : ''}`,
-  );
+  if (invalidatedCount > 0 || CONFIG.logging.verboseAllowed) {
+    logConditional(
+      'info',
+      `Cache invalidated: ${invalidatedCount} entries for ${entityType}${entityId ? ` (ID: ${entityId})` : ''}`,
+    );
+  }
 
   cacheEvents.emit('project_cache_invalidation', {
     entityType,
@@ -1084,30 +1101,25 @@ export function invalidateProjectCache(entityType, entityId = null) {
   return invalidatedCount;
 }
 
-/**
- * Middleware pour Server Actions avec invalidation automatique
- */
 export function withCacheInvalidation(entityType, action) {
   return async function (...args) {
     try {
       const result = await Promise.resolve(action.apply(this, args));
 
-      // Invalider après succès
       if (result?.success !== false) {
         invalidateProjectCache(entityType);
       }
 
       return result;
     } catch (error) {
-      console.error(`Server Action error for ${entityType}:`, error);
+      logConditional('error', `Server Action error for ${entityType}:`, {
+        error: error.message,
+      });
       throw error;
     }
   };
 }
 
-/**
- * Obtient les statistiques globales du cache
- */
 export function getProjectCacheStats() {
   const stats = {
     timestamp: new Date().toISOString(),
@@ -1141,7 +1153,6 @@ export function getProjectCacheStats() {
     stats.totals.misses += cacheStats.operations.misses;
     stats.totals.compressionSavings += cacheStats.compressionSavings;
 
-    // Core Web Vitals
     stats.coreWebVitals.lcp += cacheStats.coreWebVitals.lcp;
     stats.coreWebVitals.fid += cacheStats.coreWebVitals.fid;
 
@@ -1162,9 +1173,6 @@ export function getProjectCacheStats() {
   return stats;
 }
 
-/**
- * Nettoyage de tous les caches
- */
 export function cleanupProjectCaches() {
   let totalCleaned = 0;
 
@@ -1175,8 +1183,11 @@ export function cleanupProjectCaches() {
     const cleaned = sizeBefore - sizeAfter;
     totalCleaned += cleaned;
 
-    if (cleaned > 0) {
-      console.log(`Cache [${cacheName}]: Cleaned ${cleaned} entries`);
+    if (cleaned > 0 && CONFIG.logging.verboseAllowed) {
+      logConditional(
+        'info',
+        `Cache [${cacheName}]: Cleaned ${cleaned} entries`,
+      );
     }
   });
 
@@ -1192,9 +1203,6 @@ export function cleanupProjectCaches() {
 // HOOKS ET UTILITAIRES
 // =============================
 
-/**
- * Hook pour opérations CRUD avec cache automatique
- */
 export function useCacheOperations(entityType) {
   return {
     async create(data) {
@@ -1229,37 +1237,52 @@ export function useCacheOperations(entityType) {
 }
 
 // =============================
-// NETTOYAGE ET MONITORING
+// NETTOYAGE ET MONITORING OPTIMISÉS
 // =============================
 
-// Monitoring global
+// Monitoring global adaptatif
 if (typeof setInterval !== 'undefined') {
-  setInterval(
-    () => {
-      const globalStats = getProjectCacheStats();
+  setInterval(() => {
+    const globalStats = getProjectCacheStats();
 
-      // Log en développement
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('📊 Global Cache Stats:', {
-          totalEntries: globalStats.totals.entries,
-          hitRate: `${(globalStats.totals.hitRate * 100).toFixed(1)}%`,
-          efficiency: globalStats.totals.efficiency,
-          compressionSavings: `${(globalStats.totals.compressionSavings / 1024).toFixed(1)}KB`,
-        });
-      }
+    // Log en développement ou si efficacité dégradée
+    if (
+      CONFIG.logging.verboseAllowed ||
+      globalStats.totals.efficiency === 'poor'
+    ) {
+      const logLevel =
+        globalStats.totals.efficiency === 'poor' ? 'warn' : 'info';
+      logConditional(logLevel, '📊 Global Cache Stats:', {
+        totalEntries: globalStats.totals.entries,
+        hitRate: `${(globalStats.totals.hitRate * 100).toFixed(1)}%`,
+        efficiency: globalStats.totals.efficiency,
+        compressionSavings: `${(globalStats.totals.compressionSavings / 1024).toFixed(1)}KB`,
+      });
+    }
 
-      // Émettre pour monitoring externe
-      cacheEvents.emit('global_cache_stats', globalStats);
-    },
-    10 * 60 * 1000,
-  ); // Toutes les 10 minutes
+    // Alertes pour problèmes critiques
+    if (
+      globalStats.totals.efficiency === 'poor' &&
+      globalStats.totals.entries > 50
+    ) {
+      logConditional('warn', 'Cache efficiency degraded globally:', {
+        hitRate: `${(globalStats.totals.hitRate * 100).toFixed(1)}%`,
+        totalEntries: globalStats.totals.entries,
+      });
+    }
+
+    cacheEvents.emit('global_cache_stats', globalStats);
+  }, CONFIG.monitoring.globalStatsInterval);
 }
 
-// Nettoyage gracieux à l'arrêt
+// Nettoyage gracieux optimisé
 if (typeof process !== 'undefined' && process.on) {
   const cleanup = () => {
-    console.log('🧹 Cleaning up caches...');
-    cleanupProjectCaches();
+    logConditional('info', '🧹 Cleaning up caches...');
+    const cleaned = cleanupProjectCaches();
+    if (cleaned > 0) {
+      logConditional('info', `🧹 Cleaned ${cleaned} cache entries`);
+    }
   };
 
   process.on('SIGTERM', cleanup);
