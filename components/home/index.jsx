@@ -2,122 +2,13 @@
 
 import './homePage.scss';
 import PageTracker from 'components/analytics/PageTracker';
+import AppExamples from 'components/layouts/home/appExamples';
+import ContactHome from 'components/layouts/home/contact';
 import Hero from 'components/layouts/home/hero';
 import MarketingHome from 'components/layouts/home/marketing';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import {
-  MdArrowBackIos,
-  MdArrowForwardIos,
-  MdPalette,
-  MdPayment,
-  MdSecurity,
-  MdVerified,
-} from 'react-icons/md';
-
-// Données des services
-const services = [
-  {
-    icon: MdPalette,
-    label: 'Personnalisable',
-    color: 'orange',
-  },
-  {
-    icon: MdPayment,
-    label: 'Avec les paiements electroniques intégrés',
-    color: 'pink',
-  },
-  {
-    icon: MdSecurity,
-    label: 'Rapide et sécurisée',
-    color: 'purple',
-  },
-  {
-    icon: MdVerified,
-    label: 'Créée avec les meilleurs pratiques des standards internationaux',
-    color: 'light-pink',
-  },
-];
-
-// Données du portfolio à ajouter après les données des services
-const portfolioItems = [
-  {
-    id: 1,
-    image: '/buyitnow_1.png',
-    description:
-      'Notre plateforme e-commerce vous permet de créer facilement votre boutique en ligne avec tous les outils nécessaires pour réussir dans le commerce électronique.',
-  },
-  {
-    id: 2,
-    image: '/buyitnow_2.png',
-    description:
-      'Interface moderne et intuitive pour vos clients, avec des fonctionnalités avancées de paiement et de gestion des commandes intégrées.',
-  },
-];
+import QualitiesHome from 'components/layouts/home/qualities';
 
 const HomeComponent = () => {
-  // État pour le slider des services
-  const [activeServiceIndex, setActiveServiceIndex] = useState(0);
-  // État pour le slider portfolio à ajouter avec les autres useState
-  const [activePortfolioIndex, setActivePortfolioIndex] = useState(0);
-
-  // Auto-play du slider
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveServiceIndex((prev) => (prev + 1) % services.length);
-    }, 4000); // Change toutes les 4 secondes
-
-    return () => clearInterval(interval);
-  }, [services.length]);
-
-  // Auto-play du slider portfolio à ajouter après l'auto-play des services
-  useEffect(() => {
-    const portfolioInterval = setInterval(() => {
-      setActivePortfolioIndex((prev) => (prev + 1) % portfolioItems.length);
-    }, 7000); // Change toutes les 4 secondes
-
-    return () => clearInterval(portfolioInterval);
-  }, [portfolioItems.length]);
-
-  // Navigation clavier pour le portfolio à ajouter dans le useEffect existant
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      // Navigation services (existant)
-      if (event.key === 'ArrowLeft') {
-        setActiveServiceIndex((prev) =>
-          prev === 0 ? services.length - 1 : prev - 1,
-        );
-        // Navigation portfolio
-        setActivePortfolioIndex((prev) =>
-          prev === 0 ? portfolioItems.length - 1 : prev - 1,
-        );
-      } else if (event.key === 'ArrowRight') {
-        setActiveServiceIndex((prev) => (prev + 1) % services.length);
-        // Navigation portfolio
-        setActivePortfolioIndex((prev) => (prev + 1) % portfolioItems.length);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [services.length, portfolioItems.length]);
-
-  // Navigation du slider
-  const goToService = (index) => {
-    setActiveServiceIndex(index);
-  };
-
-  const goToPreviousPortfolioSlide = () => {
-    setActivePortfolioIndex((prev) =>
-      prev === 0 ? portfolioItems.length - 1 : prev - 1,
-    );
-  };
-
-  const goToNextPortfolioSlide = () => {
-    setActivePortfolioIndex((prev) => (prev + 1) % portfolioItems.length);
-  };
-
   return (
     <div className="home-container">
       {/* Tracking spécifique à la page d'accueil */}
@@ -144,182 +35,18 @@ const HomeComponent = () => {
       </section>
 
       <section className="others services-section" data-section="services">
-        {/* BLOC 1 : TITRE SEUL */}
-        <div className="services-title-block">
-          <h2 className="section-main-title">Une boutique :</h2>
-        </div>
-
-        {/* BLOC 2 : CARTES SEULES - CENTRAGE PARFAIT */}
-        <div className="services-cards-block">
-          <div className="service-card-container">
-            {services.map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <div
-                  key={index}
-                  className={`service-card ${
-                    index === activeServiceIndex ? 'active' : ''
-                  } color-${service.color}`}
-                >
-                  <IconComponent className="service-icon" />
-                  <div className="service-label">{service.label}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* BLOC 3 : DOTS SEULS - EN BAS */}
-        <div className="services-dots-block">
-          <div className="slider-dots">
-            {services.map((_, index) => (
-              <button
-                key={index}
-                className={`dot ${index === activeServiceIndex ? 'active' : ''} color-${services[activeServiceIndex].color}`}
-                onClick={() => goToService(index)}
-                aria-label={`Aller au service ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
+        <QualitiesHome />
       </section>
 
       <section
         className="others portfolio-showcase-section"
         data-section="portfolio_showcase"
       >
-        {/* VERSION DESKTOP (≥ xl) - STRUCTURE OVERLAY */}
-        <div className="portfolio-slider-desktop">
-          <div className="portfolio-slider-container">
-            {/* Items du slider desktop */}
-            {portfolioItems.map((item, index) => (
-              <div
-                key={`desktop-${item.id}`}
-                className={`portfolio-slide ${
-                  index === activePortfolioIndex ? 'active' : ''
-                }`}
-              >
-                <Image
-                  src={item.image}
-                  alt={`Portfolio item ${item.id}`}
-                  fill
-                  className="slide-image"
-                  sizes="85vw"
-                  priority={index === 0}
-                />
-
-                <div className="slide-text-card">
-                  <p className="slide-description">{item.description}</p>
-                  <Link href="/boutique" className="portfolio-shop-link">
-                    Visiter notre boutique
-                  </Link>
-                </div>
-              </div>
-            ))}
-
-            {/* Flèches desktop */}
-            <button
-              className="portfolio-nav-arrow prev"
-              onClick={goToPreviousPortfolioSlide}
-              aria-label="Slide précédent"
-              type="button"
-            >
-              <MdArrowBackIos />
-            </button>
-
-            <button
-              className="portfolio-nav-arrow next"
-              onClick={goToNextPortfolioSlide}
-              aria-label="Slide suivant"
-              type="button"
-            >
-              <MdArrowForwardIos />
-            </button>
-          </div>
-        </div>
-
-        {/* VERSION MOBILE/TABLETTE (< xl) - STRUCTURE SÉPARÉE */}
-        <div className="portfolio-slider-mobile">
-          <div className="portfolio-slider-container">
-            {/* Items du slider mobile */}
-            {portfolioItems.map((item, index) => (
-              <div
-                key={`mobile-${item.id}`}
-                className={`portfolio-slide ${
-                  index === activePortfolioIndex ? 'active' : ''
-                }`}
-              >
-                {/* Section image - 60% de la hauteur */}
-                <div className="mobile-image-section">
-                  <Image
-                    src={item.image}
-                    alt={`Portfolio item ${item.id}`}
-                    fill
-                    className="slide-image"
-                    sizes="(max-width: 768px) 92vw, (max-width: 1024px) 88vw"
-                    priority={index === 0}
-                  />
-                </div>
-
-                {/* Section texte - 40% de la hauteur */}
-                <div className="mobile-text-section">
-                  <p className="slide-description">{item.description}</p>
-                  <Link href="/boutique" className="portfolio-shop-link">
-                    Visiter notre boutique
-                  </Link>
-                </div>
-              </div>
-            ))}
-
-            {/* Flèches mobile */}
-            <button
-              className="portfolio-nav-arrow prev"
-              onClick={goToPreviousPortfolioSlide}
-              aria-label="Slide précédent"
-              type="button"
-            >
-              <MdArrowBackIos />
-            </button>
-
-            <button
-              className="portfolio-nav-arrow next"
-              onClick={goToNextPortfolioSlide}
-              aria-label="Slide suivant"
-              type="button"
-            >
-              <MdArrowForwardIos />
-            </button>
-          </div>
-        </div>
+        <AppExamples />
       </section>
+
       <section className="others contact-section" data-section="contact">
-        <div className="contact-main-container">
-          {/* BLOC GAUCHE - TEXTE ET BOUTON */}
-          <div className="contact-text-block">
-            <p className="contact-text">
-              Pour plus d&apos;informations, n&apos;hésitez pas à nous contacter
-              ! Nous serons ravis de vous en dire plus.
-            </p>
-
-            <Link href="/contact" className="contact-button">
-              Contactez nous
-            </Link>
-          </div>
-
-          {/* BLOC DROITE - IMAGE LOGO */}
-          <div className="contact-image-block">
-            <div className="contact-logo-container">
-              <Image
-                src="/benew_head_only_transparent_fixed.png"
-                alt="BENEW"
-                fill
-                className="contact-logo-image"
-                sizes="(max-width: 768px) 95vw, 45vw"
-                priority={false}
-              />
-            </div>
-          </div>
-        </div>
+        <ContactHome />
       </section>
     </div>
   );
