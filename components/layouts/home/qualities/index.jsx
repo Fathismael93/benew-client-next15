@@ -47,7 +47,7 @@ const QualitiesHome = () => {
   };
 
   return (
-    <div>
+    <>
       {/* BLOC 1 : TITRE SEUL */}
       <div className="services-title-block">
         <h2 className="section-main-title">Une boutique :</h2>
@@ -86,7 +86,7 @@ const QualitiesHome = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
