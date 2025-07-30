@@ -42,7 +42,7 @@
     // }
 
     // AJOUTER ce nouveau bloc pour tablettes
-    @include between('sm', 'lg') {
+    @include from('md') {
       width: 55%; // 65%s
       max-width: 55%; // 65%s
       padding: 1.25rem;
