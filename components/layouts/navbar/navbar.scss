@@ -41,6 +41,15 @@
     //   margin: auto 0 auto auto; // top right bottom left
     // }
 
+    // AJOUTER ce nouveau bloc pour tablettes
+    @include between('sm', 'lg') {
+      width: 55%; // 65%s
+      max-width: 55%; // 65%s
+      padding: 1.25rem;
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
+    }
+
     // APRÈS
     @include from('lg') {
       width: 65%; // 65%s
@@ -101,12 +110,12 @@
 
       // 📟 TRÈS PETITS ÉCRANS - Espacement réduit mais toujours utilisable
       @include until('sm') {
-        gap: 0.7rem;
+        gap: 0.5rem;
       }
 
       // AJOUTER ce nouveau bloc pour tablettes
       @include between('sm', 'lg') {
-        gap: 0.8rem; // NOUVEAU : espacement réduit pour tablettes
+        gap: 0.5rem; // NOUVEAU : espacement réduit pour tablettes
       }
 
       // 🖥️ DESKTOP - Retour aux valeurs originales
