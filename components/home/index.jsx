@@ -151,6 +151,11 @@ const HomeComponent = () => {
           <div className="text-container">
             <h2 className="main-title">GÉNÈRES PLUS DE PROFIT,</h2>
             <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
+
+            {/* AJOUTER CE BOUTON ICI */}
+            <Link href="/blog" className="profit-blog-link">
+              En savoir plus
+            </Link>
           </div>
         </div>
       </section>

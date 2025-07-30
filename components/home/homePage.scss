@@ -303,6 +303,92 @@
   }
 
   // =============================
+  // BOUTON BLOG DANS PRODUCTS INTRO
+  // =============================
+  .profit-blog-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    // Style cohérent avec les autres boutons du site
+    background: linear-gradient(135deg, $color-orange, $color-pink);
+    color: $color-light;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+
+    // Dimensions
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    border: 2px solid rgba($color-light, 0.2);
+
+    // Espacement par rapport aux titres
+    margin-top: 1.5rem;
+
+    // Ombres
+    box-shadow:
+      0 6px 20px rgba($color-orange, 0.3),
+      0 3px 10px rgba($color-pink, 0.2),
+      0 0 30px rgba($color-orange, 0.1);
+
+    text-shadow: 0 2px 4px rgba($color-dark, 0.6);
+
+    // Transitions
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    // Responsive
+    @include until('sm') {
+      font-size: 0.85rem;
+      padding: 0.65rem 1.6rem;
+      margin-top: 1.2rem;
+      letter-spacing: 0.3px;
+    }
+
+    @include between('sm', 'md') {
+      font-size: 0.9rem;
+      padding: 0.7rem 1.8rem;
+      margin-top: 1.3rem;
+    }
+
+    @include from('xl') {
+      font-size: 1.1rem;
+      padding: 0.9rem 2.3rem;
+      margin-top: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    // Effets hover
+    &:hover {
+      transform: translateY(-2px) scale(1.03);
+      background: linear-gradient(
+        135deg,
+        lighten($color-orange, 6%),
+        lighten($color-pink, 6%)
+      );
+      box-shadow:
+        0 8px 25px rgba($color-orange, 0.4),
+        0 4px 15px rgba($color-pink, 0.3),
+        0 0 40px rgba($color-orange, 0.15);
+      border-color: rgba($color-light, 0.3);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: rgba($color-light, 0.5);
+      box-shadow:
+        0 8px 25px rgba($color-orange, 0.4),
+        0 4px 15px rgba($color-pink, 0.3),
+        0 0 0 3px rgba($color-light, 0.2);
+    }
+
+    &:active {
+      transform: translateY(-1px) scale(1.01);
+    }
+  }
+
+  // =============================
   // BREAKPOINT DE TRANSITION SPÉCIAL
   // =============================
 
@@ -344,6 +430,34 @@
       .profit-image:hover {
         transform: translate(-50%, -50%); // Garde seulement le centrage
       }
+    }
+  }
+
+  .profit-blog-link {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  .profit-blog-link {
+    min-height: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.98);
     }
   }
 }
