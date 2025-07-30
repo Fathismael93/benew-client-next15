@@ -277,10 +277,6 @@
 
 // ✅ Gestion spéciale pour tablettes en portrait (768px-1023px)
 @include between('lg', 'xl') {
-  .main-content {
-    gap: 1.5rem;
-  }
-
   .profit-image {
     max-height: 85vh;
   }
