@@ -47,7 +47,7 @@ const AppExamples = () => {
   };
 
   return (
-    <div>
+    <>
       {/* VERSION DESKTOP (≥ xl) - STRUCTURE OVERLAY */}
       <div className="portfolio-slider-desktop">
         <div className="portfolio-slider-container">
@@ -151,7 +151,7 @@ const AppExamples = () => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
