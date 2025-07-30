@@ -200,6 +200,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.25rem; // Espace entre l'image et la flèche
         transition: all 0.3s ease;
 
         &:hover {
@@ -216,6 +217,27 @@
           &:hover {
             filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
           }
+        }
+
+        // MODIFIER : Styles pour l'icône React
+        .dropdown-arrow {
+          color: css-var(text-color);
+          transition: transform 0.3s ease;
+          font-size: 1rem; // Taille de l'icône
+          margin-left: -0.25rem; // Rapprocher de l'icône
+          filter: grayscale(0.3); // Cohérent avec les autres icônes
+
+          &.open {
+            transform: rotate(180deg); // Rotation quand ouvert
+          }
+
+          &:hover {
+            filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
+          }
+        }
+
+        &:hover .dropdown-arrow {
+          filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
         }
       }
 
@@ -337,6 +359,11 @@
         .mobile-logo .logo {
           width: 1.3rem; // Ajuster pour paysage
           height: 1.3rem; // Ajuster pour paysage
+        }
+
+        // AJOUTER dans @include mobile-landscape
+        .mobile-social-container .social-dropdown-trigger .dropdown-arrow {
+          font-size: 0.9rem; // Légèrement plus petite en paysage
         }
 
         .mobile-social-container

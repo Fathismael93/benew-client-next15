@@ -6,6 +6,7 @@ import { useState } from 'react';
 import './navbar.scss';
 import Sidebar from '../sidebar';
 import Image from 'next/image';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -116,8 +117,11 @@ function Navbar() {
                 height={24}
                 className="social-websites-icon"
               />
+              {/* REMPLACER le SVG par cette icône React */}
+              <MdKeyboardArrowDown
+                className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}
+              />
             </button>
-
             {isDropdownOpen && (
               <div className="social-dropdown">
                 <div className="dropdown-backdrop" onClick={closeDropdown} />
