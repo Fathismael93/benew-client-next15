@@ -36,31 +36,31 @@
       justify-content: flex-end; // Logo masqué, sidebar à droite
     }
 
-    // Ajouter après la déclaration de base de .wrapper
+    // // Ajouter après la déclaration de base de .wrapper
+    // @include from('lg') {
+    //   margin: auto 0 auto auto; // top right bottom left
+    // }
+
+    // APRÈS
     @include from('lg') {
-      margin: auto 0 auto auto; // top right bottom left
+      max-width: 21.5rem; // 50% de 43rem
+      padding: 1.25rem;
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
     }
 
-    // // APRÈS
-    // @include from('lg') {
-    //   max-width: 21.5rem; // 50% de 43rem
-    //   padding: 1.25rem;
-    //   margin-left: auto; // Colle à droite
-    //   margin-right: 0; // Colle à droite
-    // }
+    @include from('xl') {
+      max-width: 35rem; // 50% de 70rem
+      padding: 1rem;
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
+    }
 
-    // @include from('xl') {
-    //   max-width: 35rem; // 50% de 70rem
-    //   padding: 1rem;
-    //   margin-left: auto; // Colle à droite
-    //   margin-right: 0; // Colle à droite
-    // }
-
-    // @include from('xxxl') {
-    //   max-width: 18.5rem; // 50% de 37rem
-    //   margin-left: auto; // Colle à droite
-    //   margin-right: 0; // Colle à droite
-    // }
+    @include from('xxxl') {
+      max-width: 18.5rem; // 50% de 37rem
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
+    }
 
     // 🖼️ LOGO - Gestion responsive intelligente
     div {
