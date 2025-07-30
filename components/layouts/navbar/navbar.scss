@@ -43,21 +43,24 @@
 
     // APRÈS
     @include from('lg') {
-      max-width: 21.5rem; // 50% de 43rem
+      width: 50%; // 50% de 43rem
+      max-width: 50%; // 50% de 43rem
       padding: 1.25rem;
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
 
     @include from('xl') {
-      max-width: 35rem; // 50% de 70rem
+      width: 50%; // 50% de 43rem
+      max-width: 50%; // 50% de 43rem
       padding: 1rem;
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
 
     @include from('xxxl') {
-      max-width: 18.5rem; // 50% de 37rem
+      width: 50%; // 50% de 43rem
+      max-width: 50%; // 50% de 43rem
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
