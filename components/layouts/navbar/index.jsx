@@ -38,7 +38,7 @@ function Navbar() {
                 height={48}
                 width={60}
                 alt="BuyItNow"
-                className="h-10 w-auto"
+                className="logo"
               />
             </Link>
           </motion.div>
@@ -98,7 +98,7 @@ function Navbar() {
                 height={48}
                 width={60}
                 alt="BuyItNow"
-                className="h-10 w-auto"
+                className="logo"
               />
             </Link>
           </motion.div>
