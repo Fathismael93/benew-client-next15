@@ -29,7 +29,12 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.5rem; // Plus d'espace sur mobile
-    position: relative;
+    position: relative; // AJOUTER dans la section .wrapper pour mobile
+
+    @include until('md') {
+      justify-content: flex-end; // Colle le contenu à droite
+      padding: 1rem 1rem; // Ajuster le padding droit
+    }
 
     // AJOUTER ce nouveau bloc pour tablettes
     @include from('md') {
@@ -157,10 +162,11 @@
   // =============================
   .mobile-structure {
     display: flex; // Visible par défaut sur mobile
-    width: 30%; // 50% de la largeur du wrapper
+    width: 40%; // Augmenté à 40%
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto; // Centre dans le wrapper
+    margin-left: auto; // Colle à droite
+    margin-right: 0; // Colle à droite
     position: relative;
 
     // Caché sur moyens et grands écrans
@@ -168,14 +174,14 @@
       display: none;
     }
 
-    // Logo mobile
+    // PAR
     .mobile-logo {
       display: flex;
       align-items: center;
 
       .logo {
-        height: 80%;
-        width: auto;
+        width: 1.5rem; // Même taille que social-websites-icon
+        height: 1.5rem; // Même taille que social-websites-icon
         object-fit: contain;
       }
     }
@@ -326,10 +332,11 @@
       padding: 0.5rem 1rem;
 
       .mobile-structure {
-        width: 60%; // Un peu plus large en paysage
+        width: 50%; // Un peu plus large en paysage
 
-        .mobile-logo img {
-          height: 70%;
+        .mobile-logo .logo {
+          width: 1.3rem; // Ajuster pour paysage
+          height: 1.3rem; // Ajuster pour paysage
         }
 
         .mobile-social-container
