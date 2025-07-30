@@ -159,11 +159,11 @@
         //   height: 1.5rem;
         // }
 
-        // // 🖥️ TABLET ET PLUS - Réduction progressive
-        // @include from('lg') {
-        //   width: 1.4rem;
-        //   height: 1.4rem;
-        // }
+        // 🖥️ TABLET ET PLUS - Réduction progressive
+        @include from('md') {
+          width: 1.4rem;
+          height: 1.4rem;
+        }
 
         // @include from('xl') {
         //   width: 1rem; // Taille desktop originale
