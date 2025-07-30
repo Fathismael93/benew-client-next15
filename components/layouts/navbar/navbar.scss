@@ -36,20 +36,31 @@
       justify-content: flex-end; // Logo masqué, sidebar à droite
     }
 
-    // 🖥️ TABLET ET PLUS - Ajustements progressifs
+    // Ajouter après la déclaration de base de .wrapper
     @include from('lg') {
-      max-width: 43rem;
-      padding: 1.25rem;
+      margin: auto 0 auto auto; // top right bottom left
     }
 
-    @include from('xl') {
-      max-width: 70rem;
-      padding: 1rem; // Retour aux valeurs desktop
-    }
+    // // APRÈS
+    // @include from('lg') {
+    //   max-width: 21.5rem; // 50% de 43rem
+    //   padding: 1.25rem;
+    //   margin-left: auto; // Colle à droite
+    //   margin-right: 0; // Colle à droite
+    // }
 
-    @include from('xxxl') {
-      max-width: 37rem;
-    }
+    // @include from('xl') {
+    //   max-width: 35rem; // 50% de 70rem
+    //   padding: 1rem;
+    //   margin-left: auto; // Colle à droite
+    //   margin-right: 0; // Colle à droite
+    // }
+
+    // @include from('xxxl') {
+    //   max-width: 18.5rem; // 50% de 37rem
+    //   margin-left: auto; // Colle à droite
+    //   margin-right: 0; // Colle à droite
+    // }
 
     // 🖼️ LOGO - Gestion responsive intelligente
     div {
@@ -59,10 +70,8 @@
       align-items: center;
 
       img {
-        height: auto;
-        width: auto;
-        max-height: 3rem; // Plus grand sur mobile
-        max-width: 4rem;
+        height: 80%; // 80% de la hauteur disponible
+        width: auto; // Largeur adaptée à la hauteur
         object-fit: contain;
       }
 
@@ -73,19 +82,11 @@
 
       // 🖥️ TABLET ET PLUS - Logo progressivement plus petit
       @include from('lg') {
-        margin-left: 6rem;
-
-        img {
-          max-height: 2.5rem;
-          max-width: 3.5rem;
-        }
+        margin-left: 1rem;
       }
 
       @include from('xl') {
-        img {
-          max-height: 2rem; // Taille desktop originale
-          max-width: 3rem;
-        }
+        margin-left: 4rem;
       }
     }
 
