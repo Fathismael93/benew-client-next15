@@ -29,17 +29,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.5rem; // Plus d'espace sur mobile
-
-    // 📟 SMALL MOBILE - Ajustements pour très petits écrans
-    @include until('sm') {
-      padding: 0.75rem 1rem;
-      justify-content: flex-end; // Logo masqué, sidebar à droite
-    }
-
-    // // Ajouter après la déclaration de base de .wrapper
-    // @include from('lg') {
-    //   margin: auto 0 auto auto; // top right bottom left
-    // }
+    position: relative;
 
     // AJOUTER ce nouveau bloc pour tablettes
     @include from('md') {
@@ -73,10 +63,24 @@
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
+  }
+
+  // =============================
+  // STRUCTURE DESKTOP (moyens et grands écrans)
+  // =============================
+  .desktop-structure {
+    display: none; // Caché par défaut sur mobile
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+    // Visible sur moyens et grands écrans
+    @include from('md') {
+      display: flex;
+    }
 
     // 🖼️ LOGO - Gestion responsive intelligente
     div {
-      // 📱 MOBILE - Logo plus visible
       margin-left: 0;
       display: flex;
       align-items: center;
@@ -85,11 +89,6 @@
         height: 80%; // 80% de la hauteur disponible
         width: auto; // Largeur adaptée à la hauteur
         object-fit: contain;
-      }
-
-      // 📟 TRÈS PETITS ÉCRANS - Logo masqué pour économiser l'espace
-      @include until('sm') {
-        display: none;
       }
 
       // 🖥️ TABLET ET PLUS - Logo progressivement plus petit
@@ -102,19 +101,14 @@
       }
     }
 
-    // 🔗 ICÔNES SOCIALES - Optimisation mobile-first
+    // 🔗 ICÔNES SOCIALES - Optimisation pour moyens/grands écrans
     .social {
       display: flex;
-      gap: 1.5rem; // Plus d'espace entre les icônes sur mobile
+      gap: 1.5rem;
       align-items: center;
 
-      // 📟 TRÈS PETITS ÉCRANS - Espacement réduit mais toujours utilisable
-      @include until('sm') {
-        gap: 0.5rem;
-      }
-
       // AJOUTER ce nouveau bloc pour tablettes
-      @include between('sm', 'lg') {
+      @include between('md', 'lg') {
         gap: 0.5rem; // NOUVEAU : espacement réduit pour tablettes
       }
 
@@ -135,11 +129,6 @@
           transform: scale(1.1) rotate(5deg);
           background: rgba(css-var(primary-color), 0.1);
         }
-
-        // 📱 MOBILE - Zone tactile optimisée
-        @include until('lg') {
-          padding: 0.75rem; // Zone tactile encore plus grande sur mobile
-        }
       }
 
       .social-icon {
@@ -153,24 +142,156 @@
           filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
         }
 
-        // 📟 TRÈS PETITS ÉCRANS - Légèrement plus petites mais toujours utilisables
-        // @include until('sm') {
-        //   width: 1.5rem;
-        //   height: 1.5rem;
-        // }
-
         // 🖥️ TABLET ET PLUS - Réduction progressive
         @include from('md') {
           width: 1.4rem;
           height: 1.4rem;
         }
-
-        // @include from('xl') {
-        //   width: 1rem; // Taille desktop originale
-        //   height: 1rem;
-        // }
       }
     }
+  }
+
+  // =============================
+  // STRUCTURE MOBILE (petits écrans)
+  // =============================
+  .mobile-structure {
+    display: flex; // Visible par défaut sur mobile
+    width: 50%; // 50% de la largeur du wrapper
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto; // Centre dans le wrapper
+    position: relative;
+
+    // Caché sur moyens et grands écrans
+    @include from('md') {
+      display: none;
+    }
+
+    // Logo mobile
+    .mobile-logo {
+      display: flex;
+      align-items: center;
+
+      img {
+        height: 80%;
+        width: auto;
+        object-fit: contain;
+      }
+    }
+
+    // Conteneur pour l'icône social et dropdown
+    .mobile-social-container {
+      position: relative;
+
+      // Bouton trigger du dropdown
+      .social-dropdown-trigger {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1);
+          background: rgba(css-var(primary-color), 0.1);
+        }
+
+        .social-websites-icon {
+          width: 1.5rem;
+          height: 1.5rem;
+          filter: grayscale(0.3);
+          transition: all 0.3s ease;
+
+          &:hover {
+            filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
+          }
+        }
+      }
+
+      // Dropdown menu
+      .social-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        z-index: 1000;
+        margin-top: 0.5rem;
+
+        // Backdrop pour fermer le dropdown
+        .dropdown-backdrop {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: -1;
+          background: transparent;
+        }
+
+        // Contenu du dropdown
+        .dropdown-content {
+          background: rgba(css-var(background-color), 0.95);
+          backdrop-filter: blur(10px);
+          border-radius: 12px;
+          border: 1px solid rgba(css-var(text-color), 0.1);
+          box-shadow: 0 8px 32px rgba(css-var(background-color), 0.8);
+          padding: 0.5rem;
+          min-width: 140px;
+          animation: dropdownFadeIn 0.2s ease-out;
+
+          .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: css-var(text-color);
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+
+            &:hover {
+              background: rgba(css-var(primary-color), 0.1);
+              transform: translateX(4px);
+            }
+
+            .dropdown-icon {
+              width: 1.25rem;
+              height: 1.25rem;
+              filter: grayscale(0.2);
+              transition: all 0.2s ease;
+            }
+
+            &:hover .dropdown-icon {
+              filter: grayscale(0) hue-rotate(10deg) brightness(1.1);
+            }
+
+            span {
+              color: css-var(text-color);
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// ANIMATIONS
+// =============================
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -180,7 +301,8 @@
 
 // Zone tactile minimale recommandée (44px)
 @media (pointer: coarse) {
-  .navbar .wrapper .social a {
+  .navbar .wrapper .desktop-structure .social a,
+  .navbar .wrapper .mobile-structure .social-dropdown-trigger {
     min-width: 44px;
     min-height: 44px;
   }
@@ -202,14 +324,30 @@
     .wrapper {
       padding: 0.5rem 1rem;
 
-      div img {
-        max-height: 2rem;
-        max-width: 2.5rem;
+      .mobile-structure {
+        width: 60%; // Un peu plus large en paysage
+
+        .mobile-logo img {
+          height: 70%;
+        }
+
+        .mobile-social-container
+          .social-dropdown-trigger
+          .social-websites-icon {
+          width: 1.3rem;
+          height: 1.3rem;
+        }
       }
 
-      .social .social-icon {
-        width: 1rem;
-        height: 1rem;
+      .desktop-structure {
+        div img {
+          height: 70%;
+        }
+
+        .social .social-icon {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
       }
     }
   }
@@ -217,8 +355,24 @@
 
 // Support pour écrans haute densité
 @include high-density {
-  .navbar .wrapper div img {
+  .navbar .wrapper img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
+  }
+}
+
+// Accessibilité - réduction des animations
+@include reduced-motion {
+  .navbar .wrapper .mobile-structure .social-dropdown .dropdown-content {
+    animation: none;
+  }
+
+  .navbar .wrapper .desktop-structure .social a,
+  .navbar .wrapper .mobile-structure .social-dropdown-trigger {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
   }
 }
