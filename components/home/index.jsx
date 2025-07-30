@@ -125,7 +125,7 @@ const HomeComponent = () => {
         pageType="landing"
         sections={[
           'hero',
-          'products_intro',
+          'marketing-section',
           'services',
           'portfolio_showcase',
           'contact_teaser',
@@ -135,8 +135,8 @@ const HomeComponent = () => {
         <Hero />
       </section>
       <section
-        className="others products-intro-section"
-        data-section="products_intro"
+        className="others marketing-section"
+        data-section="marketing_section"
       >
         <div className="main-content">
           <Image
