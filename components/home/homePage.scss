@@ -97,6 +97,26 @@
   // ✅ Empêcher débordement
   overflow: hidden;
   box-sizing: border-box;
+
+  // Premier titre
+  &:first-of-type {
+    margin-bottom: 0.3rem;
+
+    @include until('md') {
+      margin-bottom: 0.2rem;
+    }
+  }
+
+  // Deuxième titre avec couleur légèrement différente
+  &:last-of-type {
+    color: lighten($color-orange, 8%);
+    margin-bottom: 0;
+
+    @include until('md') {
+      // ✅ Couleur encore plus contrastée sur mobile
+      color: lighten($color-orange, 12%);
+    }
+  }
 }
 
 // =============================
