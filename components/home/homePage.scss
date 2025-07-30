@@ -75,6 +75,56 @@
 }
 
 // =============================
+// AMÉLIORATION POUR LES SECTIONS VIDES
+// =============================
+
+.home-container .others:empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(css-var(primary-color), 0.3) 50%,
+      transparent 100%
+    );
+    opacity: 0.5;
+  }
+}
+
+// =============================
+// RESPONSIVE ADAPTATIONS
+// =============================
+
+@include until('lg') {
+  .home-container {
+    background: linear-gradient(
+      180deg,
+      color.adjust($color-dark, $lightness: -3%) 0%,
+      rgba($color-orange, 0.2) 33%,
+      rgba($color-pink, 0.2) 50%,
+      rgba($color-purple, 0.2) 67%,
+      color.adjust($color-dark, $lightness: 1%) 100%
+    );
+  }
+}
+
+// =============================
+// ACCESSIBILITÉ
+// =============================
+
+@include reduced-motion {
+  .home-container::before {
+    display: none;
+  }
+}
+
+// =============================
 // SECTION MARKETING - RESPONSIVE AVANCÉ
 // =============================
 
@@ -222,54 +272,4 @@
   // ✅ Empêcher débordement
   overflow: hidden;
   box-sizing: border-box;
-}
-
-// =============================
-// AMÉLIORATION POUR LES SECTIONS VIDES
-// =============================
-
-.home-container .others:empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &::after {
-    content: '';
-    width: 2px;
-    height: 50px;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(css-var(primary-color), 0.3) 50%,
-      transparent 100%
-    );
-    opacity: 0.5;
-  }
-}
-
-// =============================
-// RESPONSIVE ADAPTATIONS
-// =============================
-
-@include until('lg') {
-  .home-container {
-    background: linear-gradient(
-      180deg,
-      color.adjust($color-dark, $lightness: -3%) 0%,
-      rgba($color-orange, 0.2) 33%,
-      rgba($color-pink, 0.2) 50%,
-      rgba($color-purple, 0.2) 67%,
-      color.adjust($color-dark, $lightness: 1%) 100%
-    );
-  }
-}
-
-// =============================
-// ACCESSIBILITÉ
-// =============================
-
-@include reduced-motion {
-  .home-container::before {
-    display: none;
-  }
 }
