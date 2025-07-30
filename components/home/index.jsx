@@ -2,7 +2,8 @@
 
 import './homePage.scss';
 import PageTracker from 'components/analytics/PageTracker';
-import Hero from 'components/layouts/hero';
+import Hero from 'components/layouts/home/hero';
+import MarketingHome from 'components/layouts/home/marketing';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -134,31 +135,14 @@ const HomeComponent = () => {
       <section className="first" data-section="hero">
         <Hero />
       </section>
+
       <section
         className="others marketing-section"
         data-section="marketing_section"
       >
-        <div className="main-content">
-          <Image
-            src="/tirelire.png"
-            alt="Tirelire symbolisant l'économie et les profits"
-            width={256}
-            height={384}
-            className="profit-image"
-            priority
-          />
-
-          <div className="text-container">
-            <h2 className="main-title">GÉNÈRES PLUS DE PROFIT,</h2>
-            <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
-
-            {/* AJOUTER CE BOUTON ICI */}
-            <Link href="/blog" className="profit-blog-link">
-              En savoir plus
-            </Link>
-          </div>
-        </div>
+        <MarketingHome />
       </section>
+
       <section className="others services-section" data-section="services">
         {/* BLOC 1 : TITRE SEUL */}
         <div className="services-title-block">
