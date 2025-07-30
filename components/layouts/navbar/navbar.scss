@@ -101,7 +101,12 @@
 
       // 📟 TRÈS PETITS ÉCRANS - Espacement réduit mais toujours utilisable
       @include until('sm') {
-        gap: 1rem;
+        gap: 0.7rem;
+      }
+
+      // AJOUTER ce nouveau bloc pour tablettes
+      @include between('sm', 'lg') {
+        gap: 0.8rem; // NOUVEAU : espacement réduit pour tablettes
       }
 
       // 🖥️ DESKTOP - Retour aux valeurs originales
