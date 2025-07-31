@@ -65,30 +65,30 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
 
                 {/* Content Container */}
                 <div className="minimalContent">
+                  {/* Title */}
+                  <h3 className="minimalTitle">{template.template_name}</h3>
+
                   {/* Category with Icon */}
                   <div className="minimalCategory">
                     {template.template_has_web &&
                     template.template_has_mobile ? (
                       <>
-                        <MdMonitor size={16} />
-                        <MdPhoneIphone size={16} />
+                        <MdMonitor size={14} />
+                        <MdPhoneIphone size={14} />
                         <span>Web & Mobile</span>
                       </>
                     ) : template.template_has_web ? (
                       <>
-                        <MdMonitor size={16} />
+                        <MdMonitor size={14} />
                         <span>Web App</span>
                       </>
                     ) : (
                       <>
-                        <MdPhoneIphone size={16} />
+                        <MdPhoneIphone size={14} />
                         <span>Mobile App</span>
                       </>
                     )}
                   </div>
-
-                  {/* Title */}
-                  <h3 className="minimalTitle">{template.template_name}</h3>
                 </div>
               </div>
             </Link>

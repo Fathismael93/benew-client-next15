@@ -123,18 +123,18 @@
   }
 
   @include from('md') {
-    height: 320px;
-    padding: 2rem;
+    height: 380px; // ✅ Plus grand sur tablettes
+    padding: 2.5rem;
   }
 
   @include from('lg') {
-    height: 340px;
-    padding: 2.25rem;
+    height: 420px; // ✅ Plus grand sur laptops
+    padding: 3rem;
   }
 
   @include from('xl') {
-    height: 360px;
-    padding: 2.5rem;
+    height: 460px; // ✅ Plus grand sur desktop
+    padding: 3.5rem;
   }
 }
 
@@ -286,7 +286,7 @@
 @include tall-screen {
   .minimalImageContainer {
     @include until('lg') {
-      height: 320px;
+      height: 350px; // ✅ Ajusté pour les nouveaux ratios
     }
   }
 }
