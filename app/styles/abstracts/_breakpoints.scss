@@ -351,7 +351,7 @@ $device-breakpoints: (
   }
 }
 
-/// NOUVEAU: Mixin pour une catégorie entière
+/// NOUVEAU: Mixin pour une catégorie entière - CORRIGÉ AVEC @content
 /// @param {String} $category - 'small', 'medium' ou 'large'
 @mixin screen-category($category) {
   @if $category == 'small' {
@@ -370,22 +370,28 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 5. MIXINS CATÉGORIES - APPROCHE SIMPLIFIÉE
+// 5. MIXINS CATÉGORIES - APPROCHE SIMPLIFIÉE - CORRIGÉS AVEC @content
 // =============================================================================
 
 /// 📱 PETITS ÉCRANS - Smartphones et appareils portables
 @mixin small-screens {
-  @include screen-category('small');
+  @include screen-category('small') {
+    @content;
+  }
 }
 
 /// 📟 MOYENS ÉCRANS - Tablettes
 @mixin medium-screens {
-  @include screen-category('medium');
+  @include screen-category('medium') {
+    @content;
+  }
 }
 
 /// 🖥️ GRANDS ÉCRANS - Laptops et desktops
 @mixin large-screens {
-  @include screen-category('large');
+  @include screen-category('large') {
+    @content;
+  }
 }
 
 /// COMBO: Petits ET moyens écrans (mobile + tablettes)
@@ -403,7 +409,7 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 6. MIXINS SPÉCIFIQUES PAR APPAREIL
+// 6. MIXINS SPÉCIFIQUES PAR APPAREIL - CORRIGÉS AVEC @content
 // =============================================================================
 
 /// Mixin pour cibler un appareil spécifique avec orientation
@@ -434,7 +440,7 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 7. MIXINS POUR ORIENTATIONS
+// 7. MIXINS POUR ORIENTATIONS - CORRIGÉS AVEC @content
 // =============================================================================
 
 /// Orientation portrait
@@ -447,6 +453,13 @@ $device-breakpoints: (
 /// Orientation paysage
 @mixin landscape {
   @media (orientation: landscape) {
+    @content;
+  }
+}
+
+/// Mode paysage mobile spécifique - NOUVEAU MIXIN
+@mixin mobile-landscape {
+  @media (max-width: 700px) and (orientation: landscape) {
     @content;
   }
 }
@@ -466,7 +479,7 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 8. MIXINS POUR DENSITÉ D'ÉCRAN
+// 8. MIXINS POUR DENSITÉ D'ÉCRAN - CORRIGÉS AVEC @content
 // =============================================================================
 
 /// Écrans haute densité (Retina, 2x, 3x)
@@ -484,7 +497,7 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 9. MIXINS POUR PRÉFÉRENCES UTILISATEUR
+// 9. MIXINS POUR PRÉFÉRENCES UTILISATEUR - CORRIGÉS AVEC @content
 // =============================================================================
 
 /// Mode sombre (très populaire en 2025)
@@ -523,7 +536,7 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 10. MIXINS POUR CONTENEURS - SIMPLIFIÉS
+// 10. MIXINS POUR CONTENEURS - SIMPLIFIÉS AVEC @content
 // =============================================================================
 
 /// Conteneur responsive avec largeurs par catégorie
@@ -562,7 +575,7 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 11. HELPERS RAPIDES - APPROCHE 3 CATÉGORIES
+// 11. HELPERS RAPIDES - APPROCHE 3 CATÉGORIES AVEC @content
 // =============================================================================
 
 /// Cacher sur petits écrans uniquement
@@ -717,6 +730,7 @@ AVANTAGES:
 ✅ Nomenclature cohérente (small/medium/large + taille)
 ✅ Compatibilité maintenue avec l'ancien système
 ✅ Future-proof pour nouveaux appareils
+✅ Tous les mixins acceptent maintenant @content
 
 PHILOSOPHIE:
 📱 PETITS = Tactile, empilé, simplifié
