@@ -1,185 +1,185 @@
-@use 'sass:color';
-@use '../../../app/styles/abstracts' as *;
+// @use 'sass:color';
+// @use '../../../app/styles/abstracts' as *;
 
-article {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  scroll-snap-align: center;
-  margin-bottom: 5rem;
-  background-image: url('/stars.png');
+// article {
+//   width: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   scroll-snap-type: y mandatory;
+//   scroll-behavior: smooth;
+//   scroll-snap-align: center;
+//   margin-bottom: 5rem;
+//   background-image: url('/stars.png');
 
-  em {
-    display: block;
-    align-self: flex-end;
-    color: rgba(css-var(text-color), 0.7);
-    font-style: italic;
+//   em {
+//     display: block;
+//     align-self: flex-end;
+//     color: rgba(css-var(text-color), 0.7);
+//     font-style: italic;
 
-    @include small {
-      font-size: 0.7rem;
-      text-align: center;
-    }
-  }
+//     @include small {
+//       font-size: 0.7rem;
+//       text-align: center;
+//     }
+//   }
 
-  .post {
-    width: 40.625rem;
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 1.875rem;
-    border-radius: 10px;
-    gap: 2.5rem;
-    background: linear-gradient(
-      135deg,
-      rgba(css-var(background-color), 0.8),
-      rgba(color.adjust($background-color, $lightness: 5%), 0.8)
-    );
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
-    position: relative;
+//   .post {
+//     width: 40.625rem;
+//     margin-top: 1.5rem;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     flex-direction: column;
+//     padding: 1.875rem;
+//     border-radius: 10px;
+//     gap: 2.5rem;
+//     background: linear-gradient(
+//       135deg,
+//       rgba(css-var(background-color), 0.8),
+//       rgba(color.adjust($background-color, $lightness: 5%), 0.8)
+//     );
+//     backdrop-filter: blur(10px);
+//     box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
+//     position: relative;
 
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      padding: 2px;
-      background: linear-gradient(
-        135deg,
-        css-var(primary-color),
-        css-var(secondary-color),
-        css-var(accent-color)
-      );
-      border-radius: inherit;
-      mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-      mask-composite: xor;
-      -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-    }
+//     &::before {
+//       content: '';
+//       position: absolute;
+//       inset: 0;
+//       padding: 2px;
+//       background: linear-gradient(
+//         135deg,
+//         css-var(primary-color),
+//         css-var(secondary-color),
+//         css-var(accent-color)
+//       );
+//       border-radius: inherit;
+//       mask:
+//         linear-gradient(#fff 0 0) content-box,
+//         linear-gradient(#fff 0 0);
+//       mask-composite: xor;
+//       -webkit-mask:
+//         linear-gradient(#fff 0 0) content-box,
+//         linear-gradient(#fff 0 0);
+//       -webkit-mask-composite: xor;
+//     }
 
-    @include small {
-      border: none;
-      width: inherit;
-      background: transparent;
-      backdrop-filter: none;
-      box-shadow: none;
-    }
+//     @include small {
+//       border: none;
+//       width: inherit;
+//       background: transparent;
+//       backdrop-filter: none;
+//       box-shadow: none;
+//     }
 
-    @include mobile {
-      border: none;
-      width: inherit;
-      background: transparent;
-      backdrop-filter: none;
-      box-shadow: none;
-    }
+//     @include mobile {
+//       border: none;
+//       width: inherit;
+//       background: transparent;
+//       backdrop-filter: none;
+//       box-shadow: none;
+//     }
 
-    @include tablet {
-      border: none;
-      width: inherit;
-      background: transparent;
-      backdrop-filter: none;
-      box-shadow: none;
-    }
+//     @include tablet {
+//       border: none;
+//       width: inherit;
+//       background: transparent;
+//       backdrop-filter: none;
+//       box-shadow: none;
+//     }
 
-    h1 {
-      font-size: 2.5rem;
-      color: css-var(text-color);
-      text-align: center;
+//     h1 {
+//       font-size: 2.5rem;
+//       color: css-var(text-color);
+//       text-align: center;
 
-      @include small {
-        font-size: 1.2rem;
-        text-align: center;
-      }
-    }
+//       @include small {
+//         font-size: 1.2rem;
+//         text-align: center;
+//       }
+//     }
 
-    .part {
-      margin-top: 1.25rem;
+//     .part {
+//       margin-top: 1.25rem;
 
-      h2 {
-        font-size: 1.5rem;
-        color: css-var(primary-color);
-        margin-bottom: 1rem;
+//       h2 {
+//         font-size: 1.5rem;
+//         color: css-var(primary-color);
+//         margin-bottom: 1rem;
 
-        @include small {
-          font-size: 1.3rem;
-        }
-      }
+//         @include small {
+//           font-size: 1.3rem;
+//         }
+//       }
 
-      h3 {
-        color: css-var(secondary-color);
-        margin-bottom: 0.5rem;
-      }
+//       h3 {
+//         color: css-var(secondary-color);
+//         margin-bottom: 0.5rem;
+//       }
 
-      p {
-        font-size: 1rem;
-        margin-top: 0.938rem;
-        color: css-var(text-color);
-        line-height: 1.6;
+//       p {
+//         font-size: 1rem;
+//         margin-top: 0.938rem;
+//         color: css-var(text-color);
+//         line-height: 1.6;
 
-        @include small {
-          text-align: justify;
-        }
+//         @include small {
+//           text-align: justify;
+//         }
 
-        @include mobile {
-          text-align: justify;
-        }
-      }
+//         @include mobile {
+//           text-align: justify;
+//         }
+//       }
 
-      /* New styles for centering images within the parsed content */
-      img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-        margin: 1.5rem auto;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
-        border: 2px solid rgba(css-var(primary-color), 0.1);
-      }
+//       /* New styles for centering images within the parsed content */
+//       img {
+//         display: block;
+//         max-width: 100%;
+//         height: auto;
+//         margin: 1.5rem auto;
+//         border-radius: 8px;
+//         box-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
+//         border: 2px solid rgba(css-var(primary-color), 0.1);
+//       }
 
-      /* Style for links in parsed content */
-      a {
-        color: css-var(primary-color);
-        text-decoration: none;
-        border-bottom: 1px solid rgba(css-var(primary-color), 0.3);
-        transition: all 0.3s ease;
+//       /* Style for links in parsed content */
+//       a {
+//         color: css-var(primary-color);
+//         text-decoration: none;
+//         border-bottom: 1px solid rgba(css-var(primary-color), 0.3);
+//         transition: all 0.3s ease;
 
-        &:hover {
-          color: css-var(secondary-color);
-          border-bottom-color: css-var(secondary-color);
-        }
-      }
+//         &:hover {
+//           color: css-var(secondary-color);
+//           border-bottom-color: css-var(secondary-color);
+//         }
+//       }
 
-      /* Style for lists in parsed content */
-      ul,
-      ol {
-        margin: 1rem 0;
-        padding-left: 1.5rem;
+//       /* Style for lists in parsed content */
+//       ul,
+//       ol {
+//         margin: 1rem 0;
+//         padding-left: 1.5rem;
 
-        li {
-          color: css-var(text-color);
-          margin-bottom: 0.5rem;
-        }
-      }
+//         li {
+//           color: css-var(text-color);
+//           margin-bottom: 0.5rem;
+//         }
+//       }
 
-      /* Style for blockquotes in parsed content */
-      blockquote {
-        border-left: 4px solid css-var(primary-color);
-        margin: 1.5rem 0;
-        padding: 1rem 1.5rem;
-        background: rgba(css-var(primary-color), 0.05);
-        border-radius: 0 8px 8px 0;
-        font-style: italic;
-        color: rgba(css-var(text-color), 0.9);
-      }
-    }
-  }
-}
+//       /* Style for blockquotes in parsed content */
+//       blockquote {
+//         border-left: 4px solid css-var(primary-color);
+//         margin: 1.5rem 0;
+//         padding: 1rem 1.5rem;
+//         background: rgba(css-var(primary-color), 0.05);
+//         border-radius: 0 8px 8px 0;
+//         font-style: italic;
+//         color: rgba(css-var(text-color), 0.9);
+//       }
+//     }
+//   }
+// }

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Parallax from '../layouts/parallax';
 import OrderModal from '../modal/OrderModal'; // Import the OrderModal component
-import './styling/application.scss';
+// import './styling/application.scss';
 import Link from 'next/link';
 import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';

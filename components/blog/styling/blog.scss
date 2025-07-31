@@ -1,59 +1,59 @@
-@use 'sass:color';
-@use '../../../app/styles/abstracts' as *;
+// @use 'sass:color';
+// @use '../../../app/styles/abstracts' as *;
 
-.portfolio {
-  position: relative;
+// .portfolio {
+//   position: relative;
 
-  .progress {
-    position: sticky;
-    top: 0;
-    left: 0;
-    padding-top: 3.125rem;
-    text-align: center;
-    color: css-var(primary-color);
-    font-size: 1.5rem;
+//   .progress {
+//     position: sticky;
+//     top: 0;
+//     left: 0;
+//     padding-top: 3.125rem;
+//     text-align: center;
+//     color: css-var(primary-color);
+//     font-size: 1.5rem;
 
-    @include small {
-      padding-top: calc(100vh - 60px);
-      font-size: 1rem;
-      z-index: -1;
-    }
+//     @include small {
+//       padding-top: calc(100vh - 60px);
+//       font-size: 1rem;
+//       z-index: -1;
+//     }
 
-    @include mobile {
-      padding-top: calc(100vh - 60px);
-      font-size: 1rem;
-      z-index: -1;
-    }
+//     @include mobile {
+//       padding-top: calc(100vh - 60px);
+//       font-size: 1rem;
+//       z-index: -1;
+//     }
 
-    @include tablet {
-      padding-top: calc(100vh - 80px);
-      font-size: 1.4rem;
-      z-index: -1;
-    }
+//     @include tablet {
+//       padding-top: calc(100vh - 80px);
+//       font-size: 1.4rem;
+//       z-index: -1;
+//     }
 
-    .progressBar {
-      height: 0.625rem;
-      background: linear-gradient(
-        90deg,
-        css-var(primary-color),
-        css-var(secondary-color),
-        css-var(accent-color)
-      );
-      border-radius: 10px;
-    }
-  }
+//     .progressBar {
+//       height: 0.625rem;
+//       background: linear-gradient(
+//         90deg,
+//         css-var(primary-color),
+//         css-var(secondary-color),
+//         css-var(accent-color)
+//       );
+//       border-radius: 10px;
+//     }
+//   }
 
-  .no-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+//   .no-content {
+//     width: 100%;
+//     height: 100%;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
 
-    .no-content-text {
-      color: css-var(text-color);
-      font-weight: bold;
-      font-size: 1.75rem;
-    }
-  }
-}
+//     .no-content-text {
+//       color: css-var(text-color);
+//       font-weight: bold;
+//       font-size: 1.75rem;
+//     }
+//   }
+// }

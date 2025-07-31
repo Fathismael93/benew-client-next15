@@ -1,404 +1,404 @@
-// =============================
-// FORM CONTAINER - MOBILE-FIRST OPTIMISÉ
-// =============================
+// // =============================
+// // FORM CONTAINER - MOBILE-FIRST OPTIMISÉ
+// // =============================
 
-@use 'sass:color';
-@use '../../../app/styles/abstracts/' as *;
+// @use 'sass:color';
+// @use '../../../app/styles/abstracts/' as *;
 
-.formContainer {
-  width: 100%;
-  position: relative;
-  flex-shrink: 0;
+// .formContainer {
+//   width: 100%;
+//   position: relative;
+//   flex-shrink: 0;
 
-  // 📱 MOBILE FIRST - Formulaire en PREMIER pour éviter le problème de clavier
-  order: 1;
+//   // 📱 MOBILE FIRST - Formulaire en PREMIER pour éviter le problème de clavier
+//   order: 1;
 
-  @include until('sm') {
-    // Optimisations spéciales pour très petits écrans
-    margin-bottom: 1rem;
-  }
+//   @include until('sm') {
+//     // Optimisations spéciales pour très petits écrans
+//     margin-bottom: 1rem;
+//   }
 
-  // 🖥️ DESKTOP - Retour à l'ordre original
-  @include from('xl') {
-    flex: 1;
-    order: 2;
-  }
+//   // 🖥️ DESKTOP - Retour à l'ordre original
+//   @include from('xl') {
+//     flex: 1;
+//     order: 2;
+//   }
 
-  .phoneSvg {
-    position: absolute;
-    margin: auto;
-    z-index: -1;
-    opacity: 0.6; // Plus discret sur mobile
+//   .phoneSvg {
+//     position: absolute;
+//     margin: auto;
+//     z-index: -1;
+//     opacity: 0.6; // Plus discret sur mobile
 
-    // 📱 MOBILE FIRST - SVG plus petit et centré
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+//     // 📱 MOBILE FIRST - SVG plus petit et centré
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
 
-    svg {
-      // 📱 MOBILE FIRST - Taille réduite
-      width: 180px;
-      height: 180px;
+//     svg {
+//       // 📱 MOBILE FIRST - Taille réduite
+//       width: 180px;
+//       height: 180px;
 
-      @include until('sm') {
-        width: 150px;
-        height: 150px;
-      }
+//       @include until('sm') {
+//         width: 150px;
+//         height: 150px;
+//       }
 
-      // 🖥️ TABLET ET PLUS - Augmentation progressive
-      @include from('md') {
-        width: 200px;
-        height: 200px;
-      }
+//       // 🖥️ TABLET ET PLUS - Augmentation progressive
+//       @include from('md') {
+//         width: 200px;
+//         height: 200px;
+//       }
 
-      @include from('lg') {
-        width: 220px;
-        height: 220px;
-      }
+//       @include from('lg') {
+//         width: 220px;
+//         height: 220px;
+//       }
 
-      @include from('xl') {
-        width: 400px; // Taille desktop originale
-        height: 400px;
-      }
-    }
+//       @include from('xl') {
+//         width: 400px; // Taille desktop originale
+//         height: 400px;
+//       }
+//     }
 
-    // 🖥️ DESKTOP - Repositionnement original
-    @include from('xl') {
-      top: auto;
-      left: auto;
-      transform: none;
-      opacity: 1;
-    }
-  }
+//     // 🖥️ DESKTOP - Repositionnement original
+//     @include from('xl') {
+//       top: auto;
+//       left: auto;
+//       transform: none;
+//       opacity: 1;
+//     }
+//   }
 
-  form {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    z-index: 10;
-    background: rgba(css-var(background-color), 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 1px solid rgba(css-var(primary-color), 0.2);
+//   form {
+//     display: flex;
+//     flex-direction: column;
+//     position: relative;
+//     z-index: 10;
+//     background: rgba(css-var(background-color), 0.7);
+//     backdrop-filter: blur(10px);
+//     border-radius: 16px;
+//     border: 1px solid rgba(css-var(primary-color), 0.2);
 
-    // 📱 MOBILE FIRST - Formulaire compact et accessible
-    gap: 1.25rem;
-    padding: 1.5rem 1.25rem;
+//     // 📱 MOBILE FIRST - Formulaire compact et accessible
+//     gap: 1.25rem;
+//     padding: 1.5rem 1.25rem;
 
-    @include until('sm') {
-      gap: 1rem;
-      padding: 1.25rem 1rem;
-      border-radius: 12px;
-    }
+//     @include until('sm') {
+//       gap: 1rem;
+//       padding: 1.25rem 1rem;
+//       border-radius: 12px;
+//     }
 
-    // 🖥️ TABLET ET PLUS - Ajustements progressifs
-    @include from('md') {
-      gap: 1.375rem;
-      padding: 1.75rem 1.5rem;
-    }
+//     // 🖥️ TABLET ET PLUS - Ajustements progressifs
+//     @include from('md') {
+//       gap: 1.375rem;
+//       padding: 1.75rem 1.5rem;
+//     }
 
-    @include from('lg') {
-      gap: 1.5rem;
-      padding: 2rem;
-    }
+//     @include from('lg') {
+//       gap: 1.5rem;
+//       padding: 2rem;
+//     }
 
-    @include from('xl') {
-      // DESKTOP - Retour au style original
-      background: transparent;
-      backdrop-filter: none;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-      gap: 1.5rem;
-    }
+//     @include from('xl') {
+//       // DESKTOP - Retour au style original
+//       background: transparent;
+//       backdrop-filter: none;
+//       border: none;
+//       border-radius: 0;
+//       padding: 0;
+//       gap: 1.5rem;
+//     }
 
-    input,
-    textarea {
-      border-radius: 12px;
-      transition: all 0.4s ease;
-      font-weight: 400;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 8px rgba(css-var(background-color), 0.2);
-      background: linear-gradient(
-        135deg,
-        rgba(css-var(text-color), 0.05),
-        rgba(css-var(text-color), 0.08)
-      );
-      border: 2px solid rgba(css-var(text-color), 0.3);
-      color: css-var(text-color);
+//     input,
+//     textarea {
+//       border-radius: 12px;
+//       transition: all 0.4s ease;
+//       font-weight: 400;
+//       backdrop-filter: blur(10px);
+//       box-shadow: 0 2px 8px rgba(css-var(background-color), 0.2);
+//       background: linear-gradient(
+//         135deg,
+//         rgba(css-var(text-color), 0.05),
+//         rgba(css-var(text-color), 0.08)
+//       );
+//       border: 2px solid rgba(css-var(text-color), 0.3);
+//       color: css-var(text-color);
 
-      // 📱 MOBILE FIRST - Champs tactiles optimaux
-      padding: 1.25rem 1.125rem;
-      font-size: 1rem;
-      min-height: 48px; // Zone tactile recommandée
+//       // 📱 MOBILE FIRST - Champs tactiles optimaux
+//       padding: 1.25rem 1.125rem;
+//       font-size: 1rem;
+//       min-height: 48px; // Zone tactile recommandée
 
-      @include until('sm') {
-        padding: 1.125rem 1rem;
-        font-size: 0.95rem;
-        min-height: 44px;
-        border-radius: 10px;
-      }
+//       @include until('sm') {
+//         padding: 1.125rem 1rem;
+//         font-size: 0.95rem;
+//         min-height: 44px;
+//         border-radius: 10px;
+//       }
 
-      // 🖥️ TABLET ET PLUS - Ajustements progressifs
-      @include from('md') {
-        padding: 1.2rem 1.2rem;
-        font-size: 1rem;
-      }
+//       // 🖥️ TABLET ET PLUS - Ajustements progressifs
+//       @include from('md') {
+//         padding: 1.2rem 1.2rem;
+//         font-size: 1rem;
+//       }
 
-      @include from('lg') {
-        padding: 1.2rem 1.3rem;
-        font-size: 1rem;
-        border-radius: 11px;
-      }
+//       @include from('lg') {
+//         padding: 1.2rem 1.3rem;
+//         font-size: 1rem;
+//         border-radius: 11px;
+//       }
 
-      @include from('xl') {
-        padding: 1.2rem 1.5rem; // Valeurs desktop originales
-        font-size: 1rem;
-        border-radius: 12px;
-        min-height: auto;
-      }
+//       @include from('xl') {
+//         padding: 1.2rem 1.5rem; // Valeurs desktop originales
+//         font-size: 1rem;
+//         border-radius: 12px;
+//         min-height: auto;
+//       }
 
-      &:focus {
-        border-color: css-var(primary-color);
-        box-shadow:
-          0 0 0 3px rgba(css-var(primary-color), 0.2),
-          0 4px 12px rgba(css-var(primary-color), 0.15);
-        background: linear-gradient(
-          135deg,
-          rgba(css-var(primary-color), 0.08),
-          rgba(css-var(secondary-color), 0.05)
-        );
-        outline: none;
-        transform: translateY(-1px); // Moins de mouvement sur mobile
+//       &:focus {
+//         border-color: css-var(primary-color);
+//         box-shadow:
+//           0 0 0 3px rgba(css-var(primary-color), 0.2),
+//           0 4px 12px rgba(css-var(primary-color), 0.15);
+//         background: linear-gradient(
+//           135deg,
+//           rgba(css-var(primary-color), 0.08),
+//           rgba(css-var(secondary-color), 0.05)
+//         );
+//         outline: none;
+//         transform: translateY(-1px); // Moins de mouvement sur mobile
 
-        // 🖥️ DESKTOP - Mouvement original
-        @include from('xl') {
-          transform: translateY(-2px);
-        }
-      }
+//         // 🖥️ DESKTOP - Mouvement original
+//         @include from('xl') {
+//           transform: translateY(-2px);
+//         }
+//       }
 
-      &::placeholder {
-        color: rgba(css-var(text-color), 0.6);
-        font-weight: 300;
-      }
+//       &::placeholder {
+//         color: rgba(css-var(text-color), 0.6);
+//         font-weight: 300;
+//       }
 
-      &:hover {
-        border-color: rgba(css-var(primary-color), 0.5);
-        transform: translateY(-1px);
-      }
-    }
+//       &:hover {
+//         border-color: rgba(css-var(primary-color), 0.5);
+//         transform: translateY(-1px);
+//       }
+//     }
 
-    textarea {
-      resize: vertical;
-      font-family: inherit;
-      line-height: 1.5;
+//     textarea {
+//       resize: vertical;
+//       font-family: inherit;
+//       line-height: 1.5;
 
-      // 📱 MOBILE FIRST - Textarea optimisée
-      min-height: 120px;
+//       // 📱 MOBILE FIRST - Textarea optimisée
+//       min-height: 120px;
 
-      @include until('sm') {
-        min-height: 100px;
-      }
+//       @include until('sm') {
+//         min-height: 100px;
+//       }
 
-      // 🖥️ TABLET ET PLUS
-      @include from('md') {
-        min-height: 110px;
-      }
+//       // 🖥️ TABLET ET PLUS
+//       @include from('md') {
+//         min-height: 110px;
+//       }
 
-      @include from('xl') {
-        min-height: 120px; // Valeur desktop originale
-      }
-    }
+//       @include from('xl') {
+//         min-height: 120px; // Valeur desktop originale
+//       }
+//     }
 
-    button {
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      background: linear-gradient(
-        135deg,
-        css-var(primary-color),
-        color.adjust($primary-color, $lightness: 10%)
-      );
-      color: css-var(background-color);
-      box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+//     button {
+//       border: none;
+//       cursor: pointer;
+//       font-weight: 600;
+//       border-radius: 12px;
+//       transition: all 0.3s ease;
+//       background: linear-gradient(
+//         135deg,
+//         css-var(primary-color),
+//         color.adjust($primary-color, $lightness: 10%)
+//       );
+//       color: css-var(background-color);
+//       box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
 
-      // 📱 MOBILE FIRST - Bouton tactile optimal
-      padding: 1.25rem 2rem;
-      font-size: 1rem;
-      min-height: 48px;
-      width: 100%; // Full width sur mobile
+//       // 📱 MOBILE FIRST - Bouton tactile optimal
+//       padding: 1.25rem 2rem;
+//       font-size: 1rem;
+//       min-height: 48px;
+//       width: 100%; // Full width sur mobile
 
-      @include until('sm') {
-        padding: 1.125rem 1.75rem;
-        font-size: 0.95rem;
-        min-height: 44px;
-        border-radius: 10px;
-      }
+//       @include until('sm') {
+//         padding: 1.125rem 1.75rem;
+//         font-size: 0.95rem;
+//         min-height: 44px;
+//         border-radius: 10px;
+//       }
 
-      // 🖥️ TABLET ET PLUS - Ajustements progressifs
-      @include from('md') {
-        padding: 1.125rem 1.875rem;
-        font-size: 1rem;
-      }
+//       // 🖥️ TABLET ET PLUS - Ajustements progressifs
+//       @include from('md') {
+//         padding: 1.125rem 1.875rem;
+//         font-size: 1rem;
+//       }
 
-      @include from('lg') {
-        padding: 1rem 2rem;
-        border-radius: 11px;
-      }
+//       @include from('lg') {
+//         padding: 1rem 2rem;
+//         border-radius: 11px;
+//       }
 
-      @include from('xl') {
-        padding: 1rem; // Valeur desktop originale
-        border-radius: 0.313rem;
-        font-size: 1rem;
-        width: auto;
-        min-height: auto;
-      }
+//       @include from('xl') {
+//         padding: 1rem; // Valeur desktop originale
+//         border-radius: 0.313rem;
+//         font-size: 1rem;
+//         width: auto;
+//         min-height: auto;
+//       }
 
-      &:hover {
-        background: linear-gradient(
-          135deg,
-          color.adjust($primary-color, $lightness: 5%),
-          css-var(secondary-color)
-        );
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
-      }
+//       &:hover {
+//         background: linear-gradient(
+//           135deg,
+//           color.adjust($primary-color, $lightness: 5%),
+//           css-var(secondary-color)
+//         );
+//         transform: translateY(-2px);
+//         box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+//       }
 
-      &:active {
-        transform: translateY(0);
-      }
+//       &:active {
+//         transform: translateY(0);
+//       }
 
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
+//       &:disabled {
+//         opacity: 0.6;
+//         cursor: not-allowed;
 
-        &:hover {
-          transform: none;
-        }
-      }
-    }
+//         &:hover {
+//           transform: none;
+//         }
+//       }
+//     }
 
-    // Messages de statut - Améliorés pour mobile
-    .error-message,
-    .success-message {
-      margin-top: 0.75rem;
-      text-align: center;
-      border-radius: 8px;
-      transition: all 0.3s ease;
+//     // Messages de statut - Améliorés pour mobile
+//     .error-message,
+//     .success-message {
+//       margin-top: 0.75rem;
+//       text-align: center;
+//       border-radius: 8px;
+//       transition: all 0.3s ease;
 
-      // 📱 MOBILE FIRST - Messages plus visibles
-      padding: 0.875rem 1rem;
-      font-size: 0.9rem;
+//       // 📱 MOBILE FIRST - Messages plus visibles
+//       padding: 0.875rem 1rem;
+//       font-size: 0.9rem;
 
-      @include until('sm') {
-        padding: 0.75rem 0.875rem;
-        font-size: 0.85rem;
-      }
+//       @include until('sm') {
+//         padding: 0.75rem 0.875rem;
+//         font-size: 0.85rem;
+//       }
 
-      // 🖥️ DESKTOP
-      @include from('xl') {
-        margin-top: 0.625rem;
-        padding: 0.5rem;
-        font-size: 0.875rem;
-      }
-    }
+//       // 🖥️ DESKTOP
+//       @include from('xl') {
+//         margin-top: 0.625rem;
+//         padding: 0.5rem;
+//         font-size: 0.875rem;
+//       }
+//     }
 
-    .error-message {
-      color: #ff4444;
-      background: rgba(255, 68, 68, 0.1);
-      border: 1px solid rgba(255, 68, 68, 0.3);
-    }
+//     .error-message {
+//       color: #ff4444;
+//       background: rgba(255, 68, 68, 0.1);
+//       border: 1px solid rgba(255, 68, 68, 0.3);
+//     }
 
-    .success-message {
-      color: #22c55e;
-      background: rgba(34, 197, 94, 0.1);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-    }
-  }
-}
+//     .success-message {
+//       color: #22c55e;
+//       background: rgba(34, 197, 94, 0.1);
+//       border: 1px solid rgba(34, 197, 94, 0.3);
+//     }
+//   }
+// }
 
-// =============================
-// GESTION SPÉCIALE DU CLAVIER MOBILE - FORM CONTAINER
-// =============================
+// // =============================
+// // GESTION SPÉCIALE DU CLAVIER MOBILE - FORM CONTAINER
+// // =============================
 
-// Évite que le viewport soit rogné par le clavier
-@media screen and (max-height: 600px) and (max-width: 768px) {
-  .formContainer {
-    form {
-      // Assure que le formulaire reste accessible même avec clavier
-      position: relative;
-      z-index: 1000;
+// // Évite que le viewport soit rogné par le clavier
+// @media screen and (max-height: 600px) and (max-width: 768px) {
+//   .formContainer {
+//     form {
+//       // Assure que le formulaire reste accessible même avec clavier
+//       position: relative;
+//       z-index: 1000;
 
-      input,
-      textarea {
-        // Optimise la gestion du focus avec clavier
-        scroll-margin-top: 1rem;
-      }
-    }
-  }
-}
+//       input,
+//       textarea {
+//         // Optimise la gestion du focus avec clavier
+//         scroll-margin-top: 1rem;
+//       }
+//     }
+//   }
+// }
 
-// Mode paysage sur mobile - Layout spécialement optimisé
-@include mobile-landscape {
-  .formContainer {
-    order: 2;
-    width: 60%;
+// // Mode paysage sur mobile - Layout spécialement optimisé
+// @include mobile-landscape {
+//   .formContainer {
+//     order: 2;
+//     width: 60%;
 
-    form {
-      gap: 1rem;
-      padding: 1.25rem;
+//     form {
+//       gap: 1rem;
+//       padding: 1.25rem;
 
-      input,
-      textarea {
-        padding: 0.875rem 1rem;
-        min-height: 40px;
-      }
+//       input,
+//       textarea {
+//         padding: 0.875rem 1rem;
+//         min-height: 40px;
+//       }
 
-      textarea {
-        min-height: 80px;
-      }
+//       textarea {
+//         min-height: 80px;
+//       }
 
-      button {
-        padding: 0.875rem 1.5rem;
-        min-height: 40px;
-      }
-    }
-  }
-}
+//       button {
+//         padding: 0.875rem 1.5rem;
+//         min-height: 40px;
+//       }
+//     }
+//   }
+// }
 
-// Écrans très hauts (iPhone X, 11, etc.)
-@include tall-screen {
-  .formContainer form {
-    @include until('lg') {
-      gap: 1.5rem;
-      padding: 2rem 1.5rem;
-    }
-  }
-}
+// // Écrans très hauts (iPhone X, 11, etc.)
+// @include tall-screen {
+//   .formContainer form {
+//     @include until('lg') {
+//       gap: 1.5rem;
+//       padding: 2rem 1.5rem;
+//     }
+//   }
+// }
 
-// Support pour écrans tactiles - Zones tactiles optimisées
-@media (pointer: coarse) {
-  .formContainer form {
-    input,
-    textarea,
-    button {
-      min-height: 48px; // Zone tactile recommandée
-    }
-  }
-}
+// // Support pour écrans tactiles - Zones tactiles optimisées
+// @media (pointer: coarse) {
+//   .formContainer form {
+//     input,
+//     textarea,
+//     button {
+//       min-height: 48px; // Zone tactile recommandée
+//     }
+//   }
+// }
 
-// Amélioration pour l'accessibilité - Réduction des animations
-@include reduced-motion {
-  .formContainer form input,
-  .formContainer form textarea,
-  .formContainer form button {
-    transition: none;
+// // Amélioration pour l'accessibilité - Réduction des animations
+// @include reduced-motion {
+//   .formContainer form input,
+//   .formContainer form textarea,
+//   .formContainer form button {
+//     transition: none;
 
-    &:hover,
-    &:focus {
-      transform: none;
-    }
-  }
-}
+//     &:hover,
+//     &:focus {
+//       transform: none;
+//     }
+//   }
+// }

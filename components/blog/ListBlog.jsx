@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import ArticleItem from '@/components/blog/articleItem';
 import Parallax from '@/components/layouts/parallax';
-import './styling/blog.scss';
+// import './styling/blog.scss';
 
 const ListBlog = ({
   posts,

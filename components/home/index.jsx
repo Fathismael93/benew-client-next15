@@ -1,6 +1,6 @@
 'use client';
 
-import './homePage.scss';
+// import './homePage.scss';
 import PageTracker from 'components/analytics/PageTracker';
 import AppExamples from 'components/layouts/home/appExamples';
 import ContactHome from 'components/layouts/home/contact';

@@ -1,6 +1,6 @@
 'use client';
 
-import './contactHome.scss';
+// import './contactHome.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 

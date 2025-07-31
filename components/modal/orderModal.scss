@@ -1,241 +1,241 @@
-@use 'sass:color';
-@use '../../app/styles/abstracts' as *;
+// @use 'sass:color';
+// @use '../../app/styles/abstracts' as *;
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(css-var(background-color), 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-  backdrop-filter: blur(5px);
-}
+// .modalOverlay {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(css-var(background-color), 0.85);
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 100;
+//   backdrop-filter: blur(5px);
+// }
 
-.modal {
-  background: linear-gradient(
-    135deg,
-    color.adjust($background-color, $lightness: -5%),
-    color.adjust($background-color, $lightness: 8%)
-  );
-  border-radius: 12px;
-  box-shadow:
-    0 10px 30px rgba(css-var(background-color), 0.6),
-    0 0 20px rgba(css-var(primary-color), 0.1);
-  width: 90%;
-  max-width: 550px;
-  overflow: hidden;
-  padding: 30px;
-  border: 1px solid rgba(css-var(primary-color), 0.3);
-  position: relative;
+// .modal {
+//   background: linear-gradient(
+//     135deg,
+//     color.adjust($background-color, $lightness: -5%),
+//     color.adjust($background-color, $lightness: 8%)
+//   );
+//   border-radius: 12px;
+//   box-shadow:
+//     0 10px 30px rgba(css-var(background-color), 0.6),
+//     0 0 20px rgba(css-var(primary-color), 0.1);
+//   width: 90%;
+//   max-width: 550px;
+//   overflow: hidden;
+//   padding: 30px;
+//   border: 1px solid rgba(css-var(primary-color), 0.3);
+//   position: relative;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(
-      90deg,
-      css-var(primary-color),
-      css-var(secondary-color),
-      css-var(accent-color)
-    );
-  }
-}
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     height: 3px;
+//     background: linear-gradient(
+//       90deg,
+//       css-var(primary-color),
+//       css-var(secondary-color),
+//       css-var(accent-color)
+//     );
+//   }
+// }
 
-.step {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
+// .step {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 1.2rem;
+// }
 
-h2 {
-  color: css-var(primary-color);
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-  text-align: center;
-  border-bottom: 1px solid rgba(css-var(primary-color), 0.4);
-  padding-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
-}
+// h2 {
+//   color: css-var(primary-color);
+//   margin-bottom: 1.5rem;
+//   font-size: 1.5rem;
+//   text-align: center;
+//   border-bottom: 1px solid rgba(css-var(primary-color), 0.4);
+//   padding-bottom: 1rem;
+//   text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
+// }
 
-input[type='text'],
-input[type='email'],
-input[type='tel'] {
-  background-color: rgba(css-var(text-color), 0.05);
-  border: 1px solid rgba(css-var(primary-color), 0.3);
-  border-radius: 8px;
-  padding: 0.8rem 1rem;
-  color: css-var(text-color);
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.3s ease;
+// input[type='text'],
+// input[type='email'],
+// input[type='tel'] {
+//   background-color: rgba(css-var(text-color), 0.05);
+//   border: 1px solid rgba(css-var(primary-color), 0.3);
+//   border-radius: 8px;
+//   padding: 0.8rem 1rem;
+//   color: css-var(text-color);
+//   font-size: 1rem;
+//   outline: none;
+//   transition: all 0.3s ease;
 
-  &:focus {
-    border-color: css-var(primary-color);
-    box-shadow: 0 0 0 2px rgba(css-var(primary-color), 0.3);
-  }
+//   &:focus {
+//     border-color: css-var(primary-color);
+//     box-shadow: 0 0 0 2px rgba(css-var(primary-color), 0.3);
+//   }
 
-  &::placeholder {
-    color: rgba(css-var(text-color), 0.5);
-  }
-}
+//   &::placeholder {
+//     color: rgba(css-var(text-color), 0.5);
+//   }
+// }
 
-.checkboxGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-}
+// .checkboxGroup {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 0.8rem;
+//   margin-bottom: 1rem;
+// }
 
-.radioLabel {
-  display: flex;
-  align-items: center;
-  color: css-var(text-color);
-  cursor: pointer;
-  padding: 0.6rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+// .radioLabel {
+//   display: flex;
+//   align-items: center;
+//   color: css-var(text-color);
+//   cursor: pointer;
+//   padding: 0.6rem;
+//   border-radius: 6px;
+//   transition: all 0.2s ease;
+//   border: 1px solid transparent;
 
-  &:hover {
-    background-color: rgba(css-var(primary-color), 0.1);
-    border-color: rgba(css-var(primary-color), 0.2);
-  }
+//   &:hover {
+//     background-color: rgba(css-var(primary-color), 0.1);
+//     border-color: rgba(css-var(primary-color), 0.2);
+//   }
 
-  input[type='radio'] {
-    margin-right: 10px;
-    accent-color: css-var(primary-color);
-  }
-}
+//   input[type='radio'] {
+//     margin-right: 10px;
+//     accent-color: css-var(primary-color);
+//   }
+// }
 
-.buttonContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-  gap: 1rem;
-}
+// .buttonContainer {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-top: 1rem;
+//   gap: 1rem;
+// }
 
-button {
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: none;
-  padding: 0.8rem 1.5rem;
+// button {
+//   border-radius: 8px;
+//   font-weight: 600;
+//   font-size: 1rem;
+//   transition: all 0.3s ease;
+//   cursor: pointer;
+//   border: none;
+//   padding: 0.8rem 1.5rem;
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
+//   &:disabled {
+//     opacity: 0.6;
+//     cursor: not-allowed;
+//   }
+// }
 
-.nextButton {
-  background: linear-gradient(
-    135deg,
-    css-var(primary-color),
-    color.adjust($primary-color, $lightness: 10%)
-  );
-  color: css-var(background-color);
-  box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+// .nextButton {
+//   background: linear-gradient(
+//     135deg,
+//     css-var(primary-color),
+//     color.adjust($primary-color, $lightness: 10%)
+//   );
+//   color: css-var(background-color);
+//   box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
 
-  &:hover:not(:disabled) {
-    background: linear-gradient(
-      135deg,
-      color.adjust($primary-color, $lightness: 5%),
-      css-var(secondary-color)
-    );
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
-  }
+//   &:hover:not(:disabled) {
+//     background: linear-gradient(
+//       135deg,
+//       color.adjust($primary-color, $lightness: 5%),
+//       css-var(secondary-color)
+//     );
+//     transform: translateY(-2px);
+//     box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+//   }
 
-  &:active {
-    transform: translateY(0);
-  }
-}
+//   &:active {
+//     transform: translateY(0);
+//   }
+// }
 
-.backButton,
-.cancelButton {
-  background-color: transparent;
-  color: css-var(primary-color);
-  border: 1px solid css-var(primary-color);
+// .backButton,
+// .cancelButton {
+//   background-color: transparent;
+//   color: css-var(primary-color);
+//   border: 1px solid css-var(primary-color);
 
-  &:hover {
-    background-color: rgba(css-var(primary-color), 0.1);
-    border-color: color.adjust($primary-color, $lightness: 10%);
-  }
-}
+//   &:hover {
+//     background-color: rgba(css-var(primary-color), 0.1);
+//     border-color: color.adjust($primary-color, $lightness: 10%);
+//   }
+// }
 
-.closeButton {
-  background: linear-gradient(
-    135deg,
-    css-var(primary-color),
-    color.adjust($primary-color, $lightness: 10%)
-  );
-  color: css-var(background-color);
-  width: 100%;
-  margin-top: 1rem;
-  box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+// .closeButton {
+//   background: linear-gradient(
+//     135deg,
+//     css-var(primary-color),
+//     color.adjust($primary-color, $lightness: 10%)
+//   );
+//   color: css-var(background-color);
+//   width: 100%;
+//   margin-top: 1rem;
+//   box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
 
-  &:hover {
-    background: linear-gradient(
-      135deg,
-      color.adjust($primary-color, $lightness: 5%),
-      css-var(secondary-color)
-    );
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
-  }
+//   &:hover {
+//     background: linear-gradient(
+//       135deg,
+//       color.adjust($primary-color, $lightness: 5%),
+//       css-var(secondary-color)
+//     );
+//     transform: translateY(-2px);
+//     box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+//   }
 
-  &:active {
-    transform: translateY(0);
-  }
-}
+//   &:active {
+//     transform: translateY(0);
+//   }
+// }
 
-.confirmationStep {
-  text-align: center;
+// .confirmationStep {
+//   text-align: center;
 
-  p {
-    color: css-var(text-color);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    opacity: 0.9;
-  }
-}
+//   p {
+//     color: css-var(text-color);
+//     line-height: 1.6;
+//     margin-bottom: 1.5rem;
+//     opacity: 0.9;
+//   }
+// }
 
-.errorMessage {
-  background-color: rgba(220, 38, 38, 0.15);
-  color: color.adjust(#ef4444, $lightness: 10%);
-  padding: 0.8rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  border: 1px solid rgba(220, 38, 38, 0.4);
-  font-size: 0.9rem;
-  backdrop-filter: blur(10px);
-}
+// .errorMessage {
+//   background-color: rgba(220, 38, 38, 0.15);
+//   color: color.adjust(#ef4444, $lightness: 10%);
+//   padding: 0.8rem;
+//   border-radius: 6px;
+//   margin-bottom: 1rem;
+//   border: 1px solid rgba(220, 38, 38, 0.4);
+//   font-size: 0.9rem;
+//   backdrop-filter: blur(10px);
+// }
 
-@media (max-width: 768px) {
-  .modal {
-    width: 95%;
-    padding: 20px;
-  }
+// @media (max-width: 768px) {
+//   .modal {
+//     width: 95%;
+//     padding: 20px;
+//   }
 
-  h2 {
-    font-size: 1.3rem;
-  }
+//   h2 {
+//     font-size: 1.3rem;
+//   }
 
-  .buttonContainer {
-    flex-direction: column-reverse;
-    gap: 0.8rem;
-  }
+//   .buttonContainer {
+//     flex-direction: column-reverse;
+//     gap: 0.8rem;
+//   }
 
-  button {
-    width: 100%;
-  }
-}
+//   button {
+//     width: 100%;
+//   }
+// }
