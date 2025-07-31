@@ -5,15 +5,15 @@ import { CldImage } from 'next-cloudinary';
 import { useState, useEffect } from 'react';
 import './styling/templates.scss';
 import Parallax from '@/components/layouts/parallax';
-import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
+import { MdMonitor, MdPhoneIphone, MdLaunch, MdCode } from 'react-icons/md';
 
-// Ajouter ces imports
+// Imports analytics
 import { trackTemplateView, trackPagePerformance } from '@/utils/analytics';
 
 const TemplatesList = ({ templates, performanceMetrics }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Ajouter ce useEffect pour tracker les performances de la page
+  // Analytics tracking
   useEffect(() => {
     console.log('Performance Metrics:', performanceMetrics);
     if (performanceMetrics?.loadTime) {
@@ -26,9 +26,7 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
     }
   }, [performanceMetrics]);
 
-  // Modifier la fonction de gestion du clic sur les templates
   const handleTemplateClick = (template) => {
-    // Tracker la vue du template
     trackTemplateView(template.template_id, template.template_name);
   };
 
@@ -37,50 +35,88 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
       <section className="first">
         <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
       </section>
+
       {templates.length !== undefined &&
-        templates.map((template) => (
+        templates.map((template, index) => (
           <section key={template.template_id} className="others projectSection">
             <Link
               href={`/templates/${template.template_id}`}
-              className="templateCard"
+              className="magazineCard"
               onMouseEnter={() => setHoveredCard(template.template_id)}
               onMouseLeave={() => setHoveredCard(null)}
-              // Ajouter le tracking du clic
               onClick={() => handleTemplateClick(template)}
             >
               <div
-                className={`templateCardInner ${hoveredCard === template.template_id ? 'hovered' : ''}`}
+                className={`magazineCardInner ${
+                  hoveredCard === template.template_id ? 'hovered' : ''
+                }`}
               >
-                {/* Conteneur image (70% de la hauteur) */}
-                <div className="templateImageContainer">
-                  <div className="templateAppImage">
-                    <CldImage
-                      src={template.template_image}
-                      alt={`Interface de ${template.template_name}`}
-                      width={1200}
-                      height={800}
-                      className="templateImage"
-                      priority
-                    />
+                {/* Image Background */}
+                <div className="magazineImageBackground">
+                  <CldImage
+                    src={template.template_image}
+                    alt={`Interface de ${template.template_name}`}
+                    width={1400}
+                    height={900}
+                    className="magazineBackgroundImage"
+                    priority={index < 2} // Priorité pour les 2 premières
+                  />
+                  {/* Overlay gradient */}
+                  <div className="magazineOverlay" />
+                </div>
+
+                {/* Badges Plateformes - Position absolue */}
+                <div className="magazinePlatformBadges">
+                  {template.template_has_web && (
+                    <div className="platformBadge web">
+                      <MdMonitor size={18} />
+                      <span>Web</span>
+                    </div>
+                  )}
+                  {template.template_has_mobile && (
+                    <div className="platformBadge mobile">
+                      <MdPhoneIphone size={18} />
+                      <span>Mobile</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Contenu Principal - Superposition */}
+                <div className="magazineContent">
+                  {/* Catégorie/Tag */}
+                  <div className="magazineCategory">Template Premium</div>
+
+                  {/* Titre Principal */}
+                  <h2 className="magazineTitle">{template.template_name}</h2>
+
+                  {/* Description (optionnelle) */}
+                  <p className="magazineDescription">
+                    Solution professionnelle avec design moderne et
+                    fonctionnalités avancées
+                  </p>
+
+                  {/* Actions Rapides */}
+                  <div className="magazineActions">
+                    <div className="actionButton primary">
+                      <MdLaunch size={16} />
+                      <span>Voir Détails</span>
+                    </div>
+                    <div className="actionButton secondary">
+                      <MdCode size={16} />
+                      <span>Preview</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Conteneur info (30% de la hauteur) */}
-                <div className="templateInfoContainer">
-                  <div className="templateAppInfo">
-                    <h3 className="templateName">{template.template_name}</h3>
-                    <div className="templatePlatforms">
-                      {template.template_has_web && (
-                        <span className="templatePlatformIcon">
-                          <MdMonitor size={20} />
-                        </span>
-                      )}
-                      {template.template_has_mobile && (
-                        <span className="templatePlatformIcon">
-                          <MdPhoneIphone size={20} />
-                        </span>
-                      )}
-                    </div>
+                {/* Indicateur de progression (optionnel) */}
+                <div className="magazineProgress">
+                  <div className="progressDots">
+                    {templates.map((_, i) => (
+                      <div
+                        key={i}
+                        className={`progressDot ${i === index ? 'active' : ''}`}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
