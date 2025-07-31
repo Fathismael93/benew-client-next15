@@ -273,6 +273,11 @@
         transition: all 0.3s ease;
         stroke-width: 3;
 
+        // 📱 MOBILE - Couleur primary pour la visibilité
+        @include until('md') {
+          stroke: css-var(primary-color); // AJOUTER cette ligne
+        }
+
         // 📱 MOBILE - Trait plus épais pour la visibilité
         @include until('lg') {
           stroke-width: 4;
