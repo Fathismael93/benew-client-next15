@@ -269,7 +269,7 @@
       }
 
       path {
-        stroke: css-var(background-color);
+        stroke: css-var(primary-color);
         transition: all 0.3s ease;
         stroke-width: 3;
 
@@ -284,7 +284,7 @@
         }
 
         @include from('xl') {
-          stroke: css-var(background-color);
+          stroke: css-var(primary-color);
           stroke-width: 3;
         }
       }

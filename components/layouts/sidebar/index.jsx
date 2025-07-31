@@ -1,37 +1,37 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Links from './links';
 import './sidebar.scss';
 import ToggleButton from './toggleButton';
 
 // Hook pour détecter les petits écrans
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
+// const useIsMobile = () => {
+//   const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    // Fonction pour vérifier la taille d'écran
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768); // < md breakpoint
-    };
+//   useEffect(() => {
+//     // Fonction pour vérifier la taille d'écran
+//     const checkScreenSize = () => {
+//       setIsMobile(window.innerWidth < 768); // < md breakpoint
+//     };
 
-    // Vérification initiale
-    checkScreenSize();
+//     // Vérification initiale
+//     checkScreenSize();
 
-    // Écouter les changements de taille d'écran
-    window.addEventListener('resize', checkScreenSize);
+//     // Écouter les changements de taille d'écran
+//     window.addEventListener('resize', checkScreenSize);
 
-    // Nettoyage
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
+//     // Nettoyage
+//     return () => window.removeEventListener('resize', checkScreenSize);
+//   }, []);
 
-  return isMobile;
-};
+//   return isMobile;
+// };
 
 function Sidebar() {
   const [open, setOpen] = useState(false);
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   // Variants adaptatifs selon la taille d'écran
   const variants = {
