@@ -44,9 +44,10 @@ function Sidebar() {
     },
     closed: {
       // Adaptatif selon la taille d'écran
-      clipPath: isMobile
-        ? 'circle(0px at 50px 50px)'
-        : 'circle(30px at 50px 50px)',
+      // clipPath: isMobile
+      //   ? 'circle(0px at 50px 50px)'
+      //   : 'circle(30px at 50px 50px)',
+      clipPath: 'circle(0px at 50px 50px)',
       transition: {
         delay: 0.5,
         type: 'spring',
