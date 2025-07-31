@@ -469,11 +469,15 @@
     @include until('sm') {
       outline: none;
       outline-offset: none;
+      transform: none;
+      transition: none;
     }
 
     @include between('sm', 'md') {
       outline: none;
       outline-offset: none;
+      transform: none;
+      transition: none;
     }
   }
 
@@ -483,10 +487,12 @@
     // Responsive
     @include until('sm') {
       transform: none;
+      transition: none;
     }
 
     @include between('sm', 'md') {
       transform: none;
+      transition: none;
     }
   }
 
