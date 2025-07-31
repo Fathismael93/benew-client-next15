@@ -5,7 +5,7 @@ import { CldImage } from 'next-cloudinary';
 import { useState, useEffect } from 'react';
 import './styling/templates.scss';
 import Parallax from '@/components/layouts/parallax';
-import { MdMonitor, MdPhoneIphone, MdLaunch, MdCode } from 'react-icons/md';
+import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 
 // Imports analytics
 import { trackTemplateView, trackPagePerformance } from '@/utils/analytics';
@@ -41,83 +41,54 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
           <section key={template.template_id} className="others projectSection">
             <Link
               href={`/templates/${template.template_id}`}
-              className="magazineCard"
+              className="minimalCard"
               onMouseEnter={() => setHoveredCard(template.template_id)}
               onMouseLeave={() => setHoveredCard(null)}
               onClick={() => handleTemplateClick(template)}
             >
               <div
-                className={`magazineCardInner ${
+                className={`minimalCardInner ${
                   hoveredCard === template.template_id ? 'hovered' : ''
                 }`}
               >
-                {/* Image Background */}
-                <div className="magazineImageBackground">
+                {/* Image Container */}
+                <div className="minimalImageContainer">
                   <CldImage
                     src={template.template_image}
                     alt={`Interface de ${template.template_name}`}
-                    width={1400}
-                    height={900}
-                    className="magazineBackgroundImage"
-                    priority={index < 2} // Priorité pour les 2 premières
+                    width={800}
+                    height={600}
+                    className="minimalImage"
+                    priority={index < 2}
                   />
-                  {/* Overlay gradient */}
-                  <div className="magazineOverlay" />
                 </div>
 
-                {/* Badges Plateformes - Position absolue */}
-                <div className="magazinePlatformBadges">
-                  {template.template_has_web && (
-                    <div className="platformBadge web">
-                      <MdMonitor size={18} />
-                      <span>Web</span>
-                    </div>
-                  )}
-                  {template.template_has_mobile && (
-                    <div className="platformBadge mobile">
-                      <MdPhoneIphone size={18} />
-                      <span>Mobile</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Contenu Principal - Superposition */}
-                <div className="magazineContent">
-                  {/* Catégorie/Tag */}
-                  <div className="magazineCategory">Template Premium</div>
-
-                  {/* Titre Principal */}
-                  <h2 className="magazineTitle">{template.template_name}</h2>
-
-                  {/* Description (optionnelle) */}
-                  <p className="magazineDescription">
-                    Solution professionnelle avec design moderne et
-                    fonctionnalités avancées
-                  </p>
-
-                  {/* Actions Rapides */}
-                  <div className="magazineActions">
-                    <div className="actionButton primary">
-                      <MdLaunch size={16} />
-                      <span>Voir Détails</span>
-                    </div>
-                    <div className="actionButton secondary">
-                      <MdCode size={16} />
-                      <span>Preview</span>
-                    </div>
+                {/* Content Container */}
+                <div className="minimalContent">
+                  {/* Category with Icon */}
+                  <div className="minimalCategory">
+                    {template.template_has_web &&
+                    template.template_has_mobile ? (
+                      <>
+                        <MdMonitor size={16} />
+                        <MdPhoneIphone size={16} />
+                        <span>Web & Mobile</span>
+                      </>
+                    ) : template.template_has_web ? (
+                      <>
+                        <MdMonitor size={16} />
+                        <span>Web App</span>
+                      </>
+                    ) : (
+                      <>
+                        <MdPhoneIphone size={16} />
+                        <span>Mobile App</span>
+                      </>
+                    )}
                   </div>
-                </div>
 
-                {/* Indicateur de progression (optionnel) */}
-                <div className="magazineProgress">
-                  <div className="progressDots">
-                    {templates.map((_, i) => (
-                      <div
-                        key={i}
-                        className={`progressDot ${i === index ? 'active' : ''}`}
-                      />
-                    ))}
-                  </div>
+                  {/* Title */}
+                  <h3 className="minimalTitle">{template.template_name}</h3>
                 </div>
               </div>
             </Link>

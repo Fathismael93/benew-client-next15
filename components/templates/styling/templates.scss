@@ -2,7 +2,7 @@
 @use '../../../app/styles/abstracts' as *;
 
 // ===============================
-// TEMPLATES MAGAZINE STYLE - MOBILE-FIRST
+// TEMPLATES MINIMAL GRID - MOBILE-FIRST
 // ===============================
 
 .projectSection {
@@ -13,7 +13,7 @@
   justify-content: center;
   position: relative;
 
-  // 📱 MOBILE FIRST - Padding optimisé
+  // 📱 MOBILE FIRST - Padding minimal
   padding: 1rem 0.75rem;
 
   @include from('sm') {
@@ -30,48 +30,37 @@
 }
 
 // =============================
-// CARTE MAGAZINE - STRUCTURE PRINCIPALE
+// CARTE MINIMAL - STRUCTURE ÉPURÉE
 // =============================
 
-.magazineCard {
+.minimalCard {
   display: block;
-  position: relative;
-  border-radius: 24px;
-  overflow: hidden;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
 
   // 📱 MOBILE FIRST - Dimensions optimales
-  width: 95%;
-  height: 85vh;
-  max-height: 600px;
+  width: 90%;
+  max-width: 420px;
 
-  // 🖥️ RESPONSIVE
   @include from('sm') {
-    width: 90%;
-    height: 80vh;
-    max-height: 650px;
+    width: 85%;
+    max-width: 450px;
   }
 
   @include from('md') {
-    width: 85%;
-    height: 75vh;
-    max-height: 700px;
+    width: 80%;
+    max-width: 480px;
   }
 
   @include from('lg') {
-    width: 80%;
-    max-width: 900px;
-    height: 70vh;
-    max-height: 600px;
+    width: 75%;
+    max-width: 500px;
   }
 
   @include from('xl') {
-    width: 75%;
-    max-width: 1000px;
-    height: 65vh;
-    max-height: 550px;
+    width: 70%;
+    max-width: 520px;
   }
 
   &:hover {
@@ -80,373 +69,187 @@
   }
 }
 
-.magazineCardInner {
-  position: relative;
+.minimalCardInner {
   width: 100%;
-  height: 100%;
-  border-radius: 24px;
+  background: rgba($text-color, 0.02);
+  border: 1px solid rgba($primary-color, 0.1);
+  border-radius: 16px;
   overflow: hidden;
   transition:
-    transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1),
-    box-shadow 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 
-  // Ombre sophistiquée
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.3),
-    0 8px 25px rgba($primary-color, 0.1);
+  // Ombre subtile
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
   &.hovered {
-    transform: translateY(-12px) scale(1.02);
-    box-shadow:
-      0 35px 80px rgba(0, 0, 0, 0.4),
-      0 15px 40px rgba($primary-color, 0.2),
-      0 0 0 1px rgba($primary-color, 0.3);
+    transform: translateY(-8px);
+    border-color: rgba($primary-color, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   }
 
   // 📱 MOBILE - Effet tactile
   @media (pointer: coarse) {
     &:active {
-      transform: translateY(-6px) scale(0.98);
+      transform: translateY(-4px) scale(0.98);
     }
   }
 }
 
 // =============================
-// IMAGE BACKGROUND - IMMERSIVE
+// CONTENEUR IMAGE - OBJECT-FIT: CONTAIN
 // =============================
 
-.magazineImageBackground {
-  position: absolute;
-  top: 0;
-  left: 0;
+.minimalImageContainer {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.magazineBackgroundImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-
-  // Effet parallax subtil au hover
-  .magazineCardInner.hovered & {
-    transform: scale(1.08);
-  }
-}
-
-// Overlay gradient pour lisibilité
-.magazineOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background: linear-gradient(
     135deg,
-    rgba($background-color, 0.7) 0%,
-    rgba($background-color, 0.4) 30%,
-    rgba($background-color, 0.2) 60%,
-    rgba($background-color, 0.8) 100%
+    rgba($primary-color, 0.03),
+    rgba($secondary-color, 0.03)
   );
-  z-index: 2;
-  transition: opacity 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba($primary-color, 0.08);
 
-  .magazineCardInner.hovered & {
-    background: linear-gradient(
-      135deg,
-      rgba($background-color, 0.6) 0%,
-      rgba($background-color, 0.3) 30%,
-      rgba($background-color, 0.1) 60%,
-      rgba($background-color, 0.7) 100%
-    );
+  // 📱 MOBILE FIRST - Proportions optimales
+  height: 280px;
+  padding: 1.5rem;
+
+  @include from('sm') {
+    height: 300px;
+    padding: 1.75rem;
+  }
+
+  @include from('md') {
+    height: 320px;
+    padding: 2rem;
+  }
+
+  @include from('lg') {
+    height: 340px;
+    padding: 2.25rem;
+  }
+
+  @include from('xl') {
+    height: 360px;
+    padding: 2.5rem;
+  }
+}
+
+.minimalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; // ✅ COMME DEMANDÉ
+  object-position: center;
+  border-radius: 8px;
+  transition: transform 0.4s ease;
+
+  .minimalCardInner.hovered & {
+    transform: scale(1.05);
   }
 }
 
 // =============================
-// BADGES PLATEFORMES - FLOATING
+// CONTENU - CATÉGORIE + TITRE
 // =============================
 
-.magazinePlatformBadges {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  display: flex;
-  gap: 0.75rem;
-  z-index: 4;
+.minimalContent {
+  padding: 1.5rem;
 
   // 📱 MOBILE
   @include until('sm') {
-    top: 1.5rem;
-    right: 1.5rem;
-    gap: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  @include from('lg') {
+    padding: 1.75rem;
   }
 }
 
-.platformBadge {
+// =============================
+// CATÉGORIE AVEC ICÔNES
+// =============================
+
+.minimalCategory {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border-radius: 50px;
+  margin-bottom: 1rem;
+  color: rgba($primary-color, 0.8);
   font-size: 0.875rem;
   font-weight: 600;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
   // 📱 MOBILE
   @include until('sm') {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     gap: 0.375rem;
+    margin-bottom: 0.75rem;
+  }
+
+  // Icônes
+  svg {
+    color: $primary-color;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+  }
+
+  // Texte de catégorie
+  span {
+    color: rgba($text-color, 0.7);
+    transition: color 0.3s ease;
+  }
+
+  // Effet hover
+  .minimalCardInner.hovered & {
+    svg {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
 
     span {
-      display: none; // Masquer texte sur très petits écrans
-    }
-  }
-
-  &.web {
-    background: rgba($primary-color, 0.9);
-    color: $background-color;
-
-    &:hover {
-      background: rgba($primary-color, 1);
-      transform: translateY(-2px) scale(1.05);
-    }
-  }
-
-  &.mobile {
-    background: rgba($secondary-color, 0.9);
-    color: $text-color;
-
-    &:hover {
-      background: rgba($secondary-color, 1);
-      transform: translateY(-2px) scale(1.05);
+      color: rgba($text-color, 0.9);
     }
   }
 }
 
 // =============================
-// CONTENU PRINCIPAL - OVERLAY CONTENT
+// TITRE TEMPLATE
 // =============================
 
-.magazineContent {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 3rem 2.5rem 2.5rem 2.5rem;
-  z-index: 3;
-
-  // Gradient background pour améliorer lisibilité
-  background: linear-gradient(
-    to top,
-    rgba($background-color, 0.95) 0%,
-    rgba($background-color, 0.8) 50%,
-    transparent 100%
-  );
-  backdrop-filter: blur(10px);
-
-  // 📱 MOBILE
-  @include until('sm') {
-    padding: 2rem 1.5rem 1.5rem 1.5rem;
-  }
-
-  @include until('md') {
-    padding: 2.5rem 2rem 2rem 2rem;
-  }
-}
-
-// Catégorie/Tag
-.magazineCategory {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: rgba($accent-color, 0.9);
-  color: $text-color;
-  border-radius: 20px;
-  font-size: 0.75rem;
+.minimalTitle {
+  font-size: 1.5rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
-  backdrop-filter: blur(10px);
-
-  // 📱 MOBILE
-  @include until('sm') {
-    font-size: 0.7rem;
-    padding: 0.375rem 0.75rem;
-    margin-bottom: 0.75rem;
-  }
-}
-
-// Titre Principal
-.magazineTitle {
-  font-size: 3rem;
-  font-weight: 800;
   color: $text-color;
-  margin: 0 0 1rem 0;
-  line-height: 1.1;
-  text-shadow: 0 4px 8px rgba($background-color, 0.8);
-  transition: all 0.4s ease;
+  margin: 0;
+  line-height: 1.3;
+  transition: all 0.3s ease;
 
   // 📱 MOBILE
   @include until('sm') {
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.3rem;
+    line-height: 1.4;
   }
 
-  @include until('md') {
-    font-size: 2.5rem;
+  @include from('md') {
+    font-size: 1.6rem;
+  }
+
+  @include from('lg') {
+    font-size: 1.7rem;
   }
 
   @include from('xl') {
-    font-size: 3.5rem;
+    font-size: 1.8rem;
   }
 
-  .magazineCardInner.hovered & {
+  // Effet hover
+  .minimalCardInner.hovered & {
     color: $primary-color;
-    transform: translateX(8px);
-  }
-}
-
-// Description
-.magazineDescription {
-  font-size: 1.1rem;
-  color: rgba($text-color, 0.85);
-  margin: 0 0 2rem 0;
-  line-height: 1.6;
-  max-width: 500px;
-  text-shadow: 0 2px 4px rgba($background-color, 0.6);
-
-  // 📱 MOBILE
-  @include until('sm') {
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-  }
-
-  @include until('md') {
-    font-size: 1rem;
-  }
-}
-
-// =============================
-// ACTIONS RAPIDES - CALL TO ACTION
-// =============================
-
-.magazineActions {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-
-  // 📱 MOBILE - Stack vertical sur très petits écrans
-  @include until('sm') {
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: stretch;
-  }
-
-  @include between('sm', 'md') {
-    gap: 0.75rem;
-  }
-}
-
-.actionButton {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  cursor: pointer;
-  backdrop-filter: blur(20px);
-  border: 2px solid transparent;
-  text-decoration: none;
-
-  // 📱 MOBILE
-  @include until('sm') {
-    padding: 0.875rem 1.25rem;
-    font-size: 0.9rem;
-    justify-content: center;
-  }
-
-  &.primary {
-    background: rgba($primary-color, 0.95);
-    color: $background-color;
-    border-color: rgba($primary-color, 0.3);
-
-    &:hover {
-      background: rgba($primary-color, 1);
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 10px 25px rgba($primary-color, 0.4);
-    }
-  }
-
-  &.secondary {
-    background: rgba($text-color, 0.1);
-    color: $text-color;
-    border-color: rgba($text-color, 0.3);
-
-    &:hover {
-      background: rgba($text-color, 0.2);
-      border-color: rgba($text-color, 0.6);
-      transform: translateY(-3px) scale(1.05);
-    }
-  }
-
-  // 📱 MOBILE - Effet tactile
-  &:active {
-    transform: translateY(-1px) scale(0.98);
-  }
-}
-
-// =============================
-// INDICATEUR DE PROGRESSION
-// =============================
-
-.magazineProgress {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 2.5rem;
-  z-index: 4;
-
-  // 📱 MOBILE
-  @include until('sm') {
-    bottom: 1rem;
-    right: 1.5rem;
-  }
-}
-
-.progressDots {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.progressDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba($text-color, 0.3);
-  transition: all 0.4s ease;
-
-  &.active {
-    background: $primary-color;
-    transform: scale(1.2);
-  }
-
-  // 📱 MOBILE - Plus visible
-  @include until('sm') {
-    width: 6px;
-    height: 6px;
+    transform: translateX(4px);
   }
 }
 
@@ -460,43 +263,48 @@
     padding: 0.75rem;
   }
 
-  .magazineCard {
-    height: 90vh;
-    max-height: none;
+  .minimalCard {
+    width: 85%;
+    max-width: 400px;
   }
 
-  .magazineTitle {
-    font-size: 1.8rem;
+  .minimalImageContainer {
+    height: 260px;
+    padding: 1.25rem;
   }
 
-  .magazineActions {
-    flex-direction: row;
-    gap: 0.5rem;
+  .minimalContent {
+    padding: 1rem;
   }
 
-  .actionButton {
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
+  .minimalTitle {
+    font-size: 1.2rem;
   }
 }
 
-// Écrans très hauts
+// Écrans très hauts (iPhone X, 11, etc.)
 @include tall-screen {
-  .magazineCard {
+  .minimalImageContainer {
     @include until('lg') {
-      height: 80vh;
-      max-height: 700px;
+      height: 320px;
     }
   }
 }
 
-// Réduction des animations
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .minimalCard {
+    // Zone tactile minimale recommandée
+    min-height: 300px;
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
 @include reduced-motion {
-  .magazineCardInner,
-  .magazineBackgroundImage,
-  .magazineTitle,
-  .actionButton,
-  .platformBadge {
+  .minimalCardInner,
+  .minimalImage,
+  .minimalTitle,
+  .minimalCategory {
     transition: none !important;
 
     &:hover,
@@ -506,30 +314,58 @@
   }
 }
 
-// Écrans haute densité
+// Support pour écrans haute densité
 @include high-density {
-  .magazineBackgroundImage {
+  .minimalImage {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }
 
-  .magazineCardInner {
+  .minimalCardInner {
     box-shadow:
-      0 20px 60px rgba(0, 0, 0, 0.35),
-      0 8px 25px rgba($primary-color, 0.15),
-      0 2px 8px rgba($primary-color, 0.1);
+      0 4px 20px rgba(0, 0, 0, 0.12),
+      0 1px 4px rgba($primary-color, 0.1);
+
+    &.hovered {
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.18),
+        0 4px 12px rgba($primary-color, 0.15);
+    }
   }
 }
 
-// Très grands écrans
+// Très grands écrans - Limitation et centrage
 @include from('xxxxl') {
-  .magazineCard {
-    max-width: 1200px;
-    height: 60vh;
-    max-height: 600px;
+  .projectSection {
+    padding: 3rem 2rem;
   }
 
-  .magazineTitle {
-    font-size: 4rem;
+  .minimalCard {
+    max-width: 600px;
+  }
+
+  .minimalImageContainer {
+    height: 400px;
+    padding: 3rem;
+  }
+
+  .minimalTitle {
+    font-size: 2rem;
+  }
+}
+
+// Mode sombre - Ajustements si nécessaire
+@include dark-mode {
+  .minimalCardInner {
+    background: rgba($text-color, 0.01);
+    border-color: rgba($primary-color, 0.15);
+  }
+
+  .minimalImageContainer {
+    background: linear-gradient(
+      135deg,
+      rgba($primary-color, 0.02),
+      rgba($secondary-color, 0.02)
+    );
   }
 }
