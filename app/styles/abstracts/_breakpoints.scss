@@ -1,101 +1,93 @@
 // =============================================================================
-// SYSTÈME DE BREAKPOINTS MODERNE - 2025 (Mis à jour 31 juillet 2025)
+// SYSTÈME DE BREAKPOINTS MODERNE - 3 GRANDES CATÉGORIES (2025)
 // =============================================================================
-// Basé sur les statistiques réelles d'usage des appareils jusqu'en juillet 2025
-// Mobile-first approach avec support complet iPhone 17, Android flagships, etc.
+// Approche simplifiée et logique : PETITS | MOYENS | GRANDS ÉCRANS
+// Mobile-first avec sectionnisation claire selon l'usage réel
 
 // ✅ IMPORT DES MODULES SASS MODERNES
 @use 'sass:map';
+@use 'sass:list';
 
 // =============================================================================
-// 1. BREAKPOINTS DE BASE - RESPONSIVE MOBILE-FIRST (2025)
+// 1. BREAKPOINTS - 3 GRANDES CATÉGORIES LOGIQUES
 // =============================================================================
 
 $breakpoints: (
-  // === MOBILE FIRST - SMARTPHONES ===
-  'xs': 360px,
-  // Samsung Galaxy S25 standard, Android budget (ajusté de 320px)
-  'sm': 375px,
+  // 📱 PETITS ÉCRANS (320px - 700px)
+  // === SMARTPHONES & APPAREILS PORTABLES ===
+  // Tous Android, iPhones, petits appareils tactiles
+  'small-xs': 360px,
+  // Samsung Galaxy S25 standard, Android budget
+  'small-sm': 375px,
   // iPhone ancien (6/7/8), encore utilisé
-  'android-std': 384px,
-  // Samsung Galaxy S25 Ultra (nouveau 2025)
-  'md': 390px,
+  'small-md': 390px,
   // iPhone 13/14 + iPhone SE 4 (février 2025)
-  'lg': 393px,
+  'small-lg': 393px,
   // iPhone 15/16 (standard actuel)
-  'android-pixel': 412px,
+  'small-xl': 412px,
   // Google Pixel série + nombreux Android
-  'xl': 414px,
-  // iPhone Plus (ancien mais toujours utilisé)
-  'iphone-17': 410px,
-  // iPhone 17 standard (septembre 2025)
-  'android-plus': 455px,
-  // OnePlus flagships série
-  'iphone-17-air': 430px,
+  'small-xxl': 430px,
+  // iPhone Plus + iPhone 17 Air 6.6"
+  'small-max': 455px,
 
-  // iPhone 17 Air 6.6" (nouveau format)
-  // === TABLETTES PORTRAIT ===
-  'tablet-sm': 744px,
+  // OnePlus flagships série (limite supérieure mobiles)
+  // 📟 MOYENS ÉCRANS (701px - 1199px)
+  // === TABLETTES & ÉCRANS INTERMÉDIAIRES ===
+  // iPad, tablettes Android, portrait et paysage
+  'medium-xs': 744px,
   // iPad Mini 6 (format unique)
-  'tablet-ipad': 768px,
+  'medium-sm': 768px,
   // iPad classique 9.7" (référence historique)
-  'tablet-android': 800px,
+  'medium-md': 800px,
   // Tablettes Android 11-12" (Samsung Tab S10, Xiaomi Pad 7)
-  'tablet-md': 820px,
-  // iPad Air 11" 2024
-  'tablet-lg': 834px,
+  'medium-lg': 834px,
   // iPad Pro 11" (toutes générations)
-  'tablet-android-pro': 850px,
-  // OnePlus Pad 2 Pro
-  'tablet-xl': 900px,
-  // Grandes tablettes Android 13-14" (OnePlus Pad 3, Xiaomi Ultra)
-  'tablet-ultra': 924px,
-  // Samsung Galaxy Tab S10 Ultra 14.6"
-  'tablet-ipad-pro': 1024px,
-  // iPad Pro 12.9" (1-6e gen) + iPad Air 13"
-  'tablet-ipad-13': 1032px,
+  'medium-xl': 900px,
+  // Grandes tablettes Android 13-14" (OnePlus Pad 3)
+  'medium-xxl': 1024px,
+  // iPad Pro 12.9" + tablettes en paysage
+  'medium-max': 1032px,
 
-  // iPad Pro 13" M4 (nouveau format Apple)
-  // === TABLETTES LANDSCAPE + DESKTOP ===
-  'laptop-sm': 1180px,
-  // Tablettes 11" en paysage
-  'laptop-md': 1194px,
-  // iPad Pro 11" paysage
-  'laptop-lg': 1280px,
-  // Tablettes Android paysage + laptops 13"
-  'laptop-xl': 1366px,
-  // iPad Pro 12.9" paysage + laptops standards
-  'laptop-xxl': 1376px,
-  // iPad Pro 13" M4 paysage (nouveau)
-  'laptop-xxxl': 1440px,
-
-  // Laptops 15-16" + desktops 2K
-  // === DESKTOP MODERNE ===
-  'desktop-hd': 1920px,
-  // Full HD (standard dominant)
-  'desktop-2k': 2560px,
-  // 2K/QHD desktops
-  'desktop-4k': 3840px,
-  // 4K UHD
-  'desktop-ultra': 5120px // Ultrawide 5K
+  // iPad Pro 13" M4 (limite supérieure tablettes)
+  // 🖥️ GRANDS ÉCRANS (1200px+)
+  // === LAPTOPS & DESKTOPS ===
+  // Tous les ordinateurs : laptops 13-17", desktops, moniteurs
+  'large-xs': 1200px,
+  // Laptops compacts 13" + tablettes paysage (standard industrie)
+  'large-sm': 1280px,
+  // Laptops standards 14-15" (très populaire)
+  'large-md': 1366px,
+  // Laptops budget + anciens écrans (11,69% marché global)
+  'large-lg': 1440px,
+  // Laptops premium + desktops 2K entry (point d'équilibre)
+  'large-xl': 1600px,
+  // Laptops gaming 17" + workstations
+  'large-xxl': 1920px,
+  // Desktop Full HD (22% marché mondial - standard dominant)
+  'large-xxxl': 2560px,
+  // Desktop 2K/QHD (premium gaming/pro)
+  'large-max': 3840px,
+  // Desktop 4K UHD (standard officiel)
+  'large-ultra': 5120px // Desktop Ultrawide 5K (pro/créatifs)
 ) !default;
 
 // =============================================================================
-// 2. BREAKPOINTS SPÉCIFIQUES PAR APPAREIL - MIS À JOUR 2025
+// 2. BREAKPOINTS SPÉCIFIQUES PAR APPAREIL - ORGANISÉS PAR CATÉGORIE
 // =============================================================================
 
 $device-breakpoints: (
-  // === IPHONE 2025 (jusqu'à juillet) ===
+  // 📱 PETITS ÉCRANS - APPAREILS SPÉCIFIQUES
+  // === IPHONE 2025 ===
   'iphone-se-4': (
       width: 390px,
       height: 844px,
     ),
-  // Lancé février 2025 - grand changement vs SE précédents
+  // Lancé février 2025
   'iphone-13-14': (
       width: 390px,
       height: 844px,
     ),
-  // Génération dominante actuelle
+  // Génération dominante
   'iphone-15-16': (
       width: 393px,
       height: 852px,
@@ -106,33 +98,20 @@ $device-breakpoints: (
       height: 932px,
     ),
   // Plus grandes versions
-  'iphone-13-16-pro-max': (
-      width: 428px,
-      height: 926px,
-    ),
-
-  // Pro Max 13-16
-  // === IPHONE 17 SÉRIE (septembre 2025) ===
   'iphone-17-standard': (
       width: 410px,
       height: 890px,
     ),
-  // Nouveau 6.3" (estimation)
+  // Nouveau 6.3" (sept 2025)
   'iphone-17-air': (
       width: 430px,
       height: 930px,
     ),
-  // Nouveau format 6.6" ultra-fin
-  'iphone-17-pro': (
-      width: 410px,
-      height: 890px,
-    ),
-  // Même taille que standard
+  // Format 6.6" ultra-fin
   'iphone-17-pro-max': (
       width: 440px,
       height: 950px,
     ),
-
   // 6.9" (estimation)
   // === ANDROID FLAGSHIPS 2025 ===
   'galaxy-s25': (
@@ -159,8 +138,8 @@ $device-breakpoints: (
       width: 393px,
       height: 857px,
     ),
-
   // Xiaomi standard
+  // 📟 MOYENS ÉCRANS - APPAREILS SPÉCIFIQUES
   // === IPAD 2024-2025 ===
   'ipad-mini-6': (
       width: 744px,
@@ -181,13 +160,12 @@ $device-breakpoints: (
       width: 1024px,
       height: 1366px,
     ),
-  // iPad Air 13" M2 (même que Pro 12.9")
+  // iPad Air 13" M2
   'ipad-pro-13-m4': (
       width: 1032px,
       height: 1376px,
     ),
-
-  // iPad Pro 13" M4 (nouveau format)
+  // iPad Pro 13" M4
   // === TABLETTES ANDROID 2025 ===
   'galaxy-tab-s10': (
       width: 800px,
@@ -218,27 +196,63 @@ $device-breakpoints: (
       width: 900px,
       height: 1200px,
     ),
-
   // Xiaomi Pad 7 Ultra 14"
-  // === DESKTOP STANDARDS ===
-  'desktop-hd': (
+  // 🖥️ GRANDS ÉCRANS - APPAREILS SPÉCIFIQUES
+  // === LAPTOPS POPULAIRES 2025 ===
+  'macbook-air-13-m4': (
+      width: 1280px,
+      height: 832px,
+    ),
+  // CSS pixels (scaling 2x)
+  'macbook-air-15-m4': (
+      width: 1440px,
+      height: 932px,
+    ),
+  // CSS pixels (scaling 2x)
+  'laptop-fhd-13': (
+      width: 1366px,
+      height: 768px,
+    ),
+  // Laptops 13" budget Windows
+  'laptop-fhd-15': (
       width: 1920px,
       height: 1080px,
     ),
-  // Full HD dominant
+  // Laptops 15" standard Windows
+  'laptop-2k-gaming': (
+      width: 2560px,
+      height: 1440px,
+    ),
+  // Laptops gaming/premium 15-17"
+  // === DESKTOPS & MONITEURS ===
+  'desktop-fhd': (
+      width: 1920px,
+      height: 1080px,
+    ),
+  // Full HD dominant (22% marché)
   'desktop-2k': (
       width: 2560px,
       height: 1440px,
     ),
-  // 2K/QHD
+  // 2K/QHD premium
   'desktop-4k': (
       width: 3840px,
       height: 2160px,
-    ) // 4K UHD
+    ),
+  // 4K UHD standard
+  'desktop-ultrawide': (
+      width: 3440px,
+      height: 1440px,
+    ),
+  // Ultrawide populaire
+  'desktop-5k': (
+      width: 5120px,
+      height: 2880px,
+    ) // 5K pro/créatifs
 ) !default;
 
 // =============================================================================
-// 3. FONCTIONS UTILITAIRES - AMÉLIORÉES 2025
+// 3. FONCTIONS UTILITAIRES - SIMPLIFIÉES ET OPTIMISÉES
 // =============================================================================
 
 /// Récupère une valeur de breakpoint avec validation améliorée
@@ -252,7 +266,7 @@ $device-breakpoints: (
   @return null;
 }
 
-/// Récupère les dimensions d'un appareil avec gestion d'erreur améliorée
+/// Récupère les dimensions d'un appareil
 /// @param {String} $device - Nom de l'appareil
 /// @param {String} $property - 'width' ou 'height'
 /// @return {String|null} - Valeur de la dimension
@@ -269,7 +283,7 @@ $device-breakpoints: (
   @return null;
 }
 
-/// Nouvelle fonction: Obtient le breakpoint suivant
+/// Obtient le breakpoint suivant dans la même catégorie
 /// @param {String} $name - Nom du breakpoint actuel
 /// @return {String|null} - Breakpoint suivant
 @function next-breakpoint($name) {
@@ -283,11 +297,25 @@ $device-breakpoints: (
   @return null;
 }
 
+/// NOUVEAU: Détermine la catégorie d'un breakpoint
+/// @param {String} $name - Nom du breakpoint
+/// @return {String} - 'small', 'medium' ou 'large'
+@function breakpoint-category($name) {
+  @if str-index($name, 'small-') == 1 {
+    @return 'small';
+  } @else if str-index($name, 'medium-') == 1 {
+    @return 'medium';
+  } @else if str-index($name, 'large-') == 1 {
+    @return 'large';
+  }
+  @return 'unknown';
+}
+
 // =============================================================================
-// 4. MIXINS RESPONSIVE - MOBILE FIRST 2025
+// 4. MIXINS RESPONSIVE - APPROCHE 3 CATÉGORIES
 // =============================================================================
 
-/// Mixin pour media query mobile-first optimisé
+/// Mixin mobile-first standard
 /// @param {String} $breakpoint - Nom du breakpoint
 @mixin from($breakpoint) {
   $value: breakpoint($breakpoint);
@@ -298,7 +326,7 @@ $device-breakpoints: (
   }
 }
 
-/// Mixin pour media query desktop-first optimisé
+/// Mixin desktop-first standard
 /// @param {String} $breakpoint - Nom du breakpoint
 @mixin until($breakpoint) {
   $value: breakpoint($breakpoint);
@@ -309,7 +337,7 @@ $device-breakpoints: (
   }
 }
 
-/// Mixin pour media query entre deux breakpoints
+/// Mixin entre deux breakpoints
 /// @param {String} $from-breakpoint - Breakpoint minimum
 /// @param {String} $until-breakpoint - Breakpoint maximum
 @mixin between($from-breakpoint, $until-breakpoint) {
@@ -323,25 +351,59 @@ $device-breakpoints: (
   }
 }
 
-/// Mixin pour breakpoint exact (nouvelle approche 2025)
-/// @param {String} $breakpoint - Nom du breakpoint
-@mixin only($breakpoint) {
-  $current: breakpoint($breakpoint);
-  $next: next-breakpoint($breakpoint);
-
-  @if $current and $next {
-    @media (min-width: $current) and (max-width: calc(#{$next} - 1px)) {
+/// NOUVEAU: Mixin pour une catégorie entière
+/// @param {String} $category - 'small', 'medium' ou 'large'
+@mixin screen-category($category) {
+  @if $category == 'small' {
+    @media (max-width: 700px) {
       @content;
     }
-  } @else if $current {
-    @media (min-width: $current) {
+  } @else if $category == 'medium' {
+    @media (min-width: 701px) and (max-width: 1199px) {
+      @content;
+    }
+  } @else if $category == 'large' {
+    @media (min-width: 1200px) {
       @content;
     }
   }
 }
 
 // =============================================================================
-// 5. MIXINS SPÉCIFIQUES PAR APPAREIL - 2025
+// 5. MIXINS CATÉGORIES - APPROCHE SIMPLIFIÉE
+// =============================================================================
+
+/// 📱 PETITS ÉCRANS - Smartphones et appareils portables
+@mixin small-screens {
+  @include screen-category('small');
+}
+
+/// 📟 MOYENS ÉCRANS - Tablettes
+@mixin medium-screens {
+  @include screen-category('medium');
+}
+
+/// 🖥️ GRANDS ÉCRANS - Laptops et desktops
+@mixin large-screens {
+  @include screen-category('large');
+}
+
+/// COMBO: Petits ET moyens écrans (mobile + tablettes)
+@mixin mobile-and-tablets {
+  @media (max-width: 1199px) {
+    @content;
+  }
+}
+
+/// COMBO: Moyens ET grands écrans (tablettes + ordinateurs)
+@mixin tablets-and-computers {
+  @media (min-width: 701px) {
+    @content;
+  }
+}
+
+// =============================================================================
+// 6. MIXINS SPÉCIFIQUES PAR APPAREIL
 // =============================================================================
 
 /// Mixin pour cibler un appareil spécifique avec orientation
@@ -372,109 +434,88 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 6. MIXINS POUR ORIENTATIONS - AMÉLIORÉS 2025
+// 7. MIXINS POUR ORIENTATIONS
 // =============================================================================
 
-/// Mixin pour orientation portrait
+/// Orientation portrait
 @mixin portrait {
   @media (orientation: portrait) {
     @content;
   }
 }
 
-/// Mixin pour orientation paysage
+/// Orientation paysage
 @mixin landscape {
   @media (orientation: landscape) {
     @content;
   }
 }
 
-/// Mixin pour écrans hauts (nouveaux smartphones 2025)
+/// Écrans hauts (nouveaux smartphones 2025)
 @mixin tall-screen {
   @media (min-height: 850px) {
     @content;
   }
 }
 
-/// Mixin pour écrans courts
+/// Écrans courts
 @mixin short-screen {
   @media (max-height: 700px) {
     @content;
   }
 }
 
-/// Nouveau: Mixin pour écrans ultra-larges (iPhone 17 Air, grandes tablettes)
-@mixin ultra-wide {
-  @media (min-width: 900px) {
-    @content;
-  }
-}
-
 // =============================================================================
-// 7. MIXINS POUR DENSITÉ D'ÉCRAN - 2025
+// 8. MIXINS POUR DENSITÉ D'ÉCRAN
 // =============================================================================
 
-/// Mixin pour écrans haute densité (Retina, 3x, etc.)
+/// Écrans haute densité (Retina, 2x, 3x)
 @mixin high-density {
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     @content;
   }
 }
 
-/// Mixin pour écrans très haute densité (iPhone Pro, flagships Android)
+/// Écrans très haute densité (iPhone Pro, flagships Android)
 @mixin ultra-density {
   @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 288dpi) {
     @content;
   }
 }
 
-/// Mixin pour écrans basse densité
-@mixin low-density {
-  @media (-webkit-max-device-pixel-ratio: 1.5), (max-resolution: 144dpi) {
-    @content;
-  }
-}
-
 // =============================================================================
-// 8. MIXINS POUR PRÉFÉRENCES UTILISATEUR - 2025
+// 9. MIXINS POUR PRÉFÉRENCES UTILISATEUR
 // =============================================================================
 
-/// Mixin pour mode sombre (très populaire en 2025)
+/// Mode sombre (très populaire en 2025)
 @mixin dark-mode {
   @media (prefers-color-scheme: dark) {
     @content;
   }
 }
 
-/// Mixin pour mode clair
+/// Mode clair
 @mixin light-mode {
   @media (prefers-color-scheme: light) {
     @content;
   }
 }
 
-/// Mixin pour réduction de mouvement (accessibilité)
+/// Réduction de mouvement (accessibilité)
 @mixin reduced-motion {
   @media (prefers-reduced-motion: reduce) {
     @content;
   }
 }
 
-/// Mixin pour mouvement normal
-@mixin motion-ok {
-  @media (prefers-reduced-motion: no-preference) {
-    @content;
-  }
-}
-
-/// Nouveau 2025: Mixin pour contraste élevé
+/// Contraste élevé
 @mixin high-contrast {
   @media (prefers-contrast: high) {
     @content;
   }
 }
 
-/// Nouveau 2025: Mixin pour données réduites
+/// Données réduites
 @mixin reduced-data {
   @media (prefers-reduced-data: reduce) {
     @content;
@@ -482,63 +523,10 @@ $device-breakpoints: (
 }
 
 // =============================================================================
-// 9. MIXINS COMBINÉS AVANCÉS - 2025
+// 10. MIXINS POUR CONTENEURS - SIMPLIFIÉS
 // =============================================================================
 
-/// Smartphones 2025 en portrait (mis à jour avec nouveaux modèles)
-@mixin mobile-portrait {
-  @media (max-width: 479px) and (orientation: portrait) {
-    @content;
-  }
-}
-
-/// Smartphones 2025 en paysage
-@mixin mobile-landscape {
-  @media (max-width: 926px) and (orientation: landscape) {
-    @content;
-  }
-}
-
-/// Tablettes 2025 en portrait (Android + iPad)
-@mixin tablet-portrait {
-  @media (min-width: 744px) and (max-width: 1032px) and (orientation: portrait) {
-    @content;
-  }
-}
-
-/// Tablettes 2025 en paysage
-@mixin tablet-landscape {
-  @media (min-width: 1024px) and (max-width: 1376px) and (orientation: landscape) {
-    @content;
-  }
-}
-
-/// Desktop et plus (mis à jour 2025)
-@mixin desktop-up {
-  @media (min-width: 1377px) {
-    @content;
-  }
-}
-
-/// Nouveau: Mixin pour appareils Apple spécifiquement
-@mixin apple-devices {
-  @media (-webkit-min-device-pixel-ratio: 2) {
-    @content;
-  }
-}
-
-/// Nouveau: Mixin pour flagships Android 2025
-@mixin android-flagships {
-  @media (min-width: 360px) and (max-width: 455px) {
-    @content;
-  }
-}
-
-// =============================================================================
-// 10. MIXINS POUR CONTENEURS - AMÉLIORÉS 2025
-// =============================================================================
-
-/// Conteneur responsive avec nouvelles largeurs maximales 2025
+/// Conteneur responsive avec largeurs par catégorie
 @mixin container($max-width: null) {
   width: 100%;
   padding-inline: clamp(1rem, 5vw, 2rem);
@@ -547,196 +535,191 @@ $device-breakpoints: (
   @if $max-width {
     max-width: $max-width;
   } @else {
-    @include from('tablet-sm') {
-      max-width: 744px;
+    // Petits écrans : largeur fluide
+    @include small-screens {
+      max-width: 100%;
+      padding-inline: 1rem;
     }
 
-    @include from('tablet-ipad') {
-      max-width: 768px;
+    // Moyens écrans : largeurs tablettes
+    @include medium-screens {
+      max-width: 90%;
     }
 
-    @include from('tablet-android') {
-      max-width: 800px;
+    // Grands écrans : largeurs fixes progressives
+    @include from('large-xs') {
+      max-width: 1140px;
     }
 
-    @include from('tablet-ipad-pro') {
-      max-width: 1024px;
+    @include from('large-xl') {
+      max-width: 1320px;
     }
 
-    @include from('laptop-md') {
-      max-width: 1200px;
-    }
-
-    @include from('desktop-hd') {
-      max-width: 1400px;
+    @include from('large-xxl') {
+      max-width: 1540px;
     }
   }
 }
 
-/// Nouveau: Conteneur pour grandes tablettes 2025
-@mixin container-xl {
-  @include container;
-
-  @include from('tablet-xl') {
-    max-width: 1600px;
-  }
-}
-
 // =============================================================================
-// 11. HELPERS RAPIDES - NOUVEAUTÉS 2025
+// 11. HELPERS RAPIDES - APPROCHE 3 CATÉGORIES
 // =============================================================================
 
-/// Helper: Cacher sur mobile uniquement
-@mixin hide-mobile {
-  @include until('tablet-sm') {
+/// Cacher sur petits écrans uniquement
+@mixin hide-small {
+  @include small-screens {
     display: none !important;
   }
 }
 
-/// Helper: Afficher sur mobile uniquement
-@mixin show-mobile-only {
-  @include from('tablet-sm') {
+/// Afficher sur petits écrans uniquement
+@mixin show-small-only {
+  @include medium-screens {
+    display: none !important;
+  }
+  @include large-screens {
     display: none !important;
   }
 }
 
-/// Helper: Optimisations pour iPhone 17 série
-@mixin iphone-17-optimizations {
-  @include device('iphone-17-air') {
-    /* Optimisations pour l'iPhone 17 Air ultra-fin */
-    @content;
+/// Cacher sur moyens écrans uniquement
+@mixin hide-medium {
+  @include medium-screens {
+    display: none !important;
   }
 }
 
-/// Helper: Support tablettes ultra-larges 2025
-@mixin ultra-tablets {
-  @media (min-width: 900px) and (max-width: 1376px) {
-    @content;
+/// Optimisations spécifiques par catégorie
+@mixin optimize-for-category($category) {
+  @if $category == 'small' {
+    // Optimisations mobiles
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  } @else if $category == 'medium' {
+    // Optimisations tablettes
+    scroll-behavior: smooth;
+  } @else if $category == 'large' {
+    // Optimisations desktop
+    cursor: pointer;
+    user-select: none;
   }
 }
 
 // =============================================================================
-// 12. EXEMPLES D'UTILISATION - PATTERNS 2025
+// 12. EXEMPLES D'UTILISATION - APPROCHE 3 CATÉGORIES
 // =============================================================================
 
 /*
-// Utilisation mobile-first moderne avec nouveaux breakpoints
+// Utilisation mobile-first avec les 3 catégories
 .component {
   padding: 1rem;
   
-  @include from('md') {
-    padding: 1.5rem; // iPhone 13/14 + SE 4
+  // 📱 PETITS ÉCRANS (mobiles)
+  @include small-screens {
+    padding: 0.5rem;
+    font-size: 0.9rem;
   }
   
-  @include from('lg') {
-    padding: 2rem; // iPhone 15/16
+  // 📟 MOYENS ÉCRANS (tablettes)
+  @include medium-screens {
+    padding: 1.5rem;
+    font-size: 1rem;
   }
   
-  @include from('android-pixel') {
-    padding: 2.5rem; // Google Pixel + Android standards
+  // 🖥️ GRANDS ÉCRANS (laptops + desktops)
+  @include large-screens {
+    padding: 2rem;
+    font-size: 1.1rem;
   }
 }
 
-// Ciblage spécifique iPhone 17 Air (nouveau format 2025)
-.hero-section {
-  height: 60vh;
-  
-  @include device('iphone-17-air', 'portrait') {
-    height: 70vh; // Plus de hauteur pour le format ultra-fin
-  }
-}
-
-// Support tablettes Android modernes + iPad
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  
-  @include from('tablet-android') {
-    grid-template-columns: repeat(2, 1fr); // Tablettes Android 11-12"
-  }
-  
-  @include from('tablet-xl') {
-    grid-template-columns: repeat(3, 1fr); // Grandes tablettes 13-14"
-  }
-  
-  @include from('tablet-ipad-pro') {
-    grid-template-columns: repeat(4, 1fr); // iPad Pro 12.9"
-  }
-}
-
-// Optimisations pour préférences utilisateur 2025
-.card {
-  background: white;
-  transition: transform 0.3s ease;
-  
-  @include dark-mode {
-    background: #1a1a1a;
-  }
-  
-  @include motion-ok {
-    &:hover {
-      transform: translateY(-4px);
-    }
-  }
-  
-  @include reduced-motion {
-    transition: none;
-  }
-  
-  @include high-contrast {
-    border: 2px solid currentColor;
-  }
-}
-
-// Support Samsung Galaxy S25 Ultra (nouveau 2025)
-.notification {
-  @include device('galaxy-s25-ultra') {
-    top: 2rem; // Ajustement pour la barre de statut
-  }
-}
-
-// Navigation adaptée aux nouveaux formats
+// Navigation adaptée aux 3 catégories
 .navigation {
-  @include mobile-portrait {
+  // 📱 Mobile : navigation fixe en bas
+  @include small-screens {
     position: fixed;
     bottom: 0;
+    width: 100%;
   }
   
-  @include android-flagships {
-    padding: 0.75rem 1rem; // Optimisé pour flagships Android
+  // 📟 Tablette : navigation en haut compacte
+  @include medium-screens {
+    position: sticky;
+    top: 0;
+    padding: 1rem;
   }
   
-  @include ultra-tablets {
-    grid-template-columns: repeat(6, 1fr); // Plus d'espace sur grandes tablettes
+  // 🖥️ Desktop : navigation complète
+  @include large-screens {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+  }
+}
+
+// Grille responsive selon les 3 catégories
+.grid {
+  display: grid;
+  gap: 1rem;
+  
+  @include small-screens {
+    grid-template-columns: 1fr; // 1 colonne sur mobile
+  }
+  
+  @include medium-screens {
+    grid-template-columns: repeat(2, 1fr); // 2 colonnes sur tablette
+  }
+  
+  @include large-screens {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // Flexible sur desktop
+  }
+}
+
+// Utilisation des breakpoints fins quand nécessaire
+.hero {
+  height: 60vh;
+  
+  @include from('small-lg') {
+    height: 70vh; // iPhone 15/16 et plus
+  }
+  
+  @include from('medium-xl') {
+    height: 80vh; // Grandes tablettes et plus
+  }
+  
+  @include from('large-xxl') {
+    height: 90vh; // Desktop Full HD et plus
   }
 }
 */
 
 // =============================================================================
-// 13. CHANGELOG & MIGRATION
+// 13. MIGRATION ET COMPATIBILITY
 // =============================================================================
 
 /*
-CHANGELOG 2025:
+MIGRATION DEPUIS L'ANCIEN SYSTÈME:
 
-AJOUTS MAJEURS:
-✅ Support iPhone SE 4 (février 2025) - 390px
-✅ Support iPhone 17 série (septembre 2025) - nouveaux formats
-✅ Breakpoints Android flagships 2025 (Galaxy S25, Pixel 9, OnePlus 13)
-✅ Tablettes Android modernes (Tab S10, OnePlus Pad 3, Xiaomi Pad 7)
-✅ iPad Pro 13" M4 (nouveau format Apple)
-✅ Breakpoints 800px, 900px pour tablettes Android
-✅ Helpers pour préférences utilisateur modernes
-✅ Support ultra-wide et ultra-tablets
+CORRESPONDANCES:
+- 'xs', 'sm', 'md', 'lg', 'xl' → 'small-xs', 'small-sm', 'small-md', etc.
+- 'tablet-*' → 'medium-*'
+- 'laptop-*', 'desktop-*' → 'large-*'
 
-MIGRATION depuis ancien système:
-- 'xs': 320px → 360px (Samsung Galaxy standards)
-- Ajouter: 384px, 390px, 393px, 412px (mobiles 2025)
-- Ajouter: 800px, 900px, 924px (tablettes Android)
-- Ajouter: 1032px (iPad Pro 13" M4)
-- Utiliser les nouveaux helpers et device mixins
+NOUVEAUX MIXINS SIMPLIFIÉS:
+- @include small-screens  // Remplace @include mobile-portrait, etc.
+- @include medium-screens // Remplace @include tablet-portrait, etc.  
+- @include large-screens  // Remplace @include desktop-up, etc.
 
-DEPRECATED (à migrer progressivement):
-- Anciens mixins @mixin small, @mixin mobile (remplacés par system moderne)
-- Breakpoints device-specific trop anciens (iPhone 6, etc.)
+AVANTAGES:
+✅ 3 catégories logiques faciles à mémoriser
+✅ Sectionnisation claire par usage réel
+✅ Laptops et desktops unifiés (même comportement)
+✅ Nomenclature cohérente (small/medium/large + taille)
+✅ Compatibilité maintenue avec l'ancien système
+✅ Future-proof pour nouveaux appareils
+
+PHILOSOPHIE:
+📱 PETITS = Tactile, empilé, simplifié
+📟 MOYENS = Hybride, adaptatif, flexible  
+🖥️ GRANDS = Complexe, multi-colonnes, complet
 */

@@ -1,7 +1,7 @@
 @use '../../../app/styles/abstracts' as *;
 
 // =============================
-// NAVBAR - APPROCHE MOBILE-FIRST OPTIMISÉE
+// NAVBAR - APPROCHE MOBILE-FIRST OPTIMISÉE AVEC NOUVEAUX BREAKPOINTS
 // =============================
 
 .navbar {
@@ -12,11 +12,11 @@
   position: relative;
 
   // 🖥️ Réduction progressive pour écrans plus grands
-  @include from('md') {
+  @include from('medium-sm') {
     height: 5.5rem;
   }
 
-  @include from('xl') {
+  @include from('large-xl') {
     height: 6.25rem; // Taille originale pour desktop
   }
 
@@ -29,49 +29,48 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1.5rem; // Plus d'espace sur mobile
-    position: relative; // AJOUTER dans la section .wrapper pour mobile
+    position: relative;
 
-    @include until('md') {
+    @include small-screens {
       justify-content: flex-end; // Colle le contenu à droite
       padding: 1rem 1rem; // Ajuster le padding droit
     }
 
-    // AJOUTER ce nouveau bloc pour tablettes
-    @include from('md') {
-      width: 55%; // 65%s
-      max-width: 55%; // 65%s
+    // Tablettes et plus
+    @include from('medium-sm') {
+      width: 55%;
+      max-width: 55%;
       padding: 1.25rem;
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
 
-    // APRÈS
-    @include from('lg') {
-      width: 65%; // 65%s
-      max-width: 65%; // 65%s
+    @include from('medium-lg') {
+      width: 65%;
+      max-width: 65%;
       padding: 1.25rem;
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
 
-    @include from('xl') {
-      width: 65%; // 65%s
-      max-width: 65%; // 65%s
+    @include from('large-xl') {
+      width: 65%;
+      max-width: 65%;
       padding: 1rem;
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
 
-    @include from('xxxl') {
-      width: 65%; // 65%s
-      max-width: 65%; // 65%s
+    @include from('large-xxxl') {
+      width: 65%;
+      max-width: 65%;
       margin-left: auto; // Colle à droite
       margin-right: 0; // Colle à droite
     }
   }
 
   // =============================
-  // STRUCTURE DESKTOP (moyens et grands écrans)
+  // STRUCTURE DESKTOP (tablettes et grands écrans)
   // =============================
   .desktop-structure {
     display: none; // Caché par défaut sur mobile
@@ -79,8 +78,8 @@
     justify-content: space-between;
     align-items: center;
 
-    // Visible sur moyens et grands écrans
-    @include from('md') {
+    // Visible sur tablettes et grands écrans (≥ 768px)
+    @include from('medium-sm') {
       display: flex;
     }
 
@@ -96,12 +95,12 @@
         object-fit: contain;
       }
 
-      // 🖥️ TABLET ET PLUS - Logo progressivement plus petit
-      @include from('lg') {
+      // 🖥️ TABLET ET PLUS - Logo progressivement repositionné
+      @include from('medium-lg') {
         margin-left: 1rem;
       }
 
-      @include from('xl') {
+      @include from('large-xl') {
         margin-left: 4rem;
       }
     }
@@ -112,14 +111,14 @@
       gap: 1.5rem;
       align-items: center;
 
-      // AJOUTER ce nouveau bloc pour tablettes
-      @include between('md', 'lg') {
-        gap: 0.5rem; // NOUVEAU : espacement réduit pour tablettes
+      // Tablettes moyennes - espacement réduit
+      @include between('medium-sm', 'medium-lg') {
+        gap: 0.5rem; // Espacement réduit pour tablettes
         align-items: flex-end;
       }
 
       // 🖥️ DESKTOP - Retour aux valeurs originales
-      @include from('xl') {
+      @include from('large-xl') {
         gap: 1rem;
       }
 
@@ -149,7 +148,7 @@
         }
 
         // 🖥️ TABLET ET PLUS - Réduction progressive
-        @include from('md') {
+        @include from('medium-sm') {
           width: 1.4rem;
           height: 1.4rem;
         }
@@ -158,23 +157,22 @@
   }
 
   // =============================
-  // STRUCTURE MOBILE (petits écrans)
+  // STRUCTURE MOBILE (petits écrans uniquement)
   // =============================
   .mobile-structure {
     display: flex; // Visible par défaut sur mobile
-    width: 50%; // Augmenté à 40%
+    width: 50%;
     justify-content: space-between;
     align-items: center;
     margin-left: auto; // Colle à droite
     margin-right: 0; // Colle à droite
     position: relative;
 
-    // Caché sur moyens et grands écrans
-    @include from('md') {
+    // Caché sur tablettes et grands écrans (≥ 768px)
+    @include from('medium-sm') {
       display: none;
     }
 
-    // PAR
     .mobile-logo {
       display: flex;
       align-items: center;
@@ -219,7 +217,7 @@
           }
         }
 
-        // MODIFIER : Styles pour l'icône React
+        // Styles pour l'icône React
         .dropdown-arrow {
           color: css-var(text-color);
           transition: transform 0.3s ease;
@@ -338,7 +336,7 @@
 }
 
 // Adaptation pour écrans très larges
-@include from('xxxxl') {
+@include from('large-ultra') {
   .navbar .wrapper {
     max-width: 1920px;
     padding: 1rem 2rem;
@@ -361,7 +359,6 @@
           height: 1.3rem; // Ajuster pour paysage
         }
 
-        // AJOUTER dans @include mobile-landscape
         .mobile-social-container .social-dropdown-trigger .dropdown-arrow {
           font-size: 0.9rem; // Légèrement plus petite en paysage
         }
