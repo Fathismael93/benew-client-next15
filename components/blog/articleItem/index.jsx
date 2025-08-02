@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { CldImage } from 'next-cloudinary';
-// import './single.scss';
+import './single.scss';
 import Link from 'next/link';
 
 function ArticleItem({ article_id, article_title, article_image, created }) {
