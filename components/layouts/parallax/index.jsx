@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-// import './parallax.scss';
+import './parallax.scss';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 function Parallax({ bgColor, title, planets }) {
