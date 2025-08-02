@@ -1,332 +1,425 @@
-// @use 'sass:color';
-// @use '../../../../app/styles/abstracts' as *;
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
 
-// // =============================
-// // CONTENEUR PRINCIPAL - LAYOUT 50/50
-// // =============================
-// .contact-main-container {
-//   display: flex;
-//   width: 100%;
-//   height: 100%;
+// =============================
+// CONTENEUR PRINCIPAL - LAYOUT 50/50
+// =============================
+.contact-main-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
 
-//   // Layout horizontal par défaut (desktop)
-//   flex-direction: row;
+  // Layout horizontal par défaut (desktop)
+  flex-direction: row;
 
-//   // =============================
-//   // RESPONSIVE - MOBILE VERTICAL
-//   // =============================
-//   @include until('md') {
-//     flex-direction: column-reverse;
-//     justify-content: center;
-//     align-items: center;
-//   }
-// }
+  // =============================
+  // RESPONSIVE - MOBILE VERTICAL
+  // =============================
+  @include until('medium-sm') {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+}
 
-// // =============================
-// // BLOC GAUCHE - TEXTE ET BOUTON
-// // =============================
-// .contact-text-block {
-//   // Desktop : 50% largeur, 100% hauteur
-//   width: 50%;
-//   height: 100%;
+// =============================
+// BLOC GAUCHE - TEXTE ET BOUTON
+// =============================
+.contact-text-block {
+  // Desktop : 50% largeur, 100% hauteur
+  width: 50%;
+  height: 100%;
 
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 
-//   // Padding pour éviter les bords
-//   padding: 2rem;
+  // Padding pour éviter les bords
+  padding: 2rem;
 
-//   @include until('sm') {
-//     padding: 1.5rem;
-//   }
+  @include small-screens {
+    padding: 1.5rem;
+  }
 
-//   @include between('sm', 'md') {
-//     padding: 1.75rem;
-//   }
+  @include from('small-sm') {
+    padding: 1.55rem;
+  }
 
-//   @include from('xl') {
-//     padding: 3rem;
-//   }
+  @include from('small-lg') {
+    padding: 1.6rem;
+  }
 
-//   // Mobile : largeur pleine, 50% hauteur
-//   @include until('md') {
-//     width: 100%;
-//     height: 40%;
-//   }
+  @include from('small-xl') {
+    padding: 1.65rem;
+  }
 
-//   // =============================
-//   // TEXTE PRINCIPAL
-//   // =============================
-//   .contact-text {
-//     color: $color-light;
-//     font-weight: 500;
-//     line-height: 1.6;
-//     letter-spacing: 0.3px;
-//     margin: 0 0 2rem 0;
-//     max-width: 90%;
+  @include between('small-xl', 'medium-sm') {
+    padding: 1.75rem;
+  }
 
-//     // Text-shadow pour lisibilité sur gradient
-//     text-shadow:
-//       0 2px 4px rgba($color-dark, 0.8),
-//       0 0 20px rgba($color-dark, 0.5);
+  @include from('medium-sm') {
+    padding: 2rem;
+  }
 
-//     // Tailles responsives
-//     font-size: 1.2rem;
+  @include from('medium-lg') {
+    padding: 2.25rem;
+  }
 
-//     @include until('sm') {
-//       font-size: 1rem;
-//       line-height: 1.5;
-//       margin: 0 0 1.5rem 0;
-//       letter-spacing: 0.2px;
-//     }
+  @include from('medium-xxl') {
+    padding: 2.5rem;
+  }
 
-//     @include between('sm', 'md') {
-//       font-size: 1.1rem;
-//       line-height: 1.55;
-//       margin: 0 0 1.75rem 0;
-//     }
+  @include from('large-xs') {
+    padding: 3rem;
+  }
 
-//     @include from('md') {
-//       font-size: 1.3rem;
-//     }
+  // Mobile : largeur pleine, 50% hauteur
+  @include until('medium-sm') {
+    width: 100%;
+    height: 40%;
+  }
 
-//     @include from('xl') {
-//       font-size: 1.4rem;
-//       line-height: 1.7;
-//       margin: 0 0 2.5rem 0;
-//     }
-//   }
+  // =============================
+  // TEXTE PRINCIPAL
+  // =============================
+  .contact-text {
+    color: $color-light;
+    font-weight: 500;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    margin: 0 0 2rem 0;
+    max-width: 90%;
 
-//   // =============================
-//   // BOUTON CONTACT
-//   // =============================
-//   .contact-button {
-//     display: inline-flex;
-//     align-items: center;
-//     justify-content: center;
+    // Text-shadow pour lisibilité sur gradient
+    text-shadow:
+      0 2px 4px rgba($color-dark, 0.8),
+      0 0 20px rgba($color-dark, 0.5);
 
-//     // Style du bouton - cohérent avec les autres boutons du site
-//     background: linear-gradient(135deg, $color-orange, $color-pink);
-//     color: $color-light;
-//     text-decoration: none;
-//     font-weight: 700;
-//     font-size: 1.1rem;
-//     text-transform: uppercase;
-//     letter-spacing: 0.5px;
+    // Tailles responsives
+    font-size: 1.2rem;
 
-//     // Dimensions
-//     padding: 0.9rem 2.2rem;
-//     border-radius: 50px;
-//     border: 2px solid rgba($color-light, 0.2);
+    @include small-screens {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 0 0 1.5rem 0;
+      letter-spacing: 0.2px;
+    }
 
-//     // Ombres pour la profondeur
-//     box-shadow:
-//       0 8px 25px rgba($color-orange, 0.4),
-//       0 4px 15px rgba($color-pink, 0.3),
-//       0 0 40px rgba($color-orange, 0.15);
+    @include from('small-sm') {
+      font-size: 1.02rem;
+      line-height: 1.51;
+      margin: 0 0 1.55rem 0;
+      letter-spacing: 0.22px;
+    }
 
-//     text-shadow: 0 2px 4px rgba($color-dark, 0.6);
+    @include from('small-lg') {
+      font-size: 1.04rem;
+      line-height: 1.52;
+      margin: 0 0 1.6rem 0;
+      letter-spacing: 0.24px;
+    }
 
-//     // Transitions fluides
-//     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    @include from('small-xl') {
+      font-size: 1.06rem;
+      line-height: 1.53;
+      margin: 0 0 1.65rem 0;
+      letter-spacing: 0.26px;
+    }
 
-//     // Responsive
-//     @include until('sm') {
-//       font-size: 0.9rem;
-//       padding: 0.75rem 1.8rem;
-//       letter-spacing: 0.3px;
-//     }
+    @include between('small-xl', 'medium-sm') {
+      font-size: 1.1rem;
+      line-height: 1.55;
+      margin: 0 0 1.75rem 0;
+    }
 
-//     @include between('sm', 'md') {
-//       font-size: 1rem;
-//       padding: 0.8rem 2rem;
-//       letter-spacing: 0.4px;
-//     }
+    @include from('medium-sm') {
+      font-size: 1.3rem;
+    }
 
-//     @include from('xl') {
-//       font-size: 1.2rem;
-//       padding: 1rem 2.5rem;
-//       letter-spacing: 0.6px;
-//     }
+    @include from('medium-lg') {
+      font-size: 1.32rem;
+      line-height: 1.62;
+      margin: 0 0 2.1rem 0;
+    }
 
-//     // =============================
-//     // EFFETS HOVER ET FOCUS
-//     // =============================
-//     &:hover {
-//       transform: translateY(-3px) scale(1.05);
-//       background: linear-gradient(
-//         135deg,
-//         lighten($color-orange, 8%),
-//         lighten($color-pink, 8%)
-//       );
-//       box-shadow:
-//         0 12px 35px rgba($color-orange, 0.5),
-//         0 6px 20px rgba($color-pink, 0.4),
-//         0 0 50px rgba($color-orange, 0.2);
-//       border-color: rgba($color-light, 0.4);
-//     }
+    @include from('medium-xxl') {
+      font-size: 1.35rem;
+      line-height: 1.65;
+      margin: 0 0 2.3rem 0;
+    }
 
-//     &:focus {
-//       outline: none;
-//       border-color: rgba($color-light, 0.6);
-//       box-shadow:
-//         0 12px 35px rgba($color-orange, 0.5),
-//         0 6px 20px rgba($color-pink, 0.4),
-//         0 0 0 4px rgba($color-light, 0.3);
-//     }
+    @include from('large-xs') {
+      font-size: 1.4rem;
+      line-height: 1.7;
+      margin: 0 0 2.5rem 0;
+    }
+  }
 
-//     &:active {
-//       transform: translateY(-1px) scale(1.02);
-//       box-shadow:
-//         0 6px 20px rgba($color-orange, 0.4),
-//         0 3px 12px rgba($color-pink, 0.3);
-//     }
-//   }
-// }
+  // =============================
+  // BOUTON CONTACT
+  // =============================
+  .contact-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-// // =============================
-// // BLOC DROITE - IMAGE LOGO
-// // =============================
-// .contact-image-block {
-//   // Desktop : 50% largeur, 100% hauteur
-//   width: 50%;
-//   height: 100%;
+    // Style du bouton - cohérent avec les autres boutons du site
+    background: linear-gradient(135deg, $color-orange, $color-pink);
+    color: $color-light;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
+    // Dimensions
+    padding: 0.9rem 2.2rem;
+    border-radius: 50px;
+    border: 2px solid rgba($color-light, 0.2);
 
-//   // Mobile : largeur pleine, 50% hauteur
-//   @include until('md') {
-//     width: 100%;
-//     height: 40%;
-//   }
+    // Ombres pour la profondeur
+    box-shadow:
+      0 8px 25px rgba($color-orange, 0.4),
+      0 4px 15px rgba($color-pink, 0.3),
+      0 0 40px rgba($color-orange, 0.15);
 
-//   // =============================
-//   // CONTENEUR DE L'IMAGE - 90% DU BLOC
-//   // =============================
-//   .contact-logo-container {
-//     position: relative;
-//     width: 90%;
-//     height: 90%;
+    text-shadow: 0 2px 4px rgba($color-dark, 0.6);
 
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
+    // Transitions fluides
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-//     // =============================
-//     // IMAGE LOGO
-//     // =============================
-//     .contact-logo-image {
-//       width: 100%;
-//       height: 100%;
-//       object-fit: contain;
-//       object-position: center;
+    // Responsive
+    @include small-screens {
+      font-size: 0.9rem;
+      padding: 0.75rem 1.8rem;
+      letter-spacing: 0.3px;
+    }
 
-//       // Effet subtil pour s'harmoniser avec le design
-//       filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
-//     }
-//   }
-// }
+    @include from('small-sm') {
+      font-size: 0.92rem;
+      padding: 0.76rem 1.85rem;
+      letter-spacing: 0.32px;
+    }
 
-// // =============================
-// // ÉCRANS TRÈS PETITS
-// // =============================
-// @media (max-width: 360px) {
-//   .contact-text-block {
-//     padding: 1.25rem;
+    @include from('small-lg') {
+      font-size: 0.94rem;
+      padding: 0.77rem 1.9rem;
+      letter-spacing: 0.34px;
+    }
 
-//     .contact-text {
-//       font-size: 0.9rem;
-//       margin: 0 0 1.25rem 0;
-//     }
+    @include from('small-xl') {
+      font-size: 0.96rem;
+      padding: 0.78rem 1.95rem;
+      letter-spacing: 0.36px;
+    }
 
-//     .contact-button {
-//       font-size: 0.85rem;
-//       padding: 0.65rem 1.5rem;
-//     }
-//   }
+    @include between('small-xl', 'medium-sm') {
+      font-size: 1rem;
+      padding: 0.8rem 2rem;
+      letter-spacing: 0.4px;
+    }
 
-//   .contact-image-block .contact-logo-container {
-//     width: 95%;
-//     height: 95%;
-//   }
-// }
+    @include from('medium-sm') {
+      font-size: 1.05rem;
+      padding: 0.85rem 2.1rem;
+      letter-spacing: 0.45px;
+    }
 
-// // =============================
-// // MODE PAYSAGE MOBILE
-// // =============================
-// @include mobile-landscape {
-//   .contact-main-container {
-//     flex-direction: row; // Revenir en horizontal en paysage
-//   }
+    @include from('medium-lg') {
+      font-size: 1.07rem;
+      padding: 0.87rem 2.15rem;
+      letter-spacing: 0.47px;
+    }
 
-//   .contact-text-block,
-//   .contact-image-block {
-//     width: 50%;
-//     height: 100%;
-//   }
+    @include from('medium-xxl') {
+      font-size: 1.08rem;
+      padding: 0.88rem 2.18rem;
+      letter-spacing: 0.48px;
+    }
 
-//   .contact-text-block {
-//     padding: 1.5rem;
+    @include from('large-xs') {
+      font-size: 1.2rem;
+      padding: 1rem 2.5rem;
+      letter-spacing: 0.6px;
+    }
 
-//     .contact-text {
-//       font-size: 0.95rem;
-//       margin: 0 0 1.5rem 0;
-//     }
+    // =============================
+    // EFFETS HOVER ET FOCUS
+    // =============================
+    &:hover {
+      transform: translateY(-3px) scale(1.05);
+      background: linear-gradient(
+        135deg,
+        lighten($color-orange, 8%),
+        lighten($color-pink, 8%)
+      );
+      box-shadow:
+        0 12px 35px rgba($color-orange, 0.5),
+        0 6px 20px rgba($color-pink, 0.4),
+        0 0 50px rgba($color-orange, 0.2);
+      border-color: rgba($color-light, 0.4);
+    }
 
-//     .contact-button {
-//       font-size: 0.9rem;
-//       padding: 0.7rem 1.8rem;
-//     }
-//   }
-// }
+    &:focus {
+      outline: none;
+      border-color: rgba($color-light, 0.6);
+      box-shadow:
+        0 12px 35px rgba($color-orange, 0.5),
+        0 6px 20px rgba($color-pink, 0.4),
+        0 0 0 4px rgba($color-light, 0.3);
+    }
 
-// // =============================
-// // ACCESSIBILITÉ
-// // =============================
-// @include reduced-motion {
-//   .contact-button {
-//     transition: none;
+    &:active {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow:
+        0 6px 20px rgba($color-orange, 0.4),
+        0 3px 12px rgba($color-pink, 0.3);
+    }
+  }
+}
 
-//     &:hover {
-//       transform: none;
-//     }
+// =============================
+// BLOC DROITE - IMAGE LOGO
+// =============================
+.contact-image-block {
+  // Desktop : 50% largeur, 100% hauteur
+  width: 50%;
+  height: 100%;
 
-//     &:active {
-//       transform: none;
-//     }
-//   }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 
-//   .contact-logo-image {
-//     transition: none;
+  // Mobile : largeur pleine, 50% hauteur
+  @include until('medium-sm') {
+    width: 100%;
+    height: 40%;
+  }
 
-//     &:hover {
-//       transform: none;
-//       filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
-//     }
-//   }
-// }
+  // =============================
+  // CONTENEUR DE L'IMAGE - 90% DU BLOC
+  // =============================
+  .contact-logo-container {
+    position: relative;
+    width: 90%;
+    height: 90%;
 
-// // =============================
-// // SUPPORT TACTILE
-// // =============================
-// @media (pointer: coarse) {
-//   .contact-button {
-//     min-height: 44px;
-//     min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-//     &:hover {
-//       transform: none;
-//     }
+    // =============================
+    // IMAGE LOGO
+    // =============================
+    .contact-logo-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
 
-//     &:active {
-//       opacity: 0.8;
-//       transform: scale(0.98);
-//     }
-//   }
-// }
+      // Effet subtil pour s'harmoniser avec le design
+      filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
+    }
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS PETITS
+// =============================
+@media (max-width: 360px) {
+  .contact-text-block {
+    padding: 1.25rem;
+
+    .contact-text {
+      font-size: 0.9rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    .contact-button {
+      font-size: 0.85rem;
+      padding: 0.65rem 1.5rem;
+    }
+  }
+
+  .contact-image-block .contact-logo-container {
+    width: 95%;
+    height: 95%;
+  }
+}
+
+// =============================
+// MODE PAYSAGE MOBILE
+// =============================
+@include mobile-landscape {
+  .contact-main-container {
+    flex-direction: row; // Revenir en horizontal en paysage
+  }
+
+  .contact-text-block,
+  .contact-image-block {
+    width: 50%;
+    height: 100%;
+  }
+
+  .contact-text-block {
+    padding: 1.5rem;
+
+    .contact-text {
+      font-size: 0.95rem;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .contact-button {
+      font-size: 0.9rem;
+      padding: 0.7rem 1.8rem;
+    }
+  }
+}
+
+// =============================
+// ACCESSIBILITÉ
+// =============================
+@include reduced-motion {
+  .contact-button {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+
+  .contact-logo-image {
+    transition: none;
+
+    &:hover {
+      transform: none;
+      filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
+    }
+  }
+}
+
+// =============================
+// SUPPORT TACTILE
+// =============================
+@media (pointer: coarse) {
+  .contact-button {
+    min-height: 44px;
+    min-width: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+  }
+}

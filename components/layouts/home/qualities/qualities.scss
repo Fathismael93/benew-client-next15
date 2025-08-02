@@ -1,576 +1,788 @@
-// @use 'sass:color';
-// @use '../../../../app/styles/abstracts' as *;
-
-// // =============================
-// // BLOC 1 : TITRE SEUL
-// // =============================
-// .services-title-block {
-//   grid-area: title;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   text-align: center;
-
-//   // Hauteur fixe pour le titre
-//   min-height: auto;
-
-//   @include until('sm') {
-//     min-height: auto;
-//   }
-
-//   .section-main-title {
-//     font-weight: 800;
-//     line-height: 1.2;
-//     color: $color-pink;
-//     text-shadow:
-//       0 2px 4px rgba($color-dark, 0.5),
-//       0 0 20px rgba($color-pink, 0.3);
-//     position: relative;
-//     margin: 0; // Pas de marge - contrôlé par le grid
-
-//     // Tailles responsives
-//     font-size: 1.8rem;
-
-//     @include until('sm') {
-//       font-size: 1.3rem;
-//     }
-
-//     @include between('sm', 'md') {
-//       font-size: 1.5rem;
-//     }
-
-//     @include from('md') {
-//       font-size: 1.9rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 2.2rem;
-//     }
-
-//     // Trait de soulignement
-//     &::after {
-//       content: '';
-//       position: absolute;
-//       left: 50%;
-//       transform: translateX(-50%);
-//       background: linear-gradient(90deg, $color-pink, $color-purple);
-//       border-radius: 3px;
-//       bottom: -0.5rem;
-
-//       width: 50px;
-//       height: 2px;
-
-//       @include until('sm') {
-//         width: 35px;
-//         height: 2px;
-//         bottom: -0.4rem;
-//       }
-
-//       @include from('xl') {
-//         width: 60px;
-//         height: 3px;
-//         bottom: -0.6rem;
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // BLOC 2 : CARTES SEULES - CENTRAGE PARFAIT
-// // =============================
-// .services-cards-block {
-//   grid-area: cards;
-//   display: flex;
-//   align-items: center; // Centrage vertical parfait
-//   justify-content: center; // Centrage horizontal
-//   width: 100%;
-//   position: relative;
-
-//   .service-card-container {
-//     position: relative;
-//     width: 100%;
-//     max-width: 500px; // Limite la largeur
-//     height: 280px; // Hauteur fixe pour les cartes
-
-//     @include until('sm') {
-//       height: 220px;
-//       max-width: 300px;
-//     }
-
-//     @include between('sm', 'md') {
-//       height: 250px;
-//       max-width: 350px;
-//     }
-
-//     @include from('md') {
-//       height: 300px;
-//       max-width: 400px;
-//     }
-
-//     @include from('xl') {
-//       height: 320px;
-//       max-width: 450px;
-//     }
-//   }
-// }
-
-// // =============================
-// // BLOC 3 : DOTS SEULS - EN BAS
-// // =============================
-// .services-dots-block {
-//   grid-area: dots;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-
-//   .slider-dots {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     gap: 0.5rem; // Gap réduit
-
-//     @include until('sm') {
-//       gap: 0.4rem;
-//     }
-
-//     @include between('sm', 'md') {
-//       gap: 0.6rem;
-//     }
-
-//     @include from('xl') {
-//       gap: 0.8rem;
-//     }
-//   }
-// }
-
-// // =============================
-// // CARTES INDIVIDUELLES
-// // =============================
-// .service-card {
-//   position: absolute;
-//   top: 50%;
-//   left: 50%;
-//   transform: translate(-50%, -50%) scale(0.8);
-
-//   background: rgba($color-light, 0.08);
-//   backdrop-filter: blur(15px);
-//   border-radius: 24px;
-//   border: 2px solid rgba($color-pink, 0.15);
-
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   text-align: center;
-
-//   box-shadow:
-//     0 20px 60px rgba($color-dark, 0.4),
-//     0 0 40px rgba($color-pink, 0.1);
-
-//   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-//   opacity: 0;
-//   visibility: hidden;
-
-//   // Tailles des cartes
-//   width: 300px;
-//   height: 200px;
-//   padding: 1.5rem 1rem;
-//   gap: 1.5rem;
-
-//   @include until('sm') {
-//     width: 260px;
-//     height: 170px;
-//     padding: 1.25rem 0.75rem;
-//     gap: 1rem;
-//   }
-
-//   @include between('sm', 'md') {
-//     width: 280px;
-//     height: 185px;
-//     padding: 1.4rem 1rem;
-//     gap: 1.25rem;
-//   }
-
-//   @include from('md') {
-//     width: 340px;
-//     height: 220px;
-//     padding: 1.75rem 1.5rem;
-//     gap: 1.75rem;
-//   }
-
-//   @include from('xl') {
-//     width: 380px;
-//     height: 250px;
-//     padding: 2rem 1.75rem;
-//     gap: 2rem;
-//   }
-
-//   // Carte active
-//   &.active {
-//     opacity: 1;
-//     visibility: visible;
-//     transform: translate(-50%, -50%) scale(1);
-//   }
-
-//   // Icônes
-//   .service-icon {
-//     filter: drop-shadow(0 4px 8px rgba($color-dark, 0.5));
-//     transition: all 0.3s ease;
-
-//     font-size: 3.5rem;
-
-//     @include until('sm') {
-//       font-size: 2.8rem;
-//     }
-
-//     @include between('sm', 'md') {
-//       font-size: 3.2rem;
-//     }
-
-//     @include from('md') {
-//       font-size: 4rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 4.5rem;
-//     }
-//   }
-
-//   // Labels
-//   .service-label {
-//     color: $color-light;
-//     font-weight: 600;
-//     line-height: 1.4;
-//     text-shadow: 0 2px 4px rgba($color-dark, 0.6);
-//     text-align: center;
-//     word-wrap: break-word;
-//     hyphens: auto;
-//     max-width: 100%;
-
-//     font-size: 1rem;
-
-//     @include until('sm') {
-//       font-size: 0.85rem;
-//       line-height: 1.3;
-//     }
-
-//     @include between('sm', 'md') {
-//       font-size: 0.95rem;
-//     }
-
-//     @include from('md') {
-//       font-size: 1.1rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 1.25rem;
-//       line-height: 1.5;
-//     }
-//   }
-
-//   // Variantes de couleurs
-//   &.color-orange {
-//     border-color: rgba($color-orange, 0.3);
-//     box-shadow:
-//       0 20px 60px rgba($color-dark, 0.4),
-//       0 0 40px rgba($color-orange, 0.15);
-
-//     .service-icon {
-//       color: $color-orange;
-//     }
-
-//     &.active {
-//       border-color: rgba($color-orange, 0.5);
-//       box-shadow:
-//         0 25px 80px rgba($color-dark, 0.5),
-//         0 0 60px rgba($color-orange, 0.2);
-//     }
-//   }
-
-//   &.color-pink {
-//     border-color: rgba($color-pink, 0.3);
-//     box-shadow:
-//       0 20px 60px rgba($color-dark, 0.4),
-//       0 0 40px rgba($color-pink, 0.15);
-
-//     .service-icon {
-//       color: $color-pink;
-//     }
-
-//     &.active {
-//       border-color: rgba($color-pink, 0.5);
-//       box-shadow:
-//         0 25px 80px rgba($color-dark, 0.5),
-//         0 0 60px rgba($color-pink, 0.2);
-//     }
-//   }
-
-//   &.color-purple {
-//     border-color: rgba($color-purple, 0.3);
-//     box-shadow:
-//       0 20px 60px rgba($color-dark, 0.4),
-//       0 0 40px rgba($color-purple, 0.15);
-
-//     .service-icon {
-//       color: $color-purple;
-//     }
-
-//     &.active {
-//       border-color: rgba($color-purple, 0.5);
-//       box-shadow:
-//         0 25px 80px rgba($color-dark, 0.5),
-//         0 0 60px rgba($color-purple, 0.2);
-//     }
-//   }
-
-//   &.color-light-pink {
-//     $light-pink: lighten($color-pink, 15%);
-//     border-color: rgba($light-pink, 0.3);
-//     box-shadow:
-//       0 20px 60px rgba($color-dark, 0.4),
-//       0 0 40px rgba($light-pink, 0.15);
-
-//     .service-icon {
-//       color: $light-pink;
-//     }
-
-//     &.active {
-//       border-color: rgba($light-pink, 0.5);
-//       box-shadow:
-//         0 25px 80px rgba($color-dark, 0.5),
-//         0 0 60px rgba($light-pink, 0.2);
-//     }
-//   }
-// }
-
-// // =============================
-// // DOTS - TAILLES RÉDUITES
-// // =============================
-// .dot {
-//   border-radius: 50%;
-//   background: rgba($color-light, 0.1);
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-//   position: relative;
-//   border: 1px solid rgba($color-light, 0.3);
-
-//   // Tailles drastiquement réduites
-//   width: 4px;
-//   height: 4px;
-
-//   @include until('sm') {
-//     width: 3px;
-//     height: 3px;
-//   }
-
-//   @include between('sm', 'md') {
-//     width: 3px;
-//     height: 3px;
-//   }
-
-//   @include from('md') {
-//     width: 5px;
-//     height: 5px;
-//   }
-
-//   @include from('xl') {
-//     width: 8px;
-//     height: 8px;
-//     border: 2px solid rgba($color-light, 0.3);
-//   }
-
-//   &:hover {
-//     border-color: rgba($color-light, 0.5);
-//     background: rgba($color-light, 0.2);
-//     transform: scale(1.1);
-//   }
-
-//   &.active {
-//     transform: scale(1.2);
-
-//     @include until('sm') {
-//       transform: scale(1.1);
-//     }
-
-//     @include from('xl') {
-//       transform: scale(1.5);
-//     }
-
-//     // Couleurs selon la carte active
-//     &.color-orange {
-//       background: $color-orange;
-//       border-color: $color-orange;
-//       box-shadow: 0 0 8px rgba($color-orange, 0.5);
-//     }
-
-//     &.color-pink {
-//       background: $color-pink;
-//       border-color: $color-pink;
-//       box-shadow: 0 0 8px rgba($color-pink, 0.5);
-//     }
-
-//     &.color-purple {
-//       background: $color-purple;
-//       border-color: $color-purple;
-//       box-shadow: 0 0 8px rgba($color-purple, 0.5);
-//     }
-
-//     &.color-light-pink {
-//       $light-pink: lighten($color-pink, 15%);
-//       background: $light-pink;
-//       border-color: $light-pink;
-//       box-shadow: 0 0 8px rgba($light-pink, 0.5);
-//     }
-//   }
-
-//   // Animation pulse réduite
-//   &.active::after {
-//     content: '';
-//     position: absolute;
-//     top: -1px;
-//     left: -1px;
-//     right: -1px;
-//     bottom: -1px;
-//     border-radius: 50%;
-//     border: 1px solid;
-//     opacity: 0.3;
-//     animation: dotPulse 2s infinite;
-
-//     @include from('xl') {
-//       top: -2px;
-//       left: -2px;
-//       right: -2px;
-//       bottom: -2px;
-//     }
-
-//     // Couleurs de l'animation
-//     .color-orange & {
-//       border-color: $color-orange;
-//     }
-//     .color-pink & {
-//       border-color: $color-pink;
-//     }
-//     .color-purple & {
-//       border-color: $color-purple;
-//     }
-//     .color-light-pink & {
-//       border-color: lighten($color-pink, 15%);
-//     }
-//   }
-// }
-
-// // =============================
-// // ÉCRANS TRÈS PETITS
-// // =============================
-// @media (max-width: 360px) {
-//   .services-title-block .section-main-title {
-//     font-size: 1.1rem;
-//   }
-
-//   .services-cards-block .service-card-container {
-//     height: 200px;
-//     max-width: 280px;
-//   }
-
-//   .service-card {
-//     width: 240px;
-//     height: 150px;
-//     padding: 1rem 0.5rem;
-//     gap: 0.75rem;
-
-//     .service-icon {
-//       font-size: 2.5rem;
-//     }
-
-//     .service-label {
-//       font-size: 0.8rem;
-//     }
-//   }
-
-//   .dot {
-//     width: 4px;
-//     height: 4px;
-
-//     &.active {
-//       transform: scale(1.25);
-//     }
-//   }
-// }
-
-// // =============================
-// // MODE PAYSAGE MOBILE
-// // =============================
-// @include mobile-landscape {
-//   .services-title-block .section-main-title {
-//     font-size: 1.2rem;
-//   }
-
-//   .services-cards-block .service-card-container {
-//     height: 160px;
-//   }
-
-//   .service-card {
-//     height: 130px;
-//     gap: 0.75rem;
-
-//     .service-icon {
-//       font-size: 2.25rem;
-//     }
-
-//     .service-label {
-//       font-size: 0.75rem;
-//     }
-//   }
-// }
-
-// // =============================
-// // ANIMATIONS ET ACCESSIBILITÉ
-// // =============================
-// @keyframes dotPulse {
-//   0% {
-//     transform: scale(1);
-//     opacity: 0.3;
-//   }
-//   50% {
-//     transform: scale(1.1);
-//     opacity: 0.1;
-//   }
-//   100% {
-//     transform: scale(1.2);
-//     opacity: 0;
-//   }
-// }
-
-// @include reduced-motion {
-//   .service-card {
-//     transition: none;
-
-//     &.active {
-//       transform: translate(-50%, -50%) scale(1);
-//     }
-//   }
-
-//   .dot {
-//     transition: none;
-
-//     &.active::after {
-//       animation: none;
-//     }
-//   }
-// }
-
-// // Support tactile
-// @media (pointer: coarse) {
-//   .dot {
-//     min-width: 44px;
-//     min-height: 44px;
-
-//     &:hover {
-//       transform: none;
-//     }
-
-//     &:active {
-//       transform: scale(0.9);
-//     }
-//   }
-// }
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// =============================
+// BLOC 1 : TITRE SEUL
+// =============================
+.services-title-block {
+  grid-area: title;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  // Hauteur fixe pour le titre
+  min-height: auto;
+
+  @include small-screens {
+    min-height: auto;
+  }
+
+  .section-main-title {
+    font-weight: 800;
+    line-height: 1.2;
+    color: $color-pink;
+    text-shadow:
+      0 2px 4px rgba($color-dark, 0.5),
+      0 0 20px rgba($color-pink, 0.3);
+    position: relative;
+    margin: 0; // Pas de marge - contrôlé par le grid
+
+    // Tailles responsives
+    font-size: 1.8rem;
+
+    @include small-screens {
+      font-size: 1.3rem;
+    }
+
+    @include from('small-sm') {
+      font-size: 1.35rem;
+    }
+
+    @include from('small-lg') {
+      font-size: 1.4rem;
+    }
+
+    @include from('small-xl') {
+      font-size: 1.45rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      font-size: 1.5rem;
+    }
+
+    @include from('medium-sm') {
+      font-size: 1.9rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 2rem;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 2.1rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 2.2rem;
+    }
+
+    // Trait de soulignement
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, $color-pink, $color-purple);
+      border-radius: 3px;
+      bottom: -0.5rem;
+
+      width: 50px;
+      height: 2px;
+
+      @include small-screens {
+        width: 35px;
+        height: 2px;
+        bottom: -0.4rem;
+      }
+
+      @include from('small-sm') {
+        width: 37px;
+      }
+
+      @include from('small-lg') {
+        width: 40px;
+      }
+
+      @include from('small-xl') {
+        width: 42px;
+      }
+
+      @include from('medium-sm') {
+        width: 45px;
+      }
+
+      @include from('medium-lg') {
+        width: 50px;
+      }
+
+      @include from('large-xs') {
+        width: 60px;
+        height: 3px;
+        bottom: -0.6rem;
+      }
+    }
+  }
+}
+
+// =============================
+// BLOC 2 : CARTES SEULES - CENTRAGE PARFAIT
+// =============================
+.services-cards-block {
+  grid-area: cards;
+  display: flex;
+  align-items: center; // Centrage vertical parfait
+  justify-content: center; // Centrage horizontal
+  width: 100%;
+  position: relative;
+
+  .service-card-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px; // Limite la largeur
+    height: 280px; // Hauteur fixe pour les cartes
+
+    @include small-screens {
+      height: 220px;
+      max-width: 300px;
+    }
+
+    @include from('small-sm') {
+      height: 225px;
+      max-width: 310px;
+    }
+
+    @include from('small-lg') {
+      height: 230px;
+      max-width: 320px;
+    }
+
+    @include from('small-xl') {
+      height: 240px;
+      max-width: 330px;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      height: 250px;
+      max-width: 350px;
+    }
+
+    @include from('medium-sm') {
+      height: 300px;
+      max-width: 400px;
+    }
+
+    @include from('medium-lg') {
+      height: 310px;
+      max-width: 420px;
+    }
+
+    @include from('medium-xxl') {
+      height: 315px;
+      max-width: 430px;
+    }
+
+    @include from('large-xs') {
+      height: 320px;
+      max-width: 450px;
+    }
+  }
+}
+
+// =============================
+// BLOC 3 : DOTS SEULS - EN BAS
+// =============================
+.services-dots-block {
+  grid-area: dots;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .slider-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem; // Gap réduit
+
+    @include small-screens {
+      gap: 0.4rem;
+    }
+
+    @include from('small-sm') {
+      gap: 0.42rem;
+    }
+
+    @include from('small-lg') {
+      gap: 0.45rem;
+    }
+
+    @include from('small-xl') {
+      gap: 0.48rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      gap: 0.6rem;
+    }
+
+    @include from('medium-sm') {
+      gap: 0.65rem;
+    }
+
+    @include from('medium-lg') {
+      gap: 0.7rem;
+    }
+
+    @include from('medium-xxl') {
+      gap: 0.75rem;
+    }
+
+    @include from('large-xs') {
+      gap: 0.8rem;
+    }
+  }
+}
+
+// =============================
+// CARTES INDIVIDUELLES
+// =============================
+.service-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+
+  background: rgba($color-light, 0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  border: 2px solid rgba($color-pink, 0.15);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px rgba($color-dark, 0.4),
+    0 0 40px rgba($color-pink, 0.1);
+
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0;
+  visibility: hidden;
+
+  // Tailles des cartes
+  width: 300px;
+  height: 200px;
+  padding: 1.5rem 1rem;
+  gap: 1.5rem;
+
+  @include small-screens {
+    width: 260px;
+    height: 170px;
+    padding: 1.25rem 0.75rem;
+    gap: 1rem;
+  }
+
+  @include from('small-sm') {
+    width: 265px;
+    height: 175px;
+    padding: 1.3rem 0.8rem;
+    gap: 1.05rem;
+  }
+
+  @include from('small-lg') {
+    width: 270px;
+    height: 180px;
+    padding: 1.35rem 0.85rem;
+    gap: 1.1rem;
+  }
+
+  @include from('small-xl') {
+    width: 275px;
+    height: 182px;
+    padding: 1.38rem 0.9rem;
+    gap: 1.15rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    width: 280px;
+    height: 185px;
+    padding: 1.4rem 1rem;
+    gap: 1.25rem;
+  }
+
+  @include from('medium-sm') {
+    width: 340px;
+    height: 220px;
+    padding: 1.75rem 1.5rem;
+    gap: 1.75rem;
+  }
+
+  @include from('medium-lg') {
+    width: 350px;
+    height: 230px;
+    padding: 1.8rem 1.55rem;
+    gap: 1.8rem;
+  }
+
+  @include from('medium-xxl') {
+    width: 360px;
+    height: 240px;
+    padding: 1.85rem 1.6rem;
+    gap: 1.85rem;
+  }
+
+  @include from('large-xs') {
+    width: 380px;
+    height: 250px;
+    padding: 2rem 1.75rem;
+    gap: 2rem;
+  }
+
+  // Carte active
+  &.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  // Icônes
+  .service-icon {
+    filter: drop-shadow(0 4px 8px rgba($color-dark, 0.5));
+    transition: all 0.3s ease;
+
+    font-size: 3.5rem;
+
+    @include small-screens {
+      font-size: 2.8rem;
+    }
+
+    @include from('small-sm') {
+      font-size: 2.9rem;
+    }
+
+    @include from('small-lg') {
+      font-size: 3rem;
+    }
+
+    @include from('small-xl') {
+      font-size: 3.1rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      font-size: 3.2rem;
+    }
+
+    @include from('medium-sm') {
+      font-size: 4rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 4.2rem;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 4.3rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 4.5rem;
+    }
+  }
+
+  // Labels
+  .service-label {
+    color: $color-light;
+    font-weight: 600;
+    line-height: 1.4;
+    text-shadow: 0 2px 4px rgba($color-dark, 0.6);
+    text-align: center;
+    word-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+
+    font-size: 1rem;
+
+    @include small-screens {
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+
+    @include from('small-sm') {
+      font-size: 0.87rem;
+      line-height: 1.32;
+    }
+
+    @include from('small-lg') {
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    @include from('small-xl') {
+      font-size: 0.92rem;
+      line-height: 1.37;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      font-size: 0.95rem;
+    }
+
+    @include from('medium-sm') {
+      font-size: 1.1rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 1.15rem;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 1.2rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.25rem;
+      line-height: 1.5;
+    }
+  }
+
+  // Variantes de couleurs
+  &.color-orange {
+    border-color: rgba($color-orange, 0.3);
+    box-shadow:
+      0 20px 60px rgba($color-dark, 0.4),
+      0 0 40px rgba($color-orange, 0.15);
+
+    .service-icon {
+      color: $color-orange;
+    }
+
+    &.active {
+      border-color: rgba($color-orange, 0.5);
+      box-shadow:
+        0 25px 80px rgba($color-dark, 0.5),
+        0 0 60px rgba($color-orange, 0.2);
+    }
+  }
+
+  &.color-pink {
+    border-color: rgba($color-pink, 0.3);
+    box-shadow:
+      0 20px 60px rgba($color-dark, 0.4),
+      0 0 40px rgba($color-pink, 0.15);
+
+    .service-icon {
+      color: $color-pink;
+    }
+
+    &.active {
+      border-color: rgba($color-pink, 0.5);
+      box-shadow:
+        0 25px 80px rgba($color-dark, 0.5),
+        0 0 60px rgba($color-pink, 0.2);
+    }
+  }
+
+  &.color-purple {
+    border-color: rgba($color-purple, 0.3);
+    box-shadow:
+      0 20px 60px rgba($color-dark, 0.4),
+      0 0 40px rgba($color-purple, 0.15);
+
+    .service-icon {
+      color: $color-purple;
+    }
+
+    &.active {
+      border-color: rgba($color-purple, 0.5);
+      box-shadow:
+        0 25px 80px rgba($color-dark, 0.5),
+        0 0 60px rgba($color-purple, 0.2);
+    }
+  }
+
+  &.color-light-pink {
+    $light-pink: lighten($color-pink, 15%);
+    border-color: rgba($light-pink, 0.3);
+    box-shadow:
+      0 20px 60px rgba($color-dark, 0.4),
+      0 0 40px rgba($light-pink, 0.15);
+
+    .service-icon {
+      color: $light-pink;
+    }
+
+    &.active {
+      border-color: rgba($light-pink, 0.5);
+      box-shadow:
+        0 25px 80px rgba($color-dark, 0.5),
+        0 0 60px rgba($light-pink, 0.2);
+    }
+  }
+}
+
+// =============================
+// DOTS - TAILLES RÉDUITES
+// =============================
+.dot {
+  border-radius: 50%;
+  background: rgba($color-light, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid rgba($color-light, 0.3);
+
+  // Tailles drastiquement réduites
+  width: 4px;
+  height: 4px;
+
+  @include small-screens {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('small-sm') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('small-lg') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('small-xl') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('medium-sm') {
+    width: 5px;
+    height: 5px;
+  }
+
+  @include from('medium-lg') {
+    width: 6px;
+    height: 6px;
+  }
+
+  @include from('medium-xxl') {
+    width: 7px;
+    height: 7px;
+  }
+
+  @include from('large-xs') {
+    width: 8px;
+    height: 8px;
+    border: 2px solid rgba($color-light, 0.3);
+  }
+
+  &:hover {
+    border-color: rgba($color-light, 0.5);
+    background: rgba($color-light, 0.2);
+    transform: scale(1.1);
+  }
+
+  &.active {
+    transform: scale(1.2);
+
+    @include small-screens {
+      transform: scale(1.1);
+    }
+
+    @include from('small-sm') {
+      transform: scale(1.12);
+    }
+
+    @include from('small-lg') {
+      transform: scale(1.15);
+    }
+
+    @include from('small-xl') {
+      transform: scale(1.17);
+    }
+
+    @include from('medium-sm') {
+      transform: scale(1.3);
+    }
+
+    @include from('medium-lg') {
+      transform: scale(1.4);
+    }
+
+    @include from('large-xs') {
+      transform: scale(1.5);
+    }
+
+    // Couleurs selon la carte active
+    &.color-orange {
+      background: $color-orange;
+      border-color: $color-orange;
+      box-shadow: 0 0 8px rgba($color-orange, 0.5);
+    }
+
+    &.color-pink {
+      background: $color-pink;
+      border-color: $color-pink;
+      box-shadow: 0 0 8px rgba($color-pink, 0.5);
+    }
+
+    &.color-purple {
+      background: $color-purple;
+      border-color: $color-purple;
+      box-shadow: 0 0 8px rgba($color-purple, 0.5);
+    }
+
+    &.color-light-pink {
+      $light-pink: lighten($color-pink, 15%);
+      background: $light-pink;
+      border-color: $light-pink;
+      box-shadow: 0 0 8px rgba($light-pink, 0.5);
+    }
+  }
+
+  // Animation pulse réduite
+  &.active::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border-radius: 50%;
+    border: 1px solid;
+    opacity: 0.3;
+    animation: dotPulse 2s infinite;
+
+    @include from('large-xs') {
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+    }
+
+    // Couleurs de l'animation
+    .color-orange & {
+      border-color: $color-orange;
+    }
+    .color-pink & {
+      border-color: $color-pink;
+    }
+    .color-purple & {
+      border-color: $color-purple;
+    }
+    .color-light-pink & {
+      border-color: lighten($color-pink, 15%);
+    }
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS PETITS
+// =============================
+@media (max-width: 360px) {
+  .services-title-block .section-main-title {
+    font-size: 1.1rem;
+  }
+
+  .services-cards-block .service-card-container {
+    height: 200px;
+    max-width: 280px;
+  }
+
+  .service-card {
+    width: 240px;
+    height: 150px;
+    padding: 1rem 0.5rem;
+    gap: 0.75rem;
+
+    .service-icon {
+      font-size: 2.5rem;
+    }
+
+    .service-label {
+      font-size: 0.8rem;
+    }
+  }
+
+  .dot {
+    width: 4px;
+    height: 4px;
+
+    &.active {
+      transform: scale(1.25);
+    }
+  }
+}
+
+// =============================
+// MODE PAYSAGE MOBILE
+// =============================
+@include mobile-landscape {
+  .services-title-block .section-main-title {
+    font-size: 1.2rem;
+  }
+
+  .services-cards-block .service-card-container {
+    height: 160px;
+  }
+
+  .service-card {
+    height: 130px;
+    gap: 0.75rem;
+
+    .service-icon {
+      font-size: 2.25rem;
+    }
+
+    .service-label {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+// =============================
+// ANIMATIONS ET ACCESSIBILITÉ
+// =============================
+@keyframes dotPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@include reduced-motion {
+  .service-card {
+    transition: none;
+
+    &.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  .dot {
+    transition: none;
+
+    &.active::after {
+      animation: none;
+    }
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  .dot {
+    min-width: 44px;
+    min-height: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+}
