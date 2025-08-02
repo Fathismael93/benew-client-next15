@@ -211,38 +211,38 @@
     z-index: 1;
 
     // 📱 MOBILE FIRST - Background adapté
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
 
     @include until('small-sm') {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     // 📱 PETITS ÉCRANS - Progression
     @include from('small-sm') {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     @include from('small-lg') {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     @include from('small-xl') {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     // 📟 MOYENS ÉCRANS - Transition
     @include from('medium-sm') {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
     @include from('medium-lg') {
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
     }
 
