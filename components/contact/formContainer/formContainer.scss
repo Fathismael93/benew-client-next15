@@ -1,5 +1,5 @@
 // =============================
-// FORM CONTAINER - MOBILE-FIRST OPTIMISÉ
+// FORM CONTAINER - MOBILE-FIRST OPTIMISÉ AVEC HAUTEUR FIXÉE
 // =============================
 
 @use 'sass:color';
@@ -10,25 +10,34 @@
   position: relative;
   flex-shrink: 0;
 
-  // 📱 MOBILE FIRST - Formulaire en PREMIER pour éviter le problème de clavier
-  order: 1;
+  // 📱 MOBILE FIRST - Formulaire en SECOND maintenant
+  order: 2;
 
   @include until('small-sm') {
-    // Optimisations spéciales pour très petits écrans
-    margin-bottom: 1rem;
+    margin-top: 1rem;
   }
 
-  // 🖥️ DESKTOP - Retour à l'ordre original
+  // Hauteur automatique sur mobile/tablette
+  @include until('large-xs') {
+    height: auto;
+    min-height: auto;
+  }
+
+  // 🖥️ DESKTOP - Hauteur fixe 100% avec contraintes
   @include from('large-xs') {
     flex: 1;
     order: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .phoneSvg {
     position: absolute;
     margin: auto;
     z-index: -1;
-    opacity: 0.6; // Plus discret sur mobile
+    opacity: 0.6;
 
     // 📱 MOBILE FIRST - SVG plus petit et centré
     top: 50%;
@@ -82,20 +91,20 @@
         height: 280px;
       }
 
-      // 🖥️ GRANDS ÉCRANS - Taille desktop originale
+      // 🖥️ GRANDS ÉCRANS - Taille desktop réduite pour s'adapter
       @include from('large-xs') {
-        width: 400px;
-        height: 400px;
+        width: 300px;
+        height: 300px;
       }
 
       @include from('large-lg') {
-        width: 420px;
-        height: 420px;
+        width: 320px;
+        height: 320px;
       }
 
       @include from('large-xxl') {
-        width: 450px;
-        height: 450px;
+        width: 350px;
+        height: 350px;
       }
     }
 
@@ -165,22 +174,24 @@
       padding: 2rem 1.8rem;
     }
 
-    // 🖥️ GRANDS ÉCRANS - Retour au style original
+    // 🖥️ GRANDS ÉCRANS - Style original mais avec espacement réduit
     @include from('large-xs') {
       background: transparent;
       backdrop-filter: none;
       border: none;
       border-radius: 0;
       padding: 0;
-      gap: 1.5rem;
+      gap: 1.2rem; // Réduit pour s'adapter à la hauteur
+      max-height: 100%;
+      overflow-y: auto;
     }
 
     @include from('large-lg') {
-      gap: 1.6rem;
+      gap: 1.3rem;
     }
 
     @include from('large-xxl') {
-      gap: 1.7rem;
+      gap: 1.4rem;
     }
 
     input,
@@ -201,7 +212,7 @@
       // 📱 MOBILE FIRST - Champs tactiles optimaux
       padding: 1.25rem 1.125rem;
       font-size: 1rem;
-      min-height: 48px; // Zone tactile recommandée
+      min-height: 48px;
 
       @include until('small-sm') {
         padding: 1.125rem 1rem;
@@ -257,20 +268,22 @@
         border-radius: 15px;
       }
 
-      // 🖥️ GRANDS ÉCRANS - Valeurs desktop originales
+      // 🖥️ GRANDS ÉCRANS - Valeurs desktop réduites pour s'adapter
       @include from('large-xs') {
-        padding: 1.2rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 12px;
+        padding: 1rem 1.3rem; // Réduit pour s'adapter à la hauteur
+        font-size: 0.95rem;
+        border-radius: 10px;
         min-height: auto;
       }
 
       @include from('large-lg') {
-        padding: 1.25rem 1.55rem;
+        padding: 1.05rem 1.35rem;
+        font-size: 0.97rem;
       }
 
       @include from('large-xxl') {
-        padding: 1.3rem 1.6rem;
+        padding: 1.1rem 1.4rem;
+        font-size: 1rem;
       }
 
       &:focus {
@@ -284,9 +297,8 @@
           rgba(css-var(secondary-color), 0.05)
         );
         outline: none;
-        transform: translateY(-1px); // Moins de mouvement sur mobile
+        transform: translateY(-1px);
 
-        // 🖥️ DESKTOP - Mouvement original
         @include from('large-xs') {
           transform: translateY(-2px);
         }
@@ -345,17 +357,17 @@
         min-height: 140px;
       }
 
-      // 🖥️ GRANDS ÉCRANS
+      // 🖥️ GRANDS ÉCRANS - Hauteur réduite pour s'adapter
       @include from('large-xs') {
-        min-height: 120px; // Valeur desktop originale
+        min-height: 80px; // Réduit pour s'adapter à la hauteur contrainte
       }
 
       @include from('large-lg') {
-        min-height: 125px;
+        min-height: 85px;
       }
 
       @include from('large-xxl') {
-        min-height: 130px;
+        min-height: 90px;
       }
     }
 
@@ -377,7 +389,7 @@
       padding: 1.25rem 2rem;
       font-size: 1rem;
       min-height: 48px;
-      width: 100%; // Full width sur mobile
+      width: 100%;
 
       @include until('small-sm') {
         padding: 1.125rem 1.75rem;
@@ -431,21 +443,23 @@
         min-height: 51px;
       }
 
-      // 🖥️ GRANDS ÉCRANS - Valeurs desktop originales
+      // 🖥️ GRANDS ÉCRANS - Valeurs desktop réduites
       @include from('large-xs') {
-        padding: 1rem;
-        border-radius: 0.313rem;
-        font-size: 1rem;
+        padding: 0.8rem 1.5rem; // Réduit pour s'adapter
+        border-radius: 8px;
+        font-size: 0.95rem;
         width: auto;
         min-height: auto;
       }
 
       @include from('large-lg') {
-        padding: 1.05rem;
+        padding: 0.85rem 1.6rem;
+        font-size: 0.97rem;
       }
 
       @include from('large-xxl') {
-        padding: 1.1rem;
+        padding: 0.9rem 1.7rem;
+        font-size: 1rem;
       }
 
       &:hover {
@@ -526,11 +540,11 @@
         font-size: 0.97rem;
       }
 
-      // 🖥️ GRANDS ÉCRANS
+      // 🖥️ GRANDS ÉCRANS - Réduit
       @include from('large-xs') {
-        margin-top: 0.625rem;
-        padding: 0.5rem;
-        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
       }
     }
 
@@ -556,13 +570,11 @@
 @media screen and (max-height: 600px) and (max-width: 768px) {
   .formContainer {
     form {
-      // Assure que le formulaire reste accessible même avec clavier
       position: relative;
       z-index: 1000;
 
       input,
       textarea {
-        // Optimise la gestion du focus avec clavier
         scroll-margin-top: 1rem;
       }
     }
@@ -613,7 +625,7 @@
     input,
     textarea,
     button {
-      min-height: 48px; // Zone tactile recommandée
+      min-height: 48px;
     }
   }
 }
@@ -635,6 +647,6 @@
 // Très grands écrans - Limitation de la taille
 @include from('large-xxxl') {
   .formContainer form {
-    gap: 1.8rem;
+    gap: 1.5rem;
   }
 }

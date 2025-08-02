@@ -1,8 +1,13 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { MdMail, MdPhone, MdWhatsapp } from 'react-icons/md';
+import {
+  MdMail,
+  MdPhone,
+  MdWhatsapp,
+  MdKeyboardArrowDown,
+} from 'react-icons/md';
 import Parallax from '@/components/layouts/parallax';
 import './contact.scss';
 import FormContainer from './formContainer';
@@ -24,6 +29,11 @@ const variants = {
 
 const Contact = () => {
   const ref = useRef();
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
 
   return (
     <div>
@@ -39,26 +49,46 @@ const Contact = () => {
           whileInView="animate"
         >
           <motion.div className="textContainer" variants={variants}>
-            <motion.h1 variants={variants}>Coordonnées</motion.h1>
-            <motion.div className="item" variants={variants}>
-              <div className="icon">
-                <MdPhone />
+            {/* Header collapsible - Visible uniquement sur mobile/tablette */}
+            <div className="collapsible-header" onClick={toggleCollapse}>
+              <h2>Coordonnées</h2>
+              <MdKeyboardArrowDown
+                className={`toggle-icon ${!isCollapsed ? 'open' : ''}`}
+              />
+            </div>
+
+            {/* Contenu collapsible */}
+            <div
+              className={`collapsible-content ${!isCollapsed ? 'open' : ''}`}
+            >
+              <div className="content-wrapper">
+                {/* Titre principal - Visible uniquement sur desktop */}
+                <motion.h1 variants={variants}>Coordonnées</motion.h1>
+
+                <motion.div className="item" variants={variants}>
+                  <div className="icon">
+                    <MdPhone />
+                  </div>
+                  <p>77.86.00.64</p>
+                </motion.div>
+
+                <motion.div className="item" variants={variants}>
+                  <div className="icon">
+                    <MdWhatsapp />
+                  </div>
+                  <p>77.86.00.64</p>
+                </motion.div>
+
+                <motion.div className="item" variants={variants}>
+                  <div className="icon">
+                    <MdMail />
+                  </div>
+                  <p>benew@gmail.com</p>
+                </motion.div>
               </div>
-              <p>77.86.00.64</p>
-            </motion.div>
-            <motion.div className="item" variants={variants}>
-              <div className="icon">
-                <MdWhatsapp />
-              </div>
-              <p>77.86.00.64</p>
-            </motion.div>
-            <motion.div className="item" variants={variants}>
-              <div className="icon">
-                <MdMail />
-              </div>
-              <p>benew@gmail.com</p>
-            </motion.div>
+            </div>
           </motion.div>
+
           <FormContainer ref={ref} />
         </motion.div>
       </section>
