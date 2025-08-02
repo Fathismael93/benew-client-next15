@@ -101,13 +101,12 @@
     // 📱 MOBILE FIRST - TextContainer en PREMIER avec système collapsible
     order: 1;
     text-align: center;
-    align-items: center;
+    align-items: end;
 
     // Hauteur fixe 40% sur mobile/tablette pour éviter débordement
     @include until('large-xs') {
       height: auto;
       min-height: auto;
-      justify-content: flex-end;
     }
 
     // 🖥️ GRANDS ÉCRANS - Hauteur fixe 40%

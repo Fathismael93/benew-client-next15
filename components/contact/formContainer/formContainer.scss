@@ -9,7 +9,7 @@
   width: 100%;
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  align-items: flex-end;
   flex-shrink: 0;
 
   // 📱 MOBILE FIRST - Formulaire en SECOND maintenant
@@ -33,7 +33,7 @@
     padding-top: 3rem;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    align-items: flex-end;
   }
 
   .phoneSvg {
