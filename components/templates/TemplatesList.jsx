@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import { useState, useEffect } from 'react';
-// import './styling/templates.scss';
+import './styling/templates.scss';
 import Parallax from '@/components/layouts/parallax';
 import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 

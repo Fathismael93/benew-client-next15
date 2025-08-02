@@ -1,748 +1,1130 @@
-// @use 'sass:color';
-// @use '../../../app/styles/abstracts' as *;
-
-// // =============================
-// // SINGLE TEMPLATE SHOPS - APPROCHE MOBILE-FIRST OPTIMISÉE
-// // =============================
-
-// .projectSection {
-//   width: 100%;
-//   height: 100vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-
-//   // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace
-//   padding: 1.5rem 1rem;
-
-//   // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
-//   @include until('sm') {
-//     padding: 1rem 0.75rem;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Augmentation progressive
-//   @include from('md') {
-//     padding: 2rem 1.5rem;
-//   }
-
-//   @include from('lg') {
-//     padding: 2.5rem 2rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 3rem; // Valeur desktop originale
-//   }
-// }
-
-// // =============================
-// // CARTE APPLICATION - MOBILE-FIRST OPTIMISÉE
-// // =============================
-
-// .application-card {
-//   background: rgba(255, 255, 255, 0.08);
-//   border-radius: 20px; // Plus arrondi sur mobile
-//   border: 1px solid rgba(css-var(primary-color), 0.25);
-//   backdrop-filter: blur(15px);
-//   overflow: hidden;
-//   transition: all 0.3s ease;
-//   position: relative;
-
-//   // 📱 MOBILE FIRST - Carte imposante et utilisable
-//   width: 95%;
-//   max-width: 100%;
-//   min-height: 420px; // Hauteur minimum garantie
-//   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-
-//   // 📟 TRÈS PETITS ÉCRANS - Utilisation maximale de l'espace
-//   @include until('sm') {
-//     width: 98%;
-//     min-height: 400px;
-//     border-radius: 16px;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//   @include from('md') {
-//     width: 90%;
-//     max-width: 500px;
-//     min-height: 380px;
-//   }
-
-//   @include from('lg') {
-//     width: 85%;
-//     max-width: 450px;
-//     min-height: 360px;
-//   }
-
-//   @include from('xl') {
-//     width: 80%;
-//     max-width: 400px;
-//     min-height: auto; // Hauteur automatique sur desktop
-//     border-radius: 16px;
-//     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-//   }
-
-//   &:hover {
-//     transform: translateY(-10px); // Plus de mouvement sur mobile
-//     box-shadow: 0 20px 60px rgba(css-var(primary-color), 0.25);
-//     border-color: rgba(css-var(primary-color), 0.5);
-//   }
-
-//   // 📱 MOBILE - Effet tactile
-//   &:active {
-//     transform: translateY(-5px);
-//   }
-
-//   // Effet de brillance subtil
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     left: -100%;
-//     width: 100%;
-//     height: 100%;
-//     background: linear-gradient(
-//       90deg,
-//       transparent,
-//       rgba(css-var(primary-color), 0.1),
-//       transparent
-//     );
-//     transition: left 0.5s ease;
-//     z-index: 1;
-//   }
-
-//   &:hover::before {
-//     left: 100%;
-//   }
-// }
-
-// // =============================
-// // IMAGE APPLICATION - MOBILE-FIRST
-// // =============================
-
-// .card-image {
-//   position: relative;
-//   overflow: hidden;
-//   background: linear-gradient(
-//     135deg,
-//     css-var(primary-color) 0%,
-//     css-var(secondary-color) 50%,
-//     css-var(accent-color) 100%
-//   );
-//   z-index: 2;
-
-//   // 📱 MOBILE FIRST - Image plus visible et impactante
-//   height: 240px;
-
-//   // 📟 TRÈS PETITS ÉCRANS - Toujours visible
-//   @include until('sm') {
-//     height: 220px;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Réduction progressive
-//   @include from('md') {
-//     height: 220px;
-//   }
-
-//   @include from('lg') {
-//     height: 210px;
-//   }
-
-//   @include from('xl') {
-//     height: 200px; // Valeur desktop originale
-//   }
-
-//   // Overlay subtil pour améliorer le contraste
-//   &::after {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     background: linear-gradient(
-//       to bottom,
-//       transparent 0%,
-//       rgba(css-var(background-color), 0.1) 100%
-//     );
-//     z-index: 1;
-//   }
-// }
-
-// .app-image {
-//   width: 100%;
-//   height: 100%;
-//   object-fit: contain;
-//   transition: transform 0.4s ease;
-//   z-index: 0;
-//   position: relative;
-
-//   // 📱 MOBILE - Effet hover plus prononcé
-//   .application-card:hover & {
-//     transform: scale(1.08);
-//   }
-
-//   @include from('xl') {
-//     .application-card:hover & {
-//       transform: scale(1.05); // Effet plus subtil sur desktop
-//     }
-//   }
-// }
-
-// // =============================
-// // CONTENU CARTE - MOBILE-FIRST
-// // =============================
-
-// .card-content {
-//   // 📱 MOBILE FIRST - Plus d'espace pour le contenu
-//   padding: 2rem 1.5rem;
-//   position: relative;
-//   z-index: 2;
-
-//   // 📟 TRÈS PETITS ÉCRANS
-//   @include until('sm') {
-//     padding: 1.75rem 1.25rem;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Réduction progressive
-//   @include from('md') {
-//     padding: 1.75rem 1.375rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 1.5rem; // Valeur desktop originale
-//   }
-// }
-
-// // =============================
-// // TITRE APPLICATION - MOBILE-FIRST
-// // =============================
-
-// .app-title {
-//   font-weight: 700;
-//   color: css-var(text-color);
-//   margin: 0 0 1rem 0;
-//   line-height: 1.3;
-//   text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
-//   transition: all 0.3s ease;
-
-//   // 📱 MOBILE FIRST - Titre bien visible
-//   font-size: 1.4rem;
-
-//   // 📟 TRÈS PETITS ÉCRANS - Toujours lisible
-//   @include until('sm') {
-//     font-size: 1.25rem;
-//     margin: 0 0 0.875rem 0;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Réduction progressive
-//   @include from('md') {
-//     font-size: 1.3rem;
-//   }
-
-//   @include from('lg') {
-//     font-size: 1.2rem;
-//   }
-
-//   @include from('xl') {
-//     font-size: 1.125rem; // Valeur desktop originale
-//     margin: 0 0 0.75rem 0;
-//   }
-
-//   // Effet hover amélioré
-//   .application-card:hover & {
-//     color: css-var(primary-color);
-//     transform: translateX(5px);
-//   }
-// }
-
-// // =============================
-// // META INFORMATIONS (LEVEL - CATEGORY) - MOBILE-FIRST
-// // =============================
-
-// .app-meta {
-//   color: css-var(text-color-muted);
-//   margin: 0 0 1.5rem 0;
-//   line-height: 1.4;
-//   display: flex;
-//   align-items: center;
-//   gap: 0.5rem;
-//   flex-wrap: wrap;
-
-//   // 📱 MOBILE FIRST
-//   font-size: 0.85rem;
-
-//   // 📟 TRÈS PETITS ÉCRANS
-//   @include until('sm') {
-//     font-size: 0.8rem;
-//     margin: 0 0 1.25rem 0;
-//   }
-
-//   // 🖥️ DESKTOP
-//   @include from('xl') {
-//     font-size: 0.8rem;
-//   }
-
-//   .level,
-//   .category {
-//     font-weight: 400;
-//     font-style: italic;
-//   }
-
-//   .separator {
-//     color: css-var(text-color-muted);
-//     opacity: 0.6;
-//   }
-// }
-
-// // =============================
-// // CONTENU CARTE RESTRUCTURÉ - MOBILE-FIRST
-// // =============================
-
-// .card-content {
-//   // 📱 MOBILE FIRST - Flexbox pour structurer le contenu
-//   display: flex;
-//   flex-direction: column;
-//   height: 100%;
-//   padding: 2rem 1.5rem;
-//   position: relative;
-//   z-index: 2;
-
-//   // 📟 TRÈS PETITS ÉCRANS
-//   @include until('sm') {
-//     padding: 1.75rem 1.25rem;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Réduction progressive
-//   @include from('md') {
-//     padding: 1.75rem 1.375rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 1.5rem; // Valeur desktop originale
-//   }
-// }
-
-// // =============================
-// // SECTION PRIX REPOSITIONNÉE - MOBILE-FIRST
-// // =============================
-
-// .price-section {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 0.75rem;
-//   margin: auto 0 1.5rem 0; // Pousse vers le bas avec marge en bas
-
-//   // 📟 TRÈS PETITS ÉCRANS
-//   @include until('sm') {
-//     margin: auto 0 1.25rem 0;
-//     gap: 0.5rem;
-//   }
-
-//   @include from('xl') {
-//     margin: auto 0 1rem 0;
-//     gap: 0.5rem;
-//   }
-// }
-
-// .price-item {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   gap: 0.5rem;
-
-//   @include until('sm') {
-//     gap: 0.375rem;
-//   }
-// }
-
-// .price-label {
-//   color: css-var(text-color-muted);
-//   font-size: 0.75rem;
-//   font-weight: 500;
-//   flex-shrink: 0;
-
-//   @include until('sm') {
-//     font-size: 0.7rem;
-//   }
-// }
-
-// .price {
-//   font-weight: 700; // Même poids que rent-price
-//   color: css-var(primary-color);
-//   text-shadow: 0 2px 4px rgba(css-var(primary-color), 0.3); // Même ombre que rent-price
-//   transition: all 0.3s ease;
-//   text-align: right;
-
-//   // Même taille que rent-price
-//   font-size: 1.2rem;
-
-//   @include until('sm') {
-//     font-size: 0.85rem;
-//   }
-
-//   @include from('xl') {
-//     font-size: 1rem;
-//     font-weight: 600; // Même poids que rent-price sur desktop
-//   }
-// }
-
-// .rent-price {
-//   color: css-var(secondary-color); // Couleur secondaire
-//   font-weight: 600;
-//   font-size: 0.9rem;
-//   text-align: right;
-//   text-shadow: 0 2px 4px rgba(css-var(secondary-color), 0.3);
-
-//   @include until('sm') {
-//     font-size: 0.85rem;
-//   }
-
-//   @include from('xl') {
-//     font-size: 0.85rem;
-//     font-weight: 500;
-//   }
-// }
-
-// // =============================
-// // BOUTONS D'ACTION EN BAS - MOBILE-FIRST
-// // =============================
-
-// .action-buttons {
-//   display: flex;
-//   gap: 0.75rem;
-//   width: 100%;
-//   margin-top: auto; // Pousse vers le bas
-
-//   @include until('sm') {
-//     gap: 0.5rem;
-//   }
-
-//   @include from('xl') {
-//     gap: 0.5rem;
-//   }
-
-//   .btn {
-//     flex: 1; // Partage équitable de l'espace
-
-//     // 📱 MOBILE FIRST - Boutons tactiles optimaux
-//     padding: 1rem 1.25rem;
-//     font-size: 0.95rem;
-//     min-height: 48px;
-
-//     // 📟 TRÈS PETITS ÉCRANS - Boutons plus compacts
-//     @include until('sm') {
-//       padding: 0.625rem 0.75rem;
-//       font-size: 0.8rem;
-//       min-height: 40px;
-//     }
-
-//     // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//     @include from('md') {
-//       padding: 0.875rem 1.125rem;
-//       font-size: 0.9rem;
-//     }
-
-//     @include from('xl') {
-//       padding: 0.75rem 1rem;
-//       font-size: 0.875rem;
-//       min-height: auto;
-//     }
-//   }
-// }
-
-// .btn {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 0.5rem;
-//   border: none;
-//   border-radius: 12px;
-//   font-weight: 600;
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-//   text-decoration: none;
-//   position: relative;
-//   overflow: hidden;
-
-//   // 📱 MOBILE FIRST - Boutons tactiles optimaux
-//   padding: 1rem 1.25rem;
-//   font-size: 0.95rem;
-//   min-height: 48px; // Zone tactile recommandée
-
-//   // 📟 TRÈS PETITS ÉCRANS - Boutons plus compacts
-//   @include until('sm') {
-//     padding: 0.625rem 0.75rem; // Plus petit
-//     font-size: 0.8rem;
-//     min-height: 40px; // Plus petit
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//   @include from('md') {
-//     padding: 0.875rem 1.125rem;
-//     font-size: 0.9rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 0.75rem 1rem; // Valeur desktop originale
-//     font-size: 0.875rem;
-//     min-height: auto;
-//   }
-
-//   &:disabled {
-//     opacity: 0.5;
-//     cursor: not-allowed;
-
-//     &:hover {
-//       transform: none;
-//     }
-//   }
-
-//   &:active {
-//     transform: translateY(1px);
-//   }
-
-//   // Effet de brillance
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     left: -100%;
-//     width: 100%;
-//     height: 100%;
-//     background: linear-gradient(
-//       90deg,
-//       transparent,
-//       rgba(255, 255, 255, 0.2),
-//       transparent
-//     );
-//     transition: left 0.3s ease;
-//   }
-
-//   &:hover::before {
-//     left: 100%;
-//   }
-// }
-
-// .btn-cart {
-//   background: linear-gradient(
-//     135deg,
-//     css-var(primary-color) 0%,
-//     css-var(secondary-color) 100%
-//   );
-//   color: css-var(background-color);
-//   border: 2px solid transparent;
-//   box-shadow: 0 4px 15px rgba(css-var(primary-color), 0.3);
-
-//   &:hover:not(:disabled) {
-//     background: linear-gradient(
-//       135deg,
-//       css-var(secondary-color) 0%,
-//       css-var(accent-color) 100%
-//     );
-//     transform: translateY(-3px);
-//     box-shadow: 0 8px 25px rgba(css-var(secondary-color), 0.4);
-//   }
-
-//   // Icône avec transition
-//   svg {
-//     transition: transform 0.3s ease;
-//   }
-
-//   &:hover svg {
-//     transform: scale(1.1);
-//   }
-
-//   .btn-text {
-//     // 📟 TRÈS PETITS ÉCRANS - Cacher le texte
-//     @include until('sm') {
-//       display: none;
-//     }
-//   }
-// }
-
-// .btn-preview {
-//   background: transparent;
-//   color: css-var(text-color);
-//   border: 2px solid css-var(primary-color);
-//   backdrop-filter: blur(10px);
-
-//   &:hover {
-//     background: rgba(css-var(primary-color), 0.15);
-//     border-color: css-var(secondary-color);
-//     transform: translateY(-3px);
-//     box-shadow: 0 6px 20px rgba(css-var(primary-color), 0.3);
-//   }
-
-//   // Icône avec transition
-//   svg {
-//     transition: transform 0.3s ease;
-//   }
-
-//   &:hover svg {
-//     transform: scale(1.1);
-//   }
-
-//   .btn-text {
-//     // 📟 TRÈS PETITS ÉCRANS - Cacher le texte
-//     @include until('sm') {
-//       display: none;
-//     }
-//   }
-// }
-
-// // =============================
-// // ADAPTATIONS SPÉCIALES
-// // =============================
-
-// // Mode paysage sur mobile - Layout optimisé
-// @include mobile-landscape {
-//   .projectSection {
-//     padding: 1rem 0.75rem;
-//   }
-
-//   .application-card {
-//     width: 90%;
-//     max-width: 500px;
-//     min-height: 350px;
-
-//     .card-image {
-//       height: 180px;
-//     }
-
-//     .card-content {
-//       padding: 1.5rem 1.25rem;
-//     }
-
-//     .app-title {
-//       font-size: 1.2rem;
-//     }
-
-//     .price {
-//       font-size: 1.8rem;
-//     }
-
-//     .card-footer {
-//       flex-direction: row;
-//       gap: 1rem;
-//     }
-
-//     .action-buttons .btn {
-//       padding: 0.75rem 1rem;
-//       font-size: 0.85rem;
-//     }
-//   }
-// }
-
-// // Écrans très hauts (iPhone X, 11, etc.)
-// @include tall-screen {
-//   .application-card {
-//     @include until('lg') {
-//       min-height: 450px;
-//     }
-
-//     .card-image {
-//       @include until('lg') {
-//         height: 260px;
-//       }
-//     }
-//   }
-// }
-
-// // Support pour écrans tactiles - Zones tactiles optimisées
-// @media (pointer: coarse) {
-//   .btn {
-//     min-width: 44px;
-//     min-height: 44px;
-//   }
-
-//   .application-card:hover {
-//     transform: none; // Pas d'effet hover sur tactile au repos
-//   }
-
-//   .application-card:active {
-//     transform: translateY(-5px);
-//   }
-// }
-
-// // Amélioration pour l'accessibilité - Réduction des animations
-// @include reduced-motion {
-//   .application-card,
-//   .app-image,
-//   .app-title,
-//   .price,
-//   .btn {
-//     transition: none;
-
-//     &:hover,
-//     &:active {
-//       transform: none;
-//     }
-//   }
-
-//   .application-card::before,
-//   .btn::before {
-//     display: none;
-//   }
-// }
-
-// // Support pour écrans haute densité
-// @include high-density {
-//   .application-card {
-//     box-shadow:
-//       0 12px 40px rgba(0, 0, 0, 0.4),
-//       0 4px 16px rgba(css-var(primary-color), 0.1);
-//   }
-
-//   .app-image {
-//     image-rendering: -webkit-optimize-contrast;
-//     image-rendering: crisp-edges;
-//   }
-// }
-
-// // Très grands écrans - Limitation de la taille
-// @include from('xxxxl') {
-//   .projectSection {
-//     padding: 3rem 2rem;
-//   }
-
-//   .application-card {
-//     max-width: 500px;
-//     min-height: 400px;
-//   }
-// }
-
-// // =============================
-// // ANIMATIONS AVANCÉES
-// // =============================
-
-// // Animation d'apparition pour les cartes
-// @keyframes cardAppear {
-//   0% {
-//     opacity: 0;
-//     transform: translateY(30px) scale(0.95);
-//   }
-//   100% {
-//     opacity: 1;
-//     transform: translateY(0) scale(1);
-//   }
-// }
-
-// .application-card {
-//   animation: cardAppear 0.6s ease-out forwards;
-// }
-
-// // Animation de pulsation pour le prix
-// @keyframes pricePulse {
-//   0%,
-//   100% {
-//     text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
-//   }
-//   50% {
-//     text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.6);
-//   }
-// }
-
-// .price:hover {
-//   animation: pricePulse 1s ease-in-out infinite;
-// }
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// SINGLE TEMPLATE SHOPS - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
+.projectSection {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace avec nouveaux breakpoints
+  padding: 1.5rem 1rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
+  @include small-screens {
+    padding: 1rem 0.75rem;
+  }
+
+  @include from('small-sm') {
+    padding: 1.1rem 0.8rem;
+  }
+
+  @include from('small-lg') {
+    padding: 1.2rem 0.9rem;
+  }
+
+  @include from('small-xl') {
+    padding: 1.4rem 1rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Augmentation progressive
+  @include between('small-xl', 'medium-sm') {
+    padding: 1.6rem 1.2rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 1.8rem 1.3rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-xxl') {
+    padding: 2.3rem 1.7rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('large-lg') {
+    padding: 2.8rem 2.2rem;
+  }
+
+  @include from('large-xxl') {
+    padding: 3rem; // Valeur desktop originale
+  }
+}
+
+// =============================
+// CARTE APPLICATION - MOBILE-FIRST OPTIMISÉE
+// =============================
+
+.application-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px; // Plus arrondi sur mobile
+  border: 1px solid rgba(css-var(primary-color), 0.25);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Carte imposante et utilisable avec nouveaux breakpoints
+  width: 95%;
+  max-width: 100%;
+  min-height: 420px; // Hauteur minimum garantie
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  // 📟 TRÈS PETITS ÉCRANS - Utilisation maximale de l'espace
+  @include small-screens {
+    width: 98%;
+    min-height: 400px;
+    border-radius: 16px;
+  }
+
+  @include from('small-sm') {
+    width: 97%;
+    min-height: 405px;
+  }
+
+  @include from('small-lg') {
+    width: 96%;
+    min-height: 410px;
+  }
+
+  @include from('small-xl') {
+    width: 95%;
+    min-height: 415px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Ajustements progressifs
+  @include between('small-xl', 'medium-sm') {
+    width: 93%;
+    max-width: 480px;
+    min-height: 400px;
+  }
+
+  @include from('medium-sm') {
+    width: 92%;
+    max-width: 490px;
+    min-height: 390px;
+  }
+
+  @include from('medium-lg') {
+    width: 90%;
+    max-width: 500px;
+    min-height: 380px;
+  }
+
+  @include from('medium-xxl') {
+    width: 88%;
+    max-width: 470px;
+    min-height: 370px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    width: 85%;
+    max-width: 450px;
+    min-height: 360px;
+  }
+
+  @include from('large-lg') {
+    width: 82%;
+    max-width: 430px;
+    min-height: auto;
+  }
+
+  @include from('large-xxl') {
+    width: 80%;
+    max-width: 400px;
+    min-height: auto; // Hauteur automatique sur desktop
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover {
+    transform: translateY(-10px); // Plus de mouvement sur mobile
+    box-shadow: 0 20px 60px rgba(css-var(primary-color), 0.25);
+    border-color: rgba(css-var(primary-color), 0.5);
+  }
+
+  // 📱 MOBILE - Effet tactile
+  &:active {
+    transform: translateY(-5px);
+  }
+
+  // Effet de brillance subtil
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(css-var(primary-color), 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+// =============================
+// IMAGE APPLICATION - MOBILE-FIRST
+// =============================
+
+.card-image {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color) 0%,
+    css-var(secondary-color) 50%,
+    css-var(accent-color) 100%
+  );
+  z-index: 2;
+
+  // 📱 MOBILE FIRST - Image plus visible et impactante avec nouveaux breakpoints
+  height: 240px;
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours visible
+  @include small-screens {
+    height: 220px;
+  }
+
+  @include from('small-sm') {
+    height: 225px;
+  }
+
+  @include from('small-lg') {
+    height: 230px;
+  }
+
+  @include from('small-xl') {
+    height: 235px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Réduction progressive
+  @include between('small-xl', 'medium-sm') {
+    height: 232px;
+  }
+
+  @include from('medium-sm') {
+    height: 228px;
+  }
+
+  @include from('medium-lg') {
+    height: 220px;
+  }
+
+  @include from('medium-xxl') {
+    height: 215px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    height: 210px;
+  }
+
+  @include from('large-lg') {
+    height: 205px;
+  }
+
+  @include from('large-xxl') {
+    height: 200px; // Valeur desktop originale
+  }
+
+  // Overlay subtil pour améliorer le contraste
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(css-var(background-color), 0.1) 100%
+    );
+    z-index: 1;
+  }
+}
+
+.app-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+  z-index: 0;
+  position: relative;
+
+  // 📱 MOBILE - Effet hover plus prononcé
+  .application-card:hover & {
+    transform: scale(1.08);
+  }
+
+  @include from('large-xxl') {
+    .application-card:hover & {
+      transform: scale(1.05); // Effet plus subtil sur desktop
+    }
+  }
+}
+
+// =============================
+// CONTENU CARTE RESTRUCTURÉ - MOBILE-FIRST
+// =============================
+
+.card-content {
+  // 📱 MOBILE FIRST - Flexbox pour structurer le contenu avec nouveaux breakpoints
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2rem 1.5rem;
+  position: relative;
+  z-index: 2;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include small-screens {
+    padding: 1.75rem 1.25rem;
+  }
+
+  @include from('small-sm') {
+    padding: 1.8rem 1.3rem;
+  }
+
+  @include from('small-lg') {
+    padding: 1.85rem 1.35rem;
+  }
+
+  @include from('small-xl') {
+    padding: 1.9rem 1.4rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Réduction progressive
+  @include between('small-xl', 'medium-sm') {
+    padding: 1.85rem 1.38rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 1.8rem 1.37rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 1.75rem 1.375rem;
+  }
+
+  @include from('medium-xxl') {
+    padding: 1.7rem 1.36rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    padding: 1.65rem 1.35rem;
+  }
+
+  @include from('large-lg') {
+    padding: 1.6rem 1.3rem;
+  }
+
+  @include from('large-xxl') {
+    padding: 1.5rem; // Valeur desktop originale
+  }
+}
+
+// =============================
+// TITRE APPLICATION - MOBILE-FIRST
+// =============================
+
+.app-title {
+  font-weight: 700;
+  color: css-var(text-color);
+  margin: 0 0 1rem 0;
+  line-height: 1.3;
+  text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE FIRST - Titre bien visible avec nouveaux breakpoints
+  font-size: 1.4rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours lisible
+  @include small-screens {
+    font-size: 1.25rem;
+    margin: 0 0 0.875rem 0;
+  }
+
+  @include from('small-sm') {
+    font-size: 1.28rem;
+    margin: 0 0 0.9rem 0;
+  }
+
+  @include from('small-lg') {
+    font-size: 1.32rem;
+    margin: 0 0 0.93rem 0;
+  }
+
+  @include from('small-xl') {
+    font-size: 1.35rem;
+    margin: 0 0 0.95rem 0;
+  }
+
+  // 📟 MOYENS ÉCRANS - Réduction progressive
+  @include between('small-xl', 'medium-sm') {
+    font-size: 1.33rem;
+    margin: 0 0 0.93rem 0;
+  }
+
+  @include from('medium-sm') {
+    font-size: 1.32rem;
+    margin: 0 0 0.9rem 0;
+  }
+
+  @include from('medium-lg') {
+    font-size: 1.3rem;
+    margin: 0 0 0.85rem 0;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 1.25rem;
+    margin: 0 0 0.8rem 0;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    font-size: 1.2rem;
+  }
+
+  @include from('large-lg') {
+    font-size: 1.16rem;
+  }
+
+  @include from('large-xxl') {
+    font-size: 1.125rem; // Valeur desktop originale
+    margin: 0 0 0.75rem 0;
+  }
+
+  // Effet hover amélioré
+  .application-card:hover & {
+    color: css-var(primary-color);
+    transform: translateX(5px);
+  }
+}
+
+// =============================
+// META INFORMATIONS (LEVEL - CATEGORY) - MOBILE-FIRST
+// =============================
+
+.app-meta {
+  color: css-var(text-color-muted);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  // 📱 MOBILE FIRST avec nouveaux breakpoints
+  font-size: 0.85rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include small-screens {
+    font-size: 0.8rem;
+    margin: 0 0 1.25rem 0;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.81rem;
+    margin: 0 0 1.3rem 0;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.82rem;
+    margin: 0 0 1.35rem 0;
+  }
+
+  @include from('small-xl') {
+    font-size: 0.83rem;
+    margin: 0 0 1.4rem 0;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include between('small-xl', 'medium-sm') {
+    font-size: 0.84rem;
+    margin: 0 0 1.45rem 0;
+  }
+
+  @include from('medium-sm') {
+    font-size: 0.84rem;
+    margin: 0 0 1.48rem 0;
+  }
+
+  @include from('medium-lg') {
+    font-size: 0.83rem;
+    margin: 0 0 1.49rem 0;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 0.82rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xxl') {
+    font-size: 0.8rem;
+  }
+
+  .level,
+  .category {
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .separator {
+    color: css-var(text-color-muted);
+    opacity: 0.6;
+  }
+}
+
+// =============================
+// SECTION PRIX REPOSITIONNÉE - MOBILE-FIRST
+// =============================
+
+.price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: auto 0 1.5rem 0; // Pousse vers le bas avec marge en bas
+
+  // 📟 TRÈS PETITS ÉCRANS avec nouveaux breakpoints
+  @include small-screens {
+    margin: auto 0 1.25rem 0;
+    gap: 0.5rem;
+  }
+
+  @include from('small-sm') {
+    margin: auto 0 1.3rem 0;
+    gap: 0.55rem;
+  }
+
+  @include from('small-lg') {
+    margin: auto 0 1.35rem 0;
+    gap: 0.6rem;
+  }
+
+  @include from('small-xl') {
+    margin: auto 0 1.4rem 0;
+    gap: 0.65rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include between('small-xl', 'medium-sm') {
+    margin: auto 0 1.42rem 0;
+    gap: 0.67rem;
+  }
+
+  @include from('medium-sm') {
+    margin: auto 0 1.45rem 0;
+    gap: 0.7rem;
+  }
+
+  @include from('medium-lg') {
+    margin: auto 0 1.47rem 0;
+    gap: 0.72rem;
+  }
+
+  @include from('medium-xxl') {
+    margin: auto 0 1.48rem 0;
+    gap: 0.73rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xxl') {
+    margin: auto 0 1rem 0;
+    gap: 0.5rem;
+  }
+}
+
+.price-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+
+  @include small-screens {
+    gap: 0.375rem;
+  }
+
+  @include from('small-sm') {
+    gap: 0.4rem;
+  }
+
+  @include from('small-lg') {
+    gap: 0.42rem;
+  }
+
+  @include from('small-xl') {
+    gap: 0.45rem;
+  }
+}
+
+.price-label {
+  color: css-var(text-color-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  flex-shrink: 0;
+
+  @include small-screens {
+    font-size: 0.7rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.71rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.72rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 0.73rem;
+  }
+}
+
+.price {
+  font-weight: 700; // Même poids que rent-price
+  color: css-var(primary-color);
+  text-shadow: 0 2px 4px rgba(css-var(primary-color), 0.3); // Même ombre que rent-price
+  transition: all 0.3s ease;
+  text-align: right;
+
+  // Même taille que rent-price avec nouveaux breakpoints
+  font-size: 1.2rem;
+
+  @include small-screens {
+    font-size: 0.85rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.9rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.95rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 1rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    font-size: 1.05rem;
+  }
+
+  @include from('medium-sm') {
+    font-size: 1.1rem;
+  }
+
+  @include from('medium-lg') {
+    font-size: 1.15rem;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 1.18rem;
+  }
+
+  @include from('large-xxl') {
+    font-size: 1rem;
+    font-weight: 600; // Même poids que rent-price sur desktop
+  }
+}
+
+.rent-price {
+  color: css-var(secondary-color); // Couleur secondaire
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: right;
+  text-shadow: 0 2px 4px rgba(css-var(secondary-color), 0.3);
+
+  @include small-screens {
+    font-size: 0.85rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.86rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.87rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 0.88rem;
+  }
+
+  @include from('large-xxl') {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+}
+
+// =============================
+// BOUTONS D'ACTION EN BAS - MOBILE-FIRST
+// =============================
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: auto; // Pousse vers le bas
+
+  @include small-screens {
+    gap: 0.5rem;
+  }
+
+  @include from('small-sm') {
+    gap: 0.55rem;
+  }
+
+  @include from('small-lg') {
+    gap: 0.6rem;
+  }
+
+  @include from('small-xl') {
+    gap: 0.65rem;
+  }
+
+  @include from('large-xxl') {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    flex: 1; // Partage équitable de l'espace
+
+    // 📱 MOBILE FIRST - Boutons tactiles optimaux avec nouveaux breakpoints
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+
+    // 📟 TRÈS PETITS ÉCRANS - Boutons plus compacts
+    @include small-screens {
+      padding: 0.625rem 0.75rem;
+      font-size: 0.8rem;
+      min-height: 40px;
+    }
+
+    @include from('small-sm') {
+      padding: 0.7rem 0.85rem;
+      font-size: 0.82rem;
+      min-height: 42px;
+    }
+
+    @include from('small-lg') {
+      padding: 0.75rem 0.9rem;
+      font-size: 0.84rem;
+      min-height: 44px;
+    }
+
+    @include from('small-xl') {
+      padding: 0.8rem 1rem;
+      font-size: 0.86rem;
+      min-height: 46px;
+    }
+
+    // 📟 MOYENS ÉCRANS - Ajustements progressifs
+    @include between('small-xl', 'medium-sm') {
+      padding: 0.83rem 1.05rem;
+      font-size: 0.88rem;
+    }
+
+    @include from('medium-sm') {
+      padding: 0.85rem 1.1rem;
+      font-size: 0.89rem;
+    }
+
+    @include from('medium-lg') {
+      padding: 0.875rem 1.125rem;
+      font-size: 0.9rem;
+    }
+
+    @include from('medium-xxl') {
+      padding: 0.87rem 1.12rem;
+      font-size: 0.9rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS
+    @include from('large-xxl') {
+      padding: 0.75rem 1rem; // Valeur desktop originale
+      font-size: 0.875rem;
+      min-height: auto;
+    }
+  }
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  // Effet de brillance
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.3s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+.btn-cart {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color) 0%,
+    css-var(secondary-color) 100%
+  );
+  color: css-var(background-color);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 15px rgba(css-var(primary-color), 0.3);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      135deg,
+      css-var(secondary-color) 0%,
+      css-var(accent-color) 100%
+    );
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(css-var(secondary-color), 0.4);
+  }
+
+  // Icône avec transition
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+  }
+
+  .btn-text {
+    // 📟 TRÈS PETITS ÉCRANS - Cacher le texte
+    @include small-screens {
+      display: none;
+    }
+
+    @include from('small-sm') {
+      display: none;
+    }
+
+    @include from('small-lg') {
+      display: inline;
+    }
+  }
+}
+
+.btn-preview {
+  background: transparent;
+  color: css-var(text-color);
+  border: 2px solid css-var(primary-color);
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    background: rgba(css-var(primary-color), 0.15);
+    border-color: css-var(secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(css-var(primary-color), 0.3);
+  }
+
+  // Icône avec transition
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+  }
+
+  .btn-text {
+    // 📟 TRÈS PETITS ÉCRANS - Cacher le texte
+    @include small-screens {
+      display: none;
+    }
+
+    @include from('small-sm') {
+      display: none;
+    }
+
+    @include from('small-lg') {
+      display: inline;
+    }
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES - Cohérent avec les autres composants
+// =============================
+
+// Mode paysage sur mobile - Layout optimisé
+@include mobile-landscape {
+  .projectSection {
+    padding: 1rem 0.75rem;
+  }
+
+  .application-card {
+    width: 90%;
+    max-width: 500px;
+    min-height: 350px;
+
+    .card-image {
+      height: 180px;
+    }
+
+    .card-content {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .app-title {
+      font-size: 1.2rem;
+    }
+
+    .price {
+      font-size: 1.8rem;
+    }
+
+    .action-buttons .btn {
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .application-card {
+    @include until('large-xs') {
+      min-height: 450px;
+    }
+
+    .card-image {
+      @include until('large-xs') {
+        height: 260px;
+      }
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .btn {
+    min-width: 44px;
+    min-height: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+  }
+
+  .application-card:hover {
+    transform: none; // Pas d'effet hover sur tactile au repos
+  }
+
+  .application-card:active {
+    transform: translateY(-5px);
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .application-card,
+  .app-image,
+  .app-title,
+  .price,
+  .btn {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+
+  .application-card::before,
+  .btn::before {
+    display: none;
+  }
+
+  .price:hover {
+    animation: none;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .application-card {
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      0 4px 16px rgba(css-var(primary-color), 0.1);
+  }
+
+  .app-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS PETITS - Mobile
+// =============================
+@media (max-width: 360px) {
+  .projectSection {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .application-card {
+    width: 99%;
+    min-height: 380px;
+    border-radius: 14px;
+
+    .card-image {
+      height: 200px;
+    }
+
+    .card-content {
+      padding: 1.5rem 1rem;
+    }
+
+    .app-title {
+      font-size: 1.15rem;
+    }
+
+    .app-meta {
+      font-size: 0.75rem;
+    }
+
+    .price {
+      font-size: 0.8rem;
+    }
+
+    .rent-price {
+      font-size: 0.8rem;
+    }
+
+    .action-buttons .btn {
+      padding: 0.5rem 0.6rem;
+      font-size: 0.75rem;
+      min-height: 36px;
+    }
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('large-xxxl') {
+  .projectSection {
+    padding: 3rem 2rem;
+  }
+
+  .application-card {
+    max-width: 500px;
+    min-height: 400px;
+
+    .card-image {
+      height: 220px;
+    }
+
+    .app-title {
+      font-size: 1.3rem;
+    }
+
+    .price {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+// =============================
+// ANIMATIONS AVANCÉES
+// =============================
+
+// Animation d'apparition pour les cartes
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.application-card {
+  animation: cardAppear 0.6s ease-out forwards;
+}
+
+// Animation de pulsation pour le prix
+@keyframes pricePulse {
+  0%,
+  100% {
+    text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
+  }
+  50% {
+    text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.6);
+  }
+}
+
+.price:hover {
+  animation: pricePulse 1s ease-in-out infinite;
+}

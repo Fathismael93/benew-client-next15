@@ -1,2167 +1,2165 @@
-// @use 'sass:color';
-// @use '../../../app/styles/abstracts' as *;
-
-// // =============================
-// // SINGLE APPLICATION - APPROCHE MOBILE-FIRST OPTIMISÉE
-// // =============================
-
-// // =============================
-// // PAGE 1 - GALLERY SECTION MOBILE-FIRST
-// // =============================
-
-// .gallery-section {
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-//   background: linear-gradient(to bottom, #0c0c1d, #151528);
-//   margin: 0;
-//   padding: 0;
-//   height: 100vh;
-// }
-
-// .gallery-container {
-//   width: 100%;
-//   height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   position: relative;
-
-//   // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace
-//   padding: 1rem 0.75rem;
-
-//   // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
-//   @include until('sm') {
-//     padding: 0.75rem 0.5rem;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Augmentation progressive
-//   @include from('md') {
-//     padding: 1.5rem 1rem;
-//   }
-
-//   @include from('lg') {
-//     padding: 2rem 1.5rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 3rem; // Valeur desktop originale
-//   }
-// }
-
-// .gallery-swiper-wrapper {
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 100%;
-//   position: relative;
-
-//   // 📱 MOBILE FIRST - Layout vertical optimisé
-//   flex-direction: column;
-//   height: 100%;
-//   gap: 1.5rem;
-
-//   // 📟 TRÈS PETITS ÉCRANS
-//   @include until('sm') {
-//     gap: 1rem;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
-//   @include from('lg') {
-//     flex-direction: row;
-//     height: 80vh;
-//     gap: 2rem;
-//   }
-
-//   @include from('xl') {
-//     gap: 3rem; // Valeur desktop originale
-//   }
-// }
-
-// // =============================
-// // IMAGES LATÉRALES - MOBILE-FIRST
-// // =============================
-
-// .gallery-side-images {
-//   // 📱 MOBILE - Cachées car inutiles, remplacées par miniatures
-//   display: none;
-
-//   // 🖥️ DESKTOP - Réapparition pour l'effet visuel
-//   @include from('lg') {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     position: relative;
-//     z-index: 1;
-
-//     &.gallery-left {
-//       order: 1;
-//     }
-
-//     &.gallery-right {
-//       order: 3;
-//     }
-//   }
-// }
-
-// .gallery-side-image {
-//   // Styles conservés pour desktop uniquement
-//   @include from('lg') {
-//     width: 180px;
-//     height: 240px;
-//     border-radius: 16px;
-//     overflow: hidden;
-//     position: relative;
-//     opacity: 0.6;
-//     animation: fadeInSlide 0.4s ease-out forwards;
-//     animation-delay: 0.1s;
-
-//     &::after {
-//       content: '';
-//       position: absolute;
-//       top: 0;
-//       left: 0;
-//       right: 0;
-//       bottom: 0;
-//       backdrop-filter: blur(3px);
-//       background: rgba(12, 12, 26, 0.3);
-//       z-index: 2;
-//       transition: all 0.3s ease;
-//     }
-
-//     .side-image {
-//       width: 100%;
-//       height: 100%;
-//       object-fit: cover;
-//       transition: transform 0.3s ease;
-//     }
-
-//     &:hover {
-//       opacity: 0.8;
-//       transform: scale(1.05);
-//       transition: all 0.3s ease;
-
-//       &::after {
-//         backdrop-filter: blur(1px);
-//         background: rgba(12, 12, 26, 0.1);
-//       }
-//     }
-//   }
-
-//   @include from('xl') {
-//     width: 200px;
-//     height: 280px;
-//   }
-// }
-
-// // =============================
-// // CONTENEUR PRINCIPAL - MOBILE-FIRST
-// // =============================
-
-// .gallery-main-container {
-//   position: relative;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   z-index: 5;
-
-//   // 📱 MOBILE FIRST - Utilisation maximale de l'espace
-//   width: 95%;
-//   height: 70%; // 70% de la hauteur pour l'image principale
-//   max-width: none;
-//   order: 1;
-
-//   // 📟 TRÈS PETITS ÉCRANS
-//   @include until('sm') {
-//     width: 98%;
-//     height: 65%;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//   @include from('md') {
-//     width: 90%;
-//     height: 75%;
-//   }
-
-//   @include from('lg') {
-//     // DESKTOP - Retour au layout original
-//     order: 2;
-//     flex: 1;
-//     max-width: 500px;
-//     height: 100%;
-//     width: auto;
-//   }
-
-//   @include from('xl') {
-//     max-width: 600px;
-//   }
-// }
-
-// .gallery-image-wrapper {
-//   position: relative;
-//   width: 100%;
-//   height: 100%;
-//   overflow: hidden;
-//   border-radius: 20px;
-//   box-shadow: 0 20px 60px rgba(246, 160, 55, 0.3);
-
-//   // 📱 MOBILE - Border radius plus prononcé
-//   @include until('lg') {
-//     border-radius: 24px;
-//     box-shadow: 0 16px 48px rgba(246, 160, 55, 0.4);
-//   }
-// }
-
-// .gallery-main-image {
-//   width: 100%;
-//   height: 100%;
-//   object-fit: contain;
-//   border-radius: 20px;
-//   animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-//   opacity: 0;
-//   transform: translateX(30px);
-
-//   // 📱 MOBILE - Border radius adapté
-//   @include until('lg') {
-//     border-radius: 24px;
-//   }
-
-//   &:hover {
-//     transform: scale(1.02) translateX(0);
-//     box-shadow: 0 25px 80px rgba(246, 160, 55, 0.3);
-//     transition: all 0.3s ease;
-//   }
-// }
-
-// // =============================
-// // COMPTEUR D'IMAGES - MOBILE-FIRST
-// // =============================
-
-// .gallery-counter {
-//   position: absolute;
-//   background: linear-gradient(
-//     135deg,
-//     rgba(css-var(color-dark), 0.9),
-//     rgba(css-var(color-purple), 0.9)
-//   );
-//   color: css-var(color-light);
-//   border-radius: 25px;
-//   font-weight: 600;
-//   z-index: 10;
-//   backdrop-filter: blur(10px);
-//   border: 1px solid rgba(css-var(color-orange), 0.3);
-//   animation: counterUpdate 0.3s ease-out;
-
-//   // 📱 MOBILE FIRST - Plus visible et accessible
-//   top: 1rem;
-//   right: 1rem;
-//   padding: 0.75rem 1rem;
-//   font-size: 1rem;
-
-//   // 📟 TRÈS PETITS ÉCRANS
-//   @include until('sm') {
-//     top: 0.75rem;
-//     right: 0.75rem;
-//     padding: 0.5rem 0.75rem;
-//     font-size: 0.9rem;
-//   }
-
-//   // 🖥️ DESKTOP - Taille plus discrète
-//   @include from('xl') {
-//     top: 20px;
-//     right: 20px;
-//     padding: 8px 16px;
-//     font-size: 0.9rem;
-//   }
-// }
-
-// // =============================
-// // FLÈCHES NAVIGATION - MOBILE-FIRST
-// // =============================
-
-// .gallery-arrow {
-//   position: absolute;
-//   background: linear-gradient(
-//     135deg,
-//     css-var(color-orange),
-//     css-var(color-pink)
-//   );
-//   border: none;
-//   border-radius: 50%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   cursor: pointer;
-//   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-//   z-index: 10;
-//   color: css-var(color-dark);
-
-//   // 📱 MOBILE FIRST - Flèches grandes et accessibles
-//   width: 56px;
-//   height: 56px;
-//   top: 50%;
-//   margin-top: -28px; // ← Centrage avec margin au lieu de transform
-//   box-shadow: 0 8px 25px rgba(246, 160, 55, 0.5);
-
-//   // 📟 TRÈS PETITS ÉCRANS - Toujours utilisables
-//   @include until('sm') {
-//     width: 48px;
-//     height: 48px;
-//     margin-top: -24px; // ← Ajuster selon la taille
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//   @include from('md') {
-//     width: 60px;
-//     height: 60px;
-//     margin-top: -30px; // ← Ajuster selon la taille
-//   }
-
-//   @include from('xl') {
-//     width: 64px; // Valeur desktop originale
-//     height: 64px;
-//     margin-top: -32px; // ← Ajuster selon la taille
-//   }
-
-//   &:hover {
-//     background: linear-gradient(
-//       135deg,
-//       css-var(color-pink),
-//       css-var(color-orange)
-//     );
-//     transform: scale(1.1); // ← Plus de translateY
-//     box-shadow: 0 12px 35px rgba(246, 160, 55, 0.6);
-//   }
-
-//   &:active {
-//     transform: scale(0.95); // ← Plus de translateY
-//     animation: arrowPulse 0.2s ease-out;
-//   }
-
-//   svg {
-//     transition: transform 0.2s ease;
-//     pointer-events: none; // ← Désactive les events sur le SVG
-//   }
-// }
-
-// .gallery-arrow-left {
-//   // 📱 MOBILE - Positionnement optimisé
-//   left: 1rem;
-
-//   @include until('sm') {
-//     left: 0.75rem;
-//   }
-
-//   // 🖥️ DESKTOP - Repositionnement selon layout
-//   @include from('lg') {
-//     left: 15%;
-//   }
-// }
-
-// .gallery-arrow-right {
-//   // 📱 MOBILE - Positionnement optimisé
-//   right: 1rem;
-
-//   @include until('sm') {
-//     right: 0.75rem;
-//   }
-
-//   // 🖥️ DESKTOP - Repositionnement selon layout
-//   @include from('lg') {
-//     right: 15%;
-//   }
-// }
-
-// // =============================
-// // MESSAGE NO IMAGES - MOBILE-FIRST
-// // =============================
-
-// .no-images {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100vh;
-//   background: linear-gradient(
-//     135deg,
-//     rgba(css-var(color-dark), 0.9),
-//     rgba(css-var(color-purple), 0.1)
-//   );
-//   color: rgba(css-var(color-light), 0.7);
-//   text-align: center;
-//   backdrop-filter: blur(10px);
-
-//   // 📱 MOBILE FIRST - Texte bien visible
-//   font-size: 1.5rem;
-//   padding: 2rem 1rem;
-
-//   @include until('sm') {
-//     font-size: 1.25rem;
-//     padding: 1.5rem 0.75rem;
-//   }
-
-//   @include from('xl') {
-//     font-size: 1.5rem;
-//     padding: 2rem;
-//   }
-// }
-
-// // =============================
-// // SECTION 1 - APP HEADER (En-tête + Informations techniques)
-// // =============================
-
-// .app-header-section {
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background: linear-gradient(135deg, #1a0f2e 0%, #151528 50%, #0c0c1d 100%);
-//   position: relative;
-//   overflow: hidden;
-
-//   // Hauteur fixe sur tous les écrans
-//   height: 100vh;
-//   padding: 0;
-
-//   // Effet de particules en arrière-plan
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     background:
-//       radial-gradient(
-//         circle at 30% 70%,
-//         rgba(css-var(color-orange), 0.08) 0%,
-//         transparent 50%
-//       ),
-//       radial-gradient(
-//         circle at 70% 30%,
-//         rgba(css-var(color-pink), 0.08) 0%,
-//         transparent 50%
-//       );
-//     pointer-events: none;
-//     z-index: 1;
-//   }
-// }
-
-// .app-header-container {
-//   width: 100%;
-//   max-width: 1200px;
-//   margin: 0 auto;
-//   position: relative;
-//   z-index: 2;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-
-//   // 📱 MOBILE FIRST - Padding généreux
-//   padding: 0 1.5rem;
-//   gap: 3rem;
-
-//   @include until('sm') {
-//     padding: 0 1rem;
-//     gap: 2.5rem;
-//   }
-
-//   @include from('md') {
-//     padding: 0 2rem;
-//     gap: 3.5rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 0 2rem;
-//     gap: 2rem;
-//     height: 100%;
-//   }
-// }
-
-// // =============================
-// // EN-TÊTE PRINCIPAL - MOBILE-FIRST
-// // =============================
-
-// .app-header {
-//   display: flex;
-//   align-items: flex-start;
-//   padding-bottom: 2rem;
-//   border-bottom: 2px solid rgba(css-var(color-orange), 0.2);
-//   flex-shrink: 0;
-//   width: 100%;
-
-//   // 📱 MOBILE FIRST - Layout vertical centré
-//   flex-direction: column;
-//   gap: 2rem;
-//   text-align: center;
-
-//   @include until('sm') {
-//     gap: 1.75rem;
-//     padding-bottom: 1.75rem;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
-//   @include from('lg') {
-//     flex-direction: row;
-//     justify-content: space-between;
-//     text-align: left;
-//     gap: 2rem;
-//   }
-
-//   @include from('xl') {
-//     gap: 1.5rem;
-//     padding-bottom: 1rem;
-//   }
-// }
-
-// .title-block {
-//   // 📱 MOBILE - Full width
-//   width: 100%;
-
-//   // 🖥️ DESKTOP - Flex sizing
-//   @include from('lg') {
-//     flex: 1;
-//     width: auto;
-//   }
-
-//   .app-title {
-//     font-weight: 800;
-//     color: css-var(color-light);
-//     margin: 0 0 1rem 0;
-//     letter-spacing: -0.02em;
-//     line-height: 1.1;
-//     background: linear-gradient(
-//       135deg,
-//       css-var(color-orange),
-//       css-var(color-pink)
-//     );
-//     -webkit-background-clip: text;
-//     -webkit-text-fill-color: transparent;
-//     background-clip: text;
-
-//     // 📱 MOBILE FIRST - Titre imposant et lisible
-//     font-size: 2.5rem;
-
-//     @include until('sm') {
-//       font-size: 2.25rem;
-//       margin: 0 0 0.875rem 0;
-//     }
-
-//     // 🖥️ TABLET ET PLUS - Maintien de la taille ou légère augmentation
-//     @include from('md') {
-//       font-size: 2.75rem;
-//     }
-
-//     @include from('lg') {
-//       font-size: 2.5rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 2.5rem;
-//     }
-//   }
-// }
-
-// // =============================
-// // BADGES - MOBILE-FIRST
-// // =============================
-
-// .app-badges {
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 1rem;
-
-//   // 📱 MOBILE FIRST - Centré sous le titre
-//   justify-content: center;
-//   width: 100%;
-
-//   @include until('sm') {
-//     gap: 0.75rem;
-//   }
-
-//   // 🖥️ DESKTOP - Aligné à droite
-//   @include from('lg') {
-//     justify-content: flex-end;
-//     align-items: flex-start;
-//     width: auto;
-//   }
-// }
-
-// .badge {
-//   display: flex;
-//   align-items: center;
-//   text-align: center;
-//   border-radius: 12px;
-//   backdrop-filter: blur(10px);
-//   border: 1px solid;
-//   transition: all 0.3s ease;
-
-//   // Badges compacts par défaut
-//   padding: 0.5rem 0.75rem;
-//   min-width: auto;
-
-//   @include until('sm') {
-//     padding: 0.375rem 0.625rem;
-//   }
-
-//   &:hover {
-//     transform: translateY(-3px);
-//     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-//   }
-
-//   .badge-value {
-//     font-weight: 600;
-//     font-size: 0.85rem;
-
-//     @include until('sm') {
-//       font-size: 0.8rem;
-//     }
-//   }
-
-//   &.level-badge {
-//     background: rgba(css-var(color-orange), 0.1);
-//     border-color: rgba(css-var(color-orange), 0.3);
-//     color: css-var(color-orange);
-//   }
-
-//   &.category-badge {
-//     background: rgba(css-var(color-purple), 0.1);
-//     border-color: rgba(css-var(color-purple), 0.3);
-//     color: css-var(color-purple);
-//   }
-// }
-
-// // =============================
-// // CONTENU PRINCIPAL - DESCRIPTION + TECHNIQUE
-// // =============================
-
-// .main-content {
-//   width: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 2rem;
-
-//   @include from('lg') {
-//     gap: 0;
-//   }
-// }
-
-// // =============================
-// // BOUTONS TOGGLE MOBILE
-// // =============================
-
-// .mobile-toggle-buttons {
-//   display: flex;
-//   justify-content: center;
-//   gap: 0.5rem;
-//   margin-bottom: 1.5rem;
-
-//   // 🖥️ DESKTOP - Masquer les boutons toggle
-//   @include from('lg') {
-//     display: none;
-//   }
-
-//   .toggle-btn {
-//     display: flex;
-//     align-items: center;
-//     gap: 0.5rem;
-//     padding: 0.75rem 1.5rem;
-//     border: 2px solid rgba(css-var(color-light), 0.2);
-//     background: rgba(css-var(color-light), 0.05);
-//     color: css-var(text-color-muted);
-//     border-radius: 12px;
-//     cursor: pointer;
-//     transition: all 0.3s ease;
-//     font-weight: 500;
-//     font-size: 0.9rem;
-
-//     @include until('sm') {
-//       padding: 0.625rem 1.25rem;
-//       font-size: 0.85rem;
-//     }
-
-//     .toggle-icon {
-//       font-size: 1.1rem;
-
-//       @include until('sm') {
-//         font-size: 1rem;
-//       }
-//     }
-
-//     .toggle-text {
-//       white-space: nowrap;
-//     }
-
-//     &:hover {
-//       background: rgba(css-var(color-light), 0.1);
-//       border-color: rgba(css-var(color-light), 0.3);
-//       transform: translateY(-2px);
-//     }
-
-//     &.active {
-//       background: linear-gradient(
-//         135deg,
-//         rgba(css-var(color-orange), 0.15),
-//         rgba(css-var(color-pink), 0.1)
-//       );
-//       border-color: rgba(css-var(color-orange), 0.4);
-//       color: css-var(color-orange);
-//       box-shadow: 0 4px 15px rgba(css-var(color-orange), 0.2);
-
-//       .toggle-icon {
-//         transform: scale(1.1);
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // GRILLE DE CONTENU - RESPONSIVE
-// // =============================
-
-// .content-grid {
-//   display: grid;
-//   gap: 2rem;
-//   width: 100%;
-
-//   // 📱 MOBILE - Une colonne, sections empilées
-//   grid-template-columns: 1fr;
-
-//   @include until('sm') {
-//     gap: 1.5rem;
-//   }
-
-//   // 🖥️ DESKTOP - Deux colonnes côte à côte
-//   @include from('lg') {
-//     grid-template-columns: 1.2fr 0.8fr; // Description plus large que technique
-//     gap: 3rem;
-//   }
-
-//   @include from('xl') {
-//     gap: 4rem;
-//   }
-// }
-
-// // =============================
-// // SECTION DESCRIPTION - MOBILE-FIRST
-// // =============================
-
-// .description-section {
-//   background: rgba(css-var(color-light), 0.03);
-//   border: 1px solid rgba(css-var(color-light), 0.1);
-//   border-radius: 16px;
-//   backdrop-filter: blur(10px);
-//   transition: all 0.3s ease;
-//   width: 100%;
-
-//   // 📱 MOBILE - Système de toggle
-//   display: none;
-//   opacity: 0;
-//   transform: translateY(20px);
-
-//   &.active {
-//     display: block;
-//     opacity: 1;
-//     transform: translateY(0);
-//   }
-
-//   // 🖥️ DESKTOP - Toujours visible
-//   @include from('lg') {
-//     display: block !important;
-//     opacity: 1 !important;
-//     transform: translateY(0) !important;
-//   }
-
-//   // Padding responsive
-//   padding: 2.5rem 2rem;
-
-//   @include until('sm') {
-//     padding: 2rem 1.5rem;
-//   }
-
-//   @include from('md') {
-//     padding: 3rem 2.5rem;
-//   }
-
-//   @include from('lg') {
-//     padding: 2.5rem 2rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 2rem;
-//   }
-
-//   &:hover {
-//     border-color: rgba(css-var(color-orange), 0.3);
-//     box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
-//   }
-
-//   .section-title {
-//     font-weight: 700;
-//     color: css-var(color-light);
-//     margin: 0 0 1.5rem 0;
-//     position: relative;
-//     text-align: center;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 1.4rem;
-
-//     @include until('sm') {
-//       font-size: 1.3rem;
-//       margin: 0 0 1.25rem 0;
-//     }
-
-//     @include from('lg') {
-//       text-align: left;
-//       font-size: 1.5rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 1.6rem;
-//     }
-
-//     &::after {
-//       content: '';
-//       position: absolute;
-//       bottom: -0.75rem;
-//       width: 50px;
-//       height: 3px;
-//       background: linear-gradient(
-//         90deg,
-//         css-var(color-orange),
-//         css-var(color-pink)
-//       );
-//       border-radius: 3px;
-
-//       // 📱 MOBILE - Centré
-//       left: 50%;
-//       transform: translateX(-50%);
-
-//       // 🖥️ DESKTOP - Aligné à gauche
-//       @include from('lg') {
-//         left: 0;
-//         transform: none;
-//       }
-//     }
-//   }
-
-//   .description-content {
-//     .description-text {
-//       line-height: 1.6;
-//       color: css-var(text-color-muted);
-//       margin: 0;
-//       text-align: justify;
-
-//       // 📱 MOBILE FIRST
-//       font-size: 1rem;
-
-//       @include until('sm') {
-//         font-size: 0.95rem;
-//         line-height: 1.5;
-//         text-align: center;
-//       }
-
-//       @include from('lg') {
-//         font-size: 1rem;
-//         text-align: left;
-//       }
-
-//       // 📱 MOBILE - Scroll visible avec padding
-//       max-height: 200px;
-//       overflow-y: auto;
-//       padding: 1rem;
-//       background: rgba(css-var(color-light), 0.02);
-//       border-radius: 8px;
-//       border: 1px solid rgba(css-var(color-light), 0.05);
-
-//       @include until('sm') {
-//         max-height: 180px;
-//         padding: 0.875rem;
-//       }
-
-//       // 🖥️ DESKTOP - Plus de hauteur, moins de padding
-//       @include from('lg') {
-//         max-height: 300px;
-//         padding: 0.5rem 0;
-//         background: transparent;
-//         border: none;
-//       }
-
-//       // Scrollbar stylisée pour tous les écrans
-//       &::-webkit-scrollbar {
-//         width: 4px;
-//       }
-
-//       &::-webkit-scrollbar-track {
-//         background: rgba(255, 255, 255, 0.05);
-//         border-radius: 2px;
-//       }
-
-//       &::-webkit-scrollbar-thumb {
-//         background: rgba(css-var(color-orange), 0.4);
-//         border-radius: 2px;
-
-//         &:hover {
-//           background: rgba(css-var(color-orange), 0.6);
-//         }
-//       }
-
-//       // Force la scrollbar à être toujours visible sur mobile
-//       @include until('lg') {
-//         .description-content .description-text {
-//           &::-webkit-scrollbar {
-//             width: 6px; // Un peu plus large sur mobile
-//           }
-
-//           &::-webkit-scrollbar-thumb {
-//             background: rgba(css-var(color-orange), 0.3);
-
-//             // Force l'affichage même sans hover
-//             &:window-inactive {
-//               background: rgba(css-var(color-orange), 0.3);
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // SECTION TECHNIQUE - MOBILE-FIRST
-// // =============================
-
-// .technical-section {
-//   width: 100%;
-
-//   // 📱 MOBILE - Système de toggle
-//   display: none;
-//   opacity: 0;
-//   transform: translateY(20px);
-
-//   &.active {
-//     display: block;
-//     opacity: 1;
-//     transform: translateY(0);
-//   }
-
-//   // 🖥️ DESKTOP - Toujours visible
-//   @include from('lg') {
-//     display: block !important;
-//     opacity: 1 !important;
-//     transform: translateY(0) !important;
-//   }
-
-//   .section-title {
-//     font-weight: 700;
-//     color: css-var(color-light);
-//     margin: 0 0 1.5rem 0;
-//     text-align: center;
-//     position: relative;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 1.4rem;
-
-//     @include until('sm') {
-//       font-size: 1.3rem;
-//       margin: 0 0 1.25rem 0;
-//     }
-
-//     @include from('lg') {
-//       text-align: left;
-//       font-size: 1.5rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 1.6rem;
-//     }
-
-//     &::after {
-//       content: '';
-//       position: absolute;
-//       bottom: -0.75rem;
-//       width: 50px;
-//       height: 3px;
-//       background: linear-gradient(
-//         90deg,
-//         css-var(color-purple),
-//         css-var(color-pink)
-//       );
-//       border-radius: 3px;
-
-//       // 📱 MOBILE - Centré
-//       left: 50%;
-//       transform: translateX(-50%);
-
-//       // 🖥️ DESKTOP - Aligné à gauche
-//       @include from('lg') {
-//         left: 0;
-//         transform: none;
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // TABLEAU INFORMATIONS TECHNIQUES - RÉORGANISÉ
-// // =============================
-
-// .info-table-container {
-//   background: rgba(css-var(color-light), 0.03);
-//   border: 1px solid rgba(css-var(color-light), 0.1);
-//   border-radius: 12px;
-//   backdrop-filter: blur(10px);
-//   overflow: hidden;
-
-//   // Scrollable si nécessaire
-//   max-height: 350px;
-//   overflow-y: auto;
-
-//   @include until('sm') {
-//     max-height: 280px;
-//   }
-
-//   @include from('lg') {
-//     max-height: 300px;
-//   }
-
-//   // Scrollbar personnalisée
-//   &::-webkit-scrollbar {
-//     width: 4px;
-//   }
-
-//   &::-webkit-scrollbar-track {
-//     background: rgba(255, 255, 255, 0.05);
-//   }
-
-//   &::-webkit-scrollbar-thumb {
-//     background: rgba(css-var(color-purple), 0.3);
-//     border-radius: 2px;
-//   }
-// }
-
-// .info-table {
-//   width: 100%;
-//   border-collapse: collapse;
-// }
-
-// .info-row {
-//   border-bottom: 1px solid rgba(css-var(color-light), 0.08);
-//   transition: background-color 0.2s ease;
-
-//   &:hover {
-//     background: rgba(css-var(color-light), 0.02);
-//   }
-
-//   &:last-child {
-//     border-bottom: none;
-//   }
-
-//   .info-label {
-//     padding: 1rem 1.25rem;
-//     color: css-var(text-color-muted);
-//     font-weight: 500;
-//     text-align: left;
-//     vertical-align: top;
-//     width: 45%;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 0.85rem;
-
-//     @include until('sm') {
-//       padding: 0.875rem 1rem;
-//       font-size: 0.8rem;
-//       width: 40%;
-//     }
-
-//     @include from('lg') {
-//       font-size: 0.9rem;
-//       width: 50%;
-//     }
-//   }
-
-//   .info-value {
-//     padding: 1rem 1.25rem;
-//     color: css-var(color-light);
-//     font-weight: 600;
-//     text-align: left;
-//     vertical-align: top;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 0.85rem;
-
-//     @include until('sm') {
-//       padding: 0.875rem 1rem;
-//       font-size: 0.8rem;
-//     }
-
-//     @include from('lg') {
-//       font-size: 0.9rem;
-//     }
-//   }
-
-//   .info-link {
-//     color: css-var(color-purple);
-//     text-decoration: none;
-//     font-weight: 600;
-//     transition: all 0.2s ease;
-
-//     &:hover {
-//       color: css-var(color-pink);
-//       text-decoration: underline;
-//     }
-//   }
-// }
-
-// // =============================
-// // SECTION 2 - APP DETAILS (Description + Boutons + Tarification)
-// // =============================
-
-// .app-details-section {
-//   width: 100%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background: linear-gradient(135deg, #0c0c1d 0%, #1a0f2e 50%, #151528 100%);
-//   position: relative;
-//   overflow: hidden;
-
-//   // Hauteur fixe sur tous les écrans
-//   height: 100vh;
-//   padding: 0;
-
-//   // Effet de particules en arrière-plan différent
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     bottom: 0;
-//     background:
-//       radial-gradient(
-//         circle at 70% 80%,
-//         rgba(css-var(color-pink), 0.08) 0%,
-//         transparent 50%
-//       ),
-//       radial-gradient(
-//         circle at 20% 20%,
-//         rgba(css-var(color-purple), 0.05) 0%,
-//         transparent 50%
-//       );
-//     pointer-events: none;
-//     z-index: 1;
-//   }
-// }
-
-// .app-details-container {
-//   width: 100%;
-//   max-width: 1200px;
-//   margin: 0 auto;
-//   position: relative;
-//   z-index: 2;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-
-//   // 📱 MOBILE FIRST - Padding généreux
-//   padding: 0 1.5rem;
-//   gap: 3rem;
-
-//   @include until('sm') {
-//     padding: 0 1rem;
-//     gap: 2.5rem;
-//   }
-
-//   @include from('md') {
-//     padding: 0 2rem;
-//     gap: 3.5rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 0 2rem;
-//     gap: 2rem;
-//     height: auto;
-//   }
-// }
-
-// // =============================
-// // BOUTONS D'ACTION - MOBILE-FIRST
-// // =============================
-
-// .btn {
-//   display: inline-flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 0.625rem;
-//   border-radius: 12px;
-//   font-weight: 600;
-//   text-decoration: none;
-//   border: 2px solid transparent;
-//   cursor: pointer;
-//   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-//   position: relative;
-//   overflow: hidden;
-
-//   // 📱 MOBILE FIRST - Boutons full-width et tactiles
-//   padding: 1.5rem 2rem;
-//   font-size: 1rem;
-//   min-height: 56px;
-//   width: 100%;
-
-//   @include until('sm') {
-//     padding: 1.375rem 1.75rem;
-//     font-size: 0.95rem;
-//     min-height: 52px;
-//   }
-
-//   // 🖥️ TABLET ET PLUS - Maintenir la taille généreuse
-//   @include from('md') {
-//     padding: 1.5rem 2.25rem;
-//     font-size: 1rem;
-//   }
-
-//   @include from('lg') {
-//     padding: 1.625rem 2.5rem;
-//     font-size: 1.05rem;
-//   }
-
-//   // 🖥️ DESKTOP - Retour aux valeurs compactes
-//   @include from('xl') {
-//     width: auto;
-//     padding: 0.75rem 1.5rem;
-//     font-size: 0.9rem;
-//     min-height: 44px;
-//   }
-
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     left: -100%;
-//     width: 100%;
-//     height: 100%;
-//     background: linear-gradient(
-//       90deg,
-//       transparent,
-//       rgba(255, 255, 255, 0.1),
-//       transparent
-//     );
-//     transition: left 0.5s ease;
-//   }
-
-//   &:hover::before {
-//     left: 100%;
-//   }
-
-//   &:hover {
-//     transform: translateY(-3px);
-//   }
-
-//   &:active {
-//     transform: translateY(-1px);
-//   }
-
-//   .btn-icon {
-//     // 📱 MOBILE FIRST
-//     font-size: 1.3rem;
-
-//     @include until('sm') {
-//       font-size: 1.2rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 1.2rem;
-//     }
-//   }
-
-//   .btn-text {
-//     // 📱 MOBILE - Texte centré
-//     text-align: center;
-//     line-height: 1.2;
-
-//     // 🖥️ DESKTOP - Texte normal
-//     @include from('md') {
-//       white-space: nowrap;
-//       text-align: left;
-//     }
-//   }
-
-//   &.btn-primary {
-//     background: linear-gradient(
-//       135deg,
-//       css-var(color-orange),
-//       color.adjust($color-orange, $lightness: 10%)
-//     );
-//     color: css-var(color-dark);
-//     box-shadow: 0 8px 25px rgba(css-var(color-orange), 0.3);
-
-//     &:hover {
-//       background: linear-gradient(
-//         135deg,
-//         color.adjust($color-orange, $lightness: 10%),
-//         css-var(color-orange)
-//       );
-//       box-shadow: 0 12px 35px rgba(css-var(color-orange), 0.4);
-//     }
-//   }
-
-//   &.disabled {
-//     background: rgba(css-var(text-color-muted), 0.3);
-//     color: rgba(css-var(color-light), 0.5);
-//     cursor: not-allowed;
-//     box-shadow: none;
-
-//     &:hover {
-//       transform: none;
-//       box-shadow: none;
-//     }
-
-//     &::before {
-//       display: none;
-//     }
-//   }
-// }
-
-// // =============================
-// // NAVIGATION MOBILE SECTION 2 - BESOINS ET TARIFICATION
-// // =============================
-
-// .mobile-section-nav {
-//   display: flex;
-//   justify-content: center;
-//   gap: 0.5rem;
-//   margin-bottom: 2rem;
-
-//   // 🖥️ DESKTOP - Masquer la navigation mobile
-//   @include from('lg') {
-//     display: none;
-//   }
-
-//   .section-btn {
-//     display: flex;
-//     align-items: center;
-//     gap: 0.5rem;
-//     padding: 0.75rem 1.5rem;
-//     border: 2px solid rgba(css-var(color-light), 0.2);
-//     background: rgba(css-var(color-light), 0.05);
-//     color: css-var(text-color-muted);
-//     border-radius: 12px;
-//     cursor: pointer;
-//     transition: all 0.3s ease;
-//     font-weight: 500;
-//     font-size: 0.9rem;
-//     flex: 1;
-
-//     @include until('sm') {
-//       padding: 0.625rem 1.25rem;
-//       font-size: 0.85rem;
-//     }
-
-//     .btn-icon {
-//       font-size: 1.1rem;
-
-//       @include until('sm') {
-//         font-size: 1rem;
-//       }
-//     }
-
-//     .btn-text {
-//       white-space: nowrap;
-//     }
-
-//     &:hover {
-//       background: rgba(css-var(color-light), 0.1);
-//       border-color: rgba(css-var(color-light), 0.3);
-//       transform: translateY(-2px);
-//     }
-
-//     &.active {
-//       background: linear-gradient(
-//         135deg,
-//         rgba(css-var(color-orange), 0.15),
-//         rgba(css-var(color-pink), 0.1)
-//       );
-//       border-color: rgba(css-var(color-orange), 0.4);
-//       color: css-var(color-orange);
-//       box-shadow: 0 4px 15px rgba(css-var(color-orange), 0.2);
-
-//       .btn-icon {
-//         transform: scale(1.1);
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // SECTION BESOINS SPÉCIFIQUES - MOBILE-FIRST
-// // =============================
-
-// .needs-section {
-//   background: rgba(css-var(color-light), 0.03);
-//   border: 1px solid rgba(css-var(color-light), 0.1);
-//   border-radius: 16px;
-//   backdrop-filter: blur(10px);
-//   transition: all 0.3s ease;
-//   width: 100%;
-
-//   // 📱 MOBILE - Système de toggle
-//   display: none;
-//   opacity: 0;
-//   transform: translateY(20px);
-
-//   &.active {
-//     display: block;
-//     opacity: 1;
-//     transform: translateY(0);
-//   }
-
-//   // 🖥️ DESKTOP - Toujours visible
-//   @include from('lg') {
-//     display: block !important;
-//     opacity: 1 !important;
-//     transform: translateY(0) !important;
-//   }
-
-//   // Padding responsive
-//   padding: 2.5rem 2rem;
-
-//   @include until('sm') {
-//     padding: 2rem 1.5rem;
-//   }
-
-//   @include from('md') {
-//     padding: 3rem 2.5rem;
-//   }
-
-//   @include from('lg') {
-//     padding: 2.5rem 2rem;
-//   }
-
-//   @include from('xl') {
-//     padding: 2rem;
-//   }
-
-//   &:hover {
-//     border-color: rgba(css-var(color-orange), 0.3);
-//     box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
-//   }
-
-//   .section-title {
-//     font-weight: 700;
-//     color: css-var(color-light);
-//     margin: 0 0 1.5rem 0;
-//     position: relative;
-//     text-align: center;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 1.4rem;
-
-//     @include until('sm') {
-//       font-size: 1.3rem;
-//       margin: 0 0 1.25rem 0;
-//     }
-
-//     @include from('lg') {
-//       text-align: left;
-//       font-size: 1.5rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 1.6rem;
-//     }
-
-//     &::after {
-//       content: '';
-//       position: absolute;
-//       bottom: -0.75rem;
-//       width: 50px;
-//       height: 3px;
-//       background: linear-gradient(
-//         90deg,
-//         css-var(color-orange),
-//         css-var(color-pink)
-//       );
-//       border-radius: 3px;
-
-//       // 📱 MOBILE - Centré
-//       left: 50%;
-//       transform: translateX(-50%);
-
-//       // 🖥️ DESKTOP - Aligné à gauche
-//       @include from('lg') {
-//         left: 0;
-//         transform: none;
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // TABLEAU BESOINS SPÉCIFIQUES - MOBILE-FIRST
-// // =============================
-
-// .needs-table-container {
-//   background: rgba(css-var(color-light), 0.03);
-//   border: 1px solid rgba(css-var(color-light), 0.1);
-//   border-radius: 12px;
-//   backdrop-filter: blur(10px);
-//   overflow: hidden;
-
-//   // Même hauteur que le tableau tarification
-//   max-height: 300px;
-//   overflow-y: auto;
-
-//   @include until('sm') {
-//     max-height: 250px; // Même hauteur que pricing sur petit écran
-//   }
-
-//   @include from('lg') {
-//     max-height: 300px; // Même hauteur sur desktop
-//   }
-
-//   // Scrollbar personnalisée
-//   &::-webkit-scrollbar {
-//     width: 4px;
-//   }
-
-//   &::-webkit-scrollbar-track {
-//     background: rgba(255, 255, 255, 0.05);
-//   }
-
-//   &::-webkit-scrollbar-thumb {
-//     background: rgba(css-var(color-orange), 0.3);
-//     border-radius: 2px;
-
-//     &:hover {
-//       background: rgba(css-var(color-orange), 0.5);
-//     }
-//   }
-// }
-
-// .needs-table {
-//   width: 100%;
-//   border-collapse: collapse;
-// }
-
-// .needs-row {
-//   border-bottom: 1px solid rgba(css-var(color-light), 0.08);
-//   transition: background-color 0.2s ease;
-
-//   &:hover {
-//     background: rgba(css-var(color-light), 0.02);
-//   }
-
-//   &:last-child {
-//     border-bottom: none;
-//   }
-
-//   &.free-tools {
-//     background: rgba(css-var(color-orange), 0.05);
-
-//     &:hover {
-//       background: rgba(css-var(color-orange), 0.08);
-//     }
-
-//     .needs-text {
-//       color: css-var(color-orange);
-//       font-weight: 600;
-//     }
-//   }
-
-//   .needs-item {
-//     padding: 1rem 1.25rem;
-//     vertical-align: middle;
-//     display: flex;
-//     align-items: center;
-//     gap: 0.75rem;
-
-//     @include until('sm') {
-//       padding: 0.875rem 1rem;
-//       gap: 0.625rem;
-//     }
-
-//     .needs-icon {
-//       font-size: 1.2rem;
-//       flex-shrink: 0;
-
-//       @include until('sm') {
-//         font-size: 1.1rem;
-//       }
-//     }
-
-//     .needs-text {
-//       color: css-var(color-light);
-//       font-weight: 500;
-//       line-height: 1.4;
-
-//       // 📱 MOBILE FIRST
-//       font-size: 0.9rem;
-
-//       @include until('sm') {
-//         font-size: 0.85rem;
-//       }
-
-//       @include from('lg') {
-//         font-size: 0.95rem;
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // GRILLE ACHAT - RESPONSIVE
-// // =============================
-
-// .purchase-grid {
-//   display: grid;
-//   gap: 2rem;
-//   width: 100%;
-
-//   // 📱 MOBILE - Une colonne, sections empilées
-//   grid-template-columns: 1fr;
-
-//   @include until('sm') {
-//     gap: 1.5rem;
-//   }
-
-//   // 🖥️ DESKTOP - Deux colonnes côte à côte
-//   @include from('lg') {
-//     grid-template-columns: 1.2fr 0.8fr; // Bouton plus large que tarification
-//     gap: 3rem;
-//   }
-
-//   @include from('xl') {
-//     gap: 4rem;
-//   }
-// }
-
-// // =============================
-// // SECTION TARIFICATION - MOBILE-FIRST
-// // =============================
-
-// .pricing-section {
-//   width: 100%;
-
-//   // 📱 MOBILE - Système de toggle
-//   @include until('lg') {
-//     display: none;
-//     opacity: 0;
-//     transform: translateY(20px);
-
-//     &.active {
-//       display: block;
-//       opacity: 1;
-//       transform: translateY(0);
-//     }
-//   }
-
-//   // 🖥️ DESKTOP - Toujours visible
-//   @include from('lg') {
-//     display: block !important;
-//     opacity: 1 !important;
-//     transform: translateY(0) !important;
-//   }
-
-//   .section-title {
-//     font-weight: 700;
-//     color: css-var(color-light);
-//     margin: 0 0 1.5rem 0;
-//     text-align: center;
-//     position: relative;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 1.4rem;
-
-//     @include until('sm') {
-//       font-size: 1.3rem;
-//       margin: 0 0 1.25rem 0;
-//     }
-
-//     @include from('lg') {
-//       text-align: left;
-//       font-size: 1.5rem;
-//     }
-
-//     @include from('xl') {
-//       font-size: 1.6rem;
-//     }
-
-//     &::after {
-//       content: '';
-//       position: absolute;
-//       bottom: -0.75rem;
-//       width: 50px;
-//       height: 3px;
-//       background: linear-gradient(
-//         90deg,
-//         css-var(color-orange),
-//         css-var(color-pink)
-//       );
-//       border-radius: 3px;
-
-//       // 📱 MOBILE - Centré
-//       left: 50%;
-//       transform: translateX(-50%);
-
-//       // 🖥️ DESKTOP - Aligné à gauche
-//       @include from('lg') {
-//         left: 0;
-//         transform: none;
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // TABLEAU TARIFICATION - MOBILE-FIRST
-// // =============================
-
-// .pricing-table-container {
-//   background: rgba(css-var(color-light), 0.03);
-//   border: 1px solid rgba(css-var(color-light), 0.1);
-//   border-radius: 12px;
-//   backdrop-filter: blur(10px);
-//   overflow: hidden;
-
-//   // Scrollable si nécessaire
-//   max-height: 300px;
-//   overflow-y: auto;
-
-//   @include until('sm') {
-//     max-height: 250px;
-//   }
-
-//   // Scrollbar personnalisée
-//   &::-webkit-scrollbar {
-//     width: 4px;
-//   }
-
-//   &::-webkit-scrollbar-track {
-//     background: rgba(255, 255, 255, 0.05);
-//   }
-
-//   &::-webkit-scrollbar-thumb {
-//     background: rgba(css-var(color-orange), 0.3);
-//     border-radius: 2px;
-//   }
-// }
-
-// .pricing-table {
-//   width: 100%;
-//   border-collapse: collapse;
-// }
-
-// .pricing-row {
-//   border-bottom: 1px solid rgba(css-var(color-light), 0.08);
-//   transition: background-color 0.2s ease;
-
-//   &:hover {
-//     background: rgba(css-var(color-light), 0.02);
-//   }
-
-//   &:last-child {
-//     border-bottom: none;
-//   }
-
-//   &.total-row {
-//     background: rgba(css-var(color-orange), 0.05);
-//     border-top: 2px solid rgba(css-var(color-orange), 0.3);
-
-//     .pricing-label,
-//     .pricing-value {
-//       font-weight: 700;
-//       color: css-var(color-orange);
-//       font-size: 1.1rem;
-
-//       @include until('sm') {
-//         font-size: 1rem;
-//       }
-//     }
-
-//     &:hover {
-//       background: rgba(css-var(color-orange), 0.08);
-//     }
-//   }
-
-//   .pricing-label {
-//     padding: 1rem 1.25rem;
-//     color: css-var(text-color-muted);
-//     font-weight: 500;
-//     text-align: left;
-//     vertical-align: top;
-//     width: 60%;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 0.85rem;
-
-//     @include until('sm') {
-//       padding: 0.875rem 1rem;
-//       font-size: 0.8rem;
-//       width: 55%;
-//     }
-
-//     @include from('lg') {
-//       font-size: 0.9rem;
-//       width: 65%;
-//     }
-//   }
-
-//   .pricing-value {
-//     padding: 1rem 1.25rem;
-//     color: css-var(color-light);
-//     font-weight: 600;
-//     text-align: right;
-//     vertical-align: top;
-
-//     // 📱 MOBILE FIRST
-//     font-size: 0.9rem;
-
-//     @include until('sm') {
-//       padding: 0.875rem 1rem;
-//       font-size: 0.85rem;
-//     }
-
-//     @include from('lg') {
-//       font-size: 1rem;
-//     }
-//   }
-// }
-
-// .pricing-note {
-//   padding: 0.75rem 1rem;
-//   text-align: center;
-//   background: rgba(css-var(color-light), 0.02);
-
-//   small {
-//     color: css-var(text-color-muted);
-//     font-style: italic;
-//     font-size: 0.75rem;
-
-//     @include until('sm') {
-//       font-size: 0.7rem;
-//     }
-//   }
-// }
-
-// // =============================
-// // MESSAGE NO DETAILS - MOBILE-FIRST
-// // =============================
-
-// .no-details {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100%;
-//   width: 100%;
-
-//   .no-details-content {
-//     text-align: center;
-//     background: rgba(css-var(color-light), 0.03);
-//     border: 1px solid rgba(css-var(color-light), 0.1);
-//     border-radius: 16px;
-//     backdrop-filter: blur(10px);
-
-//     // 📱 MOBILE FIRST
-//     padding: 2.5rem 2rem;
-
-//     @include until('sm') {
-//       padding: 2rem 1.5rem;
-//     }
-
-//     @include from('xl') {
-//       padding: 2rem 1.5rem;
-//     }
-
-//     h2 {
-//       color: css-var(color-orange);
-//       margin: 0 0 1rem 0;
-
-//       // 📱 MOBILE FIRST
-//       font-size: 2rem;
-
-//       @include until('sm') {
-//         font-size: 1.75rem;
-//       }
-
-//       @include from('xl') {
-//         font-size: 1.75rem;
-//       }
-//     }
-
-//     p {
-//       color: css-var(text-color-muted);
-//       margin: 0;
-
-//       // 📱 MOBILE FIRST
-//       font-size: 1.1rem;
-
-//       @include until('sm') {
-//         font-size: 1rem;
-//       }
-
-//       @include from('xl') {
-//         font-size: 1rem;
-//       }
-//     }
-//   }
-// }
-
-// // =============================
-// // CONTENEUR BOUTON COMMANDER - MOBILE-FIRST
-// // =============================
-
-// .order-button-container {
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   padding-top: 2rem;
-//   border-top: 1px solid rgba(css-var(color-light), 0.1);
-//   margin-top: 2rem;
-
-//   @include until('sm') {
-//     padding-top: 1.5rem;
-//     margin-top: 1.5rem;
-//   }
-
-//   .purchase-btn {
-//     width: 100%;
-//     max-width: 400px;
-
-//     @include from('lg') {
-//       max-width: 350px;
-//     }
-
-//     @include from('xl') {
-//       max-width: 300px;
-//     }
-//   }
-// }
-
-// // =============================
-// // ANIMATIONS KEYFRAMES
-// // =============================
-
-// @keyframes slideInFromRight {
-//   0% {
-//     opacity: 0;
-//     transform: translateX(30px) scale(0.95);
-//   }
-//   50% {
-//     opacity: 0.7;
-//     transform: translateX(0) scale(0.98);
-//   }
-//   100% {
-//     opacity: 1;
-//     transform: translateX(0) scale(1);
-//   }
-// }
-
-// @keyframes fadeInSlide {
-//   0% {
-//     opacity: 0;
-//     transform: translateY(20px) scale(0.9);
-//   }
-//   100% {
-//     opacity: 0.6;
-//     transform: translateY(0) scale(1);
-//   }
-// }
-
-// @keyframes counterUpdate {
-//   0% {
-//     transform: scale(0.8);
-//     opacity: 0.5;
-//   }
-//   50% {
-//     transform: scale(1.1);
-//   }
-//   100% {
-//     transform: scale(1);
-//     opacity: 1;
-//   }
-// }
-
-// @keyframes arrowPulse {
-//   0% {
-//     transform: translateY(-50%) scale(0.95);
-//   }
-//   50% {
-//     transform: translateY(-50%) scale(1.05);
-//   }
-//   100% {
-//     transform: translateY(-50%) scale(1);
-//   }
-// }
-
-// @keyframes fadeInUp {
-//   0% {
-//     opacity: 0;
-//     transform: translateY(40px);
-//   }
-//   100% {
-//     opacity: 1;
-//     transform: translateY(0);
-//   }
-// }
-
-// // =============================
-// // ADAPTATIONS SPÉCIALES
-// // =============================
-
-// // Mode paysage sur mobile - Optimisations spécifiques
-// @include mobile-landscape {
-//   .gallery-container {
-//     padding: 0.75rem 1rem;
-//   }
-
-//   .gallery-swiper-wrapper {
-//     height: 90vh;
-//     gap: 1rem;
-//   }
-
-//   .gallery-main-container {
-//     height: 80%;
-//   }
-
-//   .gallery-arrow {
-//     width: 48px;
-//     height: 48px;
-//   }
-
-//   .app-header-section .app-header-container {
-//     padding: 1rem 0.75rem;
-//   }
-
-//   .app-details-section .app-details-container {
-//     padding: 1rem 0.75rem;
-//   }
-
-//   .app-header {
-//     gap: 1.5rem;
-//   }
-
-//   .title-block .app-title {
-//     font-size: 2rem;
-//   }
-
-//   .badge {
-//     padding: 0.75rem 0.625rem;
-//     min-width: 75px;
-//   }
-// }
-
-// // Écrans très hauts (iPhone X, 11, etc.) - Plus d'espace pour le contenu
-// @include tall-screen {
-//   .gallery-main-container {
-//     @include until('lg') {
-//       height: 75%;
-//     }
-//   }
-
-//   .app-header-container,
-//   .app-details-container {
-//     @include until('lg') {
-//       gap: 3rem;
-//     }
-//   }
-
-//   .description-content .description-text {
-//     @include until('lg') {
-//       max-height: 220px;
-//     }
-//   }
-// }
-
-// // Support pour écrans tactiles - Zones tactiles optimisées
-// @media (pointer: coarse) {
-//   .gallery-arrow {
-//     min-width: 48px;
-//     min-height: 48px;
-//   }
-
-//   .btn {
-//     min-height: 48px;
-//   }
-
-//   .badge {
-//     min-width: 48px;
-//     min-height: 48px;
-//   }
-
-//   // Pas d'effet hover sur tactile, juste active
-//   .gallery-arrow:hover,
-//   .btn:hover,
-//   .badge:hover {
-//     transform: none;
-//   }
-
-//   .gallery-arrow:active {
-//     transform: translateY(-50%) scale(0.95);
-//   }
-
-//   .btn:active {
-//     transform: scale(0.98);
-//   }
-// }
-
-// // Amélioration pour l'accessibilité - Réduction des animations
-// @include reduced-motion {
-//   .gallery-main-image,
-//   .gallery-arrow,
-//   .badge,
-//   .btn,
-//   .description-section,
-//   .needs-section,
-//   .pricing-section {
-//     transition: none;
-//     animation: none;
-
-//     &:hover,
-//     &:active {
-//       transform: none;
-//     }
-//   }
-
-//   .btn::before {
-//     display: none;
-//   }
-// }
-
-// // Support pour écrans haute densité
-// @include high-density {
-//   .gallery-main-image {
-//     image-rendering: -webkit-optimize-contrast;
-//     image-rendering: crisp-edges;
-//   }
-
-//   .gallery-arrow {
-//     box-shadow:
-//       0 8px 25px rgba(246, 160, 55, 0.5),
-//       0 2px 8px rgba(0, 0, 0, 0.2);
-//   }
-// }
-
-// // Très grands écrans - Limitation et optimisation
-// @include from('xxxxl') {
-//   .gallery-container {
-//     padding: 3rem 2rem;
-//   }
-
-//   .gallery-main-container {
-//     max-width: 800px;
-//   }
-
-//   .app-header-container,
-//   .app-details-container {
-//     max-width: 1600px;
-//   }
-
-//   .title-block .app-title {
-//     font-size: 3rem;
-//   }
-// }
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// SINGLE APPLICATION - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
+
+// =============================
+// PAGE 1 - GALLERY SECTION MOBILE-FIRST
+// =============================
+
+.gallery-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(to bottom, #0c0c1d, #151528);
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.gallery-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace
+  padding: 1rem 0.75rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
+  @include until('small-sm') {
+    padding: 0.75rem 0.5rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Augmentation progressive
+  @include from('medium-sm') {
+    padding: 1.5rem 1rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('large-xs') {
+    padding: 3rem; // Valeur desktop originale
+  }
+}
+
+.gallery-swiper-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Layout vertical optimisé
+  flex-direction: column;
+  height: 100%;
+  gap: 1.5rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('small-sm') {
+    gap: 1rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
+  @include from('medium-lg') {
+    flex-direction: row;
+    height: 80vh;
+    gap: 2rem;
+  }
+
+  @include from('large-xs') {
+    gap: 3rem; // Valeur desktop originale
+  }
+}
+
+// =============================
+// IMAGES LATÉRALES - MOBILE-FIRST
+// =============================
+
+.gallery-side-images {
+  // 📱 MOBILE - Cachées car inutiles, remplacées par miniatures
+  display: none;
+
+  // 🖥️ DESKTOP - Réapparition pour l'effet visuel
+  @include from('medium-lg') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+
+    &.gallery-left {
+      order: 1;
+    }
+
+    &.gallery-right {
+      order: 3;
+    }
+  }
+}
+
+.gallery-side-image {
+  // Styles conservés pour desktop uniquement
+  @include from('medium-lg') {
+    width: 180px;
+    height: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.6;
+    animation: fadeInSlide 0.4s ease-out forwards;
+    animation-delay: 0.1s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      backdrop-filter: blur(3px);
+      background: rgba(12, 12, 26, 0.3);
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .side-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+      transition: all 0.3s ease;
+
+      &::after {
+        backdrop-filter: blur(1px);
+        background: rgba(12, 12, 26, 0.1);
+      }
+    }
+  }
+
+  @include from('large-xs') {
+    width: 200px;
+    height: 280px;
+  }
+}
+
+// =============================
+// CONTENEUR PRINCIPAL - MOBILE-FIRST
+// =============================
+
+.gallery-main-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+
+  // 📱 MOBILE FIRST - Utilisation maximale de l'espace
+  width: 95%;
+  height: 70%; // 70% de la hauteur pour l'image principale
+  max-width: none;
+  order: 1;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('small-sm') {
+    width: 98%;
+    height: 65%;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('medium-sm') {
+    width: 90%;
+    height: 75%;
+  }
+
+  @include from('medium-lg') {
+    // DESKTOP - Retour au layout original
+    order: 2;
+    flex: 1;
+    max-width: 500px;
+    height: 100%;
+    width: auto;
+  }
+
+  @include from('large-xs') {
+    max-width: 600px;
+  }
+}
+
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(246, 160, 55, 0.3);
+
+  // 📱 MOBILE - Border radius plus prononcé
+  @include until('medium-lg') {
+    border-radius: 24px;
+    box-shadow: 0 16px 48px rgba(246, 160, 55, 0.4);
+  }
+}
+
+.gallery-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateX(30px);
+
+  // 📱 MOBILE - Border radius adapté
+  @include until('medium-lg') {
+    border-radius: 24px;
+  }
+
+  &:hover {
+    transform: scale(1.02) translateX(0);
+    box-shadow: 0 25px 80px rgba(246, 160, 55, 0.3);
+    transition: all 0.3s ease;
+  }
+}
+
+// =============================
+// COMPTEUR D'IMAGES - MOBILE-FIRST
+// =============================
+
+.gallery-counter {
+  position: absolute;
+  background: linear-gradient(
+    135deg,
+    rgba(css-var(color-dark), 0.9),
+    rgba(css-var(color-purple), 0.9)
+  );
+  color: css-var(color-light);
+  border-radius: 25px;
+  font-weight: 600;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(css-var(color-orange), 0.3);
+  animation: counterUpdate 0.3s ease-out;
+
+  // 📱 MOBILE FIRST - Plus visible et accessible
+  top: 1rem;
+  right: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('small-sm') {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  // 🖥️ DESKTOP - Taille plus discrète
+  @include from('large-xs') {
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+// =============================
+// FLÈCHES NAVIGATION - MOBILE-FIRST
+// =============================
+
+.gallery-arrow {
+  position: absolute;
+  background: linear-gradient(
+    135deg,
+    css-var(color-orange),
+    css-var(color-pink)
+  );
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 10;
+  color: css-var(color-dark);
+
+  // 📱 MOBILE FIRST - Flèches grandes et accessibles
+  width: 56px;
+  height: 56px;
+  top: 50%;
+  margin-top: -28px; // ← Centrage avec margin au lieu de transform
+  box-shadow: 0 8px 25px rgba(246, 160, 55, 0.5);
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours utilisables
+  @include until('small-sm') {
+    width: 48px;
+    height: 48px;
+    margin-top: -24px; // ← Ajuster selon la taille
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('medium-sm') {
+    width: 60px;
+    height: 60px;
+    margin-top: -30px; // ← Ajuster selon la taille
+  }
+
+  @include from('large-xs') {
+    width: 64px; // Valeur desktop originale
+    height: 64px;
+    margin-top: -32px; // ← Ajuster selon la taille
+  }
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      css-var(color-pink),
+      css-var(color-orange)
+    );
+    transform: scale(1.1); // ← Plus de translateY
+    box-shadow: 0 12px 35px rgba(246, 160, 55, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.95); // ← Plus de translateY
+    animation: arrowPulse 0.2s ease-out;
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+    pointer-events: none; // ← Désactive les events sur le SVG
+  }
+}
+
+.gallery-arrow-left {
+  // 📱 MOBILE - Positionnement optimisé
+  left: 1rem;
+
+  @include until('small-sm') {
+    left: 0.75rem;
+  }
+
+  // 🖥️ DESKTOP - Repositionnement selon layout
+  @include from('medium-lg') {
+    left: 15%;
+  }
+}
+
+.gallery-arrow-right {
+  // 📱 MOBILE - Positionnement optimisé
+  right: 1rem;
+
+  @include until('small-sm') {
+    right: 0.75rem;
+  }
+
+  // 🖥️ DESKTOP - Repositionnement selon layout
+  @include from('medium-lg') {
+    right: 15%;
+  }
+}
+
+// =============================
+// MESSAGE NO IMAGES - MOBILE-FIRST
+// =============================
+
+.no-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(css-var(color-dark), 0.9),
+    rgba(css-var(color-purple), 0.1)
+  );
+  color: rgba(css-var(color-light), 0.7);
+  text-align: center;
+  backdrop-filter: blur(10px);
+
+  // 📱 MOBILE FIRST - Texte bien visible
+  font-size: 1.5rem;
+  padding: 2rem 1rem;
+
+  @include until('small-sm') {
+    font-size: 1.25rem;
+    padding: 1.5rem 0.75rem;
+  }
+
+  @include from('large-xs') {
+    font-size: 1.5rem;
+    padding: 2rem;
+  }
+}
+
+// =============================
+// SECTION 1 - APP HEADER (En-tête + Informations techniques)
+// =============================
+
+.app-header-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a0f2e 0%, #151528 50%, #0c0c1d 100%);
+  position: relative;
+  overflow: hidden;
+
+  // Hauteur fixe sur tous les écrans
+  height: 100vh;
+  padding: 0;
+
+  // Effet de particules en arrière-plan
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 30% 70%,
+        rgba(css-var(color-orange), 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 30%,
+        rgba(css-var(color-pink), 0.08) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.app-header-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  // 📱 MOBILE FIRST - Padding généreux
+  padding: 0 1.5rem;
+  gap: 3rem;
+
+  @include until('small-sm') {
+    padding: 0 1rem;
+    gap: 2.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 0 2rem;
+    gap: 3.5rem;
+  }
+
+  @include from('large-xs') {
+    padding: 0 2rem;
+    gap: 2rem;
+    height: 100%;
+  }
+}
+
+// =============================
+// EN-TÊTE PRINCIPAL - MOBILE-FIRST
+// =============================
+
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid rgba(css-var(color-orange), 0.2);
+  flex-shrink: 0;
+  width: 100%;
+
+  // 📱 MOBILE FIRST - Layout vertical centré
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+
+  @include until('small-sm') {
+    gap: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
+  @include from('medium-lg') {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    gap: 2rem;
+  }
+
+  @include from('large-xs') {
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.title-block {
+  // 📱 MOBILE - Full width
+  width: 100%;
+
+  // 🖥️ DESKTOP - Flex sizing
+  @include from('medium-lg') {
+    flex: 1;
+    width: auto;
+  }
+
+  .app-title {
+    font-weight: 800;
+    color: css-var(color-light);
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    background: linear-gradient(
+      135deg,
+      css-var(color-orange),
+      css-var(color-pink)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    // 📱 MOBILE FIRST - Titre imposant et lisible
+    font-size: 2.5rem;
+
+    @include until('small-sm') {
+      font-size: 2.25rem;
+      margin: 0 0 0.875rem 0;
+    }
+
+    // 🖥️ TABLET ET PLUS - Maintien de la taille ou légère augmentation
+    @include from('medium-sm') {
+      font-size: 2.75rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 2.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+// =============================
+// BADGES - MOBILE-FIRST
+// =============================
+
+.app-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  // 📱 MOBILE FIRST - Centré sous le titre
+  justify-content: center;
+  width: 100%;
+
+  @include until('small-sm') {
+    gap: 0.75rem;
+  }
+
+  // 🖥️ DESKTOP - Aligné à droite
+  @include from('medium-lg') {
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: auto;
+  }
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid;
+  transition: all 0.3s ease;
+
+  // Badges compacts par défaut
+  padding: 0.5rem 0.75rem;
+  min-width: auto;
+
+  @include until('small-sm') {
+    padding: 0.375rem 0.625rem;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .badge-value {
+    font-weight: 600;
+    font-size: 0.85rem;
+
+    @include until('small-sm') {
+      font-size: 0.8rem;
+    }
+  }
+
+  &.level-badge {
+    background: rgba(css-var(color-orange), 0.1);
+    border-color: rgba(css-var(color-orange), 0.3);
+    color: css-var(color-orange);
+  }
+
+  &.category-badge {
+    background: rgba(css-var(color-purple), 0.1);
+    border-color: rgba(css-var(color-purple), 0.3);
+    color: css-var(color-purple);
+  }
+}
+
+// =============================
+// CONTENU PRINCIPAL - DESCRIPTION + TECHNIQUE
+// =============================
+
+.main-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @include from('medium-lg') {
+    gap: 0;
+  }
+}
+
+// =============================
+// BOUTONS TOGGLE MOBILE
+// =============================
+
+.mobile-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  // 🖥️ DESKTOP - Masquer les boutons toggle
+  @include from('medium-lg') {
+    display: none;
+  }
+
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid rgba(css-var(color-light), 0.2);
+    background: rgba(css-var(color-light), 0.05);
+    color: css-var(text-color-muted);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+
+    @include until('small-sm') {
+      padding: 0.625rem 1.25rem;
+      font-size: 0.85rem;
+    }
+
+    .toggle-icon {
+      font-size: 1.1rem;
+
+      @include until('small-sm') {
+        font-size: 1rem;
+      }
+    }
+
+    .toggle-text {
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: rgba(css-var(color-light), 0.1);
+      border-color: rgba(css-var(color-light), 0.3);
+      transform: translateY(-2px);
+    }
+
+    &.active {
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(color-orange), 0.15),
+        rgba(css-var(color-pink), 0.1)
+      );
+      border-color: rgba(css-var(color-orange), 0.4);
+      color: css-var(color-orange);
+      box-shadow: 0 4px 15px rgba(css-var(color-orange), 0.2);
+
+      .toggle-icon {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// =============================
+// GRILLE DE CONTENU - RESPONSIVE
+// =============================
+
+.content-grid {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+
+  // 📱 MOBILE - Une colonne, sections empilées
+  grid-template-columns: 1fr;
+
+  @include until('small-sm') {
+    gap: 1.5rem;
+  }
+
+  // 🖥️ DESKTOP - Deux colonnes côte à côte
+  @include from('medium-lg') {
+    grid-template-columns: 1.2fr 0.8fr; // Description plus large que technique
+    gap: 3rem;
+  }
+
+  @include from('large-xs') {
+    gap: 4rem;
+  }
+}
+
+// =============================
+// SECTION DESCRIPTION - MOBILE-FIRST
+// =============================
+
+.description-section {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('medium-lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  // Padding responsive
+  padding: 2.5rem 2rem;
+
+  @include until('small-sm') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 3rem 2.5rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('large-xs') {
+    padding: 2rem;
+  }
+
+  &:hover {
+    border-color: rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    position: relative;
+    text-align: center;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('small-sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('medium-lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('medium-lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+
+  .description-content {
+    .description-text {
+      line-height: 1.6;
+      color: css-var(text-color-muted);
+      margin: 0;
+      text-align: justify;
+
+      // 📱 MOBILE FIRST
+      font-size: 1rem;
+
+      @include until('small-sm') {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      @include from('medium-lg') {
+        font-size: 1rem;
+        text-align: left;
+      }
+
+      // 📱 MOBILE - Scroll visible avec padding
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: rgba(css-var(color-light), 0.02);
+      border-radius: 8px;
+      border: 1px solid rgba(css-var(color-light), 0.05);
+
+      @include until('small-sm') {
+        max-height: 180px;
+        padding: 0.875rem;
+      }
+
+      // 🖥️ DESKTOP - Plus de hauteur, moins de padding
+      @include from('medium-lg') {
+        max-height: 300px;
+        padding: 0.5rem 0;
+        background: transparent;
+        border: none;
+      }
+
+      // Scrollbar stylisée pour tous les écrans
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 2px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(css-var(color-orange), 0.4);
+        border-radius: 2px;
+
+        &:hover {
+          background: rgba(css-var(color-orange), 0.6);
+        }
+      }
+
+      // Force la scrollbar à être toujours visible sur mobile
+      @include until('medium-lg') {
+        &::-webkit-scrollbar {
+          width: 6px; // Un peu plus large sur mobile
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba(css-var(color-orange), 0.3);
+
+          // Force l'affichage même sans hover
+          &:window-inactive {
+            background: rgba(css-var(color-orange), 0.3);
+          }
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// SECTION TECHNIQUE - MOBILE-FIRST
+// =============================
+
+.technical-section {
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('medium-lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    position: relative;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('small-sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('medium-lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-purple),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('medium-lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+}
+
+// =============================
+// TABLEAU INFORMATIONS TECHNIQUES - RÉORGANISÉ
+// =============================
+
+.info-table-container {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+
+  // Scrollable si nécessaire
+  max-height: 350px;
+  overflow-y: auto;
+
+  @include until('small-sm') {
+    max-height: 280px;
+  }
+
+  @include from('medium-lg') {
+    max-height: 300px;
+  }
+
+  // Scrollbar personnalisée
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-purple), 0.3);
+    border-radius: 2px;
+  }
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-row {
+  border-bottom: 1px solid rgba(css-var(color-light), 0.08);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(css-var(color-light), 0.02);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .info-label {
+    padding: 1rem 1.25rem;
+    color: css-var(text-color-muted);
+    font-weight: 500;
+    text-align: left;
+    vertical-align: top;
+    width: 45%;
+
+    // 📱 MOBILE FIRST
+    font-size: 0.85rem;
+
+    @include until('small-sm') {
+      padding: 0.875rem 1rem;
+      font-size: 0.8rem;
+      width: 40%;
+    }
+
+    @include from('medium-lg') {
+      font-size: 0.9rem;
+      width: 50%;
+    }
+  }
+
+  .info-value {
+    padding: 1rem 1.25rem;
+    color: css-var(color-light);
+    font-weight: 600;
+    text-align: left;
+    vertical-align: top;
+
+    // 📱 MOBILE FIRST
+    font-size: 0.85rem;
+
+    @include until('small-sm') {
+      padding: 0.875rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 0.9rem;
+    }
+  }
+
+  .info-link {
+    color: css-var(color-purple);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: css-var(color-pink);
+      text-decoration: underline;
+    }
+  }
+}
+
+// =============================
+// SECTION 2 - APP DETAILS (Description + Boutons + Tarification)
+// =============================
+
+.app-details-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0c0c1d 0%, #1a0f2e 50%, #151528 100%);
+  position: relative;
+  overflow: hidden;
+
+  // Hauteur fixe sur tous les écrans
+  height: 100vh;
+  padding: 0;
+
+  // Effet de particules en arrière-plan différent
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 70% 80%,
+        rgba(css-var(color-pink), 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(css-var(color-purple), 0.05) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.app-details-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  // 📱 MOBILE FIRST - Padding généreux
+  padding: 0 1.5rem;
+  gap: 3rem;
+
+  @include until('small-sm') {
+    padding: 0 1rem;
+    gap: 2.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 0 2rem;
+    gap: 3.5rem;
+  }
+
+  @include from('large-xs') {
+    padding: 0 2rem;
+    gap: 2rem;
+    height: auto;
+  }
+}
+
+// =============================
+// BOUTONS D'ACTION - MOBILE-FIRST
+// =============================
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+
+  // 📱 MOBILE FIRST - Boutons full-width et tactiles
+  padding: 1.5rem 2rem;
+  font-size: 1rem;
+  min-height: 56px;
+  width: 100%;
+
+  @include until('small-sm') {
+    padding: 1.375rem 1.75rem;
+    font-size: 0.95rem;
+    min-height: 52px;
+  }
+
+  // 🖥️ TABLET ET PLUS - Maintenir la taille généreuse
+  @include from('medium-sm') {
+    padding: 1.5rem 2.25rem;
+    font-size: 1rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 1.625rem 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  // 🖥️ DESKTOP - Retour aux valeurs compactes
+  @include from('large-xs') {
+    width: auto;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  .btn-icon {
+    // 📱 MOBILE FIRST
+    font-size: 1.3rem;
+
+    @include until('small-sm') {
+      font-size: 1.2rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.2rem;
+    }
+  }
+
+  .btn-text {
+    // 📱 MOBILE - Texte centré
+    text-align: center;
+    line-height: 1.2;
+
+    // 🖥️ DESKTOP - Texte normal
+    @include from('medium-sm') {
+      white-space: nowrap;
+      text-align: left;
+    }
+  }
+
+  &.btn-primary {
+    background: linear-gradient(
+      135deg,
+      css-var(color-orange),
+      color.adjust($color-orange, $lightness: 10%)
+    );
+    color: css-var(color-dark);
+    box-shadow: 0 8px 25px rgba(css-var(color-orange), 0.3);
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        color.adjust($color-orange, $lightness: 10%),
+        css-var(color-orange)
+      );
+      box-shadow: 0 12px 35px rgba(css-var(color-orange), 0.4);
+    }
+  }
+
+  &.disabled {
+    background: rgba(css-var(text-color-muted), 0.3);
+    color: rgba(css-var(color-light), 0.5);
+    cursor: not-allowed;
+    box-shadow: none;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+// =============================
+// NAVIGATION MOBILE SECTION 2 - BESOINS ET TARIFICATION
+// =============================
+
+.mobile-section-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+
+  // 🖥️ DESKTOP - Masquer la navigation mobile
+  @include from('medium-lg') {
+    display: none;
+  }
+
+  .section-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid rgba(css-var(color-light), 0.2);
+    background: rgba(css-var(color-light), 0.05);
+    color: css-var(text-color-muted);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+    flex: 1;
+
+    @include until('small-sm') {
+      padding: 0.625rem 1.25rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-icon {
+      font-size: 1.1rem;
+
+      @include until('small-sm') {
+        font-size: 1rem;
+      }
+    }
+
+    .btn-text {
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: rgba(css-var(color-light), 0.1);
+      border-color: rgba(css-var(color-light), 0.3);
+      transform: translateY(-2px);
+    }
+
+    &.active {
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(color-orange), 0.15),
+        rgba(css-var(color-pink), 0.1)
+      );
+      border-color: rgba(css-var(color-orange), 0.4);
+      color: css-var(color-orange);
+      box-shadow: 0 4px 15px rgba(css-var(color-orange), 0.2);
+
+      .btn-icon {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+// =============================
+// SECTION BESOINS SPÉCIFIQUES - MOBILE-FIRST
+// =============================
+
+.needs-section {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('medium-lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  // Padding responsive
+  padding: 2.5rem 2rem;
+
+  @include until('small-sm') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 3rem 2.5rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('large-xs') {
+    padding: 2rem;
+  }
+
+  &:hover {
+    border-color: rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    position: relative;
+    text-align: center;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('small-sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('medium-lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('medium-lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+}
+
+// =============================
+// TABLEAU BESOINS SPÉCIFIQUES - MOBILE-FIRST
+// =============================
+
+.needs-table-container {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+
+  // Même hauteur que le tableau tarification
+  max-height: 300px;
+  overflow-y: auto;
+
+  @include until('small-sm') {
+    max-height: 250px; // Même hauteur que pricing sur petit écran
+  }
+
+  @include from('medium-lg') {
+    max-height: 300px; // Même hauteur sur desktop
+  }
+
+  // Scrollbar personnalisée
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-orange), 0.3);
+    border-radius: 2px;
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.5);
+    }
+  }
+}
+
+.needs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.needs-row {
+  border-bottom: 1px solid rgba(css-var(color-light), 0.08);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(css-var(color-light), 0.02);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.free-tools {
+    background: rgba(css-var(color-orange), 0.05);
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.08);
+    }
+
+    .needs-text {
+      color: css-var(color-orange);
+      font-weight: 600;
+    }
+  }
+
+  .needs-item {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    @include until('small-sm') {
+      padding: 0.875rem 1rem;
+      gap: 0.625rem;
+    }
+
+    .needs-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+
+      @include until('small-sm') {
+        font-size: 1.1rem;
+      }
+    }
+
+    .needs-text {
+      color: css-var(color-light);
+      font-weight: 500;
+      line-height: 1.4;
+
+      // 📱 MOBILE FIRST
+      font-size: 0.9rem;
+
+      @include until('small-sm') {
+        font-size: 0.85rem;
+      }
+
+      @include from('medium-lg') {
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+// =============================
+// GRILLE ACHAT - RESPONSIVE
+// =============================
+
+.purchase-grid {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+
+  // 📱 MOBILE - Une colonne, sections empilées
+  grid-template-columns: 1fr;
+
+  @include until('small-sm') {
+    gap: 1.5rem;
+  }
+
+  // 🖥️ DESKTOP - Deux colonnes côte à côte
+  @include from('medium-lg') {
+    grid-template-columns: 1.2fr 0.8fr; // Bouton plus large que tarification
+    gap: 3rem;
+  }
+
+  @include from('large-xs') {
+    gap: 4rem;
+  }
+}
+
+// =============================
+// SECTION TARIFICATION - MOBILE-FIRST
+// =============================
+
+.pricing-section {
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  @include until('medium-lg') {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+
+    &.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('medium-lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    position: relative;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('small-sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('medium-lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('medium-lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+}
+
+// =============================
+// TABLEAU TARIFICATION - MOBILE-FIRST
+// =============================
+
+.pricing-table-container {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+
+  // Scrollable si nécessaire
+  max-height: 300px;
+  overflow-y: auto;
+
+  @include until('small-sm') {
+    max-height: 250px;
+  }
+
+  // Scrollbar personnalisée
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-orange), 0.3);
+    border-radius: 2px;
+  }
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pricing-row {
+  border-bottom: 1px solid rgba(css-var(color-light), 0.08);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(css-var(color-light), 0.02);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.total-row {
+    background: rgba(css-var(color-orange), 0.05);
+    border-top: 2px solid rgba(css-var(color-orange), 0.3);
+
+    .pricing-label,
+    .pricing-value {
+      font-weight: 700;
+      color: css-var(color-orange);
+      font-size: 1.1rem;
+
+      @include until('small-sm') {
+        font-size: 1rem;
+      }
+    }
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.08);
+    }
+  }
+
+  .pricing-label {
+    padding: 1rem 1.25rem;
+    color: css-var(text-color-muted);
+    font-weight: 500;
+    text-align: left;
+    vertical-align: top;
+    width: 60%;
+
+    // 📱 MOBILE FIRST
+    font-size: 0.85rem;
+
+    @include until('small-sm') {
+      padding: 0.875rem 1rem;
+      font-size: 0.8rem;
+      width: 55%;
+    }
+
+    @include from('medium-lg') {
+      font-size: 0.9rem;
+      width: 65%;
+    }
+  }
+
+  .pricing-value {
+    padding: 1rem 1.25rem;
+    color: css-var(color-light);
+    font-weight: 600;
+    text-align: right;
+    vertical-align: top;
+
+    // 📱 MOBILE FIRST
+    font-size: 0.9rem;
+
+    @include until('small-sm') {
+      padding: 0.875rem 1rem;
+      font-size: 0.85rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 1rem;
+    }
+  }
+}
+
+.pricing-note {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  background: rgba(css-var(color-light), 0.02);
+
+  small {
+    color: css-var(text-color-muted);
+    font-style: italic;
+    font-size: 0.75rem;
+
+    @include until('small-sm') {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+// =============================
+// MESSAGE NO DETAILS - MOBILE-FIRST
+// =============================
+
+.no-details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .no-details-content {
+    text-align: center;
+    background: rgba(css-var(color-light), 0.03);
+    border: 1px solid rgba(css-var(color-light), 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+
+    // 📱 MOBILE FIRST
+    padding: 2.5rem 2rem;
+
+    @include until('small-sm') {
+      padding: 2rem 1.5rem;
+    }
+
+    @include from('large-xs') {
+      padding: 2rem 1.5rem;
+    }
+
+    h2 {
+      color: css-var(color-orange);
+      margin: 0 0 1rem 0;
+
+      // 📱 MOBILE FIRST
+      font-size: 2rem;
+
+      @include until('small-sm') {
+        font-size: 1.75rem;
+      }
+
+      @include from('large-xs') {
+        font-size: 1.75rem;
+      }
+    }
+
+    p {
+      color: css-var(text-color-muted);
+      margin: 0;
+
+      // 📱 MOBILE FIRST
+      font-size: 1.1rem;
+
+      @include until('small-sm') {
+        font-size: 1rem;
+      }
+
+      @include from('large-xs') {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+// =============================
+// CONTENEUR BOUTON COMMANDER - MOBILE-FIRST
+// =============================
+
+.order-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(css-var(color-light), 0.1);
+  margin-top: 2rem;
+
+  @include until('small-sm') {
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .purchase-btn {
+    width: 100%;
+    max-width: 400px;
+
+    @include from('medium-lg') {
+      max-width: 350px;
+    }
+
+    @include from('large-xs') {
+      max-width: 300px;
+    }
+  }
+}
+
+// =============================
+// ANIMATIONS KEYFRAMES
+// =============================
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  100% {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes counterUpdate {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes arrowPulse {
+  0% {
+    transform: translateY(-50%) scale(0.95);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile - Optimisations spécifiques
+@include mobile-landscape {
+  .gallery-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .gallery-swiper-wrapper {
+    height: 90vh;
+    gap: 1rem;
+  }
+
+  .gallery-main-container {
+    height: 80%;
+  }
+
+  .gallery-arrow {
+    width: 48px;
+    height: 48px;
+  }
+
+  .app-header-section .app-header-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .app-details-section .app-details-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .app-header {
+    gap: 1.5rem;
+  }
+
+  .title-block .app-title {
+    font-size: 2rem;
+  }
+
+  .badge {
+    padding: 0.75rem 0.625rem;
+    min-width: 75px;
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.) - Plus d'espace pour le contenu
+@include tall-screen {
+  .gallery-main-container {
+    @include until('medium-lg') {
+      height: 75%;
+    }
+  }
+
+  .app-header-container,
+  .app-details-container {
+    @include until('medium-lg') {
+      gap: 3rem;
+    }
+  }
+
+  .description-content .description-text {
+    @include until('medium-lg') {
+      max-height: 220px;
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .gallery-arrow {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .btn {
+    min-height: 48px;
+  }
+
+  .badge {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  // Pas d'effet hover sur tactile, juste active
+  .gallery-arrow:hover,
+  .btn:hover,
+  .badge:hover {
+    transform: none;
+  }
+
+  .gallery-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .gallery-main-image,
+  .gallery-arrow,
+  .badge,
+  .btn,
+  .description-section,
+  .needs-section,
+  .pricing-section {
+    transition: none;
+    animation: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+
+  .btn::before {
+    display: none;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .gallery-main-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .gallery-arrow {
+    box-shadow:
+      0 8px 25px rgba(246, 160, 55, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Très grands écrans - Limitation et optimisation
+@include from('large-xxxl') {
+  .gallery-container {
+    padding: 3rem 2rem;
+  }
+
+  .gallery-main-container {
+    max-width: 800px;
+  }
+
+  .app-header-container,
+  .app-details-container {
+    max-width: 1600px;
+  }
+
+  .title-block .app-title {
+    font-size: 3rem;
+  }
+}

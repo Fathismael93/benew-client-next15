@@ -5,7 +5,7 @@ import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { FaDollarSign } from 'react-icons/fa';
 import { IoEye } from 'react-icons/io5';
-// import './styling/templateShops.scss';
+import './styling/templateShops.scss';
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal/OrderModal';
 import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
