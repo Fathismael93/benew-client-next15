@@ -30,7 +30,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end; // Changé de "center" à "flex-end"
   }
 
   .phoneSvg {
