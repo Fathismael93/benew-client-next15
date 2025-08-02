@@ -1,185 +1,578 @@
-// @use 'sass:color';
-// @use '../../../app/styles/abstracts' as *;
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
 
-// article {
-//   width: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-//   scroll-snap-type: y mandatory;
-//   scroll-behavior: smooth;
-//   scroll-snap-align: center;
-//   margin-bottom: 5rem;
-//   background-image: url('/stars.png');
+article {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scroll-snap-align: center;
+  margin-bottom: 5rem;
+  background-image: url('/stars.png');
 
-//   em {
-//     display: block;
-//     align-self: flex-end;
-//     color: rgba(css-var(text-color), 0.7);
-//     font-style: italic;
+  em {
+    display: block;
+    align-self: flex-end;
+    color: rgba(css-var(text-color), 0.7);
+    font-style: italic;
 
-//     @include small {
-//       font-size: 0.7rem;
-//       text-align: center;
-//     }
-//   }
+    // 📱 PETITS ÉCRANS - Police réduite et centrage
+    @include small-screens {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//   .post {
-//     width: 40.625rem;
-//     margin-top: 1.5rem;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     flex-direction: column;
-//     padding: 1.875rem;
-//     border-radius: 10px;
-//     gap: 2.5rem;
-//     background: linear-gradient(
-//       135deg,
-//       rgba(css-var(background-color), 0.8),
-//       rgba(color.adjust($background-color, $lightness: 5%), 0.8)
-//     );
-//     backdrop-filter: blur(10px);
-//     box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
-//     position: relative;
+    @include from('small-sm') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//     &::before {
-//       content: '';
-//       position: absolute;
-//       inset: 0;
-//       padding: 2px;
-//       background: linear-gradient(
-//         135deg,
-//         css-var(primary-color),
-//         css-var(secondary-color),
-//         css-var(accent-color)
-//       );
-//       border-radius: inherit;
-//       mask:
-//         linear-gradient(#fff 0 0) content-box,
-//         linear-gradient(#fff 0 0);
-//       mask-composite: xor;
-//       -webkit-mask:
-//         linear-gradient(#fff 0 0) content-box,
-//         linear-gradient(#fff 0 0);
-//       -webkit-mask-composite: xor;
-//     }
+    @include from('small-lg') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//     @include small {
-//       border: none;
-//       width: inherit;
-//       background: transparent;
-//       backdrop-filter: none;
-//       box-shadow: none;
-//     }
+    @include from('small-xl') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//     @include mobile {
-//       border: none;
-//       width: inherit;
-//       background: transparent;
-//       backdrop-filter: none;
-//       box-shadow: none;
-//     }
+    // 📟 MOYENS ÉCRANS - Maintien du style mobile
+    @include between('small-xl', 'medium-sm') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//     @include tablet {
-//       border: none;
-//       width: inherit;
-//       background: transparent;
-//       backdrop-filter: none;
-//       box-shadow: none;
-//     }
+    @include from('medium-sm') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//     h1 {
-//       font-size: 2.5rem;
-//       color: css-var(text-color);
-//       text-align: center;
+    @include from('medium-lg') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//       @include small {
-//         font-size: 1.2rem;
-//         text-align: center;
-//       }
-//     }
+    @include from('medium-xxl') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
 
-//     .part {
-//       margin-top: 1.25rem;
+    // 🖥️ GRANDS ÉCRANS - Retour au style desktop
+    @include from('large-xs') {
+      font-size: inherit;
+      text-align: right;
+    }
+  }
 
-//       h2 {
-//         font-size: 1.5rem;
-//         color: css-var(primary-color);
-//         margin-bottom: 1rem;
+  .post {
+    width: 40.625rem;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1.875rem;
+    border-radius: 10px;
+    gap: 2.5rem;
+    background: linear-gradient(
+      135deg,
+      rgba(css-var(background-color), 0.8),
+      rgba(color.adjust($background-color, $lightness: 5%), 0.8)
+    );
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
+    position: relative;
 
-//         @include small {
-//           font-size: 1.3rem;
-//         }
-//       }
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      background: linear-gradient(
+        135deg,
+        css-var(primary-color),
+        css-var(secondary-color),
+        css-var(accent-color)
+      );
+      border-radius: inherit;
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: xor;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+    }
 
-//       h3 {
-//         color: css-var(secondary-color);
-//         margin-bottom: 0.5rem;
-//       }
+    // 📱 PETITS ÉCRANS - Suppression des effets visuels avec nouveaux breakpoints
+    @include small-screens {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
 
-//       p {
-//         font-size: 1rem;
-//         margin-top: 0.938rem;
-//         color: css-var(text-color);
-//         line-height: 1.6;
+      &::before {
+        display: none;
+      }
+    }
 
-//         @include small {
-//           text-align: justify;
-//         }
+    @include from('small-sm') {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
 
-//         @include mobile {
-//           text-align: justify;
-//         }
-//       }
+      &::before {
+        display: none;
+      }
+    }
 
-//       /* New styles for centering images within the parsed content */
-//       img {
-//         display: block;
-//         max-width: 100%;
-//         height: auto;
-//         margin: 1.5rem auto;
-//         border-radius: 8px;
-//         box-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
-//         border: 2px solid rgba(css-var(primary-color), 0.1);
-//       }
+    @include from('small-lg') {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
 
-//       /* Style for links in parsed content */
-//       a {
-//         color: css-var(primary-color);
-//         text-decoration: none;
-//         border-bottom: 1px solid rgba(css-var(primary-color), 0.3);
-//         transition: all 0.3s ease;
+      &::before {
+        display: none;
+      }
+    }
 
-//         &:hover {
-//           color: css-var(secondary-color);
-//           border-bottom-color: css-var(secondary-color);
-//         }
-//       }
+    @include from('small-xl') {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
 
-//       /* Style for lists in parsed content */
-//       ul,
-//       ol {
-//         margin: 1rem 0;
-//         padding-left: 1.5rem;
+      &::before {
+        display: none;
+      }
+    }
 
-//         li {
-//           color: css-var(text-color);
-//           margin-bottom: 0.5rem;
-//         }
-//       }
+    // 📟 MOYENS ÉCRANS - Maintien du style mobile
+    @include between('small-xl', 'medium-sm') {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
 
-//       /* Style for blockquotes in parsed content */
-//       blockquote {
-//         border-left: 4px solid css-var(primary-color);
-//         margin: 1.5rem 0;
-//         padding: 1rem 1.5rem;
-//         background: rgba(css-var(primary-color), 0.05);
-//         border-radius: 0 8px 8px 0;
-//         font-style: italic;
-//         color: rgba(css-var(text-color), 0.9);
-//       }
-//     }
-//   }
-// }
+      &::before {
+        display: none;
+      }
+    }
+
+    @include from('medium-sm') {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    @include from('medium-lg') {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    @include from('medium-xxl') {
+      border: none;
+      width: inherit;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Retour aux effets visuels desktop
+    @include from('large-xs') {
+      border: 2px solid transparent;
+      width: 40.625rem;
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(background-color), 0.8),
+        rgba(color.adjust($background-color, $lightness: 5%), 0.8)
+      );
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
+
+      &::before {
+        display: block;
+      }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: css-var(text-color);
+      text-align: center;
+
+      // 📱 PETITS ÉCRANS - Taille drastiquement réduite
+      @include small-screens {
+        font-size: 1.2rem;
+        text-align: center;
+      }
+
+      @include from('small-sm') {
+        font-size: 1.25rem;
+        text-align: center;
+      }
+
+      @include from('small-lg') {
+        font-size: 1.3rem;
+        text-align: center;
+      }
+
+      @include from('small-xl') {
+        font-size: 1.35rem;
+        text-align: center;
+      }
+
+      // 📟 MOYENS ÉCRANS - Progression vers desktop
+      @include between('small-xl', 'medium-sm') {
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
+      @include from('medium-sm') {
+        font-size: 1.8rem;
+        text-align: center;
+      }
+
+      @include from('medium-lg') {
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      @include from('medium-xxl') {
+        font-size: 2.2rem;
+        text-align: center;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Retour à la taille desktop
+      @include from('large-xs') {
+        font-size: 2.5rem;
+      }
+    }
+
+    .part {
+      margin-top: 1.25rem;
+
+      h2 {
+        font-size: 1.5rem;
+        color: css-var(primary-color);
+        margin-bottom: 1rem;
+
+        // 📱 PETITS ÉCRANS - Taille réduite
+        @include small-screens {
+          font-size: 1.3rem;
+        }
+
+        @include from('small-sm') {
+          font-size: 1.32rem;
+        }
+
+        @include from('small-lg') {
+          font-size: 1.35rem;
+        }
+
+        @include from('small-xl') {
+          font-size: 1.38rem;
+        }
+
+        // 📟 MOYENS ÉCRANS - Progression vers desktop
+        @include between('small-xl', 'medium-sm') {
+          font-size: 1.4rem;
+        }
+
+        @include from('medium-sm') {
+          font-size: 1.45rem;
+        }
+
+        @include from('medium-lg') {
+          font-size: 1.48rem;
+        }
+
+        @include from('medium-xxl') {
+          font-size: 1.5rem;
+        }
+
+        // 🖥️ GRANDS ÉCRANS - Taille desktop
+        @include from('large-xs') {
+          font-size: 1.5rem;
+        }
+      }
+
+      h3 {
+        color: css-var(secondary-color);
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+        margin-top: 0.938rem;
+        color: css-var(text-color);
+        line-height: 1.6;
+
+        // 📱 PETITS ÉCRANS - Texte justifié
+        @include small-screens {
+          text-align: justify;
+        }
+
+        @include from('small-sm') {
+          text-align: justify;
+        }
+
+        @include from('small-lg') {
+          text-align: justify;
+        }
+
+        @include from('small-xl') {
+          text-align: justify;
+        }
+
+        // 📟 MOYENS ÉCRANS - Maintien du texte justifié
+        @include between('small-xl', 'medium-sm') {
+          text-align: justify;
+        }
+
+        @include from('medium-sm') {
+          text-align: justify;
+        }
+
+        @include from('medium-lg') {
+          text-align: justify;
+        }
+
+        @include from('medium-xxl') {
+          text-align: justify;
+        }
+
+        // 🖥️ GRANDS ÉCRANS - Retour à l'alignement normal
+        @include from('large-xs') {
+          text-align: left;
+        }
+      }
+
+      /* New styles for centering images within the parsed content */
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 1.5rem auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
+        border: 2px solid rgba(css-var(primary-color), 0.1);
+      }
+
+      /* Style for links in parsed content */
+      a {
+        color: css-var(primary-color);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(css-var(primary-color), 0.3);
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: css-var(secondary-color);
+          border-bottom-color: css-var(secondary-color);
+        }
+      }
+
+      /* Style for lists in parsed content */
+      ul,
+      ol {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+
+        li {
+          color: css-var(text-color);
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      /* Style for blockquotes in parsed content */
+      blockquote {
+        border-left: 4px solid css-var(primary-color);
+        margin: 1.5rem 0;
+        padding: 1rem 1.5rem;
+        background: rgba(css-var(primary-color), 0.05);
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        color: rgba(css-var(text-color), 0.9);
+      }
+    }
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES - Cohérent avec les autres composants
+// =============================
+
+// Mode paysage sur mobile - Optimisations spécifiques
+@include mobile-landscape {
+  article {
+    margin-bottom: 3rem;
+
+    .post {
+      gap: 1.5rem;
+      padding: 1.25rem;
+
+      h1 {
+        font-size: 1.1rem;
+      }
+
+      .part {
+        margin-top: 1rem;
+
+        h2 {
+          font-size: 1.2rem;
+        }
+
+        p {
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
+
+// Écrans très hauts - Ajustements pour iPhone X, 11, etc.
+@include tall-screen {
+  article .post {
+    @include until('large-xs') {
+      gap: 2rem;
+      padding: 1.5rem;
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  article {
+    scroll-behavior: auto;
+
+    .post .part a {
+      transition: none;
+
+      &:hover {
+        transition: none;
+      }
+    }
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  article .post .part a {
+    min-height: 44px;
+    padding: 0.25rem 0;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS PETITS - Mobile
+// =============================
+@media (max-width: 360px) {
+  article {
+    margin-bottom: 3rem;
+
+    em {
+      font-size: 0.65rem;
+    }
+
+    .post {
+      gap: 1.5rem;
+      padding: 1rem;
+
+      h1 {
+        font-size: 1.1rem;
+      }
+
+      .part {
+        margin-top: 1rem;
+
+        h2 {
+          font-size: 1.2rem;
+          margin-bottom: 0.8rem;
+        }
+
+        h3 {
+          font-size: 1.1rem;
+          margin-bottom: 0.4rem;
+        }
+
+        p {
+          font-size: 0.9rem;
+          margin-top: 0.8rem;
+          line-height: 1.5;
+        }
+
+        img {
+          margin: 1rem auto;
+          border-radius: 6px;
+        }
+
+        blockquote {
+          margin: 1rem 0;
+          padding: 0.8rem 1.2rem;
+          border-radius: 0 6px 6px 0;
+        }
+      }
+    }
+  }
+}
+
+// Très grands écrans - Optimisations supplémentaires
+@include from('large-xxxl') {
+  article .post {
+    width: 45rem;
+    gap: 3rem;
+    padding: 2.5rem;
+
+    h1 {
+      font-size: 2.8rem;
+    }
+
+    .part {
+      h2 {
+        font-size: 1.7rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+      }
+    }
+  }
+}

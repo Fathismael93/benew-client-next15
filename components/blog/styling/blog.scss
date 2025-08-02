@@ -1,59 +1,194 @@
-// @use 'sass:color';
-// @use '../../../app/styles/abstracts' as *;
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
 
-// .portfolio {
-//   position: relative;
+.portfolio {
+  position: relative;
 
-//   .progress {
-//     position: sticky;
-//     top: 0;
-//     left: 0;
-//     padding-top: 3.125rem;
-//     text-align: center;
-//     color: css-var(primary-color);
-//     font-size: 1.5rem;
+  .progress {
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding-top: 3.125rem;
+    text-align: center;
+    color: css-var(primary-color);
+    font-size: 1.5rem;
 
-//     @include small {
-//       padding-top: calc(100vh - 60px);
-//       font-size: 1rem;
-//       z-index: -1;
-//     }
+    // 📱 PETITS ÉCRANS - Progression des nouveaux breakpoints
+    @include small-screens {
+      padding-top: calc(100vh - 60px);
+      font-size: 1rem;
+      z-index: -1;
+    }
 
-//     @include mobile {
-//       padding-top: calc(100vh - 60px);
-//       font-size: 1rem;
-//       z-index: -1;
-//     }
+    @include from('small-sm') {
+      padding-top: calc(100vh - 60px);
+      font-size: 1rem;
+      z-index: -1;
+    }
 
-//     @include tablet {
-//       padding-top: calc(100vh - 80px);
-//       font-size: 1.4rem;
-//       z-index: -1;
-//     }
+    @include from('small-lg') {
+      padding-top: calc(100vh - 60px);
+      font-size: 1rem;
+      z-index: -1;
+    }
 
-//     .progressBar {
-//       height: 0.625rem;
-//       background: linear-gradient(
-//         90deg,
-//         css-var(primary-color),
-//         css-var(secondary-color),
-//         css-var(accent-color)
-//       );
-//       border-radius: 10px;
-//     }
-//   }
+    @include from('small-xl') {
+      padding-top: calc(100vh - 60px);
+      font-size: 1rem;
+      z-index: -1;
+    }
 
-//   .no-content {
-//     width: 100%;
-//     height: 100%;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
+    // 📟 MOYENS ÉCRANS - Transition progressive
+    @include between('small-xl', 'medium-sm') {
+      padding-top: calc(100vh - 70px);
+      font-size: 1.1rem;
+      z-index: -1;
+    }
 
-//     .no-content-text {
-//       color: css-var(text-color);
-//       font-weight: bold;
-//       font-size: 1.75rem;
-//     }
-//   }
-// }
+    @include from('medium-sm') {
+      padding-top: calc(100vh - 80px);
+      font-size: 1.4rem;
+      z-index: -1;
+    }
+
+    @include from('medium-lg') {
+      padding-top: calc(100vh - 80px);
+      font-size: 1.4rem;
+      z-index: -1;
+    }
+
+    @include from('medium-xxl') {
+      padding-top: calc(100vh - 80px);
+      font-size: 1.4rem;
+      z-index: -1;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Retour au layout desktop original
+    @include from('large-xs') {
+      padding-top: 3.125rem;
+      font-size: 1.5rem;
+      z-index: auto;
+    }
+
+    .progressBar {
+      height: 0.625rem;
+      background: linear-gradient(
+        90deg,
+        css-var(primary-color),
+        css-var(secondary-color),
+        css-var(accent-color)
+      );
+      border-radius: 10px;
+    }
+  }
+
+  .no-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .no-content-text {
+      color: css-var(text-color);
+      font-weight: bold;
+      font-size: 1.75rem;
+
+      // 📱 PETITS ÉCRANS - Taille réduite pour mobile
+      @include small-screens {
+        font-size: 1.2rem;
+      }
+
+      @include from('small-sm') {
+        font-size: 1.25rem;
+      }
+
+      @include from('small-lg') {
+        font-size: 1.3rem;
+      }
+
+      @include from('small-xl') {
+        font-size: 1.35rem;
+      }
+
+      // 📟 MOYENS ÉCRANS - Progression vers desktop
+      @include between('small-xl', 'medium-sm') {
+        font-size: 1.4rem;
+      }
+
+      @include from('medium-sm') {
+        font-size: 1.5rem;
+      }
+
+      @include from('medium-lg') {
+        font-size: 1.6rem;
+      }
+
+      @include from('medium-xxl') {
+        font-size: 1.65rem;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Taille desktop
+      @include from('large-xs') {
+        font-size: 1.75rem;
+      }
+    }
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES - Cohérent avec les autres composants
+// =============================
+
+// Mode paysage sur mobile - Optimisations spécifiques
+@include mobile-landscape {
+  .portfolio .progress {
+    padding-top: calc(100vh - 50px);
+    font-size: 0.9rem;
+  }
+
+  .portfolio .no-content .no-content-text {
+    font-size: 1.1rem;
+  }
+}
+
+// Écrans très hauts - Ajustements pour iPhone X, 11, etc.
+@include tall-screen {
+  .portfolio .progress {
+    @include until('large-xs') {
+      padding-top: calc(100vh - 80px);
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .portfolio .progress .progressBar {
+    transition: none;
+  }
+}
+
+// Très grands écrans - Optimisations supplémentaires
+@include from('large-xxxl') {
+  .portfolio .progress {
+    font-size: 1.6rem;
+  }
+
+  .portfolio .no-content .no-content-text {
+    font-size: 1.8rem;
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS PETITS - Mobile
+// =============================
+@media (max-width: 360px) {
+  .portfolio .progress {
+    padding-top: calc(100vh - 50px);
+    font-size: 0.9rem;
+  }
+
+  .portfolio .no-content .no-content-text {
+    font-size: 1rem;
+  }
+}
