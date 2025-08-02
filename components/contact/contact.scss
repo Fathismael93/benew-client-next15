@@ -1,318 +1,504 @@
-// // =============================
-// // CONTACT PAGE - APPROCHE MOBILE-FIRST OPTIMISÉE
-// // =============================
+// =============================
+// CONTACT PAGE - APPROCHE MOBILE-FIRST OPTIMISÉE
+// =============================
 
-// @use 'sass:color';
-// @use '../../app/styles/abstracts/' as *;
+@use 'sass:color';
+@use '../../app/styles/abstracts/' as *;
 
-// .contact {
-//   width: 100%;
-//   margin: auto;
-//   display: flex;
-//   align-items: flex-start; // Changé pour éviter le centrage vertical problématique
-//   position: relative;
+.contact {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  align-items: flex-start; // Changé pour éviter le centrage vertical problématique
+  position: relative;
 
-//   // 📱 MOBILE FIRST - Layout vertical avec formulaire en premier
-//   flex-direction: column;
-//   gap: 1.5rem;
-//   padding: 1rem 0.75rem;
-//   min-height: 100vh; // Assure la hauteur complète
-//   max-width: none; // Utilise toute la largeur
+  // 📱 MOBILE FIRST - Layout vertical avec formulaire en premier
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0.75rem;
+  min-height: 100vh; // Assure la hauteur complète
+  max-width: none; // Utilise toute la largeur
 
-//   // 📟 TRÈS PETITS ÉCRANS - Optimisations supplémentaires
-//   @include until('sm') {
-//     gap: 1.25rem;
-//     padding: 0.75rem 0.5rem;
-//   }
+  // 📱 TRÈS PETITS ÉCRANS - Optimisations supplémentaires
+  @include until('small-sm') {
+    gap: 1.25rem;
+    padding: 0.75rem 0.5rem;
+  }
 
-//   // 🖥️ TABLET ET PLUS - Transition progressive vers layout horizontal
-//   @include from('md') {
-//     gap: 2rem;
-//     padding: 1.5rem 1rem;
-//     max-width: 90%;
-//   }
+  // 📱 PETITS ÉCRANS - Progression avec nouveaux breakpoints
+  @include from('small-sm') {
+    gap: 1.6rem;
+    padding: 0.8rem 0.6rem;
+  }
 
-//   @include from('lg') {
-//     gap: 2.5rem;
-//     padding: 2rem 1.5rem;
-//     max-width: 80%;
-//   }
+  @include from('small-lg') {
+    gap: 1.7rem;
+    padding: 0.9rem 0.7rem;
+  }
 
-//   @include from('xl') {
-//     // DESKTOP - Retour au layout original
-//     flex-direction: row;
-//     align-items: center;
-//     gap: 3rem;
-//     padding: 2rem;
-//     max-width: 70rem;
-//     min-height: auto;
-//   }
+  @include from('small-xl') {
+    gap: 1.8rem;
+    padding: 1rem 0.8rem;
+  }
 
-//   // =============================
-//   // CONTENEUR INFORMATIONS - MOBILE-FIRST
-//   // =============================
+  // 📟 MOYENS ÉCRANS - Transition progressive vers layout horizontal
+  @include from('medium-sm') {
+    gap: 2rem;
+    padding: 1.5rem 1rem;
+    max-width: 90%;
+  }
 
-//   .textContainer {
-//     width: 100%;
-//     display: flex;
-//     flex-direction: column;
-//     flex-shrink: 0;
+  @include from('medium-lg') {
+    gap: 2.25rem;
+    padding: 1.75rem 1.25rem;
+    max-width: 85%;
+  }
 
-//     // 📱 MOBILE FIRST - Informations en SECOND (après le formulaire)
-//     order: 2;
-//     gap: 1.25rem;
-//     text-align: center;
-//     align-items: center;
+  @include from('medium-xl') {
+    gap: 2.5rem;
+    padding: 2rem 1.5rem;
+    max-width: 80%;
+  }
 
-//     @include until('sm') {
-//       gap: 1rem;
-//       margin-top: 0;
-//     }
+  @include from('medium-xxl') {
+    gap: 2.75rem;
+    padding: 2rem 1.5rem;
+    max-width: 75%;
+  }
 
-//     // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//     @include from('md') {
-//       gap: 1.375rem;
-//     }
+  // 🖥️ GRANDS ÉCRANS - Retour au layout original
+  @include from('large-xs') {
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+    padding: 2rem;
+    max-width: 70rem;
+    min-height: auto;
+  }
 
-//     @include from('lg') {
-//       gap: 1.5rem;
-//     }
+  @include from('large-lg') {
+    gap: 3.2rem;
+    max-width: 75rem;
+  }
 
-//     @include from('xl') {
-//       // DESKTOP - Retour au layout original
-//       flex: 1;
-//       width: 50%;
-//       gap: 0.625rem;
-//       text-align: left;
-//       align-items: flex-start;
-//       order: 1;
-//       margin-top: 3rem;
-//     }
+  @include from('large-xxl') {
+    gap: 3.5rem;
+    max-width: 80rem;
+  }
 
-//     h1 {
-//       color: css-var(text-color);
+  // =============================
+  // CONTENEUR INFORMATIONS - MOBILE-FIRST
+  // =============================
 
-//       // 📱 MOBILE FIRST - Titre visible et impactant
-//       font-size: 2.5rem;
-//       margin: 0;
-//       text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
+  .textContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
 
-//       @include until('sm') {
-//         font-size: 2.25rem;
-//       }
+    // 📱 MOBILE FIRST - Informations en SECOND (après le formulaire)
+    order: 2;
+    gap: 1.25rem;
+    text-align: center;
+    align-items: center;
 
-//       // 🖥️ TABLET ET PLUS - Ajustements
-//       @include from('md') {
-//         font-size: 2.75rem;
-//       }
+    @include until('small-sm') {
+      gap: 1rem;
+      margin-top: 0;
+    }
 
-//       @include from('lg') {
-//         font-size: 3rem;
-//       }
+    // 📱 PETITS ÉCRANS - Ajustements progressifs
+    @include from('small-sm') {
+      gap: 1.3rem;
+    }
 
-//       @include from('xl') {
-//         font-size: 4rem; // Valeur desktop originale
-//         display: block; // Réapparaît sur desktop
-//       }
-//     }
+    @include from('small-lg') {
+      gap: 1.35rem;
+    }
 
-//     .item {
-//       display: flex;
-//       align-items: center;
-//       gap: 1rem;
-//       padding: 0.875rem 1rem;
-//       background: rgba(css-var(text-color), 0.05);
-//       border-radius: 12px;
-//       border: 1px solid rgba(css-var(primary-color), 0.2);
-//       transition: all 0.3s ease;
-//       width: 100%;
-//       max-width: 320px; // Limite la largeur sur mobile
+    @include from('small-xl') {
+      gap: 1.4rem;
+    }
 
-//       // 📱 MOBILE FIRST
-//       justify-content: center;
-//       text-align: center;
+    // 📟 MOYENS ÉCRANS - Ajustements progressifs
+    @include from('medium-sm') {
+      gap: 1.5rem;
+    }
 
-//       @include until('sm') {
-//         gap: 0.75rem;
-//         padding: 0.75rem 0.875rem;
-//         max-width: 300px;
-//       }
+    @include from('medium-lg') {
+      gap: 1.6rem;
+    }
 
-//       // 🖥️ TABLET ET PLUS
-//       @include from('md') {
-//         max-width: 350px;
-//       }
+    @include from('medium-xl') {
+      gap: 1.7rem;
+    }
 
-//       @include from('xl') {
-//         // DESKTOP - Retour au style original
-//         justify-content: flex-start;
-//         text-align: left;
-//         background: transparent;
-//         border: none;
-//         border-radius: 0;
-//         padding: 0;
-//         max-width: none;
-//         gap: 1.875rem;
-//       }
+    @include from('medium-xxl') {
+      gap: 1.8rem;
+    }
 
-//       &:hover {
-//         background: rgba(css-var(primary-color), 0.1);
-//         border-color: rgba(css-var(primary-color), 0.3);
-//         transform: translateY(-2px);
+    // 🖥️ GRANDS ÉCRANS - Retour au layout original
+    @include from('large-xs') {
+      flex: 1;
+      width: 50%;
+      gap: 0.625rem;
+      text-align: left;
+      align-items: flex-start;
+      order: 1;
+      margin-top: 3rem;
+    }
 
-//         // 🖥️ DESKTOP - Pas d'effet hover
-//         @include from('xl') {
-//           background: transparent;
-//           border: none;
-//           transform: none;
-//         }
-//       }
+    @include from('large-lg') {
+      gap: 0.7rem;
+    }
 
-//       .icon {
-//         color: css-var(primary-color);
-//         flex-shrink: 0;
+    @include from('large-xxl') {
+      gap: 0.8rem;
+    }
 
-//         // 📱 MOBILE FIRST - Icône plus visible
-//         font-size: 1.5rem;
+    h1 {
+      color: css-var(text-color);
 
-//         @include until('sm') {
-//           font-size: 1.3rem;
-//         }
+      // 📱 MOBILE FIRST - Titre visible et impactant
+      font-size: 2.5rem;
+      margin: 0;
+      text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
 
-//         @include from('xl') {
-//           font-size: 1.25rem; // Valeur desktop originale
-//         }
-//       }
+      @include until('small-sm') {
+        font-size: 2.25rem;
+      }
 
-//       p {
-//         letter-spacing: 1px; // Réduit pour mobile
-//         color: css-var(text-color);
-//         margin: 0;
-//         flex: 1;
+      // 📱 PETITS ÉCRANS - Progression
+      @include from('small-sm') {
+        font-size: 2.6rem;
+      }
 
-//         // 📱 MOBILE FIRST - Texte lisible
-//         font-size: 0.95rem;
-//         font-weight: 500;
+      @include from('small-lg') {
+        font-size: 2.7rem;
+      }
 
-//         @include until('sm') {
-//           font-size: 0.85rem;
-//           font-weight: 400;
-//         }
+      @include from('small-xl') {
+        font-size: 2.8rem;
+      }
 
-//         // 🖥️ TABLET ET PLUS
-//         @include from('md') {
-//           font-size: 1rem;
-//           font-weight: 450;
-//         }
+      // 📟 MOYENS ÉCRANS - Ajustements
+      @include from('medium-sm') {
+        font-size: 3rem;
+      }
 
-//         @include from('lg') {
-//           font-size: 1rem;
-//           font-weight: 400;
-//         }
+      @include from('medium-lg') {
+        font-size: 3.2rem;
+      }
 
-//         @include from('xl') {
-//           font-size: 1rem; // Valeur desktop originale
-//           font-weight: 400;
-//           letter-spacing: 2px;
-//         }
-//       }
-//     }
-//   }
-// }
+      @include from('medium-xl') {
+        font-size: 3.4rem;
+      }
 
-// // =============================
-// // GESTION SPÉCIALE DU CLAVIER MOBILE
-// // =============================
+      @include from('medium-xxl') {
+        font-size: 3.6rem;
+      }
 
-// // Évite que le viewport soit rogné par le clavier
-// @media screen and (max-height: 600px) and (max-width: 768px) {
-//   .contact {
-//     min-height: 100vh;
-//     padding-bottom: 2rem; // Espace supplémentaire en bas
-//   }
-// }
+      // 🖥️ GRANDS ÉCRANS - Tailles desktop
+      @include from('large-xs') {
+        font-size: 4rem; // Valeur desktop originale
+        display: block; // Réapparaît sur desktop
+      }
 
-// // Mode paysage sur mobile - Layout spécialement optimisé
-// @include mobile-landscape {
-//   .contact {
-//     flex-direction: row;
-//     gap: 1.5rem;
-//     padding: 1rem 0.75rem;
-//     align-items: flex-start;
+      @include from('large-lg') {
+        font-size: 4.2rem;
+      }
 
-//     .textContainer {
-//       order: 1;
-//       width: 40%;
+      @include from('large-xxl') {
+        font-size: 4.4rem;
+      }
+    }
 
-//       h1 {
-//         font-size: 1.75rem;
-//       }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.875rem 1rem;
+      background: rgba(css-var(text-color), 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(css-var(primary-color), 0.2);
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 320px; // Limite la largeur sur mobile
 
-//       .item {
-//         padding: 0.625rem 0.75rem;
-//         gap: 0.75rem;
+      // 📱 MOBILE FIRST
+      justify-content: center;
+      text-align: center;
 
-//         p {
-//           font-size: 0.8rem;
-//         }
-//       }
-//     }
-//   }
-// }
+      @include until('small-sm') {
+        gap: 0.75rem;
+        padding: 0.75rem 0.875rem;
+        max-width: 300px;
+      }
 
-// // Écrans très hauts (iPhone X, 11, etc.)
-// @include tall-screen {
-//   .contact {
-//     @include until('lg') {
-//       gap: 2rem;
-//       padding-top: 2rem;
-//     }
+      // 📱 PETITS ÉCRANS - Progression
+      @include from('small-sm') {
+        max-width: 330px;
+        gap: 1.05rem;
+        padding: 0.9rem 1.05rem;
+      }
 
-//     .textContainer h1 {
-//       @include until('lg') {
-//         font-size: 3rem;
-//       }
-//     }
-//   }
-// }
+      @include from('small-lg') {
+        max-width: 340px;
+        gap: 1.1rem;
+        padding: 0.9rem 1.1rem;
+      }
 
-// // Support pour écrans tactiles - Zones tactiles optimisées
-// @media (pointer: coarse) {
-//   .contact {
-//     .textContainer {
-//       .item {
-//         min-height: 48px;
-//       }
-//     }
-//   }
-// }
+      @include from('small-xl') {
+        max-width: 350px;
+        gap: 1.15rem;
+        padding: 0.95rem 1.15rem;
+      }
 
-// // Amélioration pour l'accessibilité - Réduction des animations
-// @include reduced-motion {
-//   .contact {
-//     .textContainer .item {
-//       transition: none;
+      // 📟 MOYENS ÉCRANS - Progression
+      @include from('medium-sm') {
+        max-width: 370px;
+      }
 
-//       &:hover,
-//       &:focus {
-//         transform: none;
-//       }
-//     }
-//   }
-// }
+      @include from('medium-lg') {
+        max-width: 380px;
+      }
 
-// // Support pour écrans haute densité
-// @include high-density {
-//   .contact .textContainer {
-//     image-rendering: -webkit-optimize-contrast;
-//     image-rendering: crisp-edges;
-//   }
-// }
+      @include from('medium-xl') {
+        max-width: 390px;
+      }
 
-// // Très grands écrans - Limitation de la taille
-// @include from('xxxxl') {
-//   .contact {
-//     max-width: 80rem;
-//     gap: 4rem;
-//   }
-// }
+      @include from('medium-xxl') {
+        max-width: 400px;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Retour au style original
+      @include from('large-xs') {
+        justify-content: flex-start;
+        text-align: left;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        max-width: none;
+        gap: 1.875rem;
+      }
+
+      &:hover {
+        background: rgba(css-var(primary-color), 0.1);
+        border-color: rgba(css-var(primary-color), 0.3);
+        transform: translateY(-2px);
+
+        // 🖥️ DESKTOP - Pas d'effet hover
+        @include from('large-xs') {
+          background: transparent;
+          border: none;
+          transform: none;
+        }
+      }
+
+      .icon {
+        color: css-var(primary-color);
+        flex-shrink: 0;
+
+        // 📱 MOBILE FIRST - Icône plus visible
+        font-size: 1.5rem;
+
+        @include until('small-sm') {
+          font-size: 1.3rem;
+        }
+
+        // 📱 PETITS ÉCRANS - Progression
+        @include from('small-sm') {
+          font-size: 1.55rem;
+        }
+
+        @include from('small-lg') {
+          font-size: 1.6rem;
+        }
+
+        @include from('small-xl') {
+          font-size: 1.65rem;
+        }
+
+        // 📟 MOYENS ÉCRANS
+        @include from('medium-sm') {
+          font-size: 1.7rem;
+        }
+
+        @include from('medium-lg') {
+          font-size: 1.75rem;
+        }
+
+        @include from('medium-xl') {
+          font-size: 1.8rem;
+        }
+
+        @include from('medium-xxl') {
+          font-size: 1.85rem;
+        }
+
+        // 🖥️ GRANDS ÉCRANS
+        @include from('large-xs') {
+          font-size: 1.25rem; // Valeur desktop originale
+        }
+      }
+
+      p {
+        letter-spacing: 1px; // Réduit pour mobile
+        color: css-var(text-color);
+        margin: 0;
+        flex: 1;
+
+        // 📱 MOBILE FIRST - Texte lisible
+        font-size: 0.95rem;
+        font-weight: 500;
+
+        @include until('small-sm') {
+          font-size: 0.85rem;
+          font-weight: 400;
+        }
+
+        // 📱 PETITS ÉCRANS - Progression
+        @include from('small-sm') {
+          font-size: 0.97rem;
+          font-weight: 510;
+        }
+
+        @include from('small-lg') {
+          font-size: 0.99rem;
+          font-weight: 520;
+        }
+
+        @include from('small-xl') {
+          font-size: 1.01rem;
+          font-weight: 530;
+        }
+
+        // 📟 MOYENS ÉCRANS - Progression
+        @include from('medium-sm') {
+          font-size: 1.05rem;
+          font-weight: 450;
+        }
+
+        @include from('medium-lg') {
+          font-size: 1.07rem;
+          font-weight: 460;
+        }
+
+        @include from('medium-xl') {
+          font-size: 1.09rem;
+          font-weight: 470;
+        }
+
+        @include from('medium-xxl') {
+          font-size: 1.1rem;
+          font-weight: 480;
+        }
+
+        // 🖥️ GRANDS ÉCRANS
+        @include from('large-xs') {
+          font-size: 1rem; // Valeur desktop originale
+          font-weight: 400;
+          letter-spacing: 2px;
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// GESTION SPÉCIALE DU CLAVIER MOBILE
+// =============================
+
+// Évite que le viewport soit rogné par le clavier
+@media screen and (max-height: 600px) and (max-width: 768px) {
+  .contact {
+    min-height: 100vh;
+    padding-bottom: 2rem; // Espace supplémentaire en bas
+  }
+}
+
+// Mode paysage sur mobile - Layout spécialement optimisé
+@include mobile-landscape {
+  .contact {
+    flex-direction: row;
+    gap: 1.5rem;
+    padding: 1rem 0.75rem;
+    align-items: flex-start;
+
+    .textContainer {
+      order: 1;
+      width: 40%;
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .item {
+        padding: 0.625rem 0.75rem;
+        gap: 0.75rem;
+
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .contact {
+    @include until('large-xs') {
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+
+    .textContainer h1 {
+      @include until('large-xs') {
+        font-size: 3rem;
+      }
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .contact {
+    .textContainer {
+      .item {
+        min-height: 48px;
+      }
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .contact {
+    .textContainer .item {
+      transition: none;
+
+      &:hover,
+      &:focus {
+        transform: none;
+      }
+    }
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .contact .textContainer {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('large-xxxl') {
+  .contact {
+    max-width: 85rem;
+    gap: 4rem;
+  }
+}

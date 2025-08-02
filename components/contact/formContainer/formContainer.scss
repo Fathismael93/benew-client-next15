@@ -1,404 +1,640 @@
-// // =============================
-// // FORM CONTAINER - MOBILE-FIRST OPTIMISÉ
-// // =============================
+// =============================
+// FORM CONTAINER - MOBILE-FIRST OPTIMISÉ
+// =============================
 
-// @use 'sass:color';
-// @use '../../../app/styles/abstracts/' as *;
+@use 'sass:color';
+@use '../../../app/styles/abstracts/' as *;
 
-// .formContainer {
-//   width: 100%;
-//   position: relative;
-//   flex-shrink: 0;
+.formContainer {
+  width: 100%;
+  position: relative;
+  flex-shrink: 0;
 
-//   // 📱 MOBILE FIRST - Formulaire en PREMIER pour éviter le problème de clavier
-//   order: 1;
+  // 📱 MOBILE FIRST - Formulaire en PREMIER pour éviter le problème de clavier
+  order: 1;
 
-//   @include until('sm') {
-//     // Optimisations spéciales pour très petits écrans
-//     margin-bottom: 1rem;
-//   }
+  @include until('small-sm') {
+    // Optimisations spéciales pour très petits écrans
+    margin-bottom: 1rem;
+  }
 
-//   // 🖥️ DESKTOP - Retour à l'ordre original
-//   @include from('xl') {
-//     flex: 1;
-//     order: 2;
-//   }
+  // 🖥️ DESKTOP - Retour à l'ordre original
+  @include from('large-xs') {
+    flex: 1;
+    order: 2;
+  }
 
-//   .phoneSvg {
-//     position: absolute;
-//     margin: auto;
-//     z-index: -1;
-//     opacity: 0.6; // Plus discret sur mobile
+  .phoneSvg {
+    position: absolute;
+    margin: auto;
+    z-index: -1;
+    opacity: 0.6; // Plus discret sur mobile
 
-//     // 📱 MOBILE FIRST - SVG plus petit et centré
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
+    // 📱 MOBILE FIRST - SVG plus petit et centré
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-//     svg {
-//       // 📱 MOBILE FIRST - Taille réduite
-//       width: 180px;
-//       height: 180px;
+    svg {
+      // 📱 MOBILE FIRST - Taille réduite
+      width: 180px;
+      height: 180px;
 
-//       @include until('sm') {
-//         width: 150px;
-//         height: 150px;
-//       }
+      @include until('small-sm') {
+        width: 150px;
+        height: 150px;
+      }
 
-//       // 🖥️ TABLET ET PLUS - Augmentation progressive
-//       @include from('md') {
-//         width: 200px;
-//         height: 200px;
-//       }
+      // 📱 PETITS ÉCRANS - Augmentation progressive
+      @include from('small-sm') {
+        width: 185px;
+        height: 185px;
+      }
 
-//       @include from('lg') {
-//         width: 220px;
-//         height: 220px;
-//       }
+      @include from('small-lg') {
+        width: 190px;
+        height: 190px;
+      }
 
-//       @include from('xl') {
-//         width: 400px; // Taille desktop originale
-//         height: 400px;
-//       }
-//     }
+      @include from('small-xl') {
+        width: 195px;
+        height: 195px;
+      }
 
-//     // 🖥️ DESKTOP - Repositionnement original
-//     @include from('xl') {
-//       top: auto;
-//       left: auto;
-//       transform: none;
-//       opacity: 1;
-//     }
-//   }
+      // 📟 MOYENS ÉCRANS - Progression
+      @include from('medium-sm') {
+        width: 220px;
+        height: 220px;
+      }
 
-//   form {
-//     display: flex;
-//     flex-direction: column;
-//     position: relative;
-//     z-index: 10;
-//     background: rgba(css-var(background-color), 0.7);
-//     backdrop-filter: blur(10px);
-//     border-radius: 16px;
-//     border: 1px solid rgba(css-var(primary-color), 0.2);
+      @include from('medium-lg') {
+        width: 240px;
+        height: 240px;
+      }
 
-//     // 📱 MOBILE FIRST - Formulaire compact et accessible
-//     gap: 1.25rem;
-//     padding: 1.5rem 1.25rem;
+      @include from('medium-xl') {
+        width: 260px;
+        height: 260px;
+      }
 
-//     @include until('sm') {
-//       gap: 1rem;
-//       padding: 1.25rem 1rem;
-//       border-radius: 12px;
-//     }
+      @include from('medium-xxl') {
+        width: 280px;
+        height: 280px;
+      }
 
-//     // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//     @include from('md') {
-//       gap: 1.375rem;
-//       padding: 1.75rem 1.5rem;
-//     }
+      // 🖥️ GRANDS ÉCRANS - Taille desktop originale
+      @include from('large-xs') {
+        width: 400px;
+        height: 400px;
+      }
 
-//     @include from('lg') {
-//       gap: 1.5rem;
-//       padding: 2rem;
-//     }
+      @include from('large-lg') {
+        width: 420px;
+        height: 420px;
+      }
 
-//     @include from('xl') {
-//       // DESKTOP - Retour au style original
-//       background: transparent;
-//       backdrop-filter: none;
-//       border: none;
-//       border-radius: 0;
-//       padding: 0;
-//       gap: 1.5rem;
-//     }
+      @include from('large-xxl') {
+        width: 450px;
+        height: 450px;
+      }
+    }
 
-//     input,
-//     textarea {
-//       border-radius: 12px;
-//       transition: all 0.4s ease;
-//       font-weight: 400;
-//       backdrop-filter: blur(10px);
-//       box-shadow: 0 2px 8px rgba(css-var(background-color), 0.2);
-//       background: linear-gradient(
-//         135deg,
-//         rgba(css-var(text-color), 0.05),
-//         rgba(css-var(text-color), 0.08)
-//       );
-//       border: 2px solid rgba(css-var(text-color), 0.3);
-//       color: css-var(text-color);
+    // 🖥️ DESKTOP - Repositionnement original
+    @include from('large-xs') {
+      top: auto;
+      left: auto;
+      transform: none;
+      opacity: 1;
+    }
+  }
 
-//       // 📱 MOBILE FIRST - Champs tactiles optimaux
-//       padding: 1.25rem 1.125rem;
-//       font-size: 1rem;
-//       min-height: 48px; // Zone tactile recommandée
+  form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 10;
+    background: rgba(css-var(background-color), 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(css-var(primary-color), 0.2);
 
-//       @include until('sm') {
-//         padding: 1.125rem 1rem;
-//         font-size: 0.95rem;
-//         min-height: 44px;
-//         border-radius: 10px;
-//       }
+    // 📱 MOBILE FIRST - Formulaire compact et accessible
+    gap: 1.25rem;
+    padding: 1.5rem 1.25rem;
 
-//       // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//       @include from('md') {
-//         padding: 1.2rem 1.2rem;
-//         font-size: 1rem;
-//       }
+    @include until('small-sm') {
+      gap: 1rem;
+      padding: 1.25rem 1rem;
+      border-radius: 12px;
+    }
 
-//       @include from('lg') {
-//         padding: 1.2rem 1.3rem;
-//         font-size: 1rem;
-//         border-radius: 11px;
-//       }
+    // 📱 PETITS ÉCRANS - Ajustements progressifs
+    @include from('small-sm') {
+      gap: 1.3rem;
+      padding: 1.55rem 1.3rem;
+    }
 
-//       @include from('xl') {
-//         padding: 1.2rem 1.5rem; // Valeurs desktop originales
-//         font-size: 1rem;
-//         border-radius: 12px;
-//         min-height: auto;
-//       }
+    @include from('small-lg') {
+      gap: 1.35rem;
+      padding: 1.6rem 1.35rem;
+    }
 
-//       &:focus {
-//         border-color: css-var(primary-color);
-//         box-shadow:
-//           0 0 0 3px rgba(css-var(primary-color), 0.2),
-//           0 4px 12px rgba(css-var(primary-color), 0.15);
-//         background: linear-gradient(
-//           135deg,
-//           rgba(css-var(primary-color), 0.08),
-//           rgba(css-var(secondary-color), 0.05)
-//         );
-//         outline: none;
-//         transform: translateY(-1px); // Moins de mouvement sur mobile
+    @include from('small-xl') {
+      gap: 1.4rem;
+      padding: 1.65rem 1.4rem;
+    }
 
-//         // 🖥️ DESKTOP - Mouvement original
-//         @include from('xl') {
-//           transform: translateY(-2px);
-//         }
-//       }
+    // 📟 MOYENS ÉCRANS - Ajustements progressifs
+    @include from('medium-sm') {
+      gap: 1.5rem;
+      padding: 1.75rem 1.5rem;
+    }
 
-//       &::placeholder {
-//         color: rgba(css-var(text-color), 0.6);
-//         font-weight: 300;
-//       }
+    @include from('medium-lg') {
+      gap: 1.6rem;
+      padding: 1.85rem 1.6rem;
+    }
 
-//       &:hover {
-//         border-color: rgba(css-var(primary-color), 0.5);
-//         transform: translateY(-1px);
-//       }
-//     }
+    @include from('medium-xl') {
+      gap: 1.7rem;
+      padding: 1.95rem 1.7rem;
+    }
 
-//     textarea {
-//       resize: vertical;
-//       font-family: inherit;
-//       line-height: 1.5;
+    @include from('medium-xxl') {
+      gap: 1.8rem;
+      padding: 2rem 1.8rem;
+    }
 
-//       // 📱 MOBILE FIRST - Textarea optimisée
-//       min-height: 120px;
+    // 🖥️ GRANDS ÉCRANS - Retour au style original
+    @include from('large-xs') {
+      background: transparent;
+      backdrop-filter: none;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      gap: 1.5rem;
+    }
 
-//       @include until('sm') {
-//         min-height: 100px;
-//       }
+    @include from('large-lg') {
+      gap: 1.6rem;
+    }
 
-//       // 🖥️ TABLET ET PLUS
-//       @include from('md') {
-//         min-height: 110px;
-//       }
+    @include from('large-xxl') {
+      gap: 1.7rem;
+    }
 
-//       @include from('xl') {
-//         min-height: 120px; // Valeur desktop originale
-//       }
-//     }
+    input,
+    textarea {
+      border-radius: 12px;
+      transition: all 0.4s ease;
+      font-weight: 400;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(css-var(background-color), 0.2);
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(text-color), 0.05),
+        rgba(css-var(text-color), 0.08)
+      );
+      border: 2px solid rgba(css-var(text-color), 0.3);
+      color: css-var(text-color);
 
-//     button {
-//       border: none;
-//       cursor: pointer;
-//       font-weight: 600;
-//       border-radius: 12px;
-//       transition: all 0.3s ease;
-//       background: linear-gradient(
-//         135deg,
-//         css-var(primary-color),
-//         color.adjust($primary-color, $lightness: 10%)
-//       );
-//       color: css-var(background-color);
-//       box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+      // 📱 MOBILE FIRST - Champs tactiles optimaux
+      padding: 1.25rem 1.125rem;
+      font-size: 1rem;
+      min-height: 48px; // Zone tactile recommandée
 
-//       // 📱 MOBILE FIRST - Bouton tactile optimal
-//       padding: 1.25rem 2rem;
-//       font-size: 1rem;
-//       min-height: 48px;
-//       width: 100%; // Full width sur mobile
+      @include until('small-sm') {
+        padding: 1.125rem 1rem;
+        font-size: 0.95rem;
+        min-height: 44px;
+        border-radius: 10px;
+      }
 
-//       @include until('sm') {
-//         padding: 1.125rem 1.75rem;
-//         font-size: 0.95rem;
-//         min-height: 44px;
-//         border-radius: 10px;
-//       }
+      // 📱 PETITS ÉCRANS - Ajustements progressifs
+      @include from('small-sm') {
+        padding: 1.15rem 1.1rem;
+        font-size: 0.97rem;
+        min-height: 46px;
+      }
 
-//       // 🖥️ TABLET ET PLUS - Ajustements progressifs
-//       @include from('md') {
-//         padding: 1.125rem 1.875rem;
-//         font-size: 1rem;
-//       }
+      @include from('small-lg') {
+        padding: 1.175rem 1.125rem;
+        font-size: 0.98rem;
+        min-height: 47px;
+      }
 
-//       @include from('lg') {
-//         padding: 1rem 2rem;
-//         border-radius: 11px;
-//       }
+      @include from('small-xl') {
+        padding: 1.2rem 1.15rem;
+        font-size: 0.99rem;
+        min-height: 47px;
+      }
 
-//       @include from('xl') {
-//         padding: 1rem; // Valeur desktop originale
-//         border-radius: 0.313rem;
-//         font-size: 1rem;
-//         width: auto;
-//         min-height: auto;
-//       }
+      // 📟 MOYENS ÉCRANS - Ajustements progressifs
+      @include from('medium-sm') {
+        padding: 1.25rem 1.2rem;
+        font-size: 1rem;
+        min-height: 48px;
+      }
 
-//       &:hover {
-//         background: linear-gradient(
-//           135deg,
-//           color.adjust($primary-color, $lightness: 5%),
-//           css-var(secondary-color)
-//         );
-//         transform: translateY(-2px);
-//         box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
-//       }
+      @include from('medium-lg') {
+        padding: 1.275rem 1.25rem;
+        font-size: 1.01rem;
+        min-height: 49px;
+        border-radius: 13px;
+      }
 
-//       &:active {
-//         transform: translateY(0);
-//       }
+      @include from('medium-xl') {
+        padding: 1.3rem 1.3rem;
+        font-size: 1.02rem;
+        min-height: 50px;
+        border-radius: 14px;
+      }
 
-//       &:disabled {
-//         opacity: 0.6;
-//         cursor: not-allowed;
+      @include from('medium-xxl') {
+        padding: 1.325rem 1.35rem;
+        font-size: 1.03rem;
+        min-height: 51px;
+        border-radius: 15px;
+      }
 
-//         &:hover {
-//           transform: none;
-//         }
-//       }
-//     }
+      // 🖥️ GRANDS ÉCRANS - Valeurs desktop originales
+      @include from('large-xs') {
+        padding: 1.2rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 12px;
+        min-height: auto;
+      }
 
-//     // Messages de statut - Améliorés pour mobile
-//     .error-message,
-//     .success-message {
-//       margin-top: 0.75rem;
-//       text-align: center;
-//       border-radius: 8px;
-//       transition: all 0.3s ease;
+      @include from('large-lg') {
+        padding: 1.25rem 1.55rem;
+      }
 
-//       // 📱 MOBILE FIRST - Messages plus visibles
-//       padding: 0.875rem 1rem;
-//       font-size: 0.9rem;
+      @include from('large-xxl') {
+        padding: 1.3rem 1.6rem;
+      }
 
-//       @include until('sm') {
-//         padding: 0.75rem 0.875rem;
-//         font-size: 0.85rem;
-//       }
+      &:focus {
+        border-color: css-var(primary-color);
+        box-shadow:
+          0 0 0 3px rgba(css-var(primary-color), 0.2),
+          0 4px 12px rgba(css-var(primary-color), 0.15);
+        background: linear-gradient(
+          135deg,
+          rgba(css-var(primary-color), 0.08),
+          rgba(css-var(secondary-color), 0.05)
+        );
+        outline: none;
+        transform: translateY(-1px); // Moins de mouvement sur mobile
 
-//       // 🖥️ DESKTOP
-//       @include from('xl') {
-//         margin-top: 0.625rem;
-//         padding: 0.5rem;
-//         font-size: 0.875rem;
-//       }
-//     }
+        // 🖥️ DESKTOP - Mouvement original
+        @include from('large-xs') {
+          transform: translateY(-2px);
+        }
+      }
 
-//     .error-message {
-//       color: #ff4444;
-//       background: rgba(255, 68, 68, 0.1);
-//       border: 1px solid rgba(255, 68, 68, 0.3);
-//     }
+      &::placeholder {
+        color: rgba(css-var(text-color), 0.6);
+        font-weight: 300;
+      }
 
-//     .success-message {
-//       color: #22c55e;
-//       background: rgba(34, 197, 94, 0.1);
-//       border: 1px solid rgba(34, 197, 94, 0.3);
-//     }
-//   }
-// }
+      &:hover {
+        border-color: rgba(css-var(primary-color), 0.5);
+        transform: translateY(-1px);
+      }
+    }
 
-// // =============================
-// // GESTION SPÉCIALE DU CLAVIER MOBILE - FORM CONTAINER
-// // =============================
+    textarea {
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.5;
 
-// // Évite que le viewport soit rogné par le clavier
-// @media screen and (max-height: 600px) and (max-width: 768px) {
-//   .formContainer {
-//     form {
-//       // Assure que le formulaire reste accessible même avec clavier
-//       position: relative;
-//       z-index: 1000;
+      // 📱 MOBILE FIRST - Textarea optimisée
+      min-height: 120px;
 
-//       input,
-//       textarea {
-//         // Optimise la gestion du focus avec clavier
-//         scroll-margin-top: 1rem;
-//       }
-//     }
-//   }
-// }
+      @include until('small-sm') {
+        min-height: 100px;
+      }
 
-// // Mode paysage sur mobile - Layout spécialement optimisé
-// @include mobile-landscape {
-//   .formContainer {
-//     order: 2;
-//     width: 60%;
+      // 📱 PETITS ÉCRANS - Progression
+      @include from('small-sm') {
+        min-height: 105px;
+      }
 
-//     form {
-//       gap: 1rem;
-//       padding: 1.25rem;
+      @include from('small-lg') {
+        min-height: 110px;
+      }
 
-//       input,
-//       textarea {
-//         padding: 0.875rem 1rem;
-//         min-height: 40px;
-//       }
+      @include from('small-xl') {
+        min-height: 115px;
+      }
 
-//       textarea {
-//         min-height: 80px;
-//       }
+      // 📟 MOYENS ÉCRANS - Progression
+      @include from('medium-sm') {
+        min-height: 125px;
+      }
 
-//       button {
-//         padding: 0.875rem 1.5rem;
-//         min-height: 40px;
-//       }
-//     }
-//   }
-// }
+      @include from('medium-lg') {
+        min-height: 130px;
+      }
 
-// // Écrans très hauts (iPhone X, 11, etc.)
-// @include tall-screen {
-//   .formContainer form {
-//     @include until('lg') {
-//       gap: 1.5rem;
-//       padding: 2rem 1.5rem;
-//     }
-//   }
-// }
+      @include from('medium-xl') {
+        min-height: 135px;
+      }
 
-// // Support pour écrans tactiles - Zones tactiles optimisées
-// @media (pointer: coarse) {
-//   .formContainer form {
-//     input,
-//     textarea,
-//     button {
-//       min-height: 48px; // Zone tactile recommandée
-//     }
-//   }
-// }
+      @include from('medium-xxl') {
+        min-height: 140px;
+      }
 
-// // Amélioration pour l'accessibilité - Réduction des animations
-// @include reduced-motion {
-//   .formContainer form input,
-//   .formContainer form textarea,
-//   .formContainer form button {
-//     transition: none;
+      // 🖥️ GRANDS ÉCRANS
+      @include from('large-xs') {
+        min-height: 120px; // Valeur desktop originale
+      }
 
-//     &:hover,
-//     &:focus {
-//       transform: none;
-//     }
-//   }
-// }
+      @include from('large-lg') {
+        min-height: 125px;
+      }
+
+      @include from('large-xxl') {
+        min-height: 130px;
+      }
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background: linear-gradient(
+        135deg,
+        css-var(primary-color),
+        color.adjust($primary-color, $lightness: 10%)
+      );
+      color: css-var(background-color);
+      box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+
+      // 📱 MOBILE FIRST - Bouton tactile optimal
+      padding: 1.25rem 2rem;
+      font-size: 1rem;
+      min-height: 48px;
+      width: 100%; // Full width sur mobile
+
+      @include until('small-sm') {
+        padding: 1.125rem 1.75rem;
+        font-size: 0.95rem;
+        min-height: 44px;
+        border-radius: 10px;
+      }
+
+      // 📱 PETITS ÉCRANS - Ajustements progressifs
+      @include from('small-sm') {
+        padding: 1.15rem 1.8rem;
+        font-size: 0.97rem;
+        min-height: 46px;
+      }
+
+      @include from('small-lg') {
+        padding: 1.175rem 1.85rem;
+        font-size: 0.98rem;
+        min-height: 47px;
+      }
+
+      @include from('small-xl') {
+        padding: 1.2rem 1.9rem;
+        font-size: 0.99rem;
+        min-height: 47px;
+      }
+
+      // 📟 MOYENS ÉCRANS - Ajustements progressifs
+      @include from('medium-sm') {
+        padding: 1.25rem 1.95rem;
+        font-size: 1rem;
+        min-height: 48px;
+        border-radius: 13px;
+      }
+
+      @include from('medium-lg') {
+        padding: 1.15rem 2rem;
+        border-radius: 14px;
+        min-height: 49px;
+      }
+
+      @include from('medium-xl') {
+        padding: 1.1rem 2.05rem;
+        border-radius: 15px;
+        min-height: 50px;
+      }
+
+      @include from('medium-xxl') {
+        padding: 1.05rem 2.1rem;
+        border-radius: 16px;
+        min-height: 51px;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Valeurs desktop originales
+      @include from('large-xs') {
+        padding: 1rem;
+        border-radius: 0.313rem;
+        font-size: 1rem;
+        width: auto;
+        min-height: auto;
+      }
+
+      @include from('large-lg') {
+        padding: 1.05rem;
+      }
+
+      @include from('large-xxl') {
+        padding: 1.1rem;
+      }
+
+      &:hover {
+        background: linear-gradient(
+          135deg,
+          color.adjust($primary-color, $lightness: 5%),
+          css-var(secondary-color)
+        );
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+
+        &:hover {
+          transform: none;
+        }
+      }
+    }
+
+    // Messages de statut - Améliorés pour mobile
+    .error-message,
+    .success-message {
+      margin-top: 0.75rem;
+      text-align: center;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+
+      // 📱 MOBILE FIRST - Messages plus visibles
+      padding: 0.875rem 1rem;
+      font-size: 0.9rem;
+
+      @include until('small-sm') {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.85rem;
+      }
+
+      // 📱 PETITS ÉCRANS - Progression
+      @include from('small-sm') {
+        padding: 0.9rem 1.05rem;
+        font-size: 0.91rem;
+      }
+
+      @include from('small-lg') {
+        padding: 0.925rem 1.1rem;
+        font-size: 0.92rem;
+      }
+
+      @include from('small-xl') {
+        padding: 0.95rem 1.15rem;
+        font-size: 0.93rem;
+      }
+
+      // 📟 MOYENS ÉCRANS - Progression
+      @include from('medium-sm') {
+        padding: 0.975rem 1.2rem;
+        font-size: 0.94rem;
+      }
+
+      @include from('medium-lg') {
+        padding: 1rem 1.25rem;
+        font-size: 0.95rem;
+      }
+
+      @include from('medium-xl') {
+        padding: 1.025rem 1.3rem;
+        font-size: 0.96rem;
+      }
+
+      @include from('medium-xxl') {
+        padding: 1.05rem 1.35rem;
+        font-size: 0.97rem;
+      }
+
+      // 🖥️ GRANDS ÉCRANS
+      @include from('large-xs') {
+        margin-top: 0.625rem;
+        padding: 0.5rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    .error-message {
+      color: #ff4444;
+      background: rgba(255, 68, 68, 0.1);
+      border: 1px solid rgba(255, 68, 68, 0.3);
+    }
+
+    .success-message {
+      color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+  }
+}
+
+// =============================
+// GESTION SPÉCIALE DU CLAVIER MOBILE - FORM CONTAINER
+// =============================
+
+// Évite que le viewport soit rogné par le clavier
+@media screen and (max-height: 600px) and (max-width: 768px) {
+  .formContainer {
+    form {
+      // Assure que le formulaire reste accessible même avec clavier
+      position: relative;
+      z-index: 1000;
+
+      input,
+      textarea {
+        // Optimise la gestion du focus avec clavier
+        scroll-margin-top: 1rem;
+      }
+    }
+  }
+}
+
+// Mode paysage sur mobile - Layout spécialement optimisé
+@include mobile-landscape {
+  .formContainer {
+    order: 2;
+    width: 60%;
+
+    form {
+      gap: 1rem;
+      padding: 1.25rem;
+
+      input,
+      textarea {
+        padding: 0.875rem 1rem;
+        min-height: 40px;
+      }
+
+      textarea {
+        min-height: 80px;
+      }
+
+      button {
+        padding: 0.875rem 1.5rem;
+        min-height: 40px;
+      }
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .formContainer form {
+    @include until('large-xs') {
+      gap: 1.5rem;
+      padding: 2rem 1.5rem;
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .formContainer form {
+    input,
+    textarea,
+    button {
+      min-height: 48px; // Zone tactile recommandée
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .formContainer form input,
+  .formContainer form textarea,
+  .formContainer form button {
+    transition: none;
+
+    &:hover,
+    &:focus {
+      transform: none;
+    }
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('large-xxxl') {
+  .formContainer form {
+    gap: 1.8rem;
+  }
+}
