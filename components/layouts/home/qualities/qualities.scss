@@ -491,7 +491,8 @@
   }
 
   &.color-light-pink {
-    $light-pink: lighten($color-pink, 15%);
+    $light-pink: color.adjust($color-pink, $lightness: 15%);
+
     border-color: rgba($light-pink, 0.3);
     box-shadow:
       0 20px 60px rgba($color-dark, 0.4),
@@ -628,7 +629,7 @@
     }
 
     &.color-light-pink {
-      $light-pink: lighten($color-pink, 15%);
+      $light-pink: color.adjust($color-pink, $lightness: 15%);
       background: $light-pink;
       border-color: $light-pink;
       box-shadow: 0 0 8px rgba($light-pink, 0.5);
@@ -666,7 +667,7 @@
       border-color: $color-purple;
     }
     .color-light-pink & {
-      border-color: lighten($color-pink, 15%);
+      border-color: color.adjust($color-pink, $lightness: 15%);
     }
   }
 }

@@ -250,10 +250,11 @@
     // =============================
     &:hover {
       transform: translateY(-3px) scale(1.05);
+      // Remplacer par :
       background: linear-gradient(
         135deg,
-        lighten($color-orange, 8%),
-        lighten($color-pink, 8%)
+        color.adjust($color-orange, $lightness: 8%),
+        color.adjust($color-pink, $lightness: 8%)
       );
       box-shadow:
         0 12px 35px rgba($color-orange, 0.5),

@@ -489,10 +489,11 @@
         // Effets hover
         &:hover {
           transform: translateY(-1px) scale(1.02);
+          // Remplacer par :
           background: linear-gradient(
             135deg,
-            lighten($color-purple, 5%),
-            lighten($color-pink, 5%)
+            color.adjust($color-purple, $lightness: 5%),
+            color.adjust($color-pink, $lightness: 5%)
           );
           box-shadow:
             0 8px 25px rgba($color-purple, 0.5),

@@ -159,12 +159,12 @@
 
   // Deuxième titre avec couleur légèrement différente
   &:last-of-type {
-    color: lighten($color-orange, 8%);
+    color: color.adjust($color-orange, $lightness: 8%);
     margin-bottom: 0;
 
     @include until('medium-sm') {
       // ✅ Couleur encore plus contrastée sur mobile
-      color: lighten($color-orange, 12%);
+      color: color.adjust($color-orange, $lightness: 12%);
     }
   }
 }
