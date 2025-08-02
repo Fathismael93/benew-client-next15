@@ -9,7 +9,7 @@
   width: 100%;
   margin: auto;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   position: relative;
 
   // 📱 MOBILE FIRST - Layout vertical avec textContainer en premier
@@ -101,7 +101,7 @@
     // 📱 MOBILE FIRST - TextContainer en PREMIER avec système collapsible
     order: 1;
     text-align: center;
-    align-items: end;
+    align-items: center;
 
     // Hauteur fixe 40% sur mobile/tablette pour éviter débordement
     @include until('large-xs') {
