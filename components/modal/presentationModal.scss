@@ -1,168 +1,410 @@
-// @use 'sass:color';
-// @use '../../app/styles/abstracts' as *;
+@use 'sass:color';
+@use '../../app/styles/abstracts' as *;
 
-// .modalOverlay {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(css-var(background-color), 0.85);
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   z-index: 100;
-//   backdrop-filter: blur(5px);
-// }
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(css-var(background-color), 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
 
-// .modal {
-//   background: linear-gradient(
-//     135deg,
-//     color.adjust($background-color, $lightness: -5%),
-//     color.adjust($background-color, $lightness: 8%)
-//   );
-//   border-radius: 12px;
-//   box-shadow:
-//     0 10px 30px rgba(css-var(background-color), 0.6),
-//     0 0 20px rgba(css-var(primary-color), 0.1);
-//   width: 90%;
-//   max-width: 600px;
-//   border: 1px solid rgba(css-var(primary-color), 0.3);
-//   position: relative;
-//   // AJOUTER ces propriétés :
-//   max-height: 90vh; // ou 80vh selon votre préférence
-//   overflow-y: auto; // Active le scroll vertical si nécessaire
+.modal {
+  background: linear-gradient(
+    135deg,
+    color.adjust($background-color, $lightness: -5%),
+    color.adjust($background-color, $lightness: 8%)
+  );
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px rgba(css-var(background-color), 0.6),
+    0 0 20px rgba(css-var(primary-color), 0.1);
+  width: 90%;
+  max-width: 600px;
+  border: 1px solid rgba(css-var(primary-color), 0.3);
+  position: relative;
+  max-height: 90vh; // ou 80vh selon votre préférence
+  overflow-y: auto; // Active le scroll vertical si nécessaire
 
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     right: 0;
-//     height: 3px;
-//     background: linear-gradient(
-//       90deg,
-//       css-var(primary-color),
-//       css-var(secondary-color),
-//       css-var(accent-color)
-//     );
-//   }
+  // 📱 PETITS ÉCRANS - Ajustements progressifs
+  @include until('small-sm') {
+    width: 95%;
+    max-height: 85vh;
+  }
 
-//   // AJOUTER pour un meilleur scroll :
-//   &::-webkit-scrollbar {
-//     width: 6px;
-//   }
+  @include from('small-sm') {
+    width: 93%;
+    max-height: 87vh;
+  }
 
-//   &::-webkit-scrollbar-track {
-//     background: rgba(255, 255, 255, 0.1);
-//   }
+  @include from('small-lg') {
+    width: 92%;
+    max-height: 88vh;
+  }
 
-//   &::-webkit-scrollbar-thumb {
-//     background: rgba(css-var(primary-color), 0.5);
-//     border-radius: 3px;
+  @include from('small-xl') {
+    width: 91%;
+    max-height: 89vh;
+  }
 
-//     &:hover {
-//       background: rgba(css-var(primary-color), 0.7);
-//     }
-//   }
-// }
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    width: 85%;
+    max-height: 90vh;
+  }
 
-// .modalContent {
-//   padding: 30px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1.5rem;
-// }
+  @include from('medium-lg') {
+    width: 80%;
+  }
 
-// h2 {
-//   color: css-var(primary-color);
-//   font-size: 1.8rem;
-//   text-align: center;
-//   border-bottom: 1px solid rgba(css-var(primary-color), 0.4);
-//   padding-bottom: 1rem;
-//   margin: 0;
-//   text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
-// }
+  @include from('medium-xl') {
+    width: 75%;
+  }
 
-// .modalText {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 1rem;
+  // 🖥️ GRANDS ÉCRANS - Taille optimale
+  @include from('large-xs') {
+    width: 70%;
+    max-width: 600px;
+  }
 
-//   p {
-//     color: css-var(text-color);
-//     line-height: 1.6;
-//     font-size: 1rem;
-//     margin: 0;
-//     text-align: justify;
-//     opacity: 0.9;
-//   }
-// }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      css-var(primary-color),
+      css-var(secondary-color),
+      css-var(accent-color)
+    );
+  }
 
-// .closeButton {
-//   background: linear-gradient(
-//     135deg,
-//     css-var(primary-color),
-//     color.adjust($primary-color, $lightness: 10%)
-//   );
-//   color: css-var(background-color);
-//   border: none;
-//   border-radius: 8px;
-//   padding: 0.8rem 2rem;
-//   font-weight: 600;
-//   font-size: 1rem;
-//   cursor: pointer;
-//   transition: all 0.3s ease;
-//   align-self: center;
-//   box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+  // Pour un meilleur scroll
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
 
-//   &:hover {
-//     background: linear-gradient(
-//       135deg,
-//       color.adjust($primary-color, $lightness: 5%),
-//       css-var(secondary-color)
-//     );
-//     transform: translateY(-2px);
-//     box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
-//   }
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
 
-//   &:active {
-//     transform: translateY(0);
-//   }
-// }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(primary-color), 0.5);
+    border-radius: 3px;
 
-// @include mobile {
-//   .modal {
-//     width: 95%;
-//   }
+    &:hover {
+      background: rgba(css-var(primary-color), 0.7);
+    }
+  }
+}
 
-//   .modalContent {
-//     padding: 20px;
-//   }
+.modalContent {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 
-//   h2 {
-//     font-size: 1.5rem;
-//   }
+  // 📱 PETITS ÉCRANS - Padding réduit
+  @include until('small-sm') {
+    padding: 15px;
+    gap: 1rem;
+  }
 
-//   .modalText p {
-//     font-size: 0.9rem;
-//   }
-// }
+  @include from('small-sm') {
+    padding: 18px;
+    gap: 1.1rem;
+  }
 
-// @include small {
-//   .modal {
-//     width: 95%;
-//   }
+  @include from('small-lg') {
+    padding: 20px;
+    gap: 1.2rem;
+  }
 
-//   .modalContent {
-//     padding: 15px;
-//   }
+  @include from('small-xl') {
+    padding: 22px;
+    gap: 1.3rem;
+  }
 
-//   h2 {
-//     font-size: 1.3rem;
-//   }
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    padding: 25px;
+    gap: 1.4rem;
+  }
 
-//   .modalText p {
-//     font-size: 0.85rem;
-//   }
-// }
+  @include from('medium-lg') {
+    padding: 28px;
+    gap: 1.45rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Padding optimal
+  @include from('large-xs') {
+    padding: 30px;
+    gap: 1.5rem;
+  }
+}
+
+h2 {
+  color: css-var(primary-color);
+  font-size: 1.8rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(css-var(primary-color), 0.4);
+  padding-bottom: 1rem;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(css-var(background-color), 0.5);
+
+  // 📱 PETITS ÉCRANS - Tailles réduites
+  @include until('small-sm') {
+    font-size: 1.3rem;
+    padding-bottom: 0.75rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 1.35rem;
+    padding-bottom: 0.8rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 1.4rem;
+    padding-bottom: 0.85rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 1.45rem;
+    padding-bottom: 0.9rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    font-size: 1.5rem;
+    padding-bottom: 0.95rem;
+  }
+
+  @include from('medium-lg') {
+    font-size: 1.6rem;
+  }
+
+  @include from('medium-xl') {
+    font-size: 1.7rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Taille optimale
+  @include from('large-xs') {
+    font-size: 1.8rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.modalText {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include until('small-sm') {
+    gap: 0.75rem;
+  }
+
+  @include from('small-sm') {
+    gap: 0.8rem;
+  }
+
+  @include from('small-lg') {
+    gap: 0.9rem;
+  }
+
+  @include from('medium-sm') {
+    gap: 1rem;
+  }
+
+  p {
+    color: css-var(text-color);
+    line-height: 1.6;
+    font-size: 1rem;
+    margin: 0;
+    text-align: justify;
+    opacity: 0.9;
+
+    // 📱 PETITS ÉCRANS - Tailles réduites
+    @include until('small-sm') {
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    @include from('small-sm') {
+      font-size: 0.87rem;
+      line-height: 1.52;
+    }
+
+    @include from('small-lg') {
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    @include from('small-xl') {
+      font-size: 0.93rem;
+      line-height: 1.57;
+    }
+
+    // 📟 MOYENS ÉCRANS - Progression
+    @include from('medium-sm') {
+      font-size: 0.95rem;
+      line-height: 1.58;
+    }
+
+    @include from('medium-lg') {
+      font-size: 0.97rem;
+      line-height: 1.59;
+    }
+
+    @include from('medium-xl') {
+      font-size: 0.98rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Taille optimale
+    @include from('large-xs') {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+  }
+}
+
+.closeButton {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    color.adjust($primary-color, $lightness: 10%)
+  );
+  color: css-var(background-color);
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: center;
+  box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+
+  // 📱 PETITS ÉCRANS - Bouton plus petit
+  @include until('small-sm') {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+  }
+
+  @include from('small-sm') {
+    padding: 0.65rem 1.6rem;
+    font-size: 0.92rem;
+  }
+
+  @include from('small-lg') {
+    padding: 0.7rem 1.7rem;
+    font-size: 0.95rem;
+  }
+
+  @include from('small-xl') {
+    padding: 0.75rem 1.8rem;
+    font-size: 0.97rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    padding: 0.75rem 1.9rem;
+    font-size: 0.98rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 0.78rem 1.95rem;
+    font-size: 0.99rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Taille optimale
+  @include from('large-xs') {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      color.adjust($primary-color, $lightness: 5%),
+      css-var(secondary-color)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile
+@include mobile-landscape {
+  .modal {
+    width: 85%;
+    max-height: 80vh;
+  }
+
+  .modalContent {
+    padding: 15px;
+    gap: 0.8rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .modalText p {
+    font-size: 0.8rem;
+  }
+
+  .closeButton {
+    padding: 0.6rem 1.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+// Écrans très hauts
+@include tall-screen {
+  .modal {
+    @include until('large-xs') {
+      max-height: 85vh;
+    }
+  }
+}
+
+// Support pour écrans tactiles
+@media (pointer: coarse) {
+  .closeButton {
+    min-height: 44px;
+  }
+}
+
+// Amélioration pour l'accessibilité
+@include reduced-motion {
+  .closeButton {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}

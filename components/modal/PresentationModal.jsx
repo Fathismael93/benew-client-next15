@@ -1,6 +1,6 @@
 'use client';
 
-// import './presentationModal.scss';
+import './presentationModal.scss';
 
 const PresentationModal = ({ isOpen, onClose, content }) => {
   if (!isOpen || !content) return null;
