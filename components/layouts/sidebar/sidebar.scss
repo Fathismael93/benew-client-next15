@@ -2,7 +2,7 @@
 @use '../../../app/styles/abstracts' as *;
 
 // =============================
-// SIDEBAR - APPROCHE MOBILE-FIRST AVEC NOUVEAUX BREAKPOINTS 3 CATÉGORIES
+// SIDEBAR - APPROCHE MOBILE-FIRST AVEC NOUVEAUX BREAKPOINTS OPTIMISÉS
 // =============================
 
 .sidebar {
@@ -32,7 +32,7 @@
     );
     box-shadow: 2px 0 10px rgba(css-var(background-color), 0.3);
 
-    // 📱 Très petits smartphones - Optimisation pour meilleure utilisabilité
+    // 📱 Progression simplifiée avec nouveaux breakpoints essentiels
     @include from('small-xs') {
       width: 80vw;
       min-width: 270px;
@@ -43,13 +43,9 @@
       min-width: 260px;
     }
 
-    @include from('small-md') {
-      width: 70vw;
-      min-width: 260px;
-    }
-
+    // Suppression de small-md (éliminé) - fusion avec small-lg
     @include from('small-lg') {
-      width: 68vw;
+      width: 68vw; // Valeur fusionnée small-md + small-lg
       min-width: 260px;
     }
 
@@ -94,12 +90,13 @@
       font-size: 1.8rem;
       padding: 1rem; // Padding pour éviter que ça touche les bords
 
-      // Ajustements progressifs pour smartphones
+      // Ajustements progressifs simplifiés pour smartphones
       @include from('small-sm') {
         font-size: 1.7rem;
         gap: 1.9rem;
       }
 
+      // Fusion des valeurs small-md + small-lg optimisées
       @include from('small-lg') {
         font-size: 1.6rem;
         gap: 1.8rem;
@@ -138,12 +135,13 @@
         border-radius: 12px;
         transition: all 0.3s ease;
 
-        // Ajustements progressifs pour petits écrans
+        // Ajustements progressifs simplifiés pour petits écrans
         @include from('small-sm') {
           padding: 0.9rem 1.4rem;
           min-height: 58px;
         }
 
+        // Fusion optimisée small-md + small-lg
         @include from('small-lg') {
           padding: 0.85rem 1.3rem;
           min-height: 56px;
@@ -233,7 +231,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
-    // Ajustements progressifs pour smartphones
+    // Ajustements progressifs simplifiés pour smartphones
     @include from('small-xs') {
       width: 2.9rem;
       height: 2.9rem;
@@ -248,6 +246,7 @@
       left: 1.6rem;
     }
 
+    // Fusion optimisée small-md + small-lg
     @include from('small-lg') {
       width: 2.7rem;
       height: 2.7rem;
@@ -323,6 +322,7 @@
         height: 1.4rem;
       }
 
+      // Fusion optimisée small-md + small-lg
       @include from('small-lg') {
         width: 1.35rem;
         height: 1.35rem;
