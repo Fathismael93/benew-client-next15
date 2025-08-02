@@ -336,7 +336,7 @@
 }
 
 // Adaptation pour écrans très larges
-@include from('large-ultra') {
+@include from('large-xxxl') {
   .navbar .wrapper {
     max-width: 1920px;
     padding: 1rem 2rem;
