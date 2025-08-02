@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { MdMail, MdPhone, MdWhatsapp } from 'react-icons/md';
 import Parallax from '@/components/layouts/parallax';
-// import './contact.scss';
+import './contact.scss';
 import FormContainer from './formContainer';
 
 const variants = {
