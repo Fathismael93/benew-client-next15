@@ -107,6 +107,7 @@
     @include until('large-xs') {
       height: auto;
       min-height: auto;
+      justify-content: flex-end;
     }
 
     // 🖥️ GRANDS ÉCRANS - Hauteur fixe 40%

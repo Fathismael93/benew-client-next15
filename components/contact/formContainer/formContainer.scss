@@ -8,6 +8,8 @@
 .formContainer {
   width: 100%;
   position: relative;
+  display: flex;
+  justify-content: flex-end;
   flex-shrink: 0;
 
   // 📱 MOBILE FIRST - Formulaire en SECOND maintenant
@@ -28,6 +30,7 @@
     flex: 1;
     order: 2;
     height: 80%;
+    padding-top: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
