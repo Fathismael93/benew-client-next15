@@ -1,3 +1,5 @@
+@use 'sass:string';
+
 // ================================
 // 📄 _content.scss
 // ================================
@@ -11,14 +13,14 @@
     height: auto;
     margin: 1.5rem auto;
     border-radius: 8px;
-    box-shadow: 0 4px 8px unquote('rgba(#{css-var(background-color)}, 0.3)');
-    border: 2px solid unquote('rgba(#{css-var(primary-color)}, 0.1)');
+    box-shadow: 0 4px 8px #{'rgba(#{css-var(background-color)}, 0.3)'};
+    border: 2px solid #{'rgba(#{css-var(primary-color)}, 0.1)'};
   }
 
   a {
     color: css-var(primary-color);
     text-decoration: none;
-    border-bottom: 1px solid unquote('rgba(#{css-var(primary-color)}, 0.3)');
+    border-bottom: 1px solid #{'rgba(#{css-var(primary-color)}, 0.3)'};
     transition: all 0.3s ease;
 
     &:hover {
@@ -42,9 +44,9 @@
     border-left: 4px solid css-var(primary-color);
     margin: 1.5rem 0;
     padding: 1rem 1.5rem;
-    background: unquote('rgba(#{css-var(primary-color)}, 0.05)');
+    background: #{'rgba(#{css-var(primary-color)}, 0.05)'};
     border-radius: 0 8px 8px 0;
     font-style: italic;
-    color: unquote('rgba(#{css-var(text-color)}, 0.9)');
+    color: #{'rgba(#{css-var(text-color)}, 0.9)'};
   }
 }
