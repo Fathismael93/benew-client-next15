@@ -1,0 +1,104 @@
+@use '../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _layout.scss
+// ================================
+
+// Desktop - layout horizontal classique
+.cards-desktop {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+
+  // 🖥️ DESKTOP - Visible sur grands écrans
+  @include from('large-xs') {
+    gap: 2rem;
+  }
+
+  @include from('large-lg') {
+    gap: 2.5rem;
+  }
+
+  // 📱 MOBILE & TABLETTE - Caché
+  @include until('large-xs') {
+    display: none;
+  }
+}
+
+// Mobile - slider
+.cards-mobile-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw; // Largeur fixe 100vw
+  max-width: 100%; // Sécurité contre débordement
+  position: relative;
+  padding: 0 60px; // Espace pour les flèches
+
+  // 📱 MOBILE & TABLETTE - Visible
+  @include until('large-xs') {
+    display: flex;
+  }
+
+  // 🖥️ DESKTOP - Caché
+  @include from('large-xs') {
+    display: none;
+  }
+
+  @include until('small-sm') {
+    padding: 0 50px; // Padding réduit sur très petits écrans
+  }
+
+  @include from('small-sm') {
+    padding: 0 55px;
+  }
+
+  @include from('small-lg') {
+    padding: 0 58px;
+  }
+
+  @include from('medium-sm') {
+    padding: 0 65px;
+  }
+}
+
+.slider-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+
+  // Plus de max-width pour laisser la carte grandir
+  .card {
+    width: auto; // Largeur automatique
+    min-width: 200px; // Largeur minimale garantie
+    max-width: 280px; // Largeur maximale contrôlée
+
+    @include until('small-sm') {
+      min-width: 160px;
+      max-width: 220px;
+    }
+
+    @include from('small-sm') {
+      min-width: 170px;
+      max-width: 230px;
+    }
+
+    @include from('small-lg') {
+      min-width: 180px;
+      max-width: 240px;
+    }
+
+    @include from('small-xl') {
+      min-width: 190px;
+      max-width: 250px;
+    }
+
+    @include from('medium-sm') {
+      min-width: 210px;
+      max-width: 270px;
+    }
+  }
+}

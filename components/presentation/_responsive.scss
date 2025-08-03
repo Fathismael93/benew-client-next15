@@ -1,0 +1,220 @@
+@use '../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// Mode paysage sur mobile - Optimisations spécifiques
+@include mobile-landscape {
+  .banner {
+    height: 90vh; // Réduction pour le mode paysage
+  }
+
+  .cards-mobile-slider {
+    padding: 0 45px; // Padding réduit
+
+    .slider-arrow {
+      width: 32px;
+      height: 32px;
+    }
+
+    .slider-arrow-left {
+      left: 6px;
+    }
+
+    .slider-arrow-right {
+      right: 6px;
+    }
+  }
+
+  .slider-card-container .card {
+    min-width: 140px;
+    max-width: 200px;
+    padding: 0.6rem;
+
+    h2 {
+      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+    }
+  }
+
+  .card-image {
+    .cards-mobile-slider & {
+      width: 80px;
+      height: 110px;
+    }
+  }
+
+  .slider-indicators {
+    bottom: -25px;
+    gap: 6px;
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+    }
+  }
+}
+
+// Écrans très hauts - Plus d'espace pour le contenu
+@include tall-screen {
+  .banner {
+    @include until('large-xs') {
+      height: 95vh;
+    }
+  }
+
+  .slider-indicators {
+    @include until('large-xs') {
+      bottom: -40px;
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .slider-arrow {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .indicator {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: current-color;
+    }
+
+    &.active::after {
+      background: css-var(primary-color);
+    }
+  }
+
+  .card {
+    min-height: 44px;
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .card,
+  .card h2,
+  .card-image,
+  .slider-arrow {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .slider-indicators .indicator {
+    transition: none;
+  }
+}
+
+// ÉCRANS TRÈS PETITS - Mobile
+@media (max-width: 360px) {
+  .cards-mobile-slider {
+    padding: 0 40px;
+  }
+
+  .slider-arrow {
+    width: 30px;
+    height: 30px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .slider-arrow-left {
+    left: 5px;
+  }
+
+  .slider-arrow-right {
+    right: 5px;
+  }
+
+  .slider-card-container .card {
+    min-width: 130px;
+    max-width: 180px;
+    padding: 0.5rem;
+
+    h2 {
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .card-image {
+    .cards-mobile-slider & {
+      width: 70px;
+      height: 100px;
+    }
+  }
+
+  .slider-indicators {
+    bottom: -20px;
+    gap: 5px;
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+    }
+  }
+}
+
+// Très grands écrans - Optimisations supplémentaires
+@include from('large-xxxl') {
+  .cards-desktop {
+    gap: 3rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  .card-image {
+    width: 180px;
+    height: 240px;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .card {
+    box-shadow: 0 8px 25px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+
+    &:hover {
+      box-shadow: 0 12px 35px #{'rgba(#{css-var(primary-color)}, 0.5)'};
+    }
+  }
+
+  .card-image {
+    &:hover {
+      box-shadow: 0 6px 20px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+    }
+  }
+
+  .slider-arrow {
+    &:hover {
+      box-shadow: 0 6px 20px #{'rgba(#{css-var(primary-color)}, 0.5)'};
+    }
+  }
+}

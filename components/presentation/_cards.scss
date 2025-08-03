@@ -1,0 +1,125 @@
+@use '../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _cards.scss
+// ================================
+
+// Styles des cartes (communs)
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #{'rgba(#{css-var(text-color)}, 0.05)'};
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: css-var(primary-color);
+    box-shadow: 0 8px 25px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+  }
+
+  @include until('small-sm') {
+    padding: 0.75rem;
+  }
+
+  @include from('small-sm') {
+    padding: 0.8rem;
+  }
+
+  @include from('small-lg') {
+    padding: 0.9rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 1.1rem;
+  }
+
+  h2 {
+    color: css-var(text-color);
+    text-shadow: 2px 2px 4px #{'rgba(#{css-var(background-color)}, 0.8)'};
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+
+    @include until('small-sm') {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    @include from('small-sm') {
+      font-size: 1.05rem;
+      margin-bottom: 0.8rem;
+    }
+
+    @include from('small-lg') {
+      font-size: 1.1rem;
+      margin-bottom: 0.9rem;
+    }
+
+    @include from('medium-sm') {
+      font-size: 1.25rem;
+      margin-bottom: 1.1rem;
+    }
+  }
+
+  &:hover h2 {
+    color: css-var(primary-color);
+    transform: scale(1.05);
+  }
+}
+
+.card-image {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE - Cartes plus grandes dans le slider
+  .cards-mobile-slider & {
+    width: 120px; // Plus grand que les 80px précédents
+    height: 160px; // Plus grand que les 110px précédents
+
+    @include until('small-sm') {
+      width: 100px;
+      height: 130px;
+    }
+
+    @include from('small-sm') {
+      width: 105px;
+      height: 135px;
+    }
+
+    @include from('small-lg') {
+      width: 110px;
+      height: 145px;
+    }
+
+    @include from('small-xl') {
+      width: 115px;
+      height: 150px;
+    }
+
+    @include from('medium-sm') {
+      width: 125px;
+      height: 165px;
+    }
+  }
+
+  // 🖥️ DESKTOP - Taille normale
+  .cards-desktop & {
+    @include until('small-sm') {
+      width: 80px;
+      height: 110px;
+    }
+  }
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px #{'rgba(#{css-var(primary-color)}, 0.2)'};
+  }
+}

@@ -1,0 +1,59 @@
+@use '../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+// Backgrounds
+.planets-background {
+  background-image: url('/planets.png');
+  background-size: cover;
+  background-position: bottom;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+
+  @include small-screens {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  @include medium-screens {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
+
+.stars {
+  background-image: url('/stars.png');
+  background-size: cover;
+  background-position: bottom;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+// Container principal avec overflow hidden
+.banner {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+  overflow: hidden; // Empêche le débordement horizontal
+}
+
+// Container des cartes avec largeur contrôlée
+.cards-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100vw; // Largeur maximale de l'écran
+  position: relative;
+  overflow: hidden; // Sécurité supplémentaire
+}
