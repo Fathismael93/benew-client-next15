@@ -1,0 +1,186 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// Mode paysage sur mobile - Layout optimisé
+@include mobile-landscape {
+  .projectSection {
+    padding: 1rem 0.75rem;
+  }
+
+  .application-card {
+    width: 90%;
+    max-width: 500px;
+    min-height: 350px;
+
+    .card-image {
+      height: 180px;
+    }
+
+    .card-content {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .app-title {
+      font-size: 1.2rem;
+    }
+
+    .price {
+      font-size: 1.8rem;
+    }
+
+    .action-buttons .btn {
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .application-card {
+    @include until('large-xs') {
+      min-height: 450px;
+    }
+
+    .card-image {
+      @include until('large-xs') {
+        height: 260px;
+      }
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .btn {
+    min-width: 44px;
+    min-height: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+  }
+
+  .application-card:hover {
+    transform: none; // Pas d'effet hover sur tactile au repos
+  }
+
+  .application-card:active {
+    transform: translateY(-5px);
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .application-card,
+  .app-image,
+  .app-title,
+  .price,
+  .btn {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+
+  .application-card::before,
+  .btn::before {
+    display: none;
+  }
+
+  .price:hover {
+    animation: none;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .application-card {
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      0 4px 16px rgba(css-var(primary-color), 0.1);
+  }
+
+  .app-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// ÉCRANS TRÈS PETITS - Mobile
+@media (max-width: 360px) {
+  .projectSection {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .application-card {
+    width: 99%;
+    min-height: 380px;
+    border-radius: 14px;
+
+    .card-image {
+      height: 200px;
+    }
+
+    .card-content {
+      padding: 1.5rem 1rem;
+    }
+
+    .app-title {
+      font-size: 1.15rem;
+    }
+
+    .app-meta {
+      font-size: 0.75rem;
+    }
+
+    .price {
+      font-size: 0.8rem;
+    }
+
+    .rent-price {
+      font-size: 0.8rem;
+    }
+
+    .action-buttons .btn {
+      padding: 0.5rem 0.6rem;
+      font-size: 0.75rem;
+      min-height: 36px;
+    }
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('large-xxxl') {
+  .projectSection {
+    padding: 3rem 2rem;
+  }
+
+  .application-card {
+    max-width: 500px;
+    min-height: 400px;
+
+    .card-image {
+      height: 220px;
+    }
+
+    .app-title {
+      font-size: 1.3rem;
+    }
+
+    .price {
+      font-size: 1.2rem;
+    }
+  }
+}

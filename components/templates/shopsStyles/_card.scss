@@ -1,0 +1,123 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _card.scss
+// ================================
+
+.application-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px; // Plus arrondi sur mobile
+  border: 1px solid rgba(css-var(primary-color), 0.25);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Carte imposante et utilisable avec nouveaux breakpoints
+  width: 95%;
+  max-width: 100%;
+  min-height: 420px; // Hauteur minimum garantie
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  // 📟 TRÈS PETITS ÉCRANS - Utilisation maximale de l'espace
+  @include small-screens {
+    width: 98%;
+    min-height: 400px;
+    border-radius: 16px;
+  }
+
+  @include from('small-sm') {
+    width: 97%;
+    min-height: 405px;
+  }
+
+  @include from('small-lg') {
+    width: 96%;
+    min-height: 410px;
+  }
+
+  @include from('small-xl') {
+    width: 95%;
+    min-height: 415px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Ajustements progressifs
+  @include between('small-xl', 'medium-sm') {
+    width: 93%;
+    max-width: 480px;
+    min-height: 400px;
+  }
+
+  @include from('medium-sm') {
+    width: 92%;
+    max-width: 490px;
+    min-height: 390px;
+  }
+
+  @include from('medium-lg') {
+    width: 90%;
+    max-width: 500px;
+    min-height: 380px;
+  }
+
+  @include from('medium-xxl') {
+    width: 88%;
+    max-width: 470px;
+    min-height: 370px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    width: 85%;
+    max-width: 450px;
+    min-height: 360px;
+  }
+
+  @include from('large-lg') {
+    width: 82%;
+    max-width: 430px;
+    min-height: auto;
+  }
+
+  @include from('large-xxl') {
+    width: 80%;
+    max-width: 400px;
+    min-height: auto; // Hauteur automatique sur desktop
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover {
+    transform: translateY(-10px); // Plus de mouvement sur mobile
+    box-shadow: 0 20px 60px rgba(css-var(primary-color), 0.25);
+    border-color: rgba(css-var(primary-color), 0.5);
+  }
+
+  // 📱 MOBILE - Effet tactile
+  &:active {
+    transform: translateY(-5px);
+  }
+
+  // Effet de brillance subtil
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(css-var(primary-color), 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}

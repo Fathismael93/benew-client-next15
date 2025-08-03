@@ -1,0 +1,104 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _image.scss
+// ================================
+
+.card-image {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color) 0%,
+    css-var(secondary-color) 50%,
+    css-var(accent-color) 100%
+  );
+  z-index: 2;
+
+  // 📱 MOBILE FIRST - Image plus visible et impactante avec nouveaux breakpoints
+  height: 240px;
+
+  // 📟 TRÈS PETITS ÉCRANS - Toujours visible
+  @include small-screens {
+    height: 220px;
+  }
+
+  @include from('small-sm') {
+    height: 225px;
+  }
+
+  @include from('small-lg') {
+    height: 230px;
+  }
+
+  @include from('small-xl') {
+    height: 235px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Réduction progressive
+  @include between('small-xl', 'medium-sm') {
+    height: 232px;
+  }
+
+  @include from('medium-sm') {
+    height: 228px;
+  }
+
+  @include from('medium-lg') {
+    height: 220px;
+  }
+
+  @include from('medium-xxl') {
+    height: 215px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    height: 210px;
+  }
+
+  @include from('large-lg') {
+    height: 205px;
+  }
+
+  @include from('large-xxl') {
+    height: 200px; // Valeur desktop originale
+  }
+
+  // Overlay subtil pour améliorer le contraste
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(css-var(background-color), 0.1) 100%
+    );
+    z-index: 1;
+  }
+}
+
+.app-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+  z-index: 0;
+  position: relative;
+
+  // 📱 MOBILE - Effet hover plus prononcé
+  .application-card:hover & {
+    transform: scale(1.08);
+  }
+
+  @include from('large-xxl') {
+    .application-card:hover & {
+      transform: scale(1.05); // Effet plus subtil sur desktop
+    }
+  }
+}

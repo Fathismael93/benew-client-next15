@@ -1,0 +1,199 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _pricing.scss
+// ================================
+
+.price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: auto 0 1.5rem 0; // Pousse vers le bas avec marge en bas
+
+  // 📟 TRÈS PETITS ÉCRANS avec nouveaux breakpoints
+  @include small-screens {
+    margin: auto 0 1.25rem 0;
+    gap: 0.5rem;
+  }
+
+  @include from('small-sm') {
+    margin: auto 0 1.3rem 0;
+    gap: 0.55rem;
+  }
+
+  @include from('small-lg') {
+    margin: auto 0 1.35rem 0;
+    gap: 0.6rem;
+  }
+
+  @include from('small-xl') {
+    margin: auto 0 1.4rem 0;
+    gap: 0.65rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include between('small-xl', 'medium-sm') {
+    margin: auto 0 1.42rem 0;
+    gap: 0.67rem;
+  }
+
+  @include from('medium-sm') {
+    margin: auto 0 1.45rem 0;
+    gap: 0.7rem;
+  }
+
+  @include from('medium-lg') {
+    margin: auto 0 1.47rem 0;
+    gap: 0.72rem;
+  }
+
+  @include from('medium-xxl') {
+    margin: auto 0 1.48rem 0;
+    gap: 0.73rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xxl') {
+    margin: auto 0 1rem 0;
+    gap: 0.5rem;
+  }
+}
+
+.price-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+
+  @include small-screens {
+    gap: 0.375rem;
+  }
+
+  @include from('small-sm') {
+    gap: 0.4rem;
+  }
+
+  @include from('small-lg') {
+    gap: 0.42rem;
+  }
+
+  @include from('small-xl') {
+    gap: 0.45rem;
+  }
+}
+
+.price-label {
+  color: css-var(text-color-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  flex-shrink: 0;
+
+  @include small-screens {
+    font-size: 0.7rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.71rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.72rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 0.73rem;
+  }
+}
+
+.price {
+  font-weight: 700; // Même poids que rent-price
+  color: css-var(primary-color);
+  text-shadow: 0 2px 4px rgba(css-var(primary-color), 0.3); // Même ombre que rent-price
+  transition: all 0.3s ease;
+  text-align: right;
+
+  // Même taille que rent-price avec nouveaux breakpoints
+  font-size: 1.2rem;
+
+  @include small-screens {
+    font-size: 0.85rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.9rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.95rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 1rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    font-size: 1.05rem;
+  }
+
+  @include from('medium-sm') {
+    font-size: 1.1rem;
+  }
+
+  @include from('medium-lg') {
+    font-size: 1.15rem;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 1.18rem;
+  }
+
+  @include from('large-xxl') {
+    font-size: 1rem;
+    font-weight: 600; // Même poids que rent-price sur desktop
+  }
+}
+
+.rent-price {
+  color: css-var(secondary-color); // Couleur secondaire
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: right;
+  text-shadow: 0 2px 4px rgba(css-var(secondary-color), 0.3);
+
+  @include small-screens {
+    font-size: 0.85rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.86rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.87rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 0.88rem;
+  }
+
+  @include from('large-xxl') {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+}
+
+// Animation de pulsation pour le prix
+@keyframes pricePulse {
+  0%,
+  100% {
+    text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.3);
+  }
+  50% {
+    text-shadow: 0 3px 6px rgba(css-var(primary-color), 0.6);
+  }
+}
+
+.price:hover {
+  animation: pricePulse 1s ease-in-out infinite;
+}

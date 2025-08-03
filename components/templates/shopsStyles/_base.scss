@@ -1,0 +1,65 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+.projectSection {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace avec nouveaux breakpoints
+  padding: 1.5rem 1rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
+  @include small-screens {
+    padding: 1rem 0.75rem;
+  }
+
+  @include from('small-sm') {
+    padding: 1.1rem 0.8rem;
+  }
+
+  @include from('small-lg') {
+    padding: 1.2rem 0.9rem;
+  }
+
+  @include from('small-xl') {
+    padding: 1.4rem 1rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Augmentation progressive
+  @include between('small-xl', 'medium-sm') {
+    padding: 1.6rem 1.2rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 1.8rem 1.3rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-xxl') {
+    padding: 2.3rem 1.7rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('large-lg') {
+    padding: 2.8rem 2.2rem;
+  }
+
+  @include from('large-xxl') {
+    padding: 3rem; // Valeur desktop originale
+  }
+}
