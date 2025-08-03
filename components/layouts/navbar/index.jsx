@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import './navbar.scss';
+import './index.scss';
 import Sidebar from '../sidebar';
 import Image from 'next/image';
 import { MdKeyboardArrowDown } from 'react-icons/md';
