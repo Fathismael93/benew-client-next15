@@ -1,0 +1,23 @@
+// ================================
+// 📄 _form-container.scss
+// ================================
+
+.formContainer {
+  // 📱 MOBILE FIRST - FormContainer en SECOND
+  order: 2;
+  width: 100%;
+
+  // Hauteur automatique sur mobile/tablette
+  @include until('large-xs') {
+    height: auto;
+    min-height: auto;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Hauteur fixe 100%
+  @include from('large-xs') {
+    flex: 1;
+    width: 50%;
+    height: 100%;
+    order: 2;
+  }
+}

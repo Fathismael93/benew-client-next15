@@ -1,0 +1,81 @@
+// ================================
+// 📄 _form.scss
+// ================================
+
+form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 10;
+  background: #{'rgba(#{css-var(background-color)}, 0.7)'};
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid #{'rgba(#{css-var(primary-color)}, 0.2)'};
+
+  // 📱 MOBILE FIRST - Formulaire compact et accessible
+  gap: 1.25rem;
+  padding: 1.5rem 1.25rem;
+
+  @include until('small-sm') {
+    gap: 1rem;
+    padding: 1.25rem 1rem;
+    border-radius: 12px;
+  }
+
+  // 📱 PETITS ÉCRANS - Ajustements progressifs
+  @include from('small-sm') {
+    gap: 1.3rem;
+    padding: 1.55rem 1.3rem;
+  }
+
+  @include from('small-lg') {
+    gap: 1.35rem;
+    padding: 1.6rem 1.35rem;
+  }
+
+  @include from('small-xl') {
+    gap: 1.4rem;
+    padding: 1.65rem 1.4rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Ajustements progressifs
+  @include from('medium-sm') {
+    gap: 1.5rem;
+    padding: 1.75rem 1.5rem;
+  }
+
+  @include from('medium-lg') {
+    gap: 1.6rem;
+    padding: 1.85rem 1.6rem;
+  }
+
+  @include from('medium-xl') {
+    gap: 1.7rem;
+    padding: 1.95rem 1.7rem;
+  }
+
+  @include from('medium-xxl') {
+    gap: 1.8rem;
+    padding: 2rem 1.8rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Style original mais avec espacement réduit
+  @include from('large-xs') {
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    gap: 1.2rem; // Réduit pour s'adapter à la hauteur
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  @include from('large-lg') {
+    gap: 1.3rem;
+  }
+
+  @include from('large-xxl') {
+    gap: 1.4rem;
+  }
+}

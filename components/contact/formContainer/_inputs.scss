@@ -1,0 +1,295 @@
+// ================================
+// 📄 _inputs.scss
+// ================================
+
+input,
+textarea {
+  border-radius: 12px;
+  transition: all 0.4s ease;
+  font-weight: 400;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px #{'rgba(#{css-var(background-color)}, 0.2)'};
+  background: linear-gradient(
+    135deg,
+    #{'rgba(#{css-var(text-color)}, 0.05)'},
+    #{'rgba(#{css-var(text-color)}, 0.08)'}
+  );
+  border: 2px solid #{'rgba(#{css-var(text-color)}, 0.3)'};
+  color: css-var(text-color);
+
+  // 📱 MOBILE FIRST - Champs tactiles optimaux
+  padding: 1.25rem 1.125rem;
+  font-size: 1rem;
+  min-height: 48px;
+
+  @include until('small-sm') {
+    padding: 1.125rem 1rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+    border-radius: 10px;
+  }
+
+  // 📱 PETITS ÉCRANS - Ajustements progressifs
+  @include from('small-sm') {
+    padding: 1.15rem 1.1rem;
+    font-size: 0.97rem;
+    min-height: 46px;
+  }
+
+  @include from('small-lg') {
+    padding: 1.175rem 1.125rem;
+    font-size: 0.98rem;
+    min-height: 47px;
+  }
+
+  @include from('small-xl') {
+    padding: 1.2rem 1.15rem;
+    font-size: 0.99rem;
+    min-height: 47px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Ajustements progressifs
+  @include from('medium-sm') {
+    padding: 1.25rem 1.2rem;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+
+  @include from('medium-lg') {
+    padding: 1.275rem 1.25rem;
+    font-size: 1.01rem;
+    min-height: 49px;
+    border-radius: 13px;
+  }
+
+  @include from('medium-xl') {
+    padding: 1.3rem 1.3rem;
+    font-size: 1.02rem;
+    min-height: 50px;
+    border-radius: 14px;
+  }
+
+  @include from('medium-xxl') {
+    padding: 1.325rem 1.35rem;
+    font-size: 1.03rem;
+    min-height: 51px;
+    border-radius: 15px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Valeurs desktop réduites pour s'adapter
+  @include from('large-xs') {
+    padding: 1rem 1.3rem; // Réduit pour s'adapter à la hauteur
+    font-size: 0.95rem;
+    border-radius: 10px;
+    min-height: auto;
+  }
+
+  @include from('large-lg') {
+    padding: 1.05rem 1.35rem;
+    font-size: 0.97rem;
+  }
+
+  @include from('large-xxl') {
+    padding: 1.1rem 1.4rem;
+    font-size: 1rem;
+  }
+
+  &:focus {
+    border-color: css-var(primary-color);
+    box-shadow:
+      0 0 0 3px #{'rgba(#{css-var(primary-color)}, 0.2)'},
+      0 4px 12px #{'rgba(#{css-var(primary-color)}, 0.15)'};
+    background: linear-gradient(
+      135deg,
+      #{'rgba(#{css-var(primary-color)}, 0.08)'},
+      #{'rgba(#{css-var(secondary-color)}, 0.05)'}
+    );
+    outline: none;
+    transform: translateY(-1px);
+
+    @include from('large-xs') {
+      transform: translateY(-2px);
+    }
+  }
+
+  &::placeholder {
+    color: #{'rgba(#{css-var(text-color)}, 0.6)'};
+    font-weight: 300;
+  }
+
+  &:hover {
+    border-color: #{'rgba(#{css-var(primary-color)}, 0.5)'};
+    transform: translateY(-1px);
+  }
+}
+
+textarea {
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+
+  // 📱 MOBILE FIRST - Textarea optimisée
+  min-height: 120px;
+
+  @include until('small-sm') {
+    min-height: 100px;
+  }
+
+  // 📱 PETITS ÉCRANS - Progression
+  @include from('small-sm') {
+    min-height: 105px;
+  }
+
+  @include from('small-lg') {
+    min-height: 110px;
+  }
+
+  @include from('small-xl') {
+    min-height: 115px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    min-height: 125px;
+  }
+
+  @include from('medium-lg') {
+    min-height: 130px;
+  }
+
+  @include from('medium-xl') {
+    min-height: 135px;
+  }
+
+  @include from('medium-xxl') {
+    min-height: 140px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Hauteur réduite pour s'adapter
+  @include from('large-xs') {
+    min-height: 80px; // Réduit pour s'adapter à la hauteur contrainte
+  }
+
+  @include from('large-lg') {
+    min-height: 85px;
+  }
+
+  @include from('large-xxl') {
+    min-height: 90px;
+  }
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    color.adjust($primary-color, $lightness: 10%)
+  );
+  color: css-var(background-color);
+  box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+
+  // 📱 MOBILE FIRST - Bouton tactile optimal
+  padding: 1.25rem 2rem;
+  font-size: 1rem;
+  min-height: 48px;
+  width: 100%;
+
+  @include until('small-sm') {
+    padding: 1.125rem 1.75rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+    border-radius: 10px;
+  }
+
+  // 📱 PETITS ÉCRANS - Ajustements progressifs
+  @include from('small-sm') {
+    padding: 1.15rem 1.8rem;
+    font-size: 0.97rem;
+    min-height: 46px;
+  }
+
+  @include from('small-lg') {
+    padding: 1.175rem 1.85rem;
+    font-size: 0.98rem;
+    min-height: 47px;
+  }
+
+  @include from('small-xl') {
+    padding: 1.2rem 1.9rem;
+    font-size: 0.99rem;
+    min-height: 47px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Ajustements progressifs
+  @include from('medium-sm') {
+    padding: 1.25rem 1.95rem;
+    font-size: 1rem;
+    min-height: 48px;
+    border-radius: 13px;
+  }
+
+  @include from('medium-lg') {
+    padding: 1.15rem 2rem;
+    border-radius: 14px;
+    min-height: 49px;
+  }
+
+  @include from('medium-xl') {
+    padding: 1.1rem 2.05rem;
+    border-radius: 15px;
+    min-height: 50px;
+  }
+
+  @include from('medium-xxl') {
+    padding: 1.05rem 2.1rem;
+    border-radius: 16px;
+    min-height: 51px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Valeurs desktop réduites
+  @include from('large-xs') {
+    padding: 0.8rem 1.5rem; // Réduit pour s'adapter
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: auto;
+    min-height: auto;
+  }
+
+  @include from('large-lg') {
+    padding: 0.85rem 1.6rem;
+    font-size: 0.97rem;
+  }
+
+  @include from('large-xxl') {
+    padding: 0.9rem 1.7rem;
+    font-size: 1rem;
+  }
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      color.adjust($primary-color, $lightness: 5%),
+      css-var(secondary-color)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}

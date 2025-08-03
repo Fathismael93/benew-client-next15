@@ -1,0 +1,89 @@
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// GESTION SPÉCIALE DU CLAVIER MOBILE - FORM CONTAINER
+// Évite que le viewport soit rogné par le clavier
+@media screen and (max-height: 600px) and (max-width: 768px) {
+  .formContainer {
+    form {
+      position: relative;
+      z-index: 1000;
+
+      input,
+      textarea {
+        scroll-margin-top: 1rem;
+      }
+    }
+  }
+}
+
+// Mode paysage sur mobile - Layout spécialement optimisé
+@include mobile-landscape {
+  .formContainer {
+    order: 2;
+    width: 60%;
+
+    form {
+      gap: 1rem;
+      padding: 1.25rem;
+
+      input,
+      textarea {
+        padding: 0.875rem 1rem;
+        min-height: 40px;
+      }
+
+      textarea {
+        min-height: 80px;
+      }
+
+      button {
+        padding: 0.875rem 1.5rem;
+        min-height: 40px;
+      }
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .formContainer form {
+    @include until('large-xs') {
+      gap: 1.5rem;
+      padding: 2rem 1.5rem;
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .formContainer form {
+    input,
+    textarea,
+    button {
+      min-height: 48px;
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .formContainer form input,
+  .formContainer form textarea,
+  .formContainer form button {
+    transition: none;
+
+    &:hover,
+    &:focus {
+      transform: none;
+    }
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('large-xxxl') {
+  .formContainer form {
+    gap: 1.5rem;
+  }
+}

@@ -1,0 +1,76 @@
+// ================================
+// 📄 _messages.scss
+// ================================
+
+.error-message,
+.success-message {
+  margin-top: 0.75rem;
+  text-align: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE FIRST - Messages plus visibles
+  padding: 0.875rem 1rem;
+  font-size: 0.9rem;
+
+  @include until('small-sm') {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.85rem;
+  }
+
+  // 📱 PETITS ÉCRANS - Progression
+  @include from('small-sm') {
+    padding: 0.9rem 1.05rem;
+    font-size: 0.91rem;
+  }
+
+  @include from('small-lg') {
+    padding: 0.925rem 1.1rem;
+    font-size: 0.92rem;
+  }
+
+  @include from('small-xl') {
+    padding: 0.95rem 1.15rem;
+    font-size: 0.93rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    padding: 0.975rem 1.2rem;
+    font-size: 0.94rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  @include from('medium-xl') {
+    padding: 1.025rem 1.3rem;
+    font-size: 0.96rem;
+  }
+
+  @include from('medium-xxl') {
+    padding: 1.05rem 1.35rem;
+    font-size: 0.97rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Réduit
+  @include from('large-xs') {
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+.error-message {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+}
+
+.success-message {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}

@@ -1,0 +1,194 @@
+// ================================
+// 📄 _contact-items.scss
+// ================================
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: #{'rgba(#{css-var(text-color)}, 0.05)'};
+  border-radius: 12px;
+  border: 1px solid #{'rgba(#{css-var(primary-color)}, 0.2)'};
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 320px;
+
+  // 📱 MOBILE FIRST
+  justify-content: center;
+  text-align: center;
+
+  @include until('small-sm') {
+    gap: 0.75rem;
+    padding: 0.75rem 0.875rem;
+    max-width: 300px;
+  }
+
+  // 📱 PETITS ÉCRANS - Progression
+  @include from('small-sm') {
+    max-width: 330px;
+    gap: 1.05rem;
+    padding: 0.9rem 1.05rem;
+  }
+
+  @include from('small-lg') {
+    max-width: 340px;
+    gap: 1.1rem;
+    padding: 0.9rem 1.1rem;
+  }
+
+  @include from('small-xl') {
+    max-width: 350px;
+    gap: 1.15rem;
+    padding: 0.95rem 1.15rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    max-width: 370px;
+  }
+
+  @include from('medium-lg') {
+    max-width: 380px;
+  }
+
+  @include from('medium-xl') {
+    max-width: 390px;
+  }
+
+  @include from('medium-xxl') {
+    max-width: 400px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Retour au style original
+  @include from('large-xs') {
+    justify-content: flex-start;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    max-width: none;
+    gap: 1.875rem;
+  }
+
+  &:hover {
+    background: #{'rgba(#{css-var(primary-color)}, 0.1)'};
+    border-color: #{'rgba(#{css-var(primary-color)}, 0.3)'};
+    transform: translateY(-2px);
+
+    // 🖥️ DESKTOP - Pas d'effet hover
+    @include from('large-xs') {
+      background: transparent;
+      border: none;
+      transform: none;
+    }
+  }
+
+  .icon {
+    color: css-var(primary-color);
+    flex-shrink: 0;
+
+    // 📱 MOBILE FIRST - Icône plus visible
+    font-size: 1.5rem;
+
+    @include until('small-sm') {
+      font-size: 1.3rem;
+    }
+
+    // 📱 PETITS ÉCRANS - Progression
+    @include from('small-sm') {
+      font-size: 1.55rem;
+    }
+
+    @include from('small-lg') {
+      font-size: 1.6rem;
+    }
+
+    @include from('small-xl') {
+      font-size: 1.65rem;
+    }
+
+    // 📟 MOYENS ÉCRANS
+    @include from('medium-sm') {
+      font-size: 1.7rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 1.75rem;
+    }
+
+    @include from('medium-xl') {
+      font-size: 1.8rem;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 1.85rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS
+    @include from('large-xs') {
+      font-size: 1.25rem;
+    }
+  }
+
+  p {
+    letter-spacing: 1px;
+    color: css-var(text-color);
+    margin: 0;
+    flex: 1;
+
+    // 📱 MOBILE FIRST - Texte lisible
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    @include until('small-sm') {
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
+
+    // 📱 PETITS ÉCRANS - Progression
+    @include from('small-sm') {
+      font-size: 0.97rem;
+      font-weight: 510;
+    }
+
+    @include from('small-lg') {
+      font-size: 0.99rem;
+      font-weight: 520;
+    }
+
+    @include from('small-xl') {
+      font-size: 1.01rem;
+      font-weight: 530;
+    }
+
+    // 📟 MOYENS ÉCRANS - Progression
+    @include from('medium-sm') {
+      font-size: 1.05rem;
+      font-weight: 450;
+    }
+
+    @include from('medium-lg') {
+      font-size: 1.07rem;
+      font-weight: 460;
+    }
+
+    @include from('medium-xl') {
+      font-size: 1.09rem;
+      font-weight: 470;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 1.1rem;
+      font-weight: 480;
+    }
+
+    // 🖥️ GRANDS ÉCRANS
+    @include from('large-xs') {
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+  }
+}

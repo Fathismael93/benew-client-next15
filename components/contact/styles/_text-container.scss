@@ -1,0 +1,239 @@
+// ================================
+// 📄 _text-container.scss
+// ================================
+
+.textContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+
+  // 📱 MOBILE FIRST - TextContainer en PREMIER avec système collapsible
+  order: 1;
+  text-align: center;
+  align-items: center;
+
+  // Hauteur fixe 40% sur mobile/tablette pour éviter débordement
+  @include until('large-xs') {
+    height: auto;
+    min-height: auto;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Hauteur fixe 40%
+  @include from('large-xs') {
+    flex: 1;
+    width: 50%;
+    height: 100%;
+    text-align: left;
+    align-items: flex-start;
+    order: 1;
+    justify-content: center;
+  }
+
+  // =============================
+  // TITRE COLLAPSIBLE - Mobile/Tablette uniquement
+  // =============================
+  .collapsible-header {
+    @include until('large-xs') {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 1rem;
+      background: #{'rgba(#{css-var(text-color)}, 0.05)'};
+      border-radius: 12px;
+      border: 1px solid #{'rgba(#{css-var(primary-color)}, 0.2)'};
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+
+      &:hover {
+        background: #{'rgba(#{css-var(primary-color)}, 0.1)'};
+        border-color: #{'rgba(#{css-var(primary-color)}, 0.3)'};
+      }
+
+      h2 {
+        color: css-var(text-color);
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+
+        @include until('small-sm') {
+          font-size: 1.1rem;
+        }
+
+        @include from('small-sm') {
+          font-size: 1.25rem;
+        }
+
+        @include from('small-lg') {
+          font-size: 1.3rem;
+        }
+
+        @include from('medium-sm') {
+          font-size: 1.4rem;
+        }
+      }
+
+      .toggle-icon {
+        color: css-var(primary-color);
+        transition: transform 0.3s ease;
+        font-size: 1.5rem;
+
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    // Caché sur desktop
+    @include from('large-xs') {
+      display: none;
+    }
+  }
+
+  // =============================
+  // CONTENU COLLAPSIBLE
+  // =============================
+  .collapsible-content {
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.4s ease;
+
+    // Mobile/Tablette - Système collapsible
+    @include until('large-xs') {
+      max-height: 0;
+      opacity: 0;
+
+      &.open {
+        max-height: 1000px;
+        opacity: 1;
+      }
+    }
+
+    // Desktop - Toujours visible, centré verticalement
+    @include from('large-xs') {
+      max-height: none;
+      opacity: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      align-items: center;
+
+      @include until('small-sm') {
+        gap: 1rem;
+      }
+
+      @include from('small-sm') {
+        gap: 1.3rem;
+      }
+
+      @include from('small-lg') {
+        gap: 1.35rem;
+      }
+
+      @include from('small-xl') {
+        gap: 1.4rem;
+      }
+
+      @include from('medium-sm') {
+        gap: 1.5rem;
+      }
+
+      @include from('medium-lg') {
+        gap: 1.6rem;
+      }
+
+      @include from('medium-xl') {
+        gap: 1.7rem;
+      }
+
+      @include from('medium-xxl') {
+        gap: 1.8rem;
+      }
+
+      @include from('large-xs') {
+        gap: 0.625rem;
+        align-items: flex-start;
+      }
+
+      @include from('large-lg') {
+        gap: 0.7rem;
+      }
+
+      @include from('large-xxl') {
+        gap: 0.8rem;
+      }
+    }
+  }
+
+  h1 {
+    color: css-var(text-color);
+
+    // 📱 MOBILE FIRST - Titre visible et impactant
+    font-size: 2.5rem;
+    margin: 0;
+    text-shadow: 0 2px 4px #{'rgba(#{css-var(background-color)}, 0.5)'};
+
+    // 📱 MOBILE FIRST - Titre caché sur petits/moyens écrans
+    @include until('large-xs') {
+      display: none; // AJOUTER cette ligne
+    }
+
+    @include until('small-sm') {
+      font-size: 2.25rem;
+    }
+
+    // 📱 PETITS ÉCRANS - Progression
+    @include from('small-sm') {
+      font-size: 2.6rem;
+    }
+
+    @include from('small-lg') {
+      font-size: 2.7rem;
+    }
+
+    @include from('small-xl') {
+      font-size: 2.8rem;
+    }
+
+    // 📟 MOYENS ÉCRANS - Ajustements
+    @include from('medium-sm') {
+      font-size: 3rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 3.2rem;
+    }
+
+    @include from('medium-xl') {
+      font-size: 3.4rem;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 3.6rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Tailles desktop
+    @include from('large-xs') {
+      font-size: 4rem;
+      display: block;
+    }
+
+    @include from('large-lg') {
+      font-size: 4.2rem;
+    }
+
+    @include from('large-xxl') {
+      font-size: 4.4rem;
+    }
+  }
+}

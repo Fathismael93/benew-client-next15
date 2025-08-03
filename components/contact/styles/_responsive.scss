@@ -1,0 +1,120 @@
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// GESTION SPÉCIALE DU CLAVIER MOBILE
+// Évite que le viewport soit rogné par le clavier
+@media screen and (max-height: 600px) and (max-width: 768px) {
+  .contact {
+    min-height: 100vh;
+    padding-bottom: 2rem;
+  }
+}
+
+// Mode paysage sur mobile - Layout spécialement optimisé
+@include mobile-landscape {
+  .contact {
+    flex-direction: row;
+    gap: 1.5rem;
+    padding: 1rem 0.75rem;
+    align-items: flex-start;
+
+    .textContainer {
+      order: 1;
+      width: 40%;
+
+      .collapsible-header h2 {
+        font-size: 1rem;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .item {
+        padding: 0.625rem 0.75rem;
+        gap: 0.75rem;
+
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .formContainer {
+      order: 2;
+      width: 60%;
+    }
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .contact {
+    @include until('large-xs') {
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+
+    .textContainer h1 {
+      @include until('large-xs') {
+        font-size: 3rem;
+      }
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .contact {
+    .textContainer {
+      .collapsible-header {
+        min-height: 48px;
+      }
+
+      .item {
+        min-height: 48px;
+      }
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .contact {
+    .textContainer {
+      .collapsible-header .toggle-icon {
+        transition: none;
+      }
+
+      .collapsible-content {
+        transition: none;
+      }
+
+      .item {
+        transition: none;
+
+        &:hover,
+        &:focus {
+          transform: none;
+        }
+      }
+    }
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .contact .textContainer {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Très grands écrans - Limitation de la taille
+@include from('large-xxxl') {
+  .contact {
+    max-width: 85rem;
+    gap: 4rem;
+  }
+}

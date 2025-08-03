@@ -9,7 +9,7 @@ import {
   MdKeyboardArrowDown,
 } from 'react-icons/md';
 import Parallax from '@/components/layouts/parallax';
-import './contact.scss';
+import './styles/index.scss'; // Assuming you have a separate CSS file for styling
 import FormContainer from './formContainer';
 
 const variants = {
