@@ -1,0 +1,96 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _desktop-structure.scss
+// ================================
+
+// =============================
+// STRUCTURE DESKTOP (tablettes et grands écrans)
+// =============================
+.desktop-structure {
+  display: none; // Caché par défaut sur mobile
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  // Visible sur tablettes et grands écrans (≥ 768px)
+  @include from('medium-sm') {
+    display: flex;
+  }
+
+  // =============================
+  // LOGO - Gestion responsive intelligente
+  // =============================
+  div {
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+
+    .logo {
+      height: 80%; // 80% de la hauteur disponible
+      width: auto; // Largeur adaptée à la hauteur
+      object-fit: contain;
+    }
+
+    // 🖥️ TABLET ET PLUS - Logo progressivement repositionné
+    @include from('medium-lg') {
+      margin-left: 1rem;
+    }
+
+    @include from('large-lg') {
+      margin-left: 4rem;
+    }
+  }
+
+  // =============================
+  // ICÔNES SOCIALES - Optimisation pour moyens/grands écrans
+  // =============================
+  .social {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+
+    // Tablettes moyennes - espacement réduit
+    @include between('medium-sm', 'medium-lg') {
+      gap: 0.5rem; // Espacement réduit pour tablettes
+      align-items: flex-end;
+    }
+
+    // 🖥️ DESKTOP - Retour aux valeurs originales
+    @include from('large-lg') {
+      gap: 1rem;
+    }
+
+    a {
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem; // Zone tactile plus grande
+      border-radius: 50%;
+
+      &:hover {
+        transform: scale(1.1) rotate(5deg);
+        background: rgba(css-var(primary-color), 0.1);
+      }
+    }
+
+    .social-icon {
+      // Taille uniforme sur tous les écrans
+      width: 1rem;
+      height: 1rem;
+      transition: all 0.3s ease;
+      filter: grayscale(0.3);
+
+      &:hover {
+        filter: grayscale(0) hue-rotate(20deg) brightness(1.2);
+      }
+
+      // 🖥️ TABLET ET PLUS - Réduction progressive
+      @include from('medium-sm') {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+    }
+  }
+}

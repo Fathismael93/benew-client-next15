@@ -1,0 +1,220 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// =============================
+// AMÉLIORATIONS ACCESSIBILITÉ ET UX
+// =============================
+
+// Zone tactile minimale recommandée (44px)
+@media (pointer: coarse) {
+  .navbar .wrapper .desktop-structure .social a,
+  .navbar .wrapper .mobile-structure .social-dropdown-trigger {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .dropdown-item {
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+// =============================
+// ADAPTATION POUR ÉCRANS TRÈS LARGES
+// =============================
+@include from('large-xxxl') {
+  .navbar .wrapper {
+    max-width: 1920px;
+    padding: 1rem 2rem;
+  }
+
+  .desktop-structure div {
+    margin-left: 6rem;
+  }
+
+  .desktop-structure .social {
+    gap: 1.5rem;
+
+    .social-icon {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+}
+
+// =============================
+// ADAPTATION POUR MODE PAYSAGE SUR MOBILE
+// =============================
+@include mobile-landscape {
+  .navbar {
+    height: 4rem; // Plus compact en mode paysage
+
+    .wrapper {
+      padding: 0.5rem 1rem;
+
+      .mobile-structure {
+        width: 50%; // Un peu plus large en paysage
+
+        .mobile-logo .logo {
+          width: 1.3rem; // Ajuster pour paysage
+          height: 1.3rem; // Ajuster pour paysage
+        }
+
+        .mobile-social-container .social-dropdown-trigger {
+          .dropdown-arrow {
+            font-size: 0.9rem; // Légèrement plus petite en paysage
+          }
+
+          .social-websites-icon {
+            width: 1.3rem;
+            height: 1.3rem;
+          }
+        }
+      }
+
+      .desktop-structure {
+        div .logo {
+          height: 70%;
+        }
+
+        .social .social-icon {
+          width: 1.2rem;
+          height: 1.2rem;
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// ÉCRANS COURTS
+// =============================
+@include short-screen {
+  .navbar {
+    height: 4.5rem;
+
+    @include from('medium-sm') {
+      height: 5rem;
+    }
+  }
+
+  .dropdown-content {
+    padding: 0.25rem;
+
+    .dropdown-item {
+      padding: 0.5rem;
+      font-size: 0.85rem;
+
+      .dropdown-icon {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+  }
+}
+
+// =============================
+// ÉCRANS HAUTS
+// =============================
+@include tall-screen {
+  .navbar {
+    @include from('medium-sm') {
+      height: 6rem;
+    }
+
+    @include from('large-lg') {
+      height: 7rem;
+    }
+  }
+}
+
+// =============================
+// SUPPORT POUR ÉCRANS HAUTE DENSITÉ
+// =============================
+@include high-density {
+  .navbar .wrapper img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// =============================
+// ACCESSIBILITÉ - RÉDUCTION DES ANIMATIONS
+// =============================
+@include reduced-motion {
+  .social-dropdown .dropdown-content {
+    animation: none;
+  }
+
+  .desktop-structure .social a,
+  .mobile-structure .social-dropdown-trigger {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .dropdown-arrow {
+    transition: none;
+  }
+
+  .logo:hover {
+    animation: none;
+  }
+
+  .dropdown-item {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// =============================
+// CONTRASTE ÉLEVÉ
+// =============================
+@include high-contrast {
+  .dropdown-content {
+    border-width: 2px;
+    border-color: rgba(css-var(text-color), 0.3);
+  }
+
+  .dropdown-item {
+    border: 1px solid transparent;
+
+    &:hover {
+      border-color: rgba(css-var(primary-color), 0.5);
+    }
+  }
+
+  .social-dropdown-trigger {
+    border: 1px solid rgba(css-var(text-color), 0.2);
+  }
+}
+
+// =============================
+// ADAPTATION POUR PRÉFÉRENCE COULEURS
+// =============================
+@media (prefers-color-scheme: light) {
+  .dropdown-content {
+    background: rgba(css-var(text-color), 0.95);
+    border-color: rgba(css-var(background-color), 0.2);
+  }
+
+  .dropdown-item {
+    color: css-var(background-color);
+
+    span {
+      color: css-var(background-color);
+    }
+
+    &:hover {
+      background: rgba(css-var(primary-color), 0.2);
+    }
+  }
+}

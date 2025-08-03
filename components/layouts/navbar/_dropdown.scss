@@ -1,0 +1,86 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _dropdown.scss
+// ================================
+
+// =============================
+// DROPDOWN MENU SOCIAL MOBILE
+// =============================
+.social-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  margin-top: 0.5rem;
+
+  // =============================
+  // BACKDROP POUR FERMER LE DROPDOWN
+  // =============================
+  .dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: transparent;
+  }
+
+  // =============================
+  // CONTENU DU DROPDOWN
+  // =============================
+  .dropdown-content {
+    background: rgba(css-var(background-color), 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(css-var(text-color), 0.1);
+    box-shadow: 0 8px 32px rgba(css-var(background-color), 0.8);
+    padding: 0.5rem;
+    min-width: 140px;
+    animation: dropdownFadeIn 0.2s ease-out;
+
+    // =============================
+    // ITEMS DU DROPDOWN
+    // =============================
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      text-decoration: none;
+      color: css-var(text-color);
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      font-weight: 500;
+
+      &:hover {
+        background: rgba(css-var(primary-color), 0.1);
+        transform: translateX(4px);
+      }
+
+      // =============================
+      // ICÔNES DES ITEMS
+      // =============================
+      .dropdown-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        filter: grayscale(0.2);
+        transition: all 0.2s ease;
+      }
+
+      &:hover .dropdown-icon {
+        filter: grayscale(0) hue-rotate(10deg) brightness(1.1);
+      }
+
+      // =============================
+      // TEXTES DES ITEMS
+      // =============================
+      span {
+        color: css-var(text-color);
+        font-weight: 500;
+      }
+    }
+  }
+}

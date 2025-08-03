@@ -1,0 +1,75 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+// =============================
+// NAVBAR - BASE STRUCTURE
+// =============================
+
+.navbar {
+  // 📱 MOBILE FIRST - Styles de base optimaux pour petits écrans
+  height: 5rem; // Plus grand pour une meilleure zone tactile
+  scroll-snap-align: start;
+  z-index: 999;
+  position: relative;
+
+  // 🖥️ Réduction progressive pour écrans plus grands
+  @include from('medium-sm') {
+    height: 5.5rem;
+  }
+
+  @include from('large-lg') {
+    height: 6.25rem; // Taille originale pour desktop
+  }
+
+  .wrapper {
+    // 📱 MOBILE - Configuration optimale
+    max-width: 100%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem; // Plus d'espace sur mobile
+    position: relative;
+
+    @include small-screens {
+      justify-content: flex-end; // Colle le contenu à droite
+      padding: 1rem 1rem; // Ajuster le padding droit
+    }
+
+    // Tablettes et plus
+    @include from('medium-sm') {
+      width: 55%;
+      max-width: 55%;
+      padding: 1.25rem;
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
+    }
+
+    @include from('medium-lg') {
+      width: 65%;
+      max-width: 65%;
+      padding: 1.25rem;
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
+    }
+
+    @include from('large-lg') {
+      width: 65%;
+      max-width: 65%;
+      padding: 1rem;
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
+    }
+
+    @include from('large-xxxl') {
+      width: 65%;
+      max-width: 65%;
+      margin-left: auto; // Colle à droite
+      margin-right: 0; // Colle à droite
+    }
+  }
+}
