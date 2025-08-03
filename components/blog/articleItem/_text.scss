@@ -156,7 +156,7 @@
       css-var(primary-color),
       color.adjust($primary-color, $lightness: 10%)
     );
-    color: css-var(background-color);
+    color: unquote('rgba(#{css-var(text-color)}, 0.7)');
     border: none;
     border-radius: 0.625rem;
     padding: 0.625rem;
@@ -164,7 +164,7 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+    box-shadow: 0 4px 8px unquote('rgba(#{css-var(primary-color)}, 0.3)');
 
     &:hover {
       background: linear-gradient(
@@ -173,7 +173,7 @@
         css-var(secondary-color)
       );
       transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+      box-shadow: 0 6px 12px unquote('rgba(#{css-var(primary-color)}, 0.4)');
     }
 
     &:active {

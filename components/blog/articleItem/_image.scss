@@ -10,7 +10,7 @@
   height: 50%;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
+  box-shadow: 0 4px 8px unquote('rgba(#{css-var(background-color)}, 0.3)');
 
   // 📱 PETITS ÉCRANS
   @include small-screens {

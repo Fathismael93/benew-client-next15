@@ -20,7 +20,7 @@ article {
   em {
     display: block;
     align-self: flex-end;
-    color: rgba(css-var(text-color), 0.7);
+    color: unquote('rgba(#{css-var(text-color)}, 0.7)');
     font-style: italic;
 
     // 📱 PETITS ÉCRANS - Police réduite et centrage

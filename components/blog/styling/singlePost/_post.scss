@@ -21,7 +21,7 @@
     rgba(color.adjust($background-color, $lightness: 5%), 0.8)
   );
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
+  box-shadow: 0 8px 16px unquote('rgba(#{css-var(background-color)}, 0.4)');
   position: relative;
 
   &::before {
@@ -154,7 +154,7 @@
       rgba(color.adjust($background-color, $lightness: 5%), 0.8)
     );
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
+    box-shadow: 0 8px 16px unquote('rgba(#{css-var(background-color)}, 0.4)');
 
     &::before {
       display: block;
