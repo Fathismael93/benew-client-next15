@@ -1,0 +1,62 @@
+// ================================
+// 📄 _services-section.scss
+// ================================
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+.services-section {
+  // Structure principale - Grid Layout pour contrôle précis
+  display: grid;
+  grid-template-rows: auto 1fr auto; // titre / cartes(flex) / dots
+  grid-template-areas:
+    'title'
+    'cards'
+    'dots';
+
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+
+  // Padding global de la section
+  padding: 2rem 0.5rem 1.5rem;
+
+  @include small-screens {
+    padding: 1.5rem 0.25rem 1rem;
+  }
+
+  @include from('small-sm') {
+    padding: 1.55rem 0.3rem 1.05rem;
+  }
+
+  @include from('small-lg') {
+    padding: 1.6rem 0.35rem 1.1rem;
+  }
+
+  @include from('small-xl') {
+    padding: 1.7rem 0.4rem 1.15rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    padding: 2rem 0.5rem 1.25rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 2.1rem 0.6rem 1.3rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2.2rem 0.7rem 1.4rem;
+  }
+
+  @include from('medium-xxl') {
+    padding: 2.3rem 0.8rem 1.6rem;
+  }
+
+  @include from('large-xs') {
+    padding: 2.5rem 1rem 2rem;
+  }
+}

@@ -1,0 +1,94 @@
+// ================================
+// 📄 _base.scss
+// ================================
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+.home-container {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+
+  // GRADIENT GLOBAL - Continuité avec le Hero
+  // Calcul précis : Hero(~94vh) + 5×sections(100vh) = ~594vh total
+  background: linear-gradient(
+    180deg,
+    color.adjust($color-dark, $lightness: -3%) 0%,
+    color.adjust($color-dark, $lightness: -1%) 16%,
+
+    color.adjust($color-dark, $lightness: 1%) 18%,
+    rgba($color-orange, 0.15) 22%,
+    rgba($color-orange, 0.25) 28%,
+    rgba($color-orange, 0.3) 33%,
+
+    rgba($color-orange, 0.25) 35%,
+    rgba($color-pink, 0.15) 39%,
+    rgba($color-pink, 0.25) 44%,
+    rgba($color-pink, 0.3) 50%,
+
+    rgba($color-pink, 0.25) 52%,
+    rgba($color-purple, 0.15) 56%,
+    rgba($color-purple, 0.25) 61%,
+    rgba($color-purple, 0.3) 67%,
+
+    rgba($color-purple, 0.25) 70%,
+    rgba($color-purple, 0.2) 78%,
+    rgba($color-light, 0.08) 86%,
+    rgba($color-light, 0.05) 94%,
+    color.adjust($color-dark, $lightness: 1%) 100% // Retour final à une base sombre
+  );
+
+  // Overlay subtil pour unifier l'ensemble
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 20% 30%,
+        rgba($color-orange, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 60%,
+        rgba($color-pink, 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 90%,
+        rgba($color-purple, 0.03) 0%,
+        transparent 40%
+      );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  // S'assurer que le contenu reste au-dessus
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// AMÉLIORATION POUR LES SECTIONS VIDES
+.home-container .others:empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      #{'rgba(#{css-var(primary-color)}, 0.3)'} 50%,
+      transparent 100%
+    );
+    opacity: 0.5;
+  }
+}

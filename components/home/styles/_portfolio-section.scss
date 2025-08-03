@@ -1,0 +1,26 @@
+// ================================
+// 📄 _portfolio-section.scss
+// ================================
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+.portfolio-showcase-section {
+  // ✅ Dimensions strictes - 100% largeur × 100vh hauteur
+  width: 100%;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  // ✅ Padding minimal pour éviter les débordements
+  padding: 0;
+  margin: 0;
+
+  // ✅ Empêcher débordement
+  overflow: hidden;
+  box-sizing: border-box;
+}

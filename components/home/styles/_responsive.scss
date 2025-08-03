@@ -1,0 +1,40 @@
+// ================================
+// 📄 _responsive.scss
+// ================================
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// RESPONSIVE ADAPTATIONS GLOBALES
+@include until('medium-lg') {
+  .home-container {
+    background: linear-gradient(
+      180deg,
+      color.adjust($color-dark, $lightness: -3%) 0%,
+      rgba($color-orange, 0.2) 33%,
+      rgba($color-pink, 0.2) 50%,
+      rgba($color-purple, 0.2) 67%,
+      color.adjust($color-dark, $lightness: 1%) 100%
+    );
+  }
+}
+
+// ACCESSIBILITÉ
+@include reduced-motion {
+  .home-container::before {
+    display: none;
+  }
+}
+
+// ÉCRANS TRÈS PETITS
+@media (max-width: 360px) {
+  .services-section {
+    padding: 1.25rem 0.25rem 1rem;
+  }
+}
+
+// MODE PAYSAGE MOBILE
+@include mobile-landscape {
+  .services-section {
+    padding: 1rem 0.5rem 0.75rem;
+  }
+}
