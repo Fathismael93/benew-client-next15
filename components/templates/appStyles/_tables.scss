@@ -1,0 +1,307 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// 📄 _tables.scss - Tableaux d'informations et de tarification
+// =============================
+
+// =============================
+// CONTENEURS DE TABLEAUX
+// =============================
+
+.info-table-container,
+.needs-table-container,
+.pricing-table-container {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: var(--badge-border-radius);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+
+  // Scrollable si nécessaire
+  max-height: 350px;
+  overflow-y: auto;
+
+  @include until('small-sm') {
+    max-height: 280px;
+  }
+
+  @include from('medium-lg') {
+    max-height: 300px;
+  }
+
+  // Scrollbar personnalisée
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-purple), 0.3);
+    border-radius: 2px;
+  }
+}
+
+.needs-table-container {
+  // Même hauteur que le tableau tarification
+  max-height: 300px;
+
+  @include until('small-sm') {
+    max-height: 250px; // Même hauteur que pricing sur petit écran
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-orange), 0.3);
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.5);
+    }
+  }
+}
+
+.pricing-table-container {
+  max-height: 300px;
+
+  @include until('small-sm') {
+    max-height: 250px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(css-var(color-orange), 0.3);
+  }
+}
+
+// =============================
+// TABLEAUX
+// =============================
+
+.info-table,
+.needs-table,
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+// =============================
+// LIGNES DE TABLEAUX
+// =============================
+
+.info-row,
+.needs-row,
+.pricing-row {
+  border-bottom: 1px solid rgba(css-var(color-light), 0.08);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(css-var(color-light), 0.02);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// =============================
+// CELLULES TABLEAU INFORMATIONS
+// =============================
+
+.info-label {
+  padding: 1rem 1.25rem;
+  color: css-var(text-color-muted);
+  font-weight: 500;
+  text-align: left;
+  vertical-align: top;
+  width: 45%;
+
+  // 📱 MOBILE FIRST
+  font-size: 0.85rem;
+
+  @include until('small-sm') {
+    padding: 0.875rem 1rem;
+    font-size: 0.8rem;
+    width: 40%;
+  }
+
+  @include from('medium-lg') {
+    font-size: 0.9rem;
+    width: 50%;
+  }
+}
+
+.info-value {
+  padding: 1rem 1.25rem;
+  color: css-var(color-light);
+  font-weight: 600;
+  text-align: left;
+  vertical-align: top;
+
+  // 📱 MOBILE FIRST
+  font-size: 0.85rem;
+
+  @include until('small-sm') {
+    padding: 0.875rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  @include from('medium-lg') {
+    font-size: 0.9rem;
+  }
+}
+
+.info-link {
+  color: css-var(color-purple);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: css-var(color-pink);
+    text-decoration: underline;
+  }
+}
+
+// =============================
+// CELLULES TABLEAU BESOINS
+// =============================
+
+.needs-row {
+  &.free-tools {
+    background: rgba(css-var(color-orange), 0.05);
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.08);
+    }
+
+    .needs-text {
+      color: css-var(color-orange);
+      font-weight: 600;
+    }
+  }
+}
+
+.needs-item {
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  @include until('small-sm') {
+    padding: 0.875rem 1rem;
+    gap: 0.625rem;
+  }
+
+  .needs-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+
+    @include until('small-sm') {
+      font-size: 1.1rem;
+    }
+  }
+
+  .needs-text {
+    color: css-var(color-light);
+    font-weight: 500;
+    line-height: 1.4;
+
+    // 📱 MOBILE FIRST
+    font-size: 0.9rem;
+
+    @include until('small-sm') {
+      font-size: 0.85rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// =============================
+// CELLULES TABLEAU TARIFICATION
+// =============================
+
+.pricing-row {
+  &.total-row {
+    background: rgba(css-var(color-orange), 0.05);
+    border-top: 2px solid rgba(css-var(color-orange), 0.3);
+
+    .pricing-label,
+    .pricing-value {
+      font-weight: 700;
+      color: css-var(color-orange);
+      font-size: 1.1rem;
+
+      @include until('small-sm') {
+        font-size: 1rem;
+      }
+    }
+
+    &:hover {
+      background: rgba(css-var(color-orange), 0.08);
+    }
+  }
+}
+
+.pricing-label {
+  padding: 1rem 1.25rem;
+  color: css-var(text-color-muted);
+  font-weight: 500;
+  text-align: left;
+  vertical-align: top;
+  width: 60%;
+
+  // 📱 MOBILE FIRST
+  font-size: 0.85rem;
+
+  @include until('small-sm') {
+    padding: 0.875rem 1rem;
+    font-size: 0.8rem;
+    width: 55%;
+  }
+
+  @include from('medium-lg') {
+    font-size: 0.9rem;
+    width: 65%;
+  }
+}
+
+.pricing-value {
+  padding: 1rem 1.25rem;
+  color: css-var(color-light);
+  font-weight: 600;
+  text-align: right;
+  vertical-align: top;
+
+  // 📱 MOBILE FIRST
+  font-size: 0.9rem;
+
+  @include until('small-sm') {
+    padding: 0.875rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  @include from('medium-lg') {
+    font-size: 1rem;
+  }
+}
+
+.pricing-note {
+  padding: 0.75rem 1rem;
+  text-align: center;
+  background: rgba(css-var(color-light), 0.02);
+
+  small {
+    color: css-var(text-color-muted);
+    font-style: italic;
+    font-size: 0.75rem;
+
+    @include until('small-sm') {
+      font-size: 0.7rem;
+    }
+  }
+}

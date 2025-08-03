@@ -1,0 +1,13 @@
+// ================================
+// 📄 index.scss (fichier principal factorisé)
+// ================================
+@forward 'base';
+@forward 'gallery';
+@forward 'navigation';
+@forward 'header';
+@forward 'content';
+@forward 'tables';
+@forward 'sections';
+@forward 'buttons';
+@forward 'animations';
+@forward 'responsive';

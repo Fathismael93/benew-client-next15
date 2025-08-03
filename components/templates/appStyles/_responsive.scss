@@ -1,0 +1,202 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// 📄 _responsive.scss - Adaptations responsive spéciales
+// =============================
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile - Optimisations spécifiques
+@include mobile-landscape {
+  .gallery-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .gallery-swiper-wrapper {
+    height: 90vh;
+    gap: 1rem;
+  }
+
+  .gallery-main-container {
+    height: 80%;
+  }
+
+  .gallery-arrow {
+    width: 48px;
+    height: 48px;
+  }
+
+  .app-header-section .app-header-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .app-details-section .app-details-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .app-header {
+    gap: 1.5rem;
+  }
+
+  .title-block .app-title {
+    font-size: 2rem;
+  }
+
+  .badge {
+    padding: 0.75rem 0.625rem;
+    min-width: 75px;
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.) - Plus d'espace pour le contenu
+@include tall-screen {
+  .gallery-main-container {
+    @include until('medium-lg') {
+      height: 75%;
+    }
+  }
+
+  .app-header-container,
+  .app-details-container {
+    @include until('medium-lg') {
+      gap: 3rem;
+    }
+  }
+
+  .description-content .description-text {
+    @include until('medium-lg') {
+      max-height: 220px;
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .gallery-arrow {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .btn {
+    min-height: 48px;
+  }
+
+  .badge {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  // Pas d'effet hover sur tactile, juste active
+  .gallery-arrow:hover,
+  .btn:hover,
+  .badge:hover {
+    transform: none;
+  }
+
+  .gallery-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .gallery-main-image,
+  .gallery-arrow,
+  .badge,
+  .btn,
+  .description-section,
+  .needs-section,
+  .pricing-section {
+    transition: none;
+    animation: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+
+  .btn::before {
+    display: none;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .gallery-main-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .gallery-arrow {
+    box-shadow:
+      0 8px 25px rgba(246, 160, 55, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Très grands écrans - Limitation et optimisation
+@include from('large-xxxl') {
+  .gallery-container {
+    padding: 3rem 2rem;
+  }
+
+  .gallery-main-container {
+    max-width: 800px;
+  }
+
+  .app-header-container,
+  .app-details-container {
+    max-width: 1600px;
+  }
+
+  .title-block .app-title {
+    font-size: 3rem;
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS PETITS - Mobile
+// =============================
+@media (max-width: 360px) {
+  .gallery-container {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .gallery-swiper-wrapper {
+    gap: 0.75rem;
+  }
+
+  .gallery-arrow {
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+  }
+
+  .app-header-container,
+  .app-details-container {
+    padding: 0 0.75rem;
+    gap: 2rem;
+  }
+
+  .title-block .app-title {
+    font-size: 2rem;
+  }
+
+  .badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .btn {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}

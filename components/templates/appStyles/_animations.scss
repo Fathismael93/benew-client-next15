@@ -1,0 +1,73 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// 📄 _animations.scss - Animations et keyframes
+// =============================
+
+// =============================
+// ANIMATIONS KEYFRAMES
+// =============================
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(0) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  100% {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes counterUpdate {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes arrowPulse {
+  0% {
+    transform: translateY(-50%) scale(0.95);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

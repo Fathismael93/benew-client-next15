@@ -1,0 +1,178 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// 📄 _sections.scss - Sections spécifiques et leurs conteneurs
+// =============================
+
+// =============================
+// SECTION 2 - APP DETAILS (Besoins + Tarification + Boutons)
+// =============================
+
+.app-details-section {
+  background: linear-gradient(135deg, #0c0c1d 0%, #1a0f2e 50%, #151528 100%);
+  overflow: hidden;
+
+  // Effet de particules en arrière-plan différent
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 70% 80%,
+        rgba(css-var(color-pink), 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(css-var(color-purple), 0.05) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.app-details-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  // 📱 MOBILE FIRST - Padding généreux
+  padding: 0 1.5rem;
+  gap: 3rem;
+
+  @include until('small-sm') {
+    padding: 0 1rem;
+    gap: 2.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 0 2rem;
+    gap: 3.5rem;
+  }
+
+  @include from('large-xs') {
+    padding: 0 2rem;
+    gap: 2rem;
+    height: auto;
+  }
+}
+
+// =============================
+// SECTION TARIFICATION SPÉCIFIQUE
+// =============================
+
+.pricing-section {
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  @include until('medium-lg') {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+
+    &.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('medium-lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    position: relative;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('small-sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('medium-lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        css-var(color-orange),
+        css-var(color-pink)
+      );
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('medium-lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+}
+
+// =============================
+// CONTENEUR BOUTON COMMANDER - MOBILE-FIRST
+// =============================
+
+.order-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(css-var(color-light), 0.1);
+  margin-top: 2rem;
+
+  @include until('small-sm') {
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .purchase-btn {
+    width: 100%;
+    max-width: 400px;
+
+    @include from('medium-lg') {
+      max-width: 350px;
+    }
+
+    @include from('large-xs') {
+      max-width: 300px;
+    }
+  }
+}

@@ -1,0 +1,267 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// 📄 _gallery.scss - Section galerie d'images
+// =============================
+
+.gallery-section {
+  background: linear-gradient(to bottom, #0c0c1d, #151528);
+}
+
+.gallery-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Padding minimal pour maximiser l'espace
+  padding: 1rem 0.75rem;
+
+  // 📟 TRÈS PETITS ÉCRANS - Padding encore plus réduit
+  @include until('small-sm') {
+    padding: 0.75rem 0.5rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Augmentation progressive
+  @include from('medium-sm') {
+    padding: 1.5rem 1rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('large-xs') {
+    padding: 3rem; // Valeur desktop originale
+  }
+}
+
+.gallery-swiper-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Layout vertical optimisé
+  flex-direction: column;
+  height: 100%;
+  gap: 1.5rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('small-sm') {
+    gap: 1rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
+  @include from('medium-lg') {
+    flex-direction: row;
+    height: 80vh;
+    gap: 2rem;
+  }
+
+  @include from('large-xs') {
+    gap: 3rem; // Valeur desktop originale
+  }
+}
+
+// =============================
+// IMAGES LATÉRALES - MOBILE-FIRST
+// =============================
+
+.gallery-side-images {
+  // 📱 MOBILE - Cachées car inutiles, remplacées par miniatures
+  display: none;
+
+  // 🖥️ DESKTOP - Réapparition pour l'effet visuel
+  @include from('medium-lg') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+
+    &.gallery-left {
+      order: 1;
+    }
+
+    &.gallery-right {
+      order: 3;
+    }
+  }
+}
+
+.gallery-side-image {
+  // Styles conservés pour desktop uniquement
+  @include from('medium-lg') {
+    width: 180px;
+    height: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.6;
+    animation: fadeInSlide 0.4s ease-out forwards;
+    animation-delay: 0.1s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      backdrop-filter: blur(3px);
+      background: rgba(12, 12, 26, 0.3);
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .side-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+      transition: all 0.3s ease;
+
+      &::after {
+        backdrop-filter: blur(1px);
+        background: rgba(12, 12, 26, 0.1);
+      }
+    }
+  }
+
+  @include from('large-xs') {
+    width: 200px;
+    height: 280px;
+  }
+}
+
+// =============================
+// CONTENEUR PRINCIPAL - MOBILE-FIRST
+// =============================
+
+.gallery-main-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+
+  // 📱 MOBILE FIRST - Utilisation maximale de l'espace
+  width: 95%;
+  height: 70%; // 70% de la hauteur pour l'image principale
+  max-width: none;
+  order: 1;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('small-sm') {
+    width: 98%;
+    height: 65%;
+  }
+
+  // 🖥️ TABLET ET PLUS - Ajustements progressifs
+  @include from('medium-sm') {
+    width: 90%;
+    height: 75%;
+  }
+
+  @include from('medium-lg') {
+    // DESKTOP - Retour au layout original
+    order: 2;
+    flex: 1;
+    max-width: 500px;
+    height: 100%;
+    width: auto;
+  }
+
+  @include from('large-xs') {
+    max-width: 600px;
+  }
+}
+
+.gallery-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(246, 160, 55, 0.3);
+
+  // 📱 MOBILE - Border radius plus prononcé
+  @include until('medium-lg') {
+    border-radius: 24px;
+    box-shadow: 0 16px 48px rgba(246, 160, 55, 0.4);
+  }
+}
+
+.gallery-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+  animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translateX(30px);
+
+  // 📱 MOBILE - Border radius adapté
+  @include until('medium-lg') {
+    border-radius: 24px;
+  }
+
+  &:hover {
+    transform: scale(1.02) translateX(0);
+    box-shadow: 0 25px 80px rgba(246, 160, 55, 0.3);
+    transition: all 0.3s ease;
+  }
+}
+
+// =============================
+// COMPTEUR D'IMAGES - MOBILE-FIRST
+// =============================
+
+.gallery-counter {
+  position: absolute;
+  background: linear-gradient(
+    135deg,
+    rgba(css-var(color-dark), 0.9),
+    rgba(css-var(color-purple), 0.9)
+  );
+  color: css-var(color-light);
+  border-radius: 25px;
+  font-weight: 600;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(css-var(color-orange), 0.3);
+  animation: counterUpdate 0.3s ease-out;
+
+  // 📱 MOBILE FIRST - Plus visible et accessible
+  top: 1rem;
+  right: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @include until('small-sm') {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  // 🖥️ DESKTOP - Taille plus discrète
+  @include from('large-xs') {
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,220 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// 📄 _header.scss - Section header avec titre et informations
+// =============================
+
+// SECTION 1 - APP HEADER (En-tête + Informations techniques)
+.app-header-section {
+  background: linear-gradient(135deg, #1a0f2e 0%, #151528 50%, #0c0c1d 100%);
+  overflow: hidden;
+
+  // Effet de particules en arrière-plan
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(
+        circle at 30% 70%,
+        rgba(css-var(color-orange), 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 30%,
+        rgba(css-var(color-pink), 0.08) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.app-header-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  // 📱 MOBILE FIRST - Padding généreux
+  padding: 0 1.5rem;
+  gap: 3rem;
+
+  @include until('small-sm') {
+    padding: 0 1rem;
+    gap: 2.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 0 2rem;
+    gap: 3.5rem;
+  }
+
+  @include from('large-xs') {
+    padding: 0 2rem;
+    gap: 2rem;
+    height: 100%;
+  }
+}
+
+// =============================
+// EN-TÊTE PRINCIPAL - MOBILE-FIRST
+// =============================
+
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid rgba(css-var(color-orange), 0.2);
+  flex-shrink: 0;
+  width: 100%;
+
+  // 📱 MOBILE FIRST - Layout vertical centré
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+
+  @include until('small-sm') {
+    gap: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  // 🖥️ TABLET ET PLUS - Transition vers layout horizontal
+  @include from('medium-lg') {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    gap: 2rem;
+  }
+
+  @include from('large-xs') {
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+  }
+}
+
+.title-block {
+  // 📱 MOBILE - Full width
+  width: 100%;
+
+  // 🖥️ DESKTOP - Flex sizing
+  @include from('medium-lg') {
+    flex: 1;
+    width: auto;
+  }
+
+  .app-title {
+    font-weight: 800;
+    color: css-var(color-light);
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    background: linear-gradient(
+      135deg,
+      css-var(color-orange),
+      css-var(color-pink)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    // 📱 MOBILE FIRST - Titre imposant et lisible
+    font-size: 2.5rem;
+
+    @include until('small-sm') {
+      font-size: 2.25rem;
+      margin: 0 0 0.875rem 0;
+    }
+
+    // 🖥️ TABLET ET PLUS - Maintien de la taille ou légère augmentation
+    @include from('medium-sm') {
+      font-size: 2.75rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 2.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+// =============================
+// BADGES - MOBILE-FIRST
+// =============================
+
+.app-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  // 📱 MOBILE FIRST - Centré sous le titre
+  justify-content: center;
+  width: 100%;
+
+  @include until('small-sm') {
+    gap: 0.75rem;
+  }
+
+  // 🖥️ DESKTOP - Aligné à droite
+  @include from('medium-lg') {
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: auto;
+  }
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-radius: var(--badge-border-radius);
+  backdrop-filter: blur(10px);
+  border: 1px solid;
+  transition: all 0.3s ease;
+
+  // Badges compacts par défaut
+  padding: 0.5rem 0.75rem;
+  min-width: auto;
+
+  @include until('small-sm') {
+    padding: 0.375rem 0.625rem;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .badge-value {
+    font-weight: 600;
+    font-size: 0.85rem;
+
+    @include until('small-sm') {
+      font-size: 0.8rem;
+    }
+  }
+
+  &.level-badge {
+    background: rgba(css-var(color-orange), 0.1);
+    border-color: rgba(css-var(color-orange), 0.3);
+    color: css-var(color-orange);
+  }
+
+  &.category-badge {
+    background: rgba(css-var(color-purple), 0.1);
+    border-color: rgba(css-var(color-purple), 0.3);
+    color: css-var(color-purple);
+  }
+}

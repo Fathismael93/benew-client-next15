@@ -1,0 +1,314 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// =============================
+// 📄 _content.scss - Sections de contenu (description, technique, besoins)
+// =============================
+
+// =============================
+// CONTENU PRINCIPAL - DESCRIPTION + TECHNIQUE
+// =============================
+
+.main-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  @include from('medium-lg') {
+    gap: 0;
+  }
+}
+
+// =============================
+// GRILLE DE CONTENU - RESPONSIVE
+// =============================
+
+.content-grid,
+.purchase-grid {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+
+  // 📱 MOBILE - Une colonne, sections empilées
+  grid-template-columns: 1fr;
+
+  @include until('small-sm') {
+    gap: 1.5rem;
+  }
+
+  // 🖥️ DESKTOP - Deux colonnes côte à côte
+  @include from('medium-lg') {
+    gap: 3rem;
+  }
+
+  @include from('large-xs') {
+    gap: 4rem;
+  }
+}
+
+.content-grid {
+  @include from('medium-lg') {
+    grid-template-columns: 1.2fr 0.8fr; // Description plus large que technique
+  }
+}
+
+.purchase-grid {
+  @include from('medium-lg') {
+    grid-template-columns: 1.2fr 0.8fr; // Besoins plus large que tarification
+  }
+}
+
+// =============================
+// SECTIONS COMMUNES - DESCRIPTION ET TECHNIQUE
+// =============================
+
+.description-section,
+.technical-section,
+.needs-section,
+.pricing-section {
+  width: 100%;
+
+  // 📱 MOBILE - Système de toggle
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  // 🖥️ DESKTOP - Toujours visible
+  @include from('medium-lg') {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  .section-title {
+    font-weight: 700;
+    color: css-var(color-light);
+    margin: 0 0 1.5rem 0;
+    position: relative;
+    text-align: center;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.4rem;
+
+    @include until('small-sm') {
+      font-size: 1.3rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    @include from('medium-lg') {
+      text-align: left;
+      font-size: 1.5rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 1.6rem;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.75rem;
+      width: 50px;
+      height: 3px;
+      border-radius: 3px;
+
+      // 📱 MOBILE - Centré
+      left: 50%;
+      transform: translateX(-50%);
+
+      // 🖥️ DESKTOP - Aligné à gauche
+      @include from('medium-lg') {
+        left: 0;
+        transform: none;
+      }
+    }
+  }
+}
+
+// =============================
+// SECTION DESCRIPTION SPÉCIFIQUE
+// =============================
+
+.description-section {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: var(--section-border-radius);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  // Padding responsive
+  padding: 2.5rem 2rem;
+
+  @include until('small-sm') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 3rem 2.5rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('large-xs') {
+    padding: 2rem;
+  }
+
+  &:hover {
+    border-color: rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
+  }
+
+  .section-title::after {
+    background: linear-gradient(
+      90deg,
+      css-var(color-orange),
+      css-var(color-pink)
+    );
+  }
+
+  .description-content {
+    .description-text {
+      line-height: 1.6;
+      color: css-var(text-color-muted);
+      margin: 0;
+      text-align: justify;
+
+      // 📱 MOBILE FIRST
+      font-size: 1rem;
+
+      @include until('small-sm') {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      @include from('medium-lg') {
+        font-size: 1rem;
+        text-align: left;
+      }
+
+      // 📱 MOBILE - Scroll visible avec padding
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: rgba(css-var(color-light), 0.02);
+      border-radius: 8px;
+      border: 1px solid rgba(css-var(color-light), 0.05);
+
+      @include until('small-sm') {
+        max-height: 180px;
+        padding: 0.875rem;
+      }
+
+      // 🖥️ DESKTOP - Plus de hauteur, moins de padding
+      @include from('medium-lg') {
+        max-height: 300px;
+        padding: 0.5rem 0;
+        background: transparent;
+        border: none;
+      }
+
+      // Scrollbar stylisée pour tous les écrans
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 2px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(css-var(color-orange), 0.4);
+        border-radius: 2px;
+
+        &:hover {
+          background: rgba(css-var(color-orange), 0.6);
+        }
+      }
+
+      // Force la scrollbar à être toujours visible sur mobile
+      @include until('medium-lg') {
+        &::-webkit-scrollbar {
+          width: 6px; // Un peu plus large sur mobile
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: rgba(css-var(color-orange), 0.3);
+
+          // Force l'affichage même sans hover
+          &:window-inactive {
+            background: rgba(css-var(color-orange), 0.3);
+          }
+        }
+      }
+    }
+  }
+}
+
+// =============================
+// SECTION TECHNIQUE SPÉCIFIQUE
+// =============================
+
+.technical-section {
+  .section-title::after {
+    background: linear-gradient(
+      90deg,
+      css-var(color-purple),
+      css-var(color-pink)
+    );
+  }
+}
+
+// =============================
+// SECTION BESOINS SPÉCIFIQUES
+// =============================
+
+.needs-section {
+  background: rgba(css-var(color-light), 0.03);
+  border: 1px solid rgba(css-var(color-light), 0.1);
+  border-radius: var(--section-border-radius);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  // Padding responsive
+  padding: 2.5rem 2rem;
+
+  @include until('small-sm') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 3rem 2.5rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2.5rem 2rem;
+  }
+
+  @include from('large-xs') {
+    padding: 2rem;
+  }
+
+  &:hover {
+    border-color: rgba(css-var(color-orange), 0.3);
+    box-shadow: 0 8px 32px rgba(css-var(color-orange), 0.1);
+  }
+
+  .section-title::after {
+    background: linear-gradient(
+      90deg,
+      css-var(color-orange),
+      css-var(color-pink)
+    );
+  }
+}
