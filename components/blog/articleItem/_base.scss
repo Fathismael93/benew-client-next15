@@ -2,9 +2,6 @@
 // 📄 _base.scss
 // ================================
 
-@use 'sass:color';
-@use '../../../app/styles/abstracts' as *;
-
 .container {
   display: flex;
   align-items: center;
