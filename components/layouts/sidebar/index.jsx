@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Links from './links';
-import './sidebar.scss';
+import './styles/index.scss';
 import ToggleButton from './toggleButton';
 
 // Hook pour détecter les petits écrans

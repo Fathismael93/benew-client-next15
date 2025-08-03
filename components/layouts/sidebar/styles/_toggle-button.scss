@@ -1,0 +1,171 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _toggle-button.scss
+// ================================
+
+// =============================
+// BOUTON TOGGLE - OPTIMISATION PAR CATÉGORIE D'ÉCRAN
+// =============================
+
+.sidebar button {
+  background-color: transparent;
+  border: none;
+  z-index: 999;
+
+  // 📱 PETITS ÉCRANS - Bouton plus grand et mieux positionné
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  position: fixed;
+  top: 1.625rem; // = 26px (26 + 48/2 = 50px centre)
+  left: 1.625rem; // = 26px
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  // Ajustements progressifs simplifiés pour smartphones
+  @include from('small-xs') {
+    width: 2.9rem;
+    height: 2.9rem;
+    top: 1.55rem;
+    left: 1.55rem;
+  }
+
+  @include from('small-sm') {
+    width: 2.8rem;
+    height: 2.8rem;
+    top: 1.6rem;
+    left: 1.6rem;
+  }
+
+  // Fusion optimisée small-md + small-lg
+  @include from('small-lg') {
+    width: 2.7rem;
+    height: 2.7rem;
+    top: 1.65rem;
+    left: 1.65rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Taille intermédiaire
+  @include medium-screens {
+    width: 2.5rem;
+    height: 2.5rem;
+    top: 1.8rem;
+    left: 1.8rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Taille desktop optimale
+  @include large-screens {
+    width: 2.2rem;
+    height: 2.2rem;
+    top: 2.1rem;
+    left: 2.1rem;
+  }
+
+  @include from('large-xxxl') {
+    width: 2rem; // Taille desktop originale optimisée
+    height: 2rem;
+    top: 2.25rem;
+    left: 2.25rem;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+
+    // 🖥️ GRANDS ÉCRANS - Comportement desktop amélioré
+    @include large-screens {
+      background-color: rgba(css-var(primary-color), 0.1);
+      transform: scale(1.15);
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  // =============================
+  // CORRECTION SPÉCIFIQUE POUR LES PAGES TEMPLATE DÉTAIL
+  // =============================
+  &.template-detail-fix {
+    // 📱 PETITS ÉCRANS - Ajustements pour les pages template
+    @include small-screens {
+      top: 1rem;
+      left: 1rem;
+    }
+
+    // 📟 MOYENS ÉCRANS - Position ajustée
+    @include medium-screens {
+      top: 1.25rem;
+      left: 1.25rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Position desktop
+    @include large-screens {
+      top: 1.5rem;
+      left: 1.2rem;
+    }
+  }
+
+  // =============================
+  // ICÔNE SVG DU BOUTON
+  // =============================
+  svg {
+    // 📱 PETITS ÉCRANS - Icône plus grande pour la visibilité
+    width: 1.5rem;
+    height: 1.5rem;
+
+    @include from('small-sm') {
+      width: 1.4rem;
+      height: 1.4rem;
+    }
+
+    // Fusion optimisée small-md + small-lg
+    @include from('small-lg') {
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+
+    // 📟 MOYENS ÉCRANS - Taille intermédiaire
+    @include medium-screens {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Taille desktop optimisée
+    @include large-screens {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    @include from('large-xxxl') {
+      width: 1.2rem; // Taille desktop optimale
+      height: 1.2rem;
+    }
+
+    path {
+      stroke: css-var(primary-color);
+      transition: all 0.3s ease;
+
+      // 📱 PETITS ÉCRANS - Trait plus épais pour la visibilité
+      @include small-screens {
+        stroke-width: 4;
+        stroke: css-var(primary-color);
+      }
+
+      // 📟 MOYENS ÉCRANS - Épaisseur intermédiaire
+      @include medium-screens {
+        stroke-width: 3.5;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Épaisseur desktop
+      @include large-screens {
+        stroke-width: 3;
+      }
+    }
+
+    &:hover path {
+      stroke: css-var(primary-color);
+    }
+  }
+}

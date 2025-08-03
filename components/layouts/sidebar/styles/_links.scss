@@ -1,0 +1,155 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _links.scss
+// ================================
+
+// =============================
+// LIENS DE NAVIGATION - OPTIMISATION PAR CATÉGORIE D'ÉCRAN
+// =============================
+
+.sidebar .bg .links {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem; // Plus d'espace entre les liens sur mobile
+  cursor: pointer;
+
+  // 📱 PETITS ÉCRANS - Police plus grande et plus lisible
+  font-size: 1.8rem;
+  padding: 1rem; // Padding pour éviter que ça touche les bords
+
+  // Ajustements progressifs simplifiés pour smartphones
+  @include from('small-sm') {
+    font-size: 1.7rem;
+    gap: 1.9rem;
+  }
+
+  // Fusion des valeurs small-md + small-lg optimisées
+  @include from('small-lg') {
+    font-size: 1.6rem;
+    gap: 1.8rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Taille intermédiaire
+  @include medium-screens {
+    font-size: 1.5rem;
+    gap: 1.6rem;
+    padding: 1.2rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Taille desktop optimale
+  @include large-screens {
+    font-size: 1.7rem; // Taille desktop optimisée
+    gap: 1.4rem;
+    padding: 1.5rem;
+  }
+
+  @include from('large-xxxl') {
+    font-size: 1.6rem;
+    gap: 1.3rem;
+  }
+
+  // =============================
+  // ITEMS DE NAVIGATION
+  // =============================
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+
+    // 📱 PETITS ÉCRANS - Zone tactile optimisée
+    padding: 1rem 1.5rem;
+    width: 90%; // Presque toute la largeur pour une meilleure zone tactile
+    min-height: 60px; // Zone tactile minimale recommandée
+
+    border-radius: 12px;
+    transition: all 0.3s ease;
+
+    // Ajustements progressifs simplifiés pour petits écrans
+    @include from('small-sm') {
+      padding: 0.9rem 1.4rem;
+      min-height: 58px;
+    }
+
+    // Fusion optimisée small-md + small-lg
+    @include from('small-lg') {
+      padding: 0.85rem 1.3rem;
+      min-height: 56px;
+    }
+
+    // 📟 MOYENS ÉCRANS - Taille intermédiaire
+    @include medium-screens {
+      padding: 0.8rem 1.2rem;
+      min-height: 54px;
+      width: 85%;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Retour aux valeurs desktop
+    @include large-screens {
+      padding: 0.7rem 1rem;
+      min-height: 50px;
+      width: 80%;
+      gap: 1rem;
+    }
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(primary-color), 0.15),
+        rgba(css-var(secondary-color), 0.15)
+      );
+      transform: translateX(10px);
+    }
+
+    // 📱 PETITS ÉCRANS - Effet tactile visuel
+    &:active {
+      transform: translateX(5px) scale(0.98);
+      background: linear-gradient(
+        135deg,
+        rgba(css-var(primary-color), 0.2),
+        rgba(css-var(secondary-color), 0.2)
+      );
+    }
+
+    // =============================
+    // LIENS TEXTE
+    // =============================
+    a {
+      color: css-var(background-color);
+      text-decoration: none;
+      font-weight: 600; // Plus gras pour une meilleure lisibilité mobile
+      transition: all 0.3s ease;
+      text-align: center;
+      width: 100%;
+
+      // 📱 PETITS ÉCRANS - Amélioration de la lisibilité
+      @include small-screens {
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      // 📟 MOYENS ÉCRANS - Poids intermédiaire
+      @include medium-screens {
+        font-weight: 650;
+        letter-spacing: 0.3px;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Poids desktop optimisé
+      @include large-screens {
+        font-weight: 600;
+        letter-spacing: 0.2px;
+      }
+
+      &:hover {
+        color: css-var(primary-color);
+      }
+    }
+  }
+}

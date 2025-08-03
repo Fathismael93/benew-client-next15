@@ -1,0 +1,303 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// =============================
+// ADAPTATIONS SPÉCIALES - AVEC NOUVEAUX BREAKPOINTS
+// =============================
+
+// Mode paysage sur mobile - Sidebar plus compacte
+@include mobile-landscape {
+  .sidebar .bg {
+    width: 60vw;
+    max-width: 280px;
+
+    .links {
+      font-size: 1.4rem;
+      gap: 1.2rem;
+
+      .link {
+        padding: 0.75rem 1rem;
+        min-height: 50px;
+      }
+    }
+  }
+
+  .sidebar button {
+    width: 2.5rem;
+    height: 2.5rem;
+    top: 0.75rem;
+    left: 0.75rem;
+
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+}
+
+// =============================
+// ÉCRANS HAUTE DENSITÉ
+// =============================
+@include high-density {
+  .sidebar .bg {
+    box-shadow:
+      2px 0 10px rgba(css-var(background-color), 0.3),
+      0 0 1px rgba(css-var(primary-color), 0.1);
+  }
+
+  .sidebar button svg {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// =============================
+// ADAPTATION POUR LES ÉCRANS TACTILES
+// =============================
+@media (pointer: coarse) {
+  .sidebar .bg .links .link {
+    min-height: 64px; // Zone tactile encore plus grande
+
+    &:hover {
+      transform: none; // Pas d'effet hover sur tactile
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .sidebar button {
+    min-width: 44px;
+    min-height: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+// =============================
+// AMÉLIORATION POUR L'ACCESSIBILITÉ
+// =============================
+@include reduced-motion {
+  .sidebar .bg .links .link,
+  .sidebar button {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+
+  .sidebar button svg path {
+    transition: none;
+  }
+}
+
+// =============================
+// CONTRASTE ÉLEVÉ
+// =============================
+@include high-contrast {
+  .sidebar .bg {
+    border-right: 3px solid rgba(css-var(primary-color), 0.5);
+    box-shadow:
+      2px 0 10px rgba(css-var(background-color), 0.5),
+      0 0 2px rgba(css-var(primary-color), 0.3);
+  }
+
+  .sidebar .bg .links .link {
+    border: 1px solid transparent;
+
+    &:hover {
+      border-color: rgba(css-var(primary-color), 0.5);
+    }
+
+    a {
+      text-shadow: 0 1px 2px rgba(css-var(text-color), 0.5);
+    }
+  }
+
+  .sidebar button {
+    border: 2px solid rgba(css-var(primary-color), 0.3);
+
+    &:hover {
+      border-color: rgba(css-var(primary-color), 0.6);
+    }
+
+    svg path {
+      stroke-width: 4;
+    }
+  }
+}
+
+// =============================
+// OPTIMISATIONS PAR CATÉGORIE D'ÉCRAN
+// =============================
+
+// 📱 PETITS ÉCRANS - Optimisations tactiles
+@include small-screens {
+  .sidebar {
+    // Touch-action pour une meilleure interaction tactile
+    touch-action: manipulation;
+
+    .bg .links .link {
+      // Amélioration du feedback tactile
+      -webkit-tap-highlight-color: rgba(css-var(primary-color), 0.2);
+
+      // Zone tactile étendue
+      &::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        z-index: -1;
+      }
+    }
+  }
+}
+
+// 📟 MOYENS ÉCRANS - Optimisations tablettes
+@include medium-screens {
+  .sidebar .bg {
+    // Ombre plus subtile sur tablettes
+    box-shadow: 1px 0 8px rgba(css-var(background-color), 0.25);
+
+    .links .link {
+      // Hover plus subtil sur tablettes
+      &:hover {
+        transform: translateX(8px);
+      }
+    }
+  }
+}
+
+// 🖥️ GRANDS ÉCRANS - Optimisations desktop
+@include large-screens {
+  .sidebar {
+    .bg .links .link {
+      // Transitions plus rapides sur desktop
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateX(12px);
+        box-shadow: 0 4px 12px rgba(css-var(primary-color), 0.15);
+      }
+    }
+
+    button {
+      // Interaction plus précise sur desktop
+      &:hover {
+        box-shadow: 0 2px 8px rgba(css-var(primary-color), 0.2);
+      }
+    }
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS HAUTS
+// =============================
+@include tall-screen {
+  .sidebar .bg .links {
+    gap: 2.5rem;
+
+    @include large-screens {
+      gap: 1.8rem;
+    }
+
+    .link {
+      min-height: 70px;
+
+      @include large-screens {
+        min-height: 55px;
+      }
+    }
+  }
+}
+
+// =============================
+// ÉCRANS COURTS
+// =============================
+@include short-screen {
+  .sidebar .bg .links {
+    gap: 1rem;
+    font-size: 1.4rem;
+
+    @include from('medium-sm') {
+      gap: 1.2rem;
+      font-size: 1.3rem;
+    }
+
+    @include from('large-xs') {
+      gap: 1rem;
+      font-size: 1.4rem;
+    }
+
+    .link {
+      padding: 0.5rem 1rem;
+      min-height: 45px;
+
+      @include from('medium-sm') {
+        min-height: 48px;
+      }
+    }
+  }
+
+  .sidebar button {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    @include from('medium-sm') {
+      width: 2.2rem;
+      height: 2.2rem;
+    }
+  }
+}
+
+// =============================
+// TRÈS GRANDS ÉCRANS
+// =============================
+@include from('large-xxxl') {
+  .sidebar .bg {
+    width: 16rem;
+    max-width: 20rem;
+
+    .links {
+      font-size: 1.5rem;
+      gap: 1.2rem;
+
+      .link {
+        padding: 0.6rem 0.8rem;
+
+        a {
+          font-weight: 500;
+          letter-spacing: 0.1px;
+        }
+      }
+    }
+  }
+
+  .sidebar button {
+    width: 1.8rem;
+    height: 1.8rem;
+
+    svg {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+  }
+}

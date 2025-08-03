@@ -1,0 +1,72 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _background.scss
+// ================================
+
+// =============================
+// PANNEAU BACKGROUND - RESPONSIVE PAR CATÉGORIE
+// =============================
+
+.sidebar .bg {
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  // 📱 PETITS ÉCRANS (Smartphones) - Sidebar bien visible et utilisable
+  width: 75vw; // 75% de la largeur d'écran sur mobile
+  max-width: 320px; // Maximum pour éviter que ce soit trop large
+  min-width: 260px; // Minimum pour la lisibilité
+
+  background: linear-gradient(
+    135deg,
+    css-var(text-color),
+    color.adjust($text-color, $lightness: 5%)
+  );
+  box-shadow: 2px 0 10px rgba(css-var(background-color), 0.3);
+
+  // 📱 Progression simplifiée avec nouveaux breakpoints essentiels
+  @include from('small-xs') {
+    width: 80vw;
+    min-width: 270px;
+  }
+
+  @include from('small-sm') {
+    width: 75vw;
+    min-width: 260px;
+  }
+
+  // Suppression de small-md (éliminé) - fusion avec small-lg
+  @include from('small-lg') {
+    width: 68vw; // Valeur fusionnée small-md + small-lg
+    min-width: 260px;
+  }
+
+  @include from('small-xl') {
+    width: 65vw;
+    min-width: 260px;
+  }
+
+  // 📟 MOYENS ÉCRANS (Tablettes) - Réduction progressive mais reste utilisable
+  @include medium-screens {
+    width: 25rem; // Taille fixe pour tablettes
+    min-width: 20rem;
+    max-width: 28rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS (Laptops + Desktop) - Taille optimale
+  @include large-screens {
+    width: 20rem; // Taille desktop optimale
+    min-width: 18rem;
+    max-width: 24rem;
+  }
+
+  // Ajustements fins pour très grands écrans
+  @include from('large-xxxl') {
+    width: 18rem;
+    max-width: 22rem;
+  }
+}
