@@ -1,0 +1,158 @@
+// ================================
+// 📄 _typography.scss
+// ================================
+
+.post {
+  h1 {
+    font-size: 2.5rem;
+    color: css-var(text-color);
+    text-align: center;
+
+    // 📱 PETITS ÉCRANS - Taille drastiquement réduite
+    @include small-screens {
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    @include from('small-sm') {
+      font-size: 1.25rem;
+      text-align: center;
+    }
+
+    @include from('small-lg') {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    @include from('small-xl') {
+      font-size: 1.35rem;
+      text-align: center;
+    }
+
+    // 📟 MOYENS ÉCRANS - Progression vers desktop
+    @include between('small-xl', 'medium-sm') {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    @include from('medium-sm') {
+      font-size: 1.8rem;
+      text-align: center;
+    }
+
+    @include from('medium-lg') {
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 2.2rem;
+      text-align: center;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Retour à la taille desktop
+    @include from('large-xs') {
+      font-size: 2.5rem;
+    }
+  }
+
+  .part {
+    margin-top: 1.25rem;
+
+    h2 {
+      font-size: 1.5rem;
+      color: css-var(primary-color);
+      margin-bottom: 1rem;
+
+      // 📱 PETITS ÉCRANS - Taille réduite
+      @include small-screens {
+        font-size: 1.3rem;
+      }
+
+      @include from('small-sm') {
+        font-size: 1.32rem;
+      }
+
+      @include from('small-lg') {
+        font-size: 1.35rem;
+      }
+
+      @include from('small-xl') {
+        font-size: 1.38rem;
+      }
+
+      // 📟 MOYENS ÉCRANS - Progression vers desktop
+      @include between('small-xl', 'medium-sm') {
+        font-size: 1.4rem;
+      }
+
+      @include from('medium-sm') {
+        font-size: 1.45rem;
+      }
+
+      @include from('medium-lg') {
+        font-size: 1.48rem;
+      }
+
+      @include from('medium-xxl') {
+        font-size: 1.5rem;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Taille desktop
+      @include from('large-xs') {
+        font-size: 1.5rem;
+      }
+    }
+
+    h3 {
+      color: css-var(secondary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-top: 0.938rem;
+      color: css-var(text-color);
+      line-height: 1.6;
+
+      // 📱 PETITS ÉCRANS - Texte justifié
+      @include small-screens {
+        text-align: justify;
+      }
+
+      @include from('small-sm') {
+        text-align: justify;
+      }
+
+      @include from('small-lg') {
+        text-align: justify;
+      }
+
+      @include from('small-xl') {
+        text-align: justify;
+      }
+
+      // 📟 MOYENS ÉCRANS - Maintien du texte justifié
+      @include between('small-xl', 'medium-sm') {
+        text-align: justify;
+      }
+
+      @include from('medium-sm') {
+        text-align: justify;
+      }
+
+      @include from('medium-lg') {
+        text-align: justify;
+      }
+
+      @include from('medium-xxl') {
+        text-align: justify;
+      }
+
+      // 🖥️ GRANDS ÉCRANS - Retour à l'alignement normal
+      @include from('large-xs') {
+        text-align: left;
+      }
+    }
+  }
+}

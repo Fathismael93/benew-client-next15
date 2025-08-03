@@ -1,0 +1,73 @@
+// ================================
+// 📄 _base.scss
+// ================================
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+article {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scroll-snap-align: center;
+  margin-bottom: 5rem;
+  background-image: url('/stars.png');
+
+  em {
+    display: block;
+    align-self: flex-end;
+    color: rgba(css-var(text-color), 0.7);
+    font-style: italic;
+
+    // 📱 PETITS ÉCRANS - Police réduite et centrage
+    @include small-screens {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @include from('small-sm') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @include from('small-lg') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @include from('small-xl') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    // 📟 MOYENS ÉCRANS - Maintien du style mobile
+    @include between('small-xl', 'medium-sm') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @include from('medium-sm') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @include from('medium-lg') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Retour au style desktop
+    @include from('large-xs') {
+      font-size: inherit;
+      text-align: right;
+    }
+  }
+}

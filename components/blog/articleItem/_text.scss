@@ -1,0 +1,227 @@
+// ================================
+// 📄 _text.scss
+// ================================
+
+.textContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.875rem;
+
+  // 📱 PETITS ÉCRANS - Centrage et désactivation transform
+  @include small-screens {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  @include from('small-sm') {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  @include from('small-lg') {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  @include from('small-xl') {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include between('small-xl', 'medium-sm') {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  @include from('medium-sm') {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  @include from('medium-lg') {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  @include from('medium-xxl') {
+    transform: none !important;
+    padding: 0.625rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    transform: initial;
+    padding: 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1.875rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    cursor: pointer;
+    color: css-var(text-color);
+
+    a {
+      cursor: pointer;
+    }
+
+    // 📱 PETITS ÉCRANS
+    @include small-screens {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @include from('small-sm') {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @include from('small-lg') {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @include from('small-xl') {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    // 📟 MOYENS ÉCRANS
+    @include between('small-xl', 'medium-sm') {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @include from('medium-sm') {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @include from('medium-lg') {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    // 🖥️ GRANDS ÉCRANS
+    @include from('large-xs') {
+      font-size: 2rem;
+    }
+
+    .dateCreated {
+      font-size: 0.8rem;
+      color: rgba(css-var(text-color), 0.7);
+      font-style: italic;
+      font-weight: normal;
+    }
+  }
+
+  button {
+    background: linear-gradient(
+      135deg,
+      css-var(primary-color),
+      color.adjust($primary-color, $lightness: 10%)
+    );
+    color: css-var(background-color);
+    border: none;
+    border-radius: 0.625rem;
+    padding: 0.625rem;
+    width: 20.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        color.adjust($primary-color, $lightness: 5%),
+        css-var(secondary-color)
+      );
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    // 📱 PETITS ÉCRANS
+    @include small-screens {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    @include from('small-sm') {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    @include from('small-lg') {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    @include from('small-xl') {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    // 📟 MOYENS ÉCRANS
+    @include between('small-xl', 'medium-sm') {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    @include from('medium-sm') {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    @include from('medium-lg') {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    @include from('medium-xxl') {
+      width: 10rem;
+      cursor: pointer;
+    }
+
+    // 🖥️ GRANDS ÉCRANS
+    @include from('large-xs') {
+      width: 20.5rem;
+    }
+  }
+}

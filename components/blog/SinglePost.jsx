@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import parse from 'html-react-parser';
-import './styling/singlePost.scss';
+import './styling/singlePost/index.scss';
 
 const SinglePost = ({
   article,

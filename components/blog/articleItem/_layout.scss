@@ -1,0 +1,69 @@
+// ================================
+// 📄 _layout.scss
+// ================================
+
+// 📱 PETITS ÉCRANS - Layout vertical
+@include small-screens {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@include from('small-sm') {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@include from('small-lg') {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@include from('small-xl') {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+// 📟 MOYENS ÉCRANS - Maintien du layout vertical
+@include between('small-xl', 'medium-sm') {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@include from('medium-sm') {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@include from('medium-lg') {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@include from('medium-xxl') {
+  .wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+// 🖥️ GRANDS ÉCRANS - Retour au layout horizontal desktop
+@include from('large-xs') {
+  .wrapper {
+    flex-direction: row;
+    gap: 3.125rem;
+  }
+}

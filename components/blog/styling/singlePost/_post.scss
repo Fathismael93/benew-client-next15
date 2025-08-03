@@ -1,0 +1,160 @@
+// ================================
+// 📄 _post.scss
+// ================================
+
+.post {
+  width: 40.625rem;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1.875rem;
+  border-radius: 10px;
+  gap: 2.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(css-var(background-color), 0.8),
+    rgba(color.adjust($background-color, $lightness: 5%), 0.8)
+  );
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      css-var(primary-color),
+      css-var(secondary-color),
+      css-var(accent-color)
+    );
+    border-radius: inherit;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+  }
+
+  // 📱 PETITS ÉCRANS - Suppression des effets visuels
+  @include small-screens {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('small-sm') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('small-lg') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('small-xl') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // 📟 MOYENS ÉCRANS - Maintien du style mobile
+  @include between('small-xl', 'medium-sm') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('medium-sm') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('medium-lg') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('medium-xxl') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Retour aux effets visuels desktop
+  @include from('large-xs') {
+    border: 2px solid transparent;
+    width: 40.625rem;
+    background: linear-gradient(
+      135deg,
+      rgba(css-var(background-color), 0.8),
+      rgba(color.adjust($background-color, $lightness: 5%), 0.8)
+    );
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 16px rgba(css-var(background-color), 0.4);
+
+    &::before {
+      display: block;
+    }
+  }
+}

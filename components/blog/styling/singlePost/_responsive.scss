@@ -1,0 +1,148 @@
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// Mode paysage sur mobile - Optimisations spécifiques
+@include mobile-landscape {
+  article {
+    margin-bottom: 3rem;
+
+    .post {
+      gap: 1.5rem;
+      padding: 1.25rem;
+
+      h1 {
+        font-size: 1.1rem;
+      }
+
+      .part {
+        margin-top: 1rem;
+
+        h2 {
+          font-size: 1.2rem;
+        }
+
+        p {
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+}
+
+// Écrans très hauts - Ajustements pour iPhone X, 11, etc.
+@include tall-screen {
+  article .post {
+    @include until('large-xs') {
+      gap: 2rem;
+      padding: 1.5rem;
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  article {
+    scroll-behavior: auto;
+
+    .post .part a {
+      transition: none;
+
+      &:hover {
+        transition: none;
+      }
+    }
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  article .post .part a {
+    min-height: 44px;
+    padding: 0.25rem 0;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+}
+
+// ÉCRANS TRÈS PETITS - Mobile
+@media (max-width: 360px) {
+  article {
+    margin-bottom: 3rem;
+
+    em {
+      font-size: 0.65rem;
+    }
+
+    .post {
+      gap: 1.5rem;
+      padding: 1rem;
+
+      h1 {
+        font-size: 1.1rem;
+      }
+
+      .part {
+        margin-top: 1rem;
+
+        h2 {
+          font-size: 1.2rem;
+          margin-bottom: 0.8rem;
+        }
+
+        h3 {
+          font-size: 1.1rem;
+          margin-bottom: 0.4rem;
+        }
+
+        p {
+          font-size: 0.9rem;
+          margin-top: 0.8rem;
+          line-height: 1.5;
+        }
+
+        img {
+          margin: 1rem auto;
+          border-radius: 6px;
+        }
+
+        blockquote {
+          margin: 1rem 0;
+          padding: 0.8rem 1.2rem;
+          border-radius: 0 6px 6px 0;
+        }
+      }
+    }
+  }
+}
+
+// Très grands écrans - Optimisations supplémentaires
+@include from('large-xxxl') {
+  article .post {
+    width: 45rem;
+    gap: 3rem;
+    padding: 2.5rem;
+
+    h1 {
+      font-size: 2.8rem;
+    }
+
+    .part {
+      h2 {
+        font-size: 1.7rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+      }
+    }
+  }
+}
