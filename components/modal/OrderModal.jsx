@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createOrder } from '../../actions/orderActions';
-// import './orderModal.scss';
+import './orderStyles/index.scss'; // Importer les styles
 
 // Ajouter ces imports
 import {

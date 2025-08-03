@@ -1,0 +1,153 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _buttons.scss
+// ================================
+
+.buttonContainer {
+  display: flex;
+  margin-top: 1rem;
+
+  // 📱 MOBILE FIRST - Layout vertical avec boutons full-width
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+
+  @include from('small-sm') {
+    gap: 0.8rem;
+  }
+
+  @include from('small-lg') {
+    gap: 0.85rem;
+  }
+
+  @include from('small-xl') {
+    gap: 0.9rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Transition vers horizontal
+  @include from('medium-sm') {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  @include from('medium-lg') {
+    gap: 1.05rem;
+  }
+
+  // 🖥️ DESKTOP - Layout original
+  @include from('large-xs') {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+button {
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+
+  // 📱 MOBILE FIRST - Boutons tactiles optimaux
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  min-height: 48px;
+  width: 100%;
+
+  @include until('small-sm') {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Transition
+  @include from('medium-sm') {
+    width: auto;
+    flex: 1;
+    padding: 0.9rem 1.4rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 0.85rem 1.35rem;
+  }
+
+  // 🖥️ DESKTOP - Valeurs originales
+  @include from('large-xs') {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    min-height: auto;
+    width: auto;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.nextButton {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    color.adjust($primary-color, $lightness: 10%)
+  );
+  color: css-var(background-color);
+  box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      135deg,
+      color.adjust($primary-color, $lightness: 5%),
+      css-var(secondary-color)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.backButton,
+.cancelButton {
+  background-color: transparent;
+  color: css-var(primary-color);
+  border: 1px solid css-var(primary-color);
+
+  &:hover {
+    background-color: #{'rgba(#{css-var(primary-color)}, 0.1)'};
+    border-color: color.adjust($primary-color, $lightness: 10%);
+  }
+}
+
+.closeButton {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    color.adjust($primary-color, $lightness: 10%)
+  );
+  color: css-var(background-color);
+  box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+  margin-top: 1rem;
+
+  // 📱 MOBILE - Toujours full-width
+  width: 100%;
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      color.adjust($primary-color, $lightness: 5%),
+      css-var(secondary-color)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

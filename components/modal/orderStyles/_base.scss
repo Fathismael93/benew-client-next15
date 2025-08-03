@@ -1,0 +1,129 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #{'rgba(#{css-var(background-color)}, 0.85)'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+
+  // 📱 MOBILE FIRST - Amélioration du backdrop
+  @include small-screens {
+    background-color: #{'rgba(#{css-var(background-color)}, 0.9)'};
+    backdrop-filter: blur(8px);
+  }
+}
+
+.modal {
+  background: linear-gradient(
+    135deg,
+    color.adjust($background-color, $lightness: -5%),
+    color.adjust($background-color, $lightness: 8%)
+  );
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px #{'rgba(#{css-var(background-color)}, 0.6)'},
+    0 0 20px #{'rgba(#{css-var(primary-color)}, 0.1)'};
+  overflow: hidden;
+  border: 1px solid #{'rgba(#{css-var(primary-color)}, 0.3)'};
+  position: relative;
+
+  // 📱 MOBILE FIRST - Dimensionnement optimisé
+  width: 95%;
+  max-width: 100%;
+  padding: 1.5rem;
+
+  @include from('small-sm') {
+    width: 92%;
+    padding: 1.75rem;
+  }
+
+  @include from('small-lg') {
+    width: 90%;
+    padding: 2rem;
+  }
+
+  @include from('small-xl') {
+    width: 88%;
+    padding: 2.25rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Transition progressive
+  @include from('medium-sm') {
+    width: 85%;
+    max-width: 500px;
+    padding: 2.5rem;
+  }
+
+  @include from('medium-lg') {
+    width: 80%;
+    max-width: 520px;
+    padding: 2.75rem;
+  }
+
+  @include from('medium-xxl') {
+    max-width: 540px;
+    padding: 3rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Valeurs desktop
+  @include from('large-xs') {
+    width: 90%;
+    max-width: 550px;
+    padding: 30px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      css-var(primary-color),
+      css-var(secondary-color),
+      css-var(accent-color)
+    );
+  }
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
+  // 📱 MOBILE - Gap plus compact
+  @include small-screens {
+    gap: 1rem;
+  }
+
+  @include from('small-sm') {
+    gap: 1.05rem;
+  }
+
+  @include from('small-lg') {
+    gap: 1.1rem;
+  }
+
+  @include from('small-xl') {
+    gap: 1.15rem;
+  }
+
+  // 🖥️ DESKTOP - Gap original
+  @include from('large-xs') {
+    gap: 1.2rem;
+  }
+}

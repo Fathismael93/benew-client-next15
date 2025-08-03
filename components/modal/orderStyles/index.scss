@@ -1,0 +1,8 @@
+// ================================
+// 📄 index.scss (fichier principal factorisé)
+// ================================
+@forward 'base';
+@forward 'typography';
+@forward 'inputs';
+@forward 'buttons';
+@forward 'responsive';

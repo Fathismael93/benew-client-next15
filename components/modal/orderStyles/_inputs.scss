@@ -1,0 +1,124 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _inputs.scss
+// ================================
+
+input[type='text'],
+input[type='email'],
+input[type='tel'] {
+  background-color: #{'rgba(#{css-var(text-color)}, 0.05)'};
+  border: 1px solid #{'rgba(#{css-var(primary-color)}, 0.3)'};
+  border-radius: 8px;
+  color: css-var(text-color);
+  outline: none;
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE FIRST - Plus d'espace tactile
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  min-height: 48px; // Zone tactile recommandée
+
+  @include until('small-sm') {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Ajustements
+  @include from('medium-sm') {
+    padding: 0.9rem 1.1rem;
+    font-size: 1rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 0.85rem 1.05rem;
+  }
+
+  // 🖥️ DESKTOP - Valeurs originales
+  @include from('large-xs') {
+    padding: 0.8rem 1rem;
+    min-height: auto;
+  }
+
+  &:focus {
+    border-color: css-var(primary-color);
+    box-shadow: 0 0 0 2px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+  }
+
+  &::placeholder {
+    color: #{'rgba(#{css-var(text-color)}, 0.5)'};
+  }
+}
+
+// =============================
+// RADIO BUTTONS - MOBILE-FIRST
+// =============================
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+
+  // 📱 MOBILE - Gap plus compact
+  gap: 0.6rem;
+
+  @include from('small-sm') {
+    gap: 0.65rem;
+  }
+
+  @include from('small-lg') {
+    gap: 0.7rem;
+  }
+
+  @include from('small-xl') {
+    gap: 0.75rem;
+  }
+
+  // 🖥️ DESKTOP - Gap original
+  @include from('large-xs') {
+    gap: 0.8rem;
+  }
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  color: css-var(text-color);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+
+  // 📱 MOBILE FIRST - Plus d'espace tactile
+  padding: 1rem 0.75rem;
+  min-height: 48px;
+
+  @include until('small-sm') {
+    padding: 0.875rem 0.625rem;
+    min-height: 44px;
+  }
+
+  // 🖥️ DESKTOP - Padding original
+  @include from('large-xs') {
+    padding: 0.6rem;
+    min-height: auto;
+  }
+
+  &:hover {
+    background-color: #{'rgba(#{css-var(primary-color)}, 0.1)'};
+    border-color: #{'rgba(#{css-var(primary-color)}, 0.2)'};
+  }
+
+  input[type='radio'] {
+    margin-right: 10px;
+    accent-color: css-var(primary-color);
+
+    // 📱 MOBILE - Zone tactile améliorée
+    @include small-screens {
+      transform: scale(1.2);
+      margin-right: 12px;
+    }
+  }
+}

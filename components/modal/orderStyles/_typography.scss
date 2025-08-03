@@ -1,0 +1,97 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _typography.scss
+// ================================
+
+h2 {
+  color: css-var(primary-color);
+  border-bottom: 1px solid #{'rgba(#{css-var(primary-color)}, 0.4)'};
+  text-shadow: 0 2px 4px #{'rgba(#{css-var(background-color)}, 0.5)'};
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+
+  // 📱 MOBILE FIRST - Titre adapté
+  font-size: 1.25rem;
+
+  @include from('small-sm') {
+    font-size: 1.3rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 1.35rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 1.4rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    font-size: 1.45rem;
+  }
+
+  @include from('medium-lg') {
+    font-size: 1.48rem;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 1.5rem;
+  }
+
+  // 🖥️ DESKTOP - Taille desktop
+  @include from('large-xs') {
+    font-size: 1.5rem;
+  }
+}
+
+.confirmationStep {
+  text-align: center;
+
+  p {
+    color: css-var(text-color);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+
+    // 📱 MOBILE FIRST - Texte adapté
+    font-size: 1rem;
+
+    @include until('small-sm') {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    // 🖥️ DESKTOP - Taille originale
+    @include from('large-xs') {
+      font-size: 1rem;
+    }
+  }
+}
+
+.errorMessage {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: color.adjust(#ef4444, $lightness: 10%);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  margin-bottom: 1rem;
+
+  // 📱 MOBILE FIRST - Plus d'espace
+  padding: 1rem;
+  font-size: 0.95rem;
+
+  @include until('small-sm') {
+    padding: 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  // 🖥️ DESKTOP - Valeur originale
+  @include from('large-xs') {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
