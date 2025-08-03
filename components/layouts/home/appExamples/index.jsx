@@ -1,6 +1,6 @@
 'use client';
 
-import './appExamples.scss';
+import './index.scss';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

@@ -1,0 +1,330 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _slides.scss
+// ================================
+
+// =============================
+// IMAGES DES SLIDES
+// =============================
+
+// Image commune pour desktop
+.portfolio-slider-desktop .slide-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+
+  // ✅ Image nette - pas de filtres
+  filter: none;
+  opacity: 1;
+}
+
+// Image pour mobile/tablette
+.portfolio-slider-mobile .slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; // Garde les proportions
+  object-position: center;
+
+  // ✅ Image nette - pas de filtres
+  filter: none;
+  opacity: 1;
+}
+
+// =============================
+// CARTE TEXTE DESKTOP - OVERLAY
+// =============================
+
+.portfolio-slider-desktop .slide-text-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  // Style glass-morphism avec color-dark
+  background: rgba($color-dark, 0.75);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 2px solid rgba($color-light, 0.2);
+
+  // Dimensions et espacement
+  padding: 2.5rem;
+  max-width: 70%;
+  min-width: 400px;
+
+  // Centrage du contenu
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.5rem;
+
+  // Ombres pour la profondeur
+  box-shadow:
+    0 20px 60px rgba($color-dark, 0.4),
+    0 0 40px rgba($color-light, 0.1);
+}
+
+// =============================
+// DESCRIPTIONS
+// =============================
+
+// Description desktop - dans la carte overlay
+.portfolio-slider-desktop .slide-description {
+  color: $color-light;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.4px;
+  margin: 0;
+
+  // Ombre pour meilleure lisibilité sur overlay
+  text-shadow:
+    0 2px 4px rgba($color-dark, 0.8),
+    0 0 15px rgba($color-dark, 0.5);
+
+  // Taille normale pour grands écrans
+  font-size: 1.3rem;
+}
+
+// Description mobile/tablette - dans la section séparée
+.portfolio-slider-mobile .slide-description {
+  color: $color-light;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  margin: 0;
+
+  // Text-shadow renforcé (pas de background)
+  text-shadow:
+    0 2px 4px rgba($color-dark, 0.9),
+    0 0 20px rgba($color-dark, 0.6),
+    0 0 30px rgba($color-dark, 0.3);
+
+  // Tailles réduites pour layout séparé
+  @include small-screens {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.81rem;
+    line-height: 1.41;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.82rem;
+    line-height: 1.42;
+  }
+
+  @include from('small-xl') {
+    font-size: 0.83rem;
+    line-height: 1.43;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+
+  @include from('medium-sm') {
+    font-size: 0.87rem;
+    line-height: 1.47;
+  }
+
+  @include from('medium-lg') {
+    font-size: 0.88rem;
+    line-height: 1.48;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+}
+
+// =============================
+// LIENS BOUTIQUE
+// =============================
+
+// Lien boutique desktop
+.portfolio-slider-desktop .portfolio-shop-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  // Style du bouton - version portfolio (plus subtile)
+  background: linear-gradient(
+    135deg,
+    rgba($color-purple, 0.8),
+    rgba($color-pink, 0.8)
+  );
+  color: $color-light;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+
+  // Dimensions
+  padding: 0.65rem 1.8rem;
+  border-radius: 50px;
+  border: 2px solid rgba($color-light, 0.2);
+
+  // Ombres subtiles
+  box-shadow:
+    0 6px 20px rgba($color-purple, 0.3),
+    0 3px 10px rgba($color-pink, 0.2);
+
+  text-shadow: 0 2px 4px rgba($color-dark, 0.6);
+
+  // Transitions
+  transition: all 0.3s ease;
+
+  // Effets hover
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    background: linear-gradient(
+      135deg,
+      rgba($color-purple, 0.9),
+      rgba($color-pink, 0.9)
+    );
+    box-shadow:
+      0 8px 25px rgba($color-purple, 0.4),
+      0 4px 15px rgba($color-pink, 0.3);
+    border-color: rgba($color-light, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgba($color-light, 0.5);
+    box-shadow:
+      0 8px 25px rgba($color-purple, 0.4),
+      0 4px 15px rgba($color-pink, 0.3),
+      0 0 0 3px rgba($color-light, 0.2);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+}
+
+// Lien boutique mobile/tablette
+.portfolio-slider-mobile .portfolio-shop-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  // Style du bouton mobile
+  background: linear-gradient(135deg, $color-purple, $color-pink);
+  color: $color-light;
+  text-decoration: none;
+  font-weight: 600;
+
+  // Dimensions responsives
+  border-radius: 50px;
+  border: 2px solid rgba($color-light, 0.2);
+
+  // Ombres
+  box-shadow:
+    0 6px 20px rgba($color-purple, 0.4),
+    0 3px 10px rgba($color-pink, 0.3);
+
+  text-shadow:
+    0 2px 4px rgba($color-dark, 0.8),
+    0 0 15px rgba($color-dark, 0.4);
+
+  // Transitions
+  transition: all 0.3s ease;
+
+  // Tailles responsives
+  @include small-screens {
+    font-size: 0.8rem;
+    padding: 0.5rem 1.2rem;
+  }
+
+  @include from('small-sm') {
+    font-size: 0.81rem;
+    padding: 0.51rem 1.25rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 0.82rem;
+    padding: 0.52rem 1.3rem;
+  }
+
+  @include from('small-xl') {
+    font-size: 0.83rem;
+    padding: 0.53rem 1.35rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    font-size: 0.85rem;
+    padding: 0.55rem 1.4rem;
+  }
+
+  @include from('medium-sm') {
+    font-size: 0.87rem;
+    padding: 0.57rem 1.5rem;
+  }
+
+  @include from('medium-lg') {
+    font-size: 0.88rem;
+    padding: 0.58rem 1.55rem;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.6rem;
+  }
+
+  // Effets hover
+  &:hover {
+    transform: translateY(-1px) scale(1.02);
+    background: linear-gradient(
+      135deg,
+      color.adjust($color-purple, $lightness: 5%),
+      color.adjust($color-pink, $lightness: 5%)
+    );
+    box-shadow:
+      0 8px 25px rgba($color-purple, 0.5),
+      0 4px 15px rgba($color-pink, 0.4);
+    border-color: rgba($color-light, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgba($color-light, 0.5);
+    box-shadow:
+      0 8px 25px rgba($color-purple, 0.5),
+      0 4px 15px rgba($color-pink, 0.4),
+      0 0 0 3px rgba($color-light, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// =============================
+// ANIMATIONS
+// =============================
+
+// Animation pour les cartes texte desktop
+.portfolio-slider-desktop .portfolio-slide.active .slide-text-card {
+  animation: textCardFadeIn 0.6s ease-out 0.3s both;
+}
+
+@keyframes textCardFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

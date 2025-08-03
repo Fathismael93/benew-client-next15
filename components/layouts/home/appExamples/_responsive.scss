@@ -1,0 +1,267 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// =============================
+// ÉCRANS TRÈS PETITS - Mobile
+// =============================
+
+@media (max-width: 360px) {
+  .portfolio-slider-container {
+    width: 95%;
+    height: 92%;
+  }
+
+  // Mobile seulement
+  .portfolio-slider-mobile {
+    .mobile-text-section {
+      padding: 0.5rem;
+      gap: 0.6rem;
+
+      .slide-description {
+        font-size: 0.75rem;
+        line-height: 1.3;
+      }
+
+      .portfolio-shop-link {
+        font-size: 0.75rem;
+        padding: 0.45rem 1rem;
+      }
+    }
+  }
+
+  .portfolio-nav-arrow {
+    width: 45px;
+    height: 45px;
+
+    &.prev {
+      left: 0.5rem;
+    }
+
+    &.next {
+      right: 0.5rem;
+    }
+
+    svg {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+// =============================
+// MODE PAYSAGE MOBILE
+// =============================
+
+@include mobile-landscape {
+  .portfolio-slider-mobile {
+    .mobile-text-section {
+      padding: 0.75rem;
+      gap: 0.6rem;
+
+      .slide-description {
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+
+      .portfolio-shop-link {
+        font-size: 0.75rem;
+        padding: 0.45rem 1.1rem;
+      }
+    }
+  }
+}
+
+// =============================
+// ACCESSIBILITÉ ET REDUCED MOTION
+// =============================
+
+@include reduced-motion {
+  .portfolio-slide {
+    transition: opacity 0.3s ease;
+  }
+
+  .portfolio-nav-arrow {
+    transition: none;
+
+    &:hover {
+      transform: translateY(-50%);
+    }
+
+    &:active {
+      transform: translateY(-50%);
+    }
+  }
+
+  // Animation désactivée pour reduced motion
+  .portfolio-slider-desktop .portfolio-slide.active .slide-text-card {
+    animation: none;
+  }
+
+  // Lien portfolio sans animation
+  .portfolio-shop-link {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// =============================
+// SUPPORT TACTILE
+// =============================
+
+@media (pointer: coarse) {
+  .portfolio-nav-arrow {
+    // Augmenter la zone tactile
+    min-width: 44px;
+    min-height: 44px;
+
+    &:hover {
+      transform: translateY(-50%);
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: translateY(-50%) scale(0.95);
+    }
+  }
+
+  // Support tactile pour le lien portfolio
+  .portfolio-shop-link {
+    min-height: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.95);
+    }
+  }
+}
+
+// =============================
+// SUPPORT ÉCRANS HAUTE DENSITÉ
+// =============================
+
+@include high-density {
+  .portfolio-slider-container {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .slide-image {
+    image-rendering: high-quality;
+  }
+}
+
+// =============================
+// TRÈS GRANDS ÉCRANS
+// =============================
+
+@include from('large-xxxl') {
+  .portfolio-slider-container {
+    max-width: 85%;
+    max-height: 85%;
+  }
+
+  .portfolio-slider-desktop .slide-text-card {
+    padding: 3rem;
+    max-width: 75%;
+    min-width: 450px;
+
+    .slide-description {
+      font-size: 1.4rem;
+    }
+
+    .portfolio-shop-link {
+      font-size: 1.1rem;
+      padding: 0.75rem 2rem;
+    }
+  }
+}
+
+// =============================
+// ORIENTATION PAYSAGE TABLETTES
+// =============================
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .portfolio-slider-mobile {
+    .mobile-image-section {
+      height: 65%; // Plus d'espace pour l'image en paysage
+    }
+
+    .mobile-text-section {
+      height: 35%; // Moins d'espace pour le texte
+      padding: 1rem 1.5rem;
+      gap: 0.8rem;
+
+      .slide-description {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .portfolio-shop-link {
+        font-size: 0.85rem;
+        padding: 0.55rem 1.4rem;
+      }
+    }
+  }
+}
+
+// =============================
+// ÉCRANS COURTS - Hauteur limitée
+// =============================
+
+@include short-screen {
+  .portfolio-slider-container {
+    height: 95%;
+  }
+
+  .portfolio-slider-mobile {
+    .mobile-text-section {
+      padding: 0.75rem;
+      gap: 0.75rem;
+
+      .slide-description {
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+
+      .portfolio-shop-link {
+        font-size: 0.8rem;
+        padding: 0.5rem 1.2rem;
+      }
+    }
+  }
+}
+
+// =============================
+// CONTRASTE ÉLEVÉ
+// =============================
+
+@include high-contrast {
+  .portfolio-slider-desktop .slide-text-card {
+    background: rgba($color-dark, 0.9);
+    border-color: rgba($color-light, 0.5);
+  }
+
+  .portfolio-shop-link {
+    border-width: 3px;
+    border-color: rgba($color-light, 0.8);
+  }
+
+  .portfolio-nav-arrow {
+    border-width: 3px;
+    border-color: rgba($color-light, 0.8);
+  }
+}

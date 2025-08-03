@@ -1,0 +1,264 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _navigation.scss
+// ================================
+
+// =============================
+// FLÈCHES DE NAVIGATION - COMMUNES
+// =============================
+
+.portfolio-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  // Style des boutons avec color-dark
+  background: rgba($color-dark, 0.7);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba($color-light, 0.25);
+  border-radius: 50%;
+
+  color: $color-light;
+  cursor: pointer;
+
+  // Dimensions
+  width: 60px;
+  height: 60px;
+
+  // Centrage de l'icône
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Transitions
+  transition: all 0.3s ease;
+  opacity: 0.7;
+
+  // Effets hover et focus
+  &:hover {
+    opacity: 1;
+    background: rgba($color-dark, 0.85);
+    border-color: rgba($color-light, 0.4);
+    transform: translateY(-50%) scale(1.05);
+
+    // Responsive - désactiver effets sur petits/moyens écrans
+    @include until('large-xs') {
+      background: none;
+      transform: translateY(-50%);
+      border: none;
+    }
+  }
+
+  &:focus {
+    outline: 2px solid rgba($color-orange, 0.6);
+    outline-offset: 2px;
+
+    // Responsive - désactiver effets sur petits/moyens écrans
+    @include until('large-xs') {
+      outline: none;
+      outline-offset: 0;
+    }
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.98);
+
+    // Responsive - désactiver effets sur petits/moyens écrans
+    @include until('large-xs') {
+      transform: translateY(-50%);
+    }
+  }
+
+  // Icônes des flèches
+  svg {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 2px 4px rgba($color-dark, 0.5));
+  }
+
+  // =============================
+  // RESPONSIVE - TAILLES ET POSITIONS
+  // =============================
+
+  // 📱 PETITS ÉCRANS
+  @include small-screens {
+    width: 50px;
+    height: 50px;
+    opacity: 0.6;
+    background: none;
+    border: none;
+
+    svg {
+      font-size: 1.2rem;
+    }
+  }
+
+  @include from('small-sm') {
+    width: 51px;
+    height: 51px;
+    opacity: 0.6;
+    background: none;
+    border: none;
+
+    svg {
+      font-size: 1.22rem;
+    }
+  }
+
+  @include from('small-lg') {
+    width: 52px;
+    height: 52px;
+    opacity: 0.6;
+    background: none;
+    border: none;
+
+    svg {
+      font-size: 1.25rem;
+    }
+  }
+
+  @include from('small-xl') {
+    width: 53px;
+    height: 53px;
+    opacity: 0.6;
+    background: none;
+    border: none;
+
+    svg {
+      font-size: 1.27rem;
+    }
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include between('small-xl', 'medium-sm') {
+    width: 55px;
+    height: 55px;
+    opacity: 0.6;
+    background: none;
+    border: none;
+
+    svg {
+      font-size: 1.3rem;
+    }
+  }
+
+  @include from('medium-sm') {
+    width: 57px;
+    height: 57px;
+    opacity: 0.65;
+
+    svg {
+      font-size: 1.4rem;
+    }
+  }
+
+  @include from('medium-lg') {
+    width: 58px;
+    height: 58px;
+    opacity: 0.67;
+
+    svg {
+      font-size: 1.45rem;
+    }
+  }
+
+  @include from('medium-xxl') {
+    width: 60px;
+    height: 60px;
+    opacity: 0.7;
+
+    svg {
+      font-size: 1.5rem;
+    }
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    width: 70px;
+    height: 70px;
+
+    svg {
+      font-size: 1.8rem;
+    }
+  }
+
+  // =============================
+  // POSITIONS FLÈCHES
+  // =============================
+
+  // Flèche précédente
+  &.prev {
+    left: 2rem;
+
+    @include small-screens {
+      left: 1rem;
+    }
+
+    @include from('small-sm') {
+      left: 1.1rem;
+    }
+
+    @include from('small-lg') {
+      left: 1.2rem;
+    }
+
+    @include from('small-xl') {
+      left: 1.3rem;
+    }
+
+    @include from('medium-sm') {
+      left: 1.5rem;
+    }
+
+    @include from('medium-lg') {
+      left: 1.75rem;
+    }
+
+    @include from('medium-xxl') {
+      left: 2rem;
+    }
+
+    @include from('large-xs') {
+      left: 3rem;
+    }
+  }
+
+  // Flèche suivante
+  &.next {
+    right: 2rem;
+
+    @include small-screens {
+      right: 1rem;
+    }
+
+    @include from('small-sm') {
+      right: 1.1rem;
+    }
+
+    @include from('small-lg') {
+      right: 1.2rem;
+    }
+
+    @include from('small-xl') {
+      right: 1.3rem;
+    }
+
+    @include from('medium-sm') {
+      right: 1.5rem;
+    }
+
+    @include from('medium-lg') {
+      right: 1.75rem;
+    }
+
+    @include from('medium-xxl') {
+      right: 2rem;
+    }
+
+    @include from('large-xs') {
+      right: 3rem;
+    }
+  }
+}

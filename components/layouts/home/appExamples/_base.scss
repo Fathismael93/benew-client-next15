@@ -1,0 +1,109 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+// =============================
+// GESTION D'AFFICHAGE PAR BREAKPOINT
+// =============================
+
+// VERSION DESKTOP - Visible seulement sur grands écrans
+.portfolio-slider-desktop {
+  @include until('large-xs') {
+    display: none; // Caché sur petits/moyens écrans
+  }
+  @include from('large-xs') {
+    display: block; // Visible sur grands écrans
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// VERSION MOBILE/TABLETTE - Visible seulement sur petits/moyens écrans
+.portfolio-slider-mobile {
+  @include until('large-xs') {
+    display: block; // Visible sur petits/moyens écrans
+    width: 100%;
+    height: 100%;
+  }
+  @include from('large-xs') {
+    display: none; // Caché sur grands écrans
+  }
+}
+
+// =============================
+// CONTENEUR PRINCIPAL DU SLIDER - COMMUN
+// =============================
+.portfolio-slider-container {
+  position: relative;
+  width: 85%;
+  height: 85%;
+
+  // ✅ CENTRAGE PARFAIT - ABSOLU
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  // Style du conteneur
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 25px 80px rgba($color-dark, 0.3),
+    0 0 60px rgba($color-purple, 0.1);
+
+  // Responsive - ajustements pour petits écrans
+  @include small-screens {
+    width: 92%;
+    height: 90%;
+    border-radius: 16px;
+  }
+
+  @include from('small-sm') {
+    width: 91%;
+    height: 89%;
+    border-radius: 16.5px;
+  }
+
+  @include from('small-lg') {
+    width: 90%;
+    height: 88%;
+    border-radius: 17px;
+  }
+
+  @include from('small-xl') {
+    width: 89%;
+    height: 87.5%;
+    border-radius: 17.5px;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    width: 88%;
+    height: 87%;
+    border-radius: 18px;
+  }
+
+  @include from('medium-sm') {
+    width: 87%;
+    height: 86%;
+    border-radius: 19px;
+  }
+
+  @include from('medium-lg') {
+    width: 86%;
+    height: 85.5%;
+    border-radius: 20px;
+  }
+
+  @include from('medium-xxl') {
+    width: 85.5%;
+    height: 85%;
+    border-radius: 22px;
+  }
+
+  @include from('large-xs') {
+    border-radius: 24px;
+  }
+}
