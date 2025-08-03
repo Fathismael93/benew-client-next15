@@ -1,0 +1,102 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _card.scss
+// ================================
+
+.minimalCard {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  // 📱 MOBILE FIRST - Dimensions optimales avec nouveaux breakpoints
+  width: 90%;
+  max-width: 420px;
+
+  @include from('small-sm') {
+    width: 88%;
+    max-width: 430px;
+  }
+
+  @include from('small-lg') {
+    width: 87%;
+    max-width: 440px;
+  }
+
+  @include from('small-xl') {
+    width: 85%;
+    max-width: 450px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include between('small-xl', 'medium-sm') {
+    width: 83%;
+    max-width: 460px;
+  }
+
+  @include from('medium-sm') {
+    width: 82%;
+    max-width: 470px;
+  }
+
+  @include from('medium-lg') {
+    width: 80%;
+    max-width: 480px;
+  }
+
+  @include from('medium-xxl') {
+    width: 78%;
+    max-width: 490px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    width: 75%;
+    max-width: 500px;
+  }
+
+  @include from('large-lg') {
+    width: 72%;
+    max-width: 510px;
+  }
+
+  @include from('large-xxl') {
+    width: 70%;
+    max-width: 520px;
+  }
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.minimalCardInner {
+  width: 100%;
+  background: rgba(css-var(text-color), 0.02);
+  border: 1px solid rgba(css-var(primary-color), 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  // Ombre subtile
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  &.hovered {
+    transform: translateY(-8px);
+    border-color: rgba(css-var(primary-color), 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  // 📱 MOBILE - Effet tactile
+  @media (pointer: coarse) {
+    &:active {
+      transform: translateY(-4px) scale(0.98);
+    }
+  }
+}

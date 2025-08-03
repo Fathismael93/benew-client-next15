@@ -1,0 +1,9 @@
+// ================================
+// 📄 index.scss (fichier principal factorisé)
+// ================================
+@forward 'base';
+@forward 'card';
+@forward 'image';
+@forward 'content';
+@forward 'typography';
+@forward 'responsive';

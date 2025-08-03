@@ -1,0 +1,52 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+.projectSection {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Padding minimal avec nouveaux breakpoints
+  padding: 1rem 0.75rem;
+
+  @include from('small-sm') {
+    padding: 1.2rem 0.8rem;
+  }
+
+  @include from('small-lg') {
+    padding: 1.4rem 0.9rem;
+  }
+
+  @include from('small-xl') {
+    padding: 1.5rem 1rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include between('small-xl', 'medium-sm') {
+    padding: 1.6rem 1.1rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 1.8rem 1.3rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-xxl') {
+    padding: 2.2rem 1.7rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    padding: 2.5rem 2rem;
+  }
+}

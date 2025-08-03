@@ -1,0 +1,170 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// Mode paysage mobile
+@include mobile-landscape {
+  .projectSection {
+    padding: 0.75rem;
+  }
+
+  .minimalCard {
+    width: 85%;
+    max-width: 400px;
+  }
+
+  .minimalImageContainer {
+    height: 260px;
+    padding: 1.25rem;
+  }
+
+  .minimalContent {
+    padding: 1rem;
+  }
+
+  .minimalTitle {
+    font-size: 1.2rem;
+  }
+
+  .minimalCategory {
+    font-size: 0.75rem;
+    gap: 0.3rem;
+    margin-bottom: 0.7rem;
+  }
+}
+
+// Écrans très hauts (iPhone X, 11, etc.)
+@include tall-screen {
+  .minimalImageContainer {
+    @include until('large-xs') {
+      height: 350px; // ✅ Ajusté pour les nouveaux ratios
+    }
+  }
+}
+
+// Support pour écrans tactiles - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .minimalCard {
+    // Zone tactile minimale recommandée
+    min-height: 300px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .minimalCardInner,
+  .minimalImage,
+  .minimalTitle,
+  .minimalCategory {
+    transition: none !important;
+
+    &:hover,
+    &.hovered {
+      transform: none !important;
+    }
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .minimalImage {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .minimalCardInner {
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.12),
+      0 1px 4px rgba(css-var(primary-color), 0.1);
+
+    &.hovered {
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.18),
+        0 4px 12px rgba(css-var(primary-color), 0.15);
+    }
+  }
+}
+
+// ÉCRANS TRÈS PETITS - Mobile
+@media (max-width: 360px) {
+  .projectSection {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .minimalCard {
+    width: 95%;
+    max-width: 350px;
+  }
+
+  .minimalImageContainer {
+    height: 240px;
+    padding: 1rem;
+  }
+
+  .minimalContent {
+    padding: 1rem;
+  }
+
+  .minimalTitle {
+    font-size: 1.2rem;
+  }
+
+  .minimalCategory {
+    font-size: 0.75rem;
+    gap: 0.3rem;
+    margin-bottom: 0.7rem;
+  }
+}
+
+// Très grands écrans - Limitation et centrage
+@include from('large-xxxl') {
+  .projectSection {
+    padding: 3rem 2rem;
+  }
+
+  .minimalCard {
+    max-width: 600px;
+    width: 65%;
+  }
+
+  .minimalImageContainer {
+    height: 500px;
+    padding: 4rem;
+  }
+
+  .minimalTitle {
+    font-size: 2rem;
+  }
+
+  .minimalCategory {
+    font-size: 0.9rem;
+    gap: 0.6rem;
+  }
+}
+
+// Mode sombre - Ajustements si nécessaire
+@include dark-mode {
+  .minimalCardInner {
+    background: rgba(css-var(text-color), 0.01);
+    border-color: rgba(css-var(primary-color), 0.15);
+  }
+
+  .minimalImageContainer {
+    background: linear-gradient(
+      135deg,
+      rgba(css-var(primary-color), 0.02),
+      rgba(css-var(secondary-color), 0.02)
+    );
+  }
+}

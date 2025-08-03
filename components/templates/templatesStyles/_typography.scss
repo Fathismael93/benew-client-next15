@@ -1,0 +1,76 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _typography.scss
+// ================================
+
+.minimalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: css-var(text-color);
+  margin: 0;
+  line-height: 1.3;
+  transition: all 0.3s ease;
+
+  // 📱 MOBILE avec nouveaux breakpoints
+  @include small-screens {
+    font-size: 1.3rem;
+    line-height: 1.4;
+  }
+
+  @include from('small-sm') {
+    font-size: 1.32rem;
+    line-height: 1.38;
+  }
+
+  @include from('small-lg') {
+    font-size: 1.35rem;
+    line-height: 1.36;
+  }
+
+  @include from('small-xl') {
+    font-size: 1.38rem;
+    line-height: 1.34;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include between('small-xl', 'medium-sm') {
+    font-size: 1.4rem;
+    line-height: 1.32;
+  }
+
+  @include from('medium-sm') {
+    font-size: 1.45rem;
+    line-height: 1.31;
+  }
+
+  @include from('medium-lg') {
+    font-size: 1.6rem;
+    line-height: 1.3;
+  }
+
+  @include from('medium-xxl') {
+    font-size: 1.65rem;
+    line-height: 1.3;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Desktop
+  @include from('large-xs') {
+    font-size: 1.7rem;
+  }
+
+  @include from('large-lg') {
+    font-size: 1.75rem;
+  }
+
+  @include from('large-xxl') {
+    font-size: 1.8rem;
+  }
+
+  // Effet hover
+  .minimalCardInner.hovered & {
+    color: css-var(primary-color);
+    transform: translateX(4px);
+  }
+}
