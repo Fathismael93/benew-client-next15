@@ -1,0 +1,233 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _button-group.scss
+// ================================
+
+// 🔘 GROUPE DE BOUTONS - Optimisation mobile-first COMPACTE
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; // ✅ Gap réduit
+  width: 100%;
+  max-width: 300px; // ✅ Largeur réduite
+
+  // 📟 TRÈS PETITS ÉCRANS - BOUTONS COMPACTS
+  @media (max-width: 400px) and (max-height: 680px) {
+    gap: 0.5rem; // ✅ Gap minimal
+    max-width: 280px;
+  }
+
+  // 📟 ÉCRANS ULTRA-COMPACTS
+  @media (max-width: 360px) and (max-height: 650px) {
+    gap: 0.4rem; // ✅ Gap ultra-minimal
+    max-width: 260px;
+  }
+
+  // 📱 PETITS ÉCRANS - Progression avec nouveaux breakpoints
+  @include small-screens {
+    gap: 0.75rem;
+    max-width: 300px;
+  }
+
+  @include from('small-sm') {
+    gap: 0.8rem;
+    max-width: 310px;
+  }
+
+  @include from('small-lg') {
+    gap: 0.85rem;
+    max-width: 320px;
+  }
+
+  @include from('small-xl') {
+    gap: 0.9rem;
+    max-width: 330px;
+  }
+
+  // 📟 MOYENS ÉCRANS - Transition vers horizontal
+  @include from('medium-sm') {
+    flex-direction: row;
+    justify-content: center;
+    max-width: 500px;
+    gap: 1.25rem;
+  }
+
+  @include from('medium-lg') {
+    gap: 1.3rem;
+    max-width: 520px;
+  }
+
+  @include from('medium-xxl') {
+    gap: 1.35rem;
+    max-width: 540px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Layout desktop
+  @include from('large-xs') {
+    justify-content: flex-start;
+    max-width: none;
+    gap: 1rem;
+  }
+
+  @include from('large-lg') {
+    gap: 1.1rem;
+  }
+
+  @include from('large-xxl') {
+    gap: 1.2rem;
+  }
+
+  // =============================
+  // STYLES COMMUNS DES BOUTONS
+  // =============================
+  .primaryButton,
+  .secondaryButton {
+    // 📱 MOBILE - Boutons tactiles COMPACTS
+    padding: 1rem 1.5rem; // ✅ Padding réduit
+    border-radius: 25px; // ✅ Border-radius réduit
+    font-weight: 600;
+    font-size: 0.9rem; // ✅ Font-size réduite
+    min-height: 48px; // ✅ Hauteur minimale réduite
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer !important;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    line-height: 1.1; // ✅ Line-height réduit
+
+    // 📟 TRÈS PETITS ÉCRANS - BOUTONS ULTRA-COMPACTS
+    @media (max-width: 400px) and (max-height: 680px) {
+      padding: 0.8rem 1.2rem; // ✅ Padding minimal
+      font-size: 0.85rem;
+      min-height: 44px;
+      border-radius: 22px;
+    }
+
+    // 📟 ÉCRANS ULTRA-COMPACTS
+    @media (max-width: 360px) and (max-height: 650px) {
+      padding: 0.7rem 1rem; // ✅ Padding ultra-minimal
+      font-size: 0.8rem;
+      min-height: 40px;
+      border-radius: 20px;
+    }
+
+    // 📱 PETITS ÉCRANS - Progression avec nouveaux breakpoints
+    @include small-screens {
+      padding: 0.9rem 1.3rem;
+      font-size: 0.88rem;
+      min-height: 46px;
+    }
+
+    @include from('small-sm') {
+      padding: 0.95rem 1.35rem;
+      font-size: 0.89rem;
+    }
+
+    @include from('small-lg') {
+      padding: 0.98rem 1.4rem;
+      font-size: 0.9rem;
+    }
+
+    @include from('small-xl') {
+      padding: 1rem 1.45rem;
+      font-size: 0.91rem;
+    }
+
+    // 📟 MOYENS ÉCRANS - Ajustements progressifs
+    @include from('medium-sm') {
+      padding: 1.2rem 2.25rem;
+      font-size: 1.05rem;
+      flex: 1;
+      min-height: 56px;
+      border-radius: 30px;
+    }
+
+    @include from('medium-lg') {
+      padding: 1.15rem 2.2rem;
+      font-size: 1.03rem;
+    }
+
+    @include from('medium-xxl') {
+      padding: 1.1rem 2.15rem;
+      font-size: 1.02rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Tailles desktop
+    @include from('large-xs') {
+      padding: 1rem 2rem; // Taille desktop originale
+      font-size: 1rem;
+      flex: none;
+    }
+
+    @include from('large-lg') {
+      padding: 1.05rem 2.1rem;
+      font-size: 1.01rem;
+    }
+
+    @include from('large-xxl') {
+      padding: 1.1rem 2.2rem;
+      font-size: 1.02rem;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba($primary-color, 0.3);
+      cursor: pointer !important;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // =============================
+  // BOUTON PRIMARY - APPEL À L'ACTION
+  // =============================
+  .primaryButton {
+    background: linear-gradient(
+      45deg,
+      $primary-color,
+      color.adjust($primary-color, $lightness: 10%)
+    );
+    color: $background-color;
+    border: none;
+    cursor: pointer;
+    order: 1;
+
+    &:hover {
+      background: linear-gradient(
+        45deg,
+        color.adjust($primary-color, $lightness: 5%),
+        $secondary-color
+      );
+      cursor: pointer !important;
+    }
+  }
+
+  // =============================
+  // BOUTON SECONDARY - SECONDAIRE
+  // =============================
+  .secondaryButton {
+    background: transparent;
+    color: $primary-color;
+    border: 2px solid $primary-color;
+    cursor: pointer;
+    order: 2;
+
+    // 📟 TRÈS PETITS ÉCRANS - BORDURE PLUS FINE
+    @media (max-width: 400px) and (max-height: 680px) {
+      border-width: 1px; // ✅ Bordure plus fine pour économiser l'espace
+    }
+
+    &:hover {
+      background: rgba($primary-color, 0.1);
+      border-color: $secondary-color;
+      color: $secondary-color;
+      cursor: pointer !important;
+    }
+  }
+}

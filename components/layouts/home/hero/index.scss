@@ -1,0 +1,9 @@
+// ================================
+// 📄 index.scss (nouveau fichier principal refactorisé)
+// ================================
+@forward 'base';
+@forward 'text-container';
+@forward 'image-container';
+@forward 'sliding-text';
+@forward 'animations';
+@forward 'responsive';

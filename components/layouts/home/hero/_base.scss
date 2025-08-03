@@ -1,0 +1,72 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+// =============================
+// HERO SECTION - BASE STRUCTURE
+// =============================
+
+.hero {
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    $background-color,
+    color.adjust($background-color, $lightness: -3%)
+  );
+  position: relative;
+
+  .wrapper {
+    // 📱 MOBILE FIRST - Configuration optimale
+    max-width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 0.75rem; // Padding réduit pour plus d'espace
+    display: flex;
+    flex-direction: column;
+
+    // 📟 TRÈS PETITS ÉCRANS (small-xs et inférieurs) - CORRECTION CRITIQUE
+    @media (max-width: 360px) and (max-height: 680px) {
+      padding: 0.5rem; // Padding minimal
+    }
+
+    // 📱 PETITS ÉCRANS - Progression avec nouveaux breakpoints
+    @include from('small-sm') {
+      padding: 0.8rem;
+    }
+
+    @include from('small-lg') {
+      padding: 0.9rem;
+    }
+
+    @include from('small-xl') {
+      padding: 1rem;
+    }
+
+    // 📟 MOYENS ÉCRANS (Tablettes) - Ajustements progressifs
+    @include from('medium-sm') {
+      padding: 1.5rem;
+      max-width: 90%;
+    }
+
+    @include from('medium-lg') {
+      max-width: 80%;
+      padding: 2rem;
+    }
+
+    @include from('medium-xxl') {
+      max-width: 75rem;
+      padding: 2.5rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Layout desktop
+    @include from('large-xs') {
+      max-width: 70rem; // Taille desktop originale
+      padding: 0;
+      flex-direction: row;
+    }
+  }
+}

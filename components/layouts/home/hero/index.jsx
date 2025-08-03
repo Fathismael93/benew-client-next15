@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import './hero.scss';
+import './index.scss';
 
 const textVariants = {
   initial: {

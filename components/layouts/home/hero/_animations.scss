@@ -1,0 +1,91 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _animations.scss
+// ================================
+
+// =============================
+// ANIMATIONS ET AMÉLIORATIONS
+// =============================
+
+// Animation bounce pour l'icône scroll - RÉDUITE sur petits écrans
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-6px); // ✅ Mouvement réduit
+  }
+  60% {
+    transform: translateY(-3px); // ✅ Mouvement réduit
+  }
+}
+
+// Animation de pulsation pour les boutons (optionnelle)
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba($primary-color, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba($primary-color, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba($primary-color, 0);
+  }
+}
+
+// Animation de fondu pour l'image (optionnelle)
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Animation du gradient du titre
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Application des animations sur les éléments appropriés
+.textContainer {
+  h1 {
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+  }
+
+  img {
+    animation: bounce 2s infinite;
+  }
+}
+
+// Animation optionnelle pour les boutons
+.buttonGroup {
+  .primaryButton {
+    &:focus {
+      animation: pulse 1.5s infinite;
+    }
+  }
+}
+
+// Animation d'apparition pour l'image héro
+.imageContainer .heroImage {
+  animation: fadeIn 1s ease-out;
+}
