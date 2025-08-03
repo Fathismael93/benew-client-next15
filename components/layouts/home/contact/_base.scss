@@ -1,0 +1,27 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+// =============================
+// CONTENEUR PRINCIPAL - LAYOUT 50/50
+// =============================
+.contact-main-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  // Layout horizontal par défaut (desktop)
+  flex-direction: row;
+
+  // =============================
+  // RESPONSIVE - MOBILE VERTICAL
+  // =============================
+  @include until('medium-sm') {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+}

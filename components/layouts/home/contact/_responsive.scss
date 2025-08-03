@@ -1,0 +1,227 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// =============================
+// ÉCRANS TRÈS PETITS
+// =============================
+@media (max-width: 360px) {
+  .contact-text-block {
+    padding: 1.25rem;
+
+    .contact-text {
+      font-size: 0.9rem;
+      margin: 0 0 1.25rem 0;
+    }
+
+    .contact-button {
+      font-size: 0.85rem;
+      padding: 0.65rem 1.5rem;
+    }
+  }
+
+  .contact-image-block .contact-logo-container {
+    width: 95%;
+    height: 95%;
+  }
+}
+
+// =============================
+// MODE PAYSAGE MOBILE
+// =============================
+@include mobile-landscape {
+  .contact-main-container {
+    flex-direction: row; // Revenir en horizontal en paysage
+  }
+
+  .contact-text-block,
+  .contact-image-block {
+    width: 50%;
+    height: 100%;
+  }
+
+  .contact-text-block {
+    padding: 1.5rem;
+
+    .contact-text {
+      font-size: 0.95rem;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .contact-button {
+      font-size: 0.9rem;
+      padding: 0.7rem 1.8rem;
+    }
+  }
+}
+
+// =============================
+// ÉCRANS TRÈS HAUTS
+// =============================
+@include tall-screen {
+  .contact-text-block {
+    @include until('medium-sm') {
+      height: 35%; // Moins d'espace sur écrans très hauts
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  .contact-image-block {
+    @include until('medium-sm') {
+      height: 45%; // Plus d'espace pour l'image
+    }
+  }
+}
+
+// =============================
+// ÉCRANS COURTS
+// =============================
+@include short-screen {
+  .contact-text-block {
+    padding: 1.5rem;
+
+    .contact-text {
+      font-size: 1rem;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .contact-button {
+      font-size: 0.95rem;
+      padding: 0.8rem 2rem;
+    }
+  }
+
+  .contact-image-block .contact-logo-container {
+    width: 85%;
+    height: 85%;
+  }
+}
+
+// =============================
+// ACCESSIBILITÉ
+// =============================
+@include reduced-motion {
+  .contact-button {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+
+  .contact-logo-image {
+    transition: none;
+
+    &:hover {
+      transform: none;
+      filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
+    }
+  }
+}
+
+// =============================
+// SUPPORT TACTILE
+// =============================
+@media (pointer: coarse) {
+  .contact-button {
+    min-height: 44px;
+    min-width: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+  }
+}
+
+// =============================
+// SUPPORT ÉCRANS HAUTE DENSITÉ
+// =============================
+@include high-density {
+  .contact-logo-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// =============================
+// CONTRASTE ÉLEVÉ
+// =============================
+@include high-contrast {
+  .contact-button {
+    border-width: 3px;
+    border-color: rgba($color-light, 0.8);
+  }
+
+  .contact-text {
+    text-shadow:
+      0 2px 4px rgba($color-dark, 0.95),
+      0 0 25px rgba($color-dark, 0.7);
+  }
+}
+
+// =============================
+// TRÈS GRANDS ÉCRANS
+// =============================
+@include from('large-xxxl') {
+  .contact-text-block {
+    padding: 3.5rem;
+
+    .contact-text {
+      font-size: 1.5rem;
+      margin: 0 0 3rem 0;
+      max-width: 85%;
+    }
+
+    .contact-button {
+      font-size: 1.3rem;
+      padding: 1.1rem 2.8rem;
+    }
+  }
+
+  .contact-image-block .contact-logo-container {
+    width: 85%;
+    height: 85%;
+  }
+}
+
+// =============================
+// ORIENTATION PAYSAGE TABLETTES
+// =============================
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .contact-main-container {
+    flex-direction: row;
+  }
+
+  .contact-text-block {
+    width: 50%;
+    height: 100%;
+    padding: 2rem;
+
+    .contact-text {
+      font-size: 1.1rem;
+      margin: 0 0 1.8rem 0;
+    }
+
+    .contact-button {
+      font-size: 1rem;
+      padding: 0.85rem 2.1rem;
+    }
+  }
+
+  .contact-image-block {
+    width: 50%;
+    height: 100%;
+  }
+}

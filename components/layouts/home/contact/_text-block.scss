@@ -1,26 +1,9 @@
 @use 'sass:color';
 @use '../../../../app/styles/abstracts' as *;
 
-// =============================
-// CONTENEUR PRINCIPAL - LAYOUT 50/50
-// =============================
-.contact-main-container {
-  display: flex;
-  width: 100%;
-  height: 100%;
-
-  // Layout horizontal par défaut (desktop)
-  flex-direction: row;
-
-  // =============================
-  // RESPONSIVE - MOBILE VERTICAL
-  // =============================
-  @include until('medium-sm') {
-    flex-direction: column-reverse;
-    justify-content: center;
-    align-items: center;
-  }
-}
+// ================================
+// 📄 _text-block.scss
+// ================================
 
 // =============================
 // BLOC GAUCHE - TEXTE ET BOUTON
@@ -250,7 +233,6 @@
     // =============================
     &:hover {
       transform: translateY(-3px) scale(1.05);
-      // Remplacer par :
       background: linear-gradient(
         135deg,
         color.adjust($color-orange, $lightness: 8%),
@@ -277,150 +259,6 @@
       box-shadow:
         0 6px 20px rgba($color-orange, 0.4),
         0 3px 12px rgba($color-pink, 0.3);
-    }
-  }
-}
-
-// =============================
-// BLOC DROITE - IMAGE LOGO
-// =============================
-.contact-image-block {
-  // Desktop : 50% largeur, 100% hauteur
-  width: 50%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-
-  // Mobile : largeur pleine, 50% hauteur
-  @include until('medium-sm') {
-    width: 100%;
-    height: 40%;
-  }
-
-  // =============================
-  // CONTENEUR DE L'IMAGE - 90% DU BLOC
-  // =============================
-  .contact-logo-container {
-    position: relative;
-    width: 90%;
-    height: 90%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    // =============================
-    // IMAGE LOGO
-    // =============================
-    .contact-logo-image {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-
-      // Effet subtil pour s'harmoniser avec le design
-      filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
-    }
-  }
-}
-
-// =============================
-// ÉCRANS TRÈS PETITS
-// =============================
-@media (max-width: 360px) {
-  .contact-text-block {
-    padding: 1.25rem;
-
-    .contact-text {
-      font-size: 0.9rem;
-      margin: 0 0 1.25rem 0;
-    }
-
-    .contact-button {
-      font-size: 0.85rem;
-      padding: 0.65rem 1.5rem;
-    }
-  }
-
-  .contact-image-block .contact-logo-container {
-    width: 95%;
-    height: 95%;
-  }
-}
-
-// =============================
-// MODE PAYSAGE MOBILE
-// =============================
-@include mobile-landscape {
-  .contact-main-container {
-    flex-direction: row; // Revenir en horizontal en paysage
-  }
-
-  .contact-text-block,
-  .contact-image-block {
-    width: 50%;
-    height: 100%;
-  }
-
-  .contact-text-block {
-    padding: 1.5rem;
-
-    .contact-text {
-      font-size: 0.95rem;
-      margin: 0 0 1.5rem 0;
-    }
-
-    .contact-button {
-      font-size: 0.9rem;
-      padding: 0.7rem 1.8rem;
-    }
-  }
-}
-
-// =============================
-// ACCESSIBILITÉ
-// =============================
-@include reduced-motion {
-  .contact-button {
-    transition: none;
-
-    &:hover {
-      transform: none;
-    }
-
-    &:active {
-      transform: none;
-    }
-  }
-
-  .contact-logo-image {
-    transition: none;
-
-    &:hover {
-      transform: none;
-      filter: drop-shadow(0 10px 30px rgba($color-dark, 0.3));
-    }
-  }
-}
-
-// =============================
-// SUPPORT TACTILE
-// =============================
-@media (pointer: coarse) {
-  .contact-button {
-    min-height: 44px;
-    min-width: 44px;
-
-    &:hover {
-      transform: none;
-    }
-
-    &:active {
-      opacity: 0.8;
-      transform: scale(0.98);
     }
   }
 }
