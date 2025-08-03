@@ -1,6 +1,6 @@
 'use client';
 
-import './qualities.scss';
+import './index.scss';
 import { useEffect, useState } from 'react';
 import { MdPalette, MdPayment, MdSecurity, MdVerified } from 'react-icons/md';
 

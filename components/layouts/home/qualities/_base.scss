@@ -1,0 +1,21 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+// =============================
+// STRUCTURE GRID DES 3 BLOCS
+// =============================
+
+// Note: Le composant QualitiesHome utilise une structure en 3 blocs distincts :
+// 1. services-title-block (titre)
+// 2. services-cards-block (cartes slider)
+// 3. services-dots-block (navigation dots)
+
+// Cette structure est gérée par le grid parent dans home/styles/_services-section.scss
+// Chaque bloc est positionné via grid-area
+
+// Les blocs sont conçus pour être flexibles et s'adapter au grid parent
+// tout en conservant leur logique interne de centrage et d'espacement

@@ -1,0 +1,62 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _animations.scss
+// ================================
+
+// =============================
+// ANIMATION PULSE POUR LES DOTS
+// =============================
+@keyframes dotPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+// =============================
+// ANIMATION POUR LE TRAIT DE SOULIGNEMENT
+// =============================
+@keyframes underlineGlow {
+  0% {
+    box-shadow: 0 0 5px rgba($color-pink, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba($color-pink, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba($color-pink, 0.3);
+  }
+}
+
+// Application de l'animation sur le trait de soulignement
+.section-main-title::after {
+  animation: underlineGlow 3s ease-in-out infinite;
+}
+
+// =============================
+// ANIMATION POUR LES ICÔNES ACTIVES
+// =============================
+@keyframes iconBounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+// Application sur les cartes actives
+.service-card.active .service-icon {
+  animation: iconBounce 2s ease-in-out infinite;
+}

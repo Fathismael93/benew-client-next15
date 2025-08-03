@@ -1,0 +1,120 @@
+@use 'sass:color';
+@use '../../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _title-block.scss
+// ================================
+
+// =============================
+// BLOC 1 : TITRE SEUL
+// =============================
+.services-title-block {
+  grid-area: title;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  // Hauteur fixe pour le titre
+  min-height: auto;
+
+  @include small-screens {
+    min-height: auto;
+  }
+
+  .section-main-title {
+    font-weight: 800;
+    line-height: 1.2;
+    color: $color-pink;
+    text-shadow:
+      0 2px 4px rgba($color-dark, 0.5),
+      0 0 20px rgba($color-pink, 0.3);
+    position: relative;
+    margin: 0; // Pas de marge - contrôlé par le grid
+
+    // Tailles responsives
+    font-size: 1.8rem;
+
+    @include small-screens {
+      font-size: 1.3rem;
+    }
+
+    @include from('small-sm') {
+      font-size: 1.35rem;
+    }
+
+    @include from('small-lg') {
+      font-size: 1.4rem;
+    }
+
+    @include from('small-xl') {
+      font-size: 1.45rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      font-size: 1.5rem;
+    }
+
+    @include from('medium-sm') {
+      font-size: 1.9rem;
+    }
+
+    @include from('medium-lg') {
+      font-size: 2rem;
+    }
+
+    @include from('medium-xxl') {
+      font-size: 2.1rem;
+    }
+
+    @include from('large-xs') {
+      font-size: 2.2rem;
+    }
+
+    // Trait de soulignement
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, $color-pink, $color-purple);
+      border-radius: 3px;
+      bottom: -0.5rem;
+
+      width: 50px;
+      height: 2px;
+
+      @include small-screens {
+        width: 35px;
+        height: 2px;
+        bottom: -0.4rem;
+      }
+
+      @include from('small-sm') {
+        width: 37px;
+      }
+
+      @include from('small-lg') {
+        width: 40px;
+      }
+
+      @include from('small-xl') {
+        width: 42px;
+      }
+
+      @include from('medium-sm') {
+        width: 45px;
+      }
+
+      @include from('medium-lg') {
+        width: 50px;
+      }
+
+      @include from('large-xs') {
+        width: 60px;
+        height: 3px;
+        bottom: -0.6rem;
+      }
+    }
+  }
+}
