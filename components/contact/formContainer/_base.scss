@@ -1,8 +1,9 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
 // ================================
 // 📄 _base.scss
 // ================================
-@use 'sass:color';
-@use '../../../../app/styles/abstracts' as *;
 
 .formContainer {
   width: 100%;
