@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import './presentation.scss';
+import './index.scss';
 import Image from 'next/image';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 import Parallax from 'components/layouts/parallax';
