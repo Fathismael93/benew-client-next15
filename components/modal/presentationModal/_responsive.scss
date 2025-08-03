@@ -1,0 +1,145 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss
+// ================================
+
+// Mode paysage sur mobile
+@include mobile-landscape {
+  .modal {
+    width: 85%;
+    max-height: 80vh;
+  }
+
+  .modalContent {
+    padding: 15px;
+    gap: 0.8rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .modalText p {
+    font-size: 0.8rem;
+  }
+
+  .closeButton {
+    padding: 0.6rem 1.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+// Écrans très hauts
+@include tall-screen {
+  .modal {
+    @include until('large-xs') {
+      max-height: 85vh;
+    }
+  }
+}
+
+// Support pour écrans tactiles
+@media (pointer: coarse) {
+  .closeButton {
+    min-height: 44px;
+  }
+}
+
+// Amélioration pour l'accessibilité
+@include reduced-motion {
+  .closeButton {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// ÉCRANS TRÈS PETITS - Mobile
+@media (max-width: 360px) {
+  .modal {
+    width: 98%;
+    max-height: 80vh;
+  }
+
+  .modalContent {
+    padding: 12px;
+    gap: 0.75rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .modalText {
+    gap: 0.6rem;
+
+    p {
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+  }
+
+  .closeButton {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+}
+
+// Très grands écrans - Optimisations supplémentaires
+@include from('large-xxxl') {
+  .modal {
+    max-width: 700px;
+  }
+
+  .modalContent {
+    padding: 40px;
+    gap: 2rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .modalText {
+    gap: 1.25rem;
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+  }
+
+  .closeButton {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .modal {
+    box-shadow:
+      0 10px 30px #{'rgba(#{css-var(background-color)}, 0.7)'},
+      0 0 20px #{'rgba(#{css-var(primary-color)}, 0.15)'},
+      0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .closeButton {
+    box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+
+    &:hover {
+      box-shadow: 0 8px 16px #{'rgba(#{css-var(primary-color)}, 0.5)'};
+    }
+  }
+}

@@ -1,0 +1,78 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _buttons.scss
+// ================================
+
+.closeButton {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    color.adjust($primary-color, $lightness: 10%)
+  );
+  color: css-var(background-color);
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: center;
+  box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+
+  // 📱 PETITS ÉCRANS - Bouton plus petit
+  @include until('small-sm') {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+  }
+
+  @include from('small-sm') {
+    padding: 0.65rem 1.6rem;
+    font-size: 0.92rem;
+  }
+
+  @include from('small-lg') {
+    padding: 0.7rem 1.7rem;
+    font-size: 0.95rem;
+  }
+
+  @include from('small-xl') {
+    padding: 0.75rem 1.8rem;
+    font-size: 0.97rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    padding: 0.75rem 1.9rem;
+    font-size: 0.98rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 0.78rem 1.95rem;
+    font-size: 0.99rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Taille optimale
+  @include from('large-xs') {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      color.adjust($primary-color, $lightness: 5%),
+      css-var(secondary-color)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

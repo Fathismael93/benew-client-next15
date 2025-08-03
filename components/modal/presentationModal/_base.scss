@@ -1,0 +1,157 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _base.scss
+// ================================
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #{'rgba(#{css-var(background-color)}, 0.85)'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+.modal {
+  background: linear-gradient(
+    135deg,
+    color.adjust($background-color, $lightness: -5%),
+    color.adjust($background-color, $lightness: 8%)
+  );
+  border-radius: 12px;
+  box-shadow:
+    0 10px 30px #{'rgba(#{css-var(background-color)}, 0.6)'},
+    0 0 20px #{'rgba(#{css-var(primary-color)}, 0.1)'};
+  width: 90%;
+  max-width: 600px;
+  border: 1px solid #{'rgba(#{css-var(primary-color)}, 0.3)'};
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  // 📱 PETITS ÉCRANS - Ajustements progressifs
+  @include until('small-sm') {
+    width: 95%;
+    max-height: 85vh;
+  }
+
+  @include from('small-sm') {
+    width: 93%;
+    max-height: 87vh;
+  }
+
+  @include from('small-lg') {
+    width: 92%;
+    max-height: 88vh;
+  }
+
+  @include from('small-xl') {
+    width: 91%;
+    max-height: 89vh;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    width: 85%;
+    max-height: 90vh;
+  }
+
+  @include from('medium-lg') {
+    width: 80%;
+  }
+
+  @include from('medium-xl') {
+    width: 75%;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Taille optimale
+  @include from('large-xs') {
+    width: 70%;
+    max-width: 600px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      css-var(primary-color),
+      css-var(secondary-color),
+      css-var(accent-color)
+    );
+  }
+
+  // Pour un meilleur scroll
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #{'rgba(#{css-var(primary-color)}, 0.5)'};
+    border-radius: 3px;
+
+    &:hover {
+      background: #{'rgba(#{css-var(primary-color)}, 0.7)'};
+    }
+  }
+}
+
+.modalContent {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  // 📱 PETITS ÉCRANS - Padding réduit
+  @include until('small-sm') {
+    padding: 15px;
+    gap: 1rem;
+  }
+
+  @include from('small-sm') {
+    padding: 18px;
+    gap: 1.1rem;
+  }
+
+  @include from('small-lg') {
+    padding: 20px;
+    gap: 1.2rem;
+  }
+
+  @include from('small-xl') {
+    padding: 22px;
+    gap: 1.3rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    padding: 25px;
+    gap: 1.4rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 28px;
+    gap: 1.45rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Padding optimal
+  @include from('large-xs') {
+    padding: 30px;
+    gap: 1.5rem;
+  }
+}
