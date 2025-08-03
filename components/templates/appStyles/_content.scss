@@ -185,17 +185,6 @@
       // 📱 MOBILE FIRST
       font-size: 1rem;
 
-      @include until('small-sm') {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        text-align: center;
-      }
-
-      @include from('medium-lg') {
-        font-size: 1rem;
-        text-align: left;
-      }
-
       // 📱 MOBILE - Scroll visible avec padding
       max-height: 200px;
       overflow-y: auto;
@@ -205,12 +194,17 @@
       border: 1px solid rgba(css-var(color-light), 0.05);
 
       @include until('small-sm') {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        text-align: center;
         max-height: 180px;
         padding: 0.875rem;
       }
 
       // 🖥️ DESKTOP - Plus de hauteur, moins de padding
       @include from('medium-lg') {
+        font-size: 1rem;
+        text-align: left;
         max-height: 300px;
         padding: 0.5rem 0;
         background: transparent;
