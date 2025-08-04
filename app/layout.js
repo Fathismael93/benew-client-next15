@@ -3,7 +3,7 @@ import './styles/main.scss';
 import Navbar from '../components/layouts/navbar';
 import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
-import AudioPlayer from '../components/layouts/audio/AudioPlayer'; // 🎵 NOUVEAU
+import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
 import Script from 'next/script';
 
 // =============================
