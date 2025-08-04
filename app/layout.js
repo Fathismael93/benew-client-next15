@@ -3,6 +3,7 @@ import './styles/main.scss';
 import Navbar from '../components/layouts/navbar';
 import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
+import AudioPlayer from '../components/layouts/audio/AudioPlayer'; // 🎵 NOUVEAU
 import Script from 'next/script';
 
 // =============================
@@ -129,6 +130,9 @@ export default function RootLayout({ children }) {
       <body>
         <Navbar />
         {children}
+
+        {/* 🎵 COMPOSANT AUDIO - Ajouté ici pour être présent sur toutes les pages */}
+        <AudioPlayer />
 
         {/* Analytics avec initialisation automatique */}
         {process.env.NODE_ENV === 'production' && gtmId && (
