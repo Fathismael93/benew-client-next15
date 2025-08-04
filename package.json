@@ -12,7 +12,7 @@
     "@axe-core/react": "^4.10.2",
     "@next/bundle-analyzer": "^15.4.4",
     "@next/third-parties": "^15.4.4",
-    "@sentry/nextjs": "^9.41.0",
+    "@sentry/nextjs": "^9.44.0",
     "framer-motion": "^12.23.11",
     "html-react-parser": "^5.2.6",
     "lru-cache": "^11.1.0",
