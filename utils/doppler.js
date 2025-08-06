@@ -2,7 +2,7 @@
 // Utilitaire Doppler pour récupérer les secrets de manière sécurisée
 // Compatible avec Next.js 15 + Sentry + PostgreSQL + Cloudinary
 
-import { captureException, captureMessage } from '@/instrumentation';
+import { captureException, captureMessage } from '../instrumentation';
 
 // =============================
 // CONFIGURATION

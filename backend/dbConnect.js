@@ -5,7 +5,7 @@
 /***************** ********************/
 
 import { Pool } from 'pg';
-import logger from '@utils/logger';
+import logger from '@/utils/logger';
 import { captureMessage, captureDatabaseError } from '../instrumentation.js';
 import { initializeBenewConfig } from '@/utils/doppler';
 

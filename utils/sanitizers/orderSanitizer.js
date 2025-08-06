@@ -2,7 +2,7 @@
 // Système de sanitization avancé pour les données de commande
 // Protection contre XSS, injection SQL, et autres attaques
 
-import { captureMessage, captureException } from '@/instrumentation';
+import { captureMessage, captureException } from '../../instrumentation';
 
 // =============================
 // CONFIGURATION DE SANITIZATION

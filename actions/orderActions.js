@@ -5,7 +5,7 @@ import {
   captureDatabaseError,
   captureException,
   captureMessage,
-} from '@/instrumentation';
+} from '../instrumentation';
 import {
   validateOrderServer,
   prepareOrderDataFromFormData,

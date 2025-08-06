@@ -6,11 +6,12 @@
     //A series of entries which re-map imports to lookup locations relative to the baseUrl if set,
     // or to the tsconfig file itself otherwise.
     "paths": {
-      "@app/*": ["./app/*"],
-      "@actions/*": ["./actions/*"],
-      "@components/*": ["./ui/components/*"],
-      "@utils/*": ["./utils/*"],
-      "@monitoring/*": ["./monitoring/*"]
+      "@/app/*": ["./app/*"],
+      "@/actions/*": ["./actions/*"],
+      "@/components/*": ["./components/*"],
+      "@/utils/*": ["./utils/*"],
+      "@/monitoring/*": ["./monitoring/*"],
+      "@/backend/*": ["./backend/*"]
     },
 
     // Controls how JSX constructs are emitted in JavaScript files.

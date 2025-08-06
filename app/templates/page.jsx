@@ -17,7 +17,7 @@ import {
   captureDatabaseError,
   captureException,
   captureMessage,
-} from '@/instrumentation';
+} from '../../instrumentation';
 import { optimizeApiCall, getAdaptiveSiteConfig } from '@/utils/performance';
 import { limitBenewAPI } from '@/backend/rateLimiter';
 
@@ -152,7 +152,7 @@ async function TemplatesPage() {
   try {
     // Rate Limiting
     if (CONFIG.rateLimiting.enabled) {
-      const headersList = headers();
+      const headersList = await headers();
       const rateLimitCheck = await limitBenewAPI('templates')({
         headers: headersList,
         url: '/templates',

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { sendContactEmail } from '@actions/sendContactEmail';
+import { sendContactEmail } from '@/actions/sendContactEmail';
 import './index.scss'; // Assuming you have a separate CSS file for styling
 
 const FormContainer = ({ ref }) => {

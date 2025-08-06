@@ -18,7 +18,7 @@ import {
   captureException,
   captureMessage,
   captureValidationError,
-} from '@/instrumentation';
+} from '../../../instrumentation';
 import { optimizeApiCall, getAdaptiveSiteConfig } from '@/utils/performance';
 import { limitBenewAPI } from '@/backend/rateLimiter';
 import { templateIdSchema } from '@/utils/schemas/schema';

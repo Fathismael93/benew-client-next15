@@ -7,7 +7,7 @@ import Parallax from '../layouts/parallax';
 import OrderModal from '../modal/OrderModal'; // Import the OrderModal component
 import './appStyles/index.scss';
 import Link from 'next/link';
-import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
+import { formatPrice, getApplicationLevelLabel } from '@/utils/helpers';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 
 // Analytics imports - ajout de trackEvent

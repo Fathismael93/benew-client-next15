@@ -8,7 +8,7 @@ import { IoEye } from 'react-icons/io5';
 import './shopsStyles/index.scss'; // Importer le fichier principal factorisé
 import Parallax from '@/components/layouts/parallax';
 import OrderModal from '../modal/OrderModal';
-import { formatPrice, getApplicationLevelLabel } from '@utils/helpers';
+import { formatPrice, getApplicationLevelLabel } from '@/utils/helpers';
 // Ajouter ces imports
 import {
   // trackApplicationView,

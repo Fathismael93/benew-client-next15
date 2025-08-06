@@ -34,6 +34,7 @@ const validateEnv = () => {
     'NODE_ENV',
     'NEXT_PUBLIC_GA_MEASUREMENT_ID', // ← AJOUTER CETTE LIGNE
     'NEXT_PUBLIC_GTM_CONTAINER_ID',
+    'DOPPLER_TOKEN',
   ];
 
   const missingVars = requiredVars.filter((varName) => !process.env[varName]);
@@ -109,8 +110,11 @@ const nextConfig = {
   // Timeout pour la génération de pages statiques
   staticPageGenerationTimeout: 180,
 
-  // Configuration des en-têtes HTTP - Phase 1 - APPROCHE FILTRÉE
+  // Configuration des en-têtes HTTP - AVEC CSP CORRIGÉ POUR NEXT.JS 15
   async headers() {
+    // ===== DÉTECTION D'ENVIRONNEMENT =====
+    const isDev = process.env.NODE_ENV === 'development';
+
     // ===== CRÉER TOUS LES OBJETS DE CONFIGURATION =====
     const allHeadersConfigurations = [
       // ===== HEADERS GLOBAUX DE SÉCURITÉ =====
@@ -159,6 +163,22 @@ const nextConfig = {
                 },
               ]
             : []),
+          // ✅ CSP GLOBAL CORRIGÉ POUR NEXT.JS 15
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              `script-src 'self' ${isDev ? "'unsafe-eval'" : ''} 'unsafe-inline' https://*.googletagmanager.com https://*.google-analytics.com`,
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' https://res.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com data:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net",
+              "worker-src 'self' blob:",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+            ].join('; '),
+          },
         ],
       },
 
@@ -201,10 +221,10 @@ const nextConfig = {
             key: 'X-Frame-Options',
             value: 'DENY',
           },
-          // CSP ultra-restrictif pour les actions
+          // ✅ CSP ULTRA-RESTRICTIF CORRIGÉ POUR SERVER ACTIONS
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'none'; script-src 'self'; connect-src 'self'",
+            value: `default-src 'none'; script-src 'self' ${isDev ? "'unsafe-eval'" : ''}; connect-src 'self'`,
           },
         ],
       },
@@ -240,10 +260,10 @@ const nextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
-          // CSP spécifique aux actions
+          // ✅ CSP SPÉCIFIQUE AUX ACTIONS CORRIGÉ
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'none'; connect-src 'self'; form-action 'self'",
+            value: `default-src 'none'; script-src 'self' ${isDev ? "'unsafe-eval'" : ''}; connect-src 'self'; form-action 'self'`,
           },
           // Rate limiting hints
           {
@@ -266,12 +286,12 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'no-cache, must-revalidate',
           },
-          // CSP adapté pour formulaire (sans EmailJS)
+          // ✅ CSP ADAPTÉ POUR FORMULAIRE DE CONTACT (SANS EMAILJS)
           {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'", // Framer Motion
+              `script-src 'self' ${isDev ? "'unsafe-eval'" : ''} 'unsafe-inline'`, // Framer Motion
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data:",
               "font-src 'self' https://fonts.gstatic.com",
@@ -364,15 +384,14 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=86400, stale-while-revalidate=3600', // 1 jour
           },
-          // Sécurité renforcée pour SVG (risque XSS)
+          // ✅ SÉCURITÉ RENFORCÉE POUR SVG (RISQUE XSS) CORRIGÉE
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
           {
             key: 'Content-Security-Policy',
-            value:
-              "default-src 'none'; style-src 'unsafe-inline'; script-src 'none';",
+            value: `default-src 'none'; style-src 'unsafe-inline'; script-src ${isDev ? "'unsafe-eval'" : ''} 'none';`,
           },
         ],
       },
@@ -423,12 +442,12 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=300, stale-while-revalidate=600', // 5min + SWR 10min
           },
-          // CSP pour contenu HTML parsé
+          // ✅ CSP POUR CONTENU HTML PARSÉ CORRIGÉ
           {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'",
+              `script-src 'self' ${isDev ? "'unsafe-eval'" : ''} 'unsafe-inline'`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' https://res.cloudinary.com data:", // Images d'articles
               "font-src 'self' https://fonts.gstatic.com",
@@ -439,7 +458,7 @@ const nextConfig = {
         ],
       },
 
-      // ===== TEMPLATES - CACHE MODÉRÉ =====
+      // ===== TEMPLATES - CACHE MODÉRÉ (PAGE PROBLÉMATIQUE IDENTIFIÉE) =====
       {
         source: '/templates/:path*',
         headers: [
@@ -448,17 +467,69 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=600, stale-while-revalidate=1200', // 10min + SWR 20min
           },
-          // CSP pour OrderModal et Server Actions
+          // ✅ CSP POUR ORDERMODAL ET SERVER ACTIONS CORRIGÉ (FIX PRINCIPAL)
           {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'", // Framer Motion dans modals
+              `script-src 'self' ${isDev ? "'unsafe-eval'" : ''} 'unsafe-inline'`, // ⭐ FIX PRINCIPAL : unsafe-eval en dev
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' https://res.cloudinary.com data:",
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self'", // Server Actions pour commandes
               "form-action 'self'", // OrderModal
+              "frame-ancestors 'none'",
+              "worker-src 'self' blob:", // ⭐ AJOUT : Pour les workers potentiels
+            ].join('; '),
+          },
+        ],
+      },
+
+      // ===== PAGES SPÉCIFIQUES SUPPLÉMENTAIRES =====
+      {
+        source: '/presentation/:path*',
+        headers: [
+          // Cache modéré pour présentation
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=600, stale-while-revalidate=1200',
+          },
+          // ✅ CSP POUR PAGES DE PRÉSENTATION
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              `script-src 'self' ${isDev ? "'unsafe-eval'" : ''} 'unsafe-inline'`,
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' https://res.cloudinary.com data:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self'",
+              "frame-ancestors 'none'",
+            ].join('; '),
+          },
+        ],
+      },
+
+      // ===== PAGE D'ACCUEIL =====
+      {
+        source: '/',
+        headers: [
+          // Cache court pour la homepage (contenu dynamique)
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, stale-while-revalidate=600', // 5min + SWR 10min
+          },
+          // ✅ CSP POUR PAGE D'ACCUEIL AVEC ANALYTICS
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              `script-src 'self' ${isDev ? "'unsafe-eval'" : ''} 'unsafe-inline' https://*.googletagmanager.com https://*.google-analytics.com`,
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' https://res.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com data:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
+              "worker-src 'self' blob:",
               "frame-ancestors 'none'",
             ].join('; '),
           },
@@ -472,7 +543,7 @@ const nextConfig = {
     );
 
     // ===== LOGGING POUR DEBUG (OPTIONNEL) =====
-    if (process.env.NODE_ENV === 'development') {
+    if (isDev) {
       const filteredCount =
         allHeadersConfigurations.length - validConfigurations.length;
       if (filteredCount > 0) {
@@ -482,6 +553,9 @@ const nextConfig = {
       }
       console.log(
         `✅ Headers: ${validConfigurations.length} valid configurations loaded`,
+      );
+      console.log(
+        `🛡️ CSP: unsafe-eval ${isDev ? 'ENABLED' : 'DISABLED'} (dev: ${isDev})`,
       );
     }
 

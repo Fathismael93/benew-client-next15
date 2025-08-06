@@ -6,7 +6,7 @@ import {
   captureException,
   captureEmailError,
   captureMessage,
-} from '@/instrumentation';
+} from '../instrumentation';
 import {
   validateContactEmail,
   prepareContactDataFromFormData,

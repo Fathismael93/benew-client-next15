@@ -9,7 +9,7 @@ import {
   captureDatabaseError,
   captureCloudinaryError,
   captureEmailError,
-} from '@/instrumentation';
+} from '../instrumentation';
 
 // Vérification d'environnement pour SSR (Server-Side Rendering)
 const isBrowser = typeof window !== 'undefined';
