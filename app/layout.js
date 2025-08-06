@@ -4,7 +4,6 @@ import Navbar from '../components/layouts/navbar';
 import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
 // import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
-import Script from 'next/script';
 import { HydrationFix } from '@/components/layouts/hydrationFix';
 
 // =============================
