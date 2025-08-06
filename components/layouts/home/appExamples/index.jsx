@@ -70,7 +70,17 @@ const AppExamples = () => {
 
               <div className="slide-text-card">
                 <p className="slide-description">{item.description}</p>
-                <Link href="/boutique" className="portfolio-shop-link">
+                <Link
+                  href="/boutique"
+                  className="portfolio-shop-link"
+                  onClick={() =>
+                    trackEvent('portfolio_cta_click', {
+                      event_category: 'portfolio',
+                      event_label: 'visit_shop',
+                      portfolio_item: item.id,
+                    })
+                  }
+                >
                   Visiter notre boutique
                 </Link>
               </div>

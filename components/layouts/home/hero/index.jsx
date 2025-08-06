@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import './index.scss';
+import { trackEvent } from '@/utils/analytics';
 
 const textVariants = {
   initial: {
@@ -56,7 +57,18 @@ function Hero() {
           </motion.h2>
           <motion.h1 variants={textVariants}>Commences ton histoire</motion.h1>
           <motion.div className="buttonGroup" variants={textVariants}>
-            <motion.a href="/templates" className="primaryButton">
+            <motion.a
+              href="/templates"
+              className="primaryButton"
+              onClick={() =>
+                trackEvent('cta_click', {
+                  event_category: 'hero',
+                  event_label: 'discover_templates',
+                  button_type: 'primary',
+                  page_section: 'hero',
+                })
+              }
+            >
               Découvres nos boutiques
             </motion.a>
             <motion.a href="/presentation" className="secondaryButton">

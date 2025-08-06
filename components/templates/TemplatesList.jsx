@@ -8,7 +8,12 @@ import Parallax from '@/components/layouts/parallax';
 import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 
 // Imports analytics
-import { trackTemplateView, trackPagePerformance } from '@/utils/analytics';
+import {
+  trackTemplateView,
+  trackPagePerformance,
+  trackEvent,
+} from '@/utils/analytics';
+import PageTracker from '../analytics/PageTracker';
 
 const TemplatesList = ({ templates, performanceMetrics }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -29,10 +34,28 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
 
   const handleTemplateClick = (template) => {
     trackTemplateView(template.template_id, template.template_name);
+
+    // ⭐ TRACKING SUPPLÉMENTAIRE BUSINESS
+    trackEvent('template_card_click', {
+      event_category: 'templates',
+      event_label: template.template_name,
+      template_id: template.template_id,
+      template_type: getTemplateType(template),
+      card_position:
+        templates.findIndex((t) => t.template_id === template.template_id) + 1,
+      total_templates: templates.length,
+    });
   };
 
   return (
     <div>
+      {/* ⭐ AJOUTER LE PAGETRACKER */}
+      <PageTracker
+        pageName="templates_list"
+        pageType="catalog"
+        sections={['hero_parallax', 'templates_grid', 'template_interactions']}
+      />
+
       <section className="first">
         <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
       </section>

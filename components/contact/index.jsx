@@ -11,6 +11,7 @@ import {
 import Parallax from '@/components/layouts/parallax';
 import './styles/index.scss'; // Assuming you have a separate CSS file for styling
 import FormContainer from './formContainer';
+import { trackEvent } from '@/utils/analytics';
 
 const variants = {
   initial: {
@@ -32,11 +33,30 @@ const Contact = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleCollapse = () => {
+    // ⭐ TRACKING COLLAPSE TOGGLE
+    trackEvent('contact_info_toggle', {
+      event_category: 'contact',
+      event_label: isCollapsed ? 'expand' : 'collapse',
+      action: isCollapsed ? 'expand' : 'collapse',
+    });
+
     setIsCollapsed(!isCollapsed);
   };
 
   return (
     <div>
+      {/* ⭐ AJOUTER LE PAGETRACKER */}
+      <PageTracker
+        pageName="contact"
+        pageType="conversion"
+        sections={[
+          'hero_parallax',
+          'contact_form',
+          'contact_info',
+          'form_interactions',
+        ]}
+      />
+
       <section className="first">
         <Parallax bgColor="#0c0c1d" title="Contact" planets="/planets.png" />
       </section>

@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 import Parallax from 'components/layouts/parallax';
 import PresentationModal from 'components/modal/PresentationModal';
+import PageTracker from '../analytics/PageTracker';
+import { trackEvent } from '@/utils/analytics';
 
 // Contenu pour chaque section
 const contentData = {
@@ -52,25 +54,59 @@ const PresentationComponent = () => {
   const cards = ['presentation', 'produit', 'fondateur'];
 
   const handleSlideNavigation = (direction) => {
-    if (direction === 'next') {
-      setCurrentSlide((prev) => (prev + 1) % cards.length);
-    } else {
-      setCurrentSlide((prev) => (prev - 1 + cards.length) % cards.length);
-    }
+    const newSlide =
+      direction === 'next'
+        ? (currentSlide + 1) % cards.length
+        : (currentSlide - 1 + cards.length) % cards.length;
+
+    // ⭐ TRACKING SLIDER NAVIGATION
+    trackEvent('presentation_slider_nav', {
+      event_category: 'presentation',
+      event_label: direction,
+      from_slide: cards[currentSlide],
+      to_slide: cards[newSlide],
+      slider_position: newSlide,
+    });
+
+    setCurrentSlide(newSlide);
   };
 
   const handleItemClick = (itemType) => {
+    // ⭐ TRACKING MODAL OPEN
+    trackEvent('presentation_modal_open', {
+      event_category: 'presentation',
+      event_label: itemType,
+      modal_type: itemType,
+      page_section: 'cards',
+    });
+
     setModalContent(contentData[itemType]);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
+    // ⭐ TRACKING MODAL CLOSE
+    if (modalContent) {
+      trackEvent('presentation_modal_close', {
+        event_category: 'presentation',
+        event_label: cards.find((card) => contentData[card] === modalContent),
+        modal_type: cards.find((card) => contentData[card] === modalContent),
+      });
+    }
+
     setIsModalOpen(false);
     setModalContent(null);
   };
 
   return (
     <>
+      {/* ⭐ AJOUTER LE PAGETRACKER */}
+      <PageTracker
+        pageName="presentation"
+        pageType="informational"
+        sections={['hero_parallax', 'presentation_cards', 'modal_interactions']}
+      />
+
       <section className="others">
         <Parallax bgColor="#0c0c1d" title="Présentation" planets="/sun.png" />
       </section>
