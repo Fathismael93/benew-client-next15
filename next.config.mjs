@@ -109,9 +109,10 @@ const nextConfig = {
   // Timeout pour la génération de pages statiques
   staticPageGenerationTimeout: 180,
 
-  // Configuration des en-têtes HTTP - Phase 1
+  // Configuration des en-têtes HTTP - Phase 1 - APPROCHE FILTRÉE
   async headers() {
-    return [
+    // ===== CRÉER TOUS LES OBJETS DE CONFIGURATION =====
+    const allHeadersConfigurations = [
       // ===== HEADERS GLOBAUX DE SÉCURITÉ =====
       {
         source: '/(.*)',
@@ -149,30 +150,7 @@ const nextConfig = {
             value:
               'geolocation=(), microphone=(), camera=(), payment=(), usb=()',
           },
-          // CSP global adapté à ton stack
-          // {
-          //   key: 'Content-Security-Policy',
-          //   value: [
-          //     "default-src 'self'",
-          //     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com blob:",
-          //     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-          //     "img-src 'self' https://res.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com data:",
-          //     "font-src 'self' https://fonts.gstatic.com",
-          //     "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net",
-          //     "script-src-elem 'self' 'unsafe-inline' https://*.google.com https://*.googletagmanager.com https://*.google-analytics.com",
-          //     "worker-src 'self' blob:",
-          //     "form-action 'self'",
-          //     "frame-ancestors 'none'",
-          //     "base-uri 'self'",
-          //   ].join('; '),
-          // },
-        ],
-      },
-
-      // ===== HTTPS STRICT (si en production) =====
-      {
-        source: '/(.*)',
-        headers: [
+          // HTTPS STRICT ajouté conditionnellement
           ...(process.env.NODE_ENV === 'production'
             ? [
                 {
@@ -186,7 +164,7 @@ const nextConfig = {
 
       // ===== MONITORING SENTRY - TUNNEL =====
       {
-        source: '/monitoring', // Votre tunnel route
+        source: '/monitoring',
         headers: [
           {
             key: 'Content-Security-Policy',
@@ -487,6 +465,27 @@ const nextConfig = {
         ],
       },
     ];
+
+    // ===== FILTRER LES CONFIGURATIONS AVEC HEADERS VIDES =====
+    const validConfigurations = allHeadersConfigurations.filter(
+      (config) => config.headers && config.headers.length > 0,
+    );
+
+    // ===== LOGGING POUR DEBUG (OPTIONNEL) =====
+    if (process.env.NODE_ENV === 'development') {
+      const filteredCount =
+        allHeadersConfigurations.length - validConfigurations.length;
+      if (filteredCount > 0) {
+        console.log(
+          `🔧 Headers: ${filteredCount} configuration(s) with empty headers filtered out`,
+        );
+      }
+      console.log(
+        `✅ Headers: ${validConfigurations.length} valid configurations loaded`,
+      );
+    }
+
+    return validConfigurations;
   },
 
   // Configuration du runtime côté serveur
