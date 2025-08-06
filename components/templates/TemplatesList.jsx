@@ -47,6 +47,17 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
     });
   };
 
+  // Fonction utilitaire pour déterminer le type de template
+  const getTemplateType = (template) => {
+    if (template.template_has_web && template.template_has_mobile) {
+      return 'web_and_mobile';
+    } else if (template.template_has_web) {
+      return 'web_only';
+    } else {
+      return 'mobile_only';
+    }
+  };
+
   return (
     <div>
       {/* ⭐ AJOUTER LE PAGETRACKER */}

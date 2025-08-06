@@ -1,5 +1,6 @@
 'use client';
 
+import { trackEvent } from '@/utils/analytics';
 import './index.scss';
 import Image from 'next/image';
 import Link from 'next/link';

@@ -12,6 +12,7 @@ import Parallax from '@/components/layouts/parallax';
 import './styles/index.scss'; // Assuming you have a separate CSS file for styling
 import FormContainer from './formContainer';
 import { trackEvent } from '@/utils/analytics';
+import PageTracker from '../analytics/PageTracker';
 
 const variants = {
   initial: {
