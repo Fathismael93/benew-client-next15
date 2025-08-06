@@ -1,52 +1,56 @@
 'use client';
 
-import { useEffect } from 'react';
-
 export function HydrationFix() {
-  useEffect(() => {
-    // Nettoyer les attributs ajoutés par les extensions de navigateur
-    if (typeof window !== 'undefined') {
-      const htmlElement = document.documentElement;
-
-      // Liste des attributs problématiques connus
-      const problematicAttributes = [
-        'webcrx',
-        'cz-shortcut-listen',
-        'data-lt-installed',
-        'data-new-gr-c-s-check-loaded',
-        'data-gr-ext-installed',
-      ];
-
-      // Supprimer les attributs existants
-      problematicAttributes.forEach((attr) => {
-        if (htmlElement.hasAttribute(attr)) {
-          htmlElement.removeAttribute(attr);
-        }
-      });
-
-      // Observer pour les attributs ajoutés dynamiquement
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (
-            mutation.type === 'attributes' &&
-            mutation.target === htmlElement &&
-            problematicAttributes.includes(mutation.attributeName || '')
-          ) {
-            htmlElement.removeAttribute(mutation.attributeName || '');
-          }
-        });
-      });
-
-      // Observer les changements d'attributs sur <html>
-      observer.observe(htmlElement, {
-        attributes: true,
-        attributeFilter: problematicAttributes,
-      });
-
-      // Cleanup
-      return () => observer.disconnect();
-    }
-  }, []);
-
-  return null; // Ce composant ne rend rien visuellement
+  return (
+    <script
+      id="hydration-fix"
+      dangerouslySetInnerHTML={{
+        __html: `
+          (function() {
+            // Liste des attributs problématiques d'extensions
+            var problematicAttributes = [
+              'webcrx',
+              'cz-shortcut-listen', 
+              'data-lt-installed',
+              'data-new-gr-c-s-check-loaded',
+              'data-gr-ext-installed'
+            ];
+            
+            // Fonction pour nettoyer les attributs
+            function cleanAttributes() {
+              var htmlElement = document.documentElement;
+              problematicAttributes.forEach(function(attr) {
+                if (htmlElement.hasAttribute(attr)) {
+                  htmlElement.removeAttribute(attr);
+                }
+              });
+            }
+            
+            // Nettoyer immédiatement
+            cleanAttributes();
+            
+            // Observer pour nettoyer en continu
+            if (window.MutationObserver) {
+              var observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                  if (
+                    mutation.type === 'attributes' && 
+                    mutation.target === document.documentElement &&
+                    problematicAttributes.indexOf(mutation.attributeName) !== -1
+                  ) {
+                    document.documentElement.removeAttribute(mutation.attributeName);
+                  }
+                });
+              });
+              
+              observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: problematicAttributes
+              });
+            }
+          })();
+        `,
+      }}
+    />
+  );
 }

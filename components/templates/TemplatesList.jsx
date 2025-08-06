@@ -25,12 +25,6 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
         performanceMetrics.fromCache,
       );
     }
-
-    // ⭐ NOUVEAU : Nettoyer les attributs d'extensions
-    if (typeof window !== 'undefined') {
-      document.documentElement.removeAttribute('webcrx');
-      document.documentElement.removeAttribute('cz-shortcut-listen');
-    }
   }, [performanceMetrics]);
 
   const handleTemplateClick = (template) => {

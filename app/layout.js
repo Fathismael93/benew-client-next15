@@ -3,7 +3,7 @@ import './styles/main.scss';
 import Navbar from '../components/layouts/navbar';
 import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
-import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
+// import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
 import Script from 'next/script';
 import { HydrationFix } from '@/components/layouts/hydrationFix';
 
@@ -103,6 +103,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <head>
+        {/* ⭐ CRITIQUE : Script pré-hydratation en PREMIER */}
+        <HydrationFix />
+
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
@@ -129,15 +132,12 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        {/* ⭐ AJOUT : Fix d'hydratation global */}
-        <HydrationFix />
         <Navbar />
         {children}
 
-        {/* 🎵 COMPOSANT AUDIO - Ajouté ici pour être présent sur toutes les pages */}
-        <AudioPlayer />
+        {/* <AudioPlayer /> */}
 
-        {/* Analytics avec initialisation automatique */}
+        {/* Analytics */}
         {process.env.NODE_ENV === 'production' && gtmId && (
           <>
             <GoogleTagManager gtmId={gtmId} />
@@ -145,7 +145,6 @@ export default function RootLayout({ children }) {
           </>
         )}
 
-        {/* Analytics en développement pour tests */}
         {process.env.NODE_ENV === 'development' && gtmId && (
           <>
             <GoogleTagManager gtmId={gtmId} />
