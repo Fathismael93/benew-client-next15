@@ -13,8 +13,9 @@ import { trackTemplateView, trackPagePerformance } from '@/utils/analytics';
 const TemplatesList = ({ templates, performanceMetrics }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Analytics tracking
+  // Dans TemplatesList.jsx, ajoutez cet useEffect
   useEffect(() => {
+    // Analytics tracking existant
     console.log('Performance Metrics:', performanceMetrics);
     if (performanceMetrics?.loadTime) {
       console.log('Tracking page performance:');
@@ -23,6 +24,12 @@ const TemplatesList = ({ templates, performanceMetrics }) => {
         performanceMetrics.loadTime,
         performanceMetrics.fromCache,
       );
+    }
+
+    // ⭐ NOUVEAU : Nettoyer les attributs d'extensions
+    if (typeof window !== 'undefined') {
+      document.documentElement.removeAttribute('webcrx');
+      document.documentElement.removeAttribute('cz-shortcut-listen');
     }
   }, [performanceMetrics]);
 

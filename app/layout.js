@@ -5,6 +5,7 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
 import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
 import Script from 'next/script';
+import { HydrationFix } from '@/components/layouts/hydrationFix';
 
 // =============================
 // MÉTADONNÉES GLOBALES
@@ -128,6 +129,8 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        {/* ⭐ AJOUT : Fix d'hydratation global */}
+        <HydrationFix />
         <Navbar />
         {children}
 
