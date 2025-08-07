@@ -1,0 +1,23 @@
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.templates-skeleton {
+  .skeleton-card {
+    background: linear-gradient(
+      90deg,
+      rgba(css-var(text-color), 0.05) 25%,
+      rgba(css-var(text-color), 0.1) 50%,
+      rgba(css-var(text-color), 0.05) 75%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 16px;
+    height: 400px;
+  }
+}

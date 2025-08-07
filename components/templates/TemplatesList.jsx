@@ -19,10 +19,26 @@ const TemplateCard = memo(
   ({ template, index, isHovered, onHover, onLeave, onClick }) => {
     const templateType = getTemplateType(template);
 
+    // Ou mieux : générer dynamiquement
+    const generateBlurDataURL = (dominantColor = '#0c0c1d') => {
+      // Utilise la couleur dominante de votre thème
+      return `data:image/svg+xml;base64,${btoa(
+        `<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+      <rect width="10" height="10" fill="${dominantColor}"/>
+    </svg>`,
+      )}`;
+    };
+
     return (
       <Link
         href={`/templates/${template.template_id}`}
         className="minimalCard"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            onClick(template);
+          }
+        }}
+        tabIndex={0}
         onMouseEnter={() => onHover(template.template_id)}
         onMouseLeave={onLeave}
         onClick={() => onClick(template)}
@@ -32,14 +48,20 @@ const TemplateCard = memo(
           <div className="minimalImageContainer">
             <CldImage
               src={template.template_image}
-              alt={`Template ${template.template_name} - ${templateType} pour applications web et mobile`}
+              alt={`Template ${template.template_name} - ${templateType}`}
               width={800}
               height={600}
               className="minimalImage"
               priority={index < 2}
               loading={index < 2 ? 'eager' : 'lazy'}
               placeholder="blur"
-              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ..." // Générer un vrai blur
+              blurDataURL={generateBlurDataURL()}
+              // Ajouter ces transformations Cloudinary
+              crop="fill"
+              gravity="center"
+              quality="auto"
+              format="auto"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
           <div className="minimalContent">
@@ -67,6 +89,14 @@ const TemplatesList = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    if (!templates && !error) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [templates, error]);
+
   // Validation des props
   useEffect(() => {
     if (!Array.isArray(templates)) {
@@ -85,6 +115,31 @@ const TemplatesList = ({
       );
     }
   }, [performanceMetrics]);
+
+  // Ajouter le tracking LCP/CLS
+  useEffect(() => {
+    // Mesurer Largest Contentful Paint
+    if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
+      try {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          const lastEntry = entries[entries.length - 1];
+
+          trackEvent('web_vitals', {
+            metric_name: 'LCP',
+            value: lastEntry.renderTime || lastEntry.loadTime,
+            page: 'templates_list',
+          });
+        });
+
+        observer.observe({ entryTypes: ['largest-contentful-paint'] });
+
+        return () => observer.disconnect();
+      } catch (e) {
+        // Silently fail for unsupported browsers
+      }
+    }
+  }, []);
 
   // Handlers optimisés avec useCallback
   const handleTemplateClick = useCallback(
@@ -111,6 +166,23 @@ const TemplatesList = ({
   const handleLeave = useCallback(() => {
     setHoveredCard(null);
   }, []);
+
+  const handleTouchStart = useCallback((id) => {
+    if ('ontouchstart' in window) {
+      setHoveredCard(id);
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if ('ontouchstart' in window) {
+      setTimeout(() => setHoveredCard(null), 100);
+    }
+  }, []);
+
+  // Et ajouter un skeleton loader
+  // if (isLoading) {
+  //   return <TemplatesListSkeleton />;
+  // }
 
   // Gestion des erreurs
   if (error) {

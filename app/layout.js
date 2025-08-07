@@ -3,7 +3,7 @@ import './styles/main.scss';
 import Navbar from '../components/layouts/navbar';
 import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
-import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
+// import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
 import { HydrationFix } from '@/components/layouts/hydrationFix';
 
 // =============================
@@ -116,7 +116,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         {children}
 
-        <AudioPlayer />
+        {/* <AudioPlayer /> */}
 
         {/* Analytics */}
         {process.env.NODE_ENV === 'production' && gtmId && (
