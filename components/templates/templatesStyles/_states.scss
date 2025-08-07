@@ -1,0 +1,93 @@
+// components/templates/templatesStyles/_states.scss
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _states.scss - États spéciaux
+// ================================
+
+// État vide
+.templates-empty {
+  .empty-state {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+
+    h2 {
+      color: css-var(text-color);
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: css-var(text-color-muted);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .cta-button {
+      background: css-var(primary-color);
+      color: css-var(text-color);
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// État d'erreur
+.templates-error {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+
+  h2 {
+    color: css-var(secondary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: css-var(text-color-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  button {
+    background: css-var(primary-color);
+    color: css-var(text-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+// Container principal (optionnel)
+.templates-container {
+  // Déjà géré par vos styles existants
+  // Ajouté juste pour la structure sémantique
+}
+
+// Grille templates (optionnel pour sémantique)
+.templates-grid {
+  // Vos styles .projectSection gèrent déjà tout
+  // Cette classe est juste pour la structure HTML
+}
