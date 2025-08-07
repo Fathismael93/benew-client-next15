@@ -16,6 +16,7 @@ import {
   trackPagePerformance,
   trackEvent,
 } from '@/utils/analytics';
+import PageTracker from '../analytics/PageTracker';
 
 const SingleTemplateShops = ({
   templateID,
@@ -246,6 +247,12 @@ const SingleTemplateShops = ({
 
   return (
     <div>
+      {/* ⭐ MANQUANT : PageTracker */}
+      <PageTracker
+        pageName={`template_${templateID}`}
+        pageType="product_detail"
+        sections={['hero', 'applications_list', 'order_interactions']}
+      />
       <section className="first">
         <Parallax
           bgColor="#0c0c1d"

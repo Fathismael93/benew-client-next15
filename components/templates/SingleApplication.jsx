@@ -16,6 +16,7 @@ import {
   trackOrderStart,
   trackEvent,
 } from '@/utils/analytics';
+import PageTracker from '../analytics/PageTracker';
 
 const SingleApplication = ({
   application,
@@ -283,6 +284,17 @@ const SingleApplication = ({
 
   return (
     <div>
+      <PageTracker
+        pageName={`application_${context.applicationId}`}
+        pageType="product_detail"
+        sections={[
+          'gallery',
+          'description',
+          'technical_info',
+          'pricing',
+          'order_action',
+        ]}
+      />
       <section className="first">
         <Parallax
           bgColor="#0c0c1d"
