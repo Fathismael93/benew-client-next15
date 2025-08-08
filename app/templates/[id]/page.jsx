@@ -381,11 +381,11 @@ export async function generateMetadata({ params }) {
 // Composant principal avec toutes les améliorations
 async function SingleTemplatePage({ params }) {
   const requestStartTime = performance.now();
-  const { id: rawId } = await params;
+  const { id } = await params;
 
   try {
     // Validation stricte de l'ID avec protection XSS
-    const validationResult = await validateTemplateId(rawId);
+    const validationResult = await validateTemplateId(id);
 
     if (!validationResult.isValid) {
       return notFound();
@@ -498,7 +498,7 @@ async function SingleTemplatePage({ params }) {
         component: 'single_template_page',
         error_type: 'page_render_error',
       },
-      extra: { rawId, duration: performance.now() - requestStartTime },
+      extra: { id, duration: performance.now() - requestStartTime },
     });
 
     return (
@@ -558,20 +558,10 @@ function generateJsonLD(templateData) {
           }
         : undefined,
 
-    // Rating si disponible
-    // aggregateRating: template.template_rating
-    //   ? {
-    //       '@type': 'AggregateRating',
-    //       bestRating: 5,
-    //       worstRating: 1,
-    //     }
-    //   : undefined,
-
     // Applications comme variantes du produit
     hasVariant: applications.map((app) => ({
       '@type': 'Product',
       name: app.application_name,
-      description: app.application_description,
       image: app.application_images?.[0],
       sku: `APP-${app.application_id}`,
       offers: {
