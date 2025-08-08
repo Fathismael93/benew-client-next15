@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -22,7 +23,10 @@ const SingleTemplateShops = ({
   templateID,
   applications,
   platforms,
-  performanceMetrics,
+  adaptiveConfig,
+  // csrfToken, // Si nécessaire pour les actions sensibles
+  templateInfo,
+  performanceMetrics = {}, // Ajouter un objet vide par défaut pour éviter les erreurs
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
