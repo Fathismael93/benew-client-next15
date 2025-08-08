@@ -21,10 +21,10 @@ import PageTracker from '../analytics/PageTracker';
 
 const SingleTemplateShops = ({
   templateID,
-  applications = [], // Valeur par défaut pour éviter les erreurs
-  platforms = [], // Valeur par défaut pour éviter les erreurs
+  applications,
+  platforms,
   adaptiveConfig,
-  templateInfo = {}, // Valeur par défaut pour éviter les erreurs
+  templateInfo,
   performanceMetrics,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,12 +43,12 @@ const SingleTemplateShops = ({
         performanceMetrics.fromCache,
       );
     }
-  }, [performanceMetrics, templateID]);
+  }, [performanceMetrics, templateID, applications]);
 
   // Tracker la vue initiale du template
   useEffect(() => {
-    if (templateID && applications && applications.length > 0 && templateInfo) {
-      const templateName = templateInfo.template_name || 'Template';
+    if (templateID && applications && applications.length > 0) {
+      const templateName = applications[0]?.template_name;
 
       trackEvent('template_page_view', {
         event_category: 'template',
@@ -68,7 +68,7 @@ const SingleTemplateShops = ({
         }, {}),
       });
     }
-  }, [templateID, applications, templateInfo]);
+  }, [templateID, applications]);
 
   // Intersection Observer pour tracker les vues automatiques d'applications
   useEffect(() => {
@@ -248,72 +248,50 @@ const SingleTemplateShops = ({
     setSelectedApp(null);
   };
 
-  // Vérification de sécurité avant le rendu
-  if (!applications || !Array.isArray(applications)) {
-    return (
-      <div className="error-container">
-        <p>Aucune application disponible pour ce template.</p>
-      </div>
-    );
-  }
-
   return (
     <div>
-      {/* ⭐ PageTracker */}
+      {/* ⭐ MANQUANT : PageTracker */}
       <PageTracker
         pageName={`template_${templateID}`}
         pageType="product_detail"
         sections={['hero', 'applications_list', 'order_interactions']}
       />
-
       <section className="first">
         <Parallax
           bgColor="#0c0c1d"
-          title={templateInfo?.template_name || 'Modèle'}
+          title={
+            applications !== undefined
+              ? applications[0]?.template_name
+              : 'Modèle vide'
+          }
           planets="/sun.png"
         />
       </section>
 
-      {applications.length > 0 ? (
+      {applications.length !== undefined &&
         applications.map((app) => (
-          <section
-            key={app.application_id}
-            className="others projectSection"
-            data-app-id={app.application_id}
-            data-app-name={app.application_name}
-          >
+          <section key={app.application_id} className="others projectSection">
             <div className="application-card">
               <div className="card-image">
-                {app.application_images && app.application_images[0] ? (
-                  <CldImage
-                    src={app.application_images[0]}
-                    alt={app.application_name || 'Application'}
-                    width={400}
-                    height={200}
-                    className="app-image"
-                    priority
-                  />
-                ) : (
-                  <div className="placeholder-image">
-                    <span>Image non disponible</span>
-                  </div>
-                )}
+                <CldImage
+                  src={app.application_images[0]}
+                  alt={app.application_name}
+                  width={400}
+                  height={200}
+                  className="app-image"
+                  priority
+                />
               </div>
 
               <div className="card-content">
-                <h3 className="app-title">
-                  {app.application_name || 'Application'}
-                </h3>
+                <h3 className="app-title">{app.application_name}</h3>
 
                 <p className="app-meta">
                   <span className="level">
-                    {getApplicationLevelLabel(app.application_level)?.long ||
-                      'Niveau inconnu'}
+                    {getApplicationLevelLabel(app.application_level).long}
                   </span>
                   <span className="separator">-</span>
-                  <span className="category">
-                    {app.application_category || 'Catégorie'}
-                  </span>
+                  <span className="category">{app.application_category}</span>
                 </p>
 
                 <div className="price-section">
@@ -322,13 +300,13 @@ const SingleTemplateShops = ({
                       Frais d&apos;acquisition
                     </span>
                     <span className="price">
-                      {formatPrice(app.application_fee || 0)} FDJ
+                      {formatPrice(app.application_fee)} FDJ
                     </span>
                   </div>
                   <div className="price-item">
                     <span className="price-label">Frais de gestion</span>
                     <span className="rent-price">
-                      {formatPrice(app.application_rent || 0)} FDJ/mois
+                      {formatPrice(app.application_rent)} FDJ/mois
                     </span>
                   </div>
                 </div>
@@ -345,6 +323,7 @@ const SingleTemplateShops = ({
                   <Link
                     href={`/templates/${templateID}/applications/${app.application_id}`}
                     className="btn btn-preview"
+                    // Ajouter le tracking de la vue d'application
                     onClick={() => handleApplicationView(app)}
                   >
                     <IoEye size={16} />
@@ -354,14 +333,9 @@ const SingleTemplateShops = ({
               </div>
             </div>
           </section>
-        ))
-      ) : (
-        <section className="empty-state">
-          <p>Aucune application disponible pour ce template.</p>
-        </section>
-      )}
+        ))}
 
-      {selectedApp && platforms && platforms.length > 0 && (
+      {selectedApp && (
         <OrderModal
           isOpen={isModalOpen}
           onClose={handleModalClose}
