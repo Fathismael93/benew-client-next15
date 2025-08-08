@@ -29,11 +29,16 @@ const SingleTemplateShops = ({
   performanceMetrics = {}, // Ajouter un objet vide par défaut pour éviter les erreurs
 }) => {
   console.log(`Rendering SingleTemplateShops for template ID: ${templateID}`);
-  console.log(`Applications: ${JSON.stringify(applications)}`);
-  console.log(`Platforms: ${JSON.stringify(platforms)}`);
-  console.log(`Adaptive Config: ${JSON.stringify(adaptiveConfig)}`);
-  console.log(`Template Info: ${JSON.stringify(templateInfo)}`);
-  console.log(`Performance Metrics: ${JSON.stringify(performanceMetrics)}`);
+  console.log(`Applications: `);
+  console.log(applications);
+  console.log(`Platforms: `);
+  console.log(platforms);
+  console.log(`Adaptive Config: `);
+  console.log(adaptiveConfig);
+  console.log(`Template Info: `);
+  console.log(templateInfo);
+  console.log(`Performance Metrics: `);
+  console.log(performanceMetrics);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
 

@@ -393,7 +393,8 @@ async function SingleTemplatePage({ params }) {
       return notFound();
     }
 
-    console.log(`Validated template ID: ${validationResult.templateId}`);
+    console.log(`Validated template ID: `);
+    console.log(validationResult.templateId);
     const templateId = validationResult.templateId;
 
     // Rate Limiting
@@ -411,11 +412,11 @@ async function SingleTemplatePage({ params }) {
     }
 
     const adaptiveConfig = getAdaptiveSiteConfig();
-    console.log(
-      `Adaptive config for template page: ${JSON.stringify(adaptiveConfig)}`,
-    );
+    console.log(`Adaptive config for template page: `);
+    console.log(adaptiveConfig);
     const templateData = await getOptimizedSingleTemplate(templateId);
-    console.log(`Fetched template data: ${JSON.stringify(templateData)}`);
+    console.log(`Fetched template data: `);
+    console.log(templateData);
 
     // Vérification des résultats
     if (
