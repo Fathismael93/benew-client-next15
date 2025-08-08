@@ -5,7 +5,7 @@
 import { Suspense } from 'react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
-// import Script from 'next/script';
+import Script from 'next/script';
 
 import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
 import { getClient } from '@/backend/dbConnect';
@@ -435,18 +435,18 @@ async function SingleTemplatePage({ params }) {
     }
 
     // Générer les données structurées JSON-LD pour le SEO
-    // const jsonLdData = generateJsonLD(templateData);
+    const jsonLdData = generateJsonLD(templateData);
 
     return (
       <>
         {/* Données structurées JSON-LD pour le SEO */}
-        {/* {CONFIG.seo.enableJsonLD && (
+        {CONFIG.seo.enableJsonLD && (
           <Script
             id={`json-ld-template-${templateId}`}
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
           />
-        )} */}
+        )}
 
         {/* Prefetch des ressources critiques */}
         <link
@@ -509,92 +509,92 @@ async function SingleTemplatePage({ params }) {
 }
 
 // Fonction pour générer les données structurées JSON-LD
-// function generateJsonLD(templateData) {
-//   const { template, applications } = templateData;
-//   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+function generateJsonLD(templateData) {
+  const { template, applications } = templateData;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
-//   // Schema.org Product pour le template
-//   const jsonLd = {
-//     '@context': 'https://schema.org',
-//     '@type': 'Product',
-//     name: template.template_name,
-//     description: `Template professionnel ${template.template_name}`,
-//     image: template.template_image,
-//     url: `${siteUrl}/templates/${template.template_id}`,
-//     brand: {
-//       '@type': 'Brand',
-//       name: 'Benew',
-//     },
-//     datePublished: template.template_added,
+  // Schema.org Product pour le template
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: template.template_name,
+    description: `Template professionnel ${template.template_name}`,
+    image: template.template_image,
+    url: `${siteUrl}/templates/${template.template_id}`,
+    brand: {
+      '@type': 'Brand',
+      name: 'Benew',
+    },
+    datePublished: template.template_added,
 
-//     // Agrégation des prix des applications
-//     offers:
-//       applications.length > 0
-//         ? {
-//             '@type': 'AggregateOffer',
-//             priceCurrency: 'DJF',
-//             lowPrice: Math.min(
-//               ...applications.map((app) => app.application_fee),
-//             ),
-//             highPrice: Math.max(
-//               ...applications.map((app) => app.application_fee),
-//             ),
-//             offerCount: applications.length,
-//             availability: 'https://schema.org/InStock',
-//             seller: {
-//               '@type': 'Organization',
-//               name: 'Benew',
-//               url: siteUrl,
-//             },
-//           }
-//         : undefined,
+    // Agrégation des prix des applications
+    offers:
+      applications.length > 0
+        ? {
+            '@type': 'AggregateOffer',
+            priceCurrency: 'DJF',
+            lowPrice: Math.min(
+              ...applications.map((app) => app.application_fee),
+            ),
+            highPrice: Math.max(
+              ...applications.map((app) => app.application_fee),
+            ),
+            offerCount: applications.length,
+            availability: 'https://schema.org/InStock',
+            seller: {
+              '@type': 'Organization',
+              name: 'Benew',
+              url: siteUrl,
+            },
+          }
+        : undefined,
 
-//     // Applications comme variantes du produit
-//     hasVariant: applications.map((app) => ({
-//       '@type': 'Product',
-//       name: app.application_name,
-//       image: app.application_images?.[0],
-//       sku: `APP-${app.application_id}`,
-//       offers: {
-//         '@type': 'Offer',
-//         price: app.application_fee,
-//         priceCurrency: 'DJF',
-//         availability: 'https://schema.org/InStock',
-//         priceValidUntil: new Date(
-//           Date.now() + 30 * 24 * 60 * 60 * 1000,
-//         ).toISOString(), // 30 jours
-//       },
-//     })),
-//   };
+    // Applications comme variantes du produit
+    hasVariant: applications.map((app) => ({
+      '@type': 'Product',
+      name: app.application_name,
+      image: app.application_images?.[0],
+      sku: `APP-${app.application_id}`,
+      offers: {
+        '@type': 'Offer',
+        price: app.application_fee,
+        priceCurrency: 'DJF',
+        availability: 'https://schema.org/InStock',
+        priceValidUntil: new Date(
+          Date.now() + 30 * 24 * 60 * 60 * 1000,
+        ).toISOString(), // 30 jours
+      },
+    })),
+  };
 
-//   // Breadcrumb pour la navigation
-//   const breadcrumb = {
-//     '@context': 'https://schema.org',
-//     '@type': 'BreadcrumbList',
-//     itemListElement: [
-//       {
-//         '@type': 'ListItem',
-//         position: 1,
-//         name: 'Accueil',
-//         item: siteUrl,
-//       },
-//       {
-//         '@type': 'ListItem',
-//         position: 2,
-//         name: 'Templates',
-//         item: `${siteUrl}/templates`,
-//       },
-//       {
-//         '@type': 'ListItem',
-//         position: 3,
-//         name: template.template_name,
-//         item: `${siteUrl}/templates/${template.template_id}`,
-//       },
-//     ],
-//   };
+  // Breadcrumb pour la navigation
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Accueil',
+        item: siteUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Templates',
+        item: `${siteUrl}/templates`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: template.template_name,
+        item: `${siteUrl}/templates/${template.template_id}`,
+      },
+    ],
+  };
 
-//   return [jsonLd, breadcrumb];
-// }
+  return [jsonLd, breadcrumb];
+}
 
 // Skeleton component amélioré avec ARIA
 function SingleTemplatePageSkeleton() {
