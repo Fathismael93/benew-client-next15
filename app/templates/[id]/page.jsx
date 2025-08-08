@@ -383,6 +383,8 @@ async function SingleTemplatePage({ params }) {
   const requestStartTime = performance.now();
   const { id } = await params;
 
+  console.log(`Rendering single template page for ID: ${id}`);
+
   try {
     // Validation stricte de l'ID avec protection XSS
     const validationResult = await validateTemplateId(id);
@@ -391,7 +393,7 @@ async function SingleTemplatePage({ params }) {
       return notFound();
     }
 
-    console.log(`Validated template ID: ${validationResult}`);
+    console.log(`Validated template ID: ${validationResult.templateId}`);
     const templateId = validationResult.templateId;
 
     // Rate Limiting
