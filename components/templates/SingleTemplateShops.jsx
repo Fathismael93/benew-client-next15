@@ -46,6 +46,8 @@ const SingleTemplateShops = ({
   const observerRef = useRef(null);
   const viewedApplicationsRef = useRef(new Set());
 
+  console.log('Starting first use effect');
+
   // Tracker les performances de la page template avec contexte enrichi
   useEffect(() => {
     console.log('first useEffect for performance tracking');
@@ -57,6 +59,8 @@ const SingleTemplateShops = ({
       );
     }
   }, [performanceMetrics, templateID, applications]);
+
+  console.log('Second useffect');
 
   // Tracker la vue initiale du template
   useEffect(() => {
@@ -83,6 +87,8 @@ const SingleTemplateShops = ({
       });
     }
   }, [templateID, applications]);
+
+  console.log('Third useeffect');
 
   // Intersection Observer pour tracker les vues automatiques d'applications
   useEffect(() => {
@@ -138,6 +144,8 @@ const SingleTemplateShops = ({
     };
   }, [applications, templateID]);
 
+  console.log('Fourth useeffect');
+
   // Stocker le temps d'ouverture de la modal
   useEffect(() => {
     console.log('fourth useEffect for modal open time tracking');
@@ -145,6 +153,8 @@ const SingleTemplateShops = ({
       window.modalOpenTime = Date.now();
     }
   }, [isModalOpen]);
+
+  console.log('Fifth useeffect');
 
   // Tracker les scrolls profonds sur la liste des applications
   useEffect(() => {
@@ -191,6 +201,8 @@ const SingleTemplateShops = ({
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [templateID, applications]);
+
+  console.log('useEffects finished');
 
   // Handler pour l'ouverture de la modal de commande avec tracking
   const handleOrderClick = (app) => {
