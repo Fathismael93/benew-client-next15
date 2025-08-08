@@ -14,20 +14,52 @@ import {
   trackEvent,
 } from '@/utils/analytics';
 
+// Composant Skeleton Loader
+const TemplatesListSkeleton = () => {
+  return (
+    <div className="templates-skeleton">
+      <section className="first">
+        <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
+      </section>
+      <div className="templates-grid">
+        {[...Array(6)].map((_, index) => (
+          <section key={index} className="others projectSection">
+            <div className="skeleton-card">
+              <div className="skeleton-image"></div>
+              <div className="skeleton-content">
+                <div className="skeleton-title"></div>
+                <div className="skeleton-category"></div>
+              </div>
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Fonction de génération du blur placeholder
+const generateBlurDataURL = (dominantColor = '#0c0c1d') => {
+  return `data:image/svg+xml;base64,${btoa(
+    `<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+     <rect width="10" height="10" fill="${dominantColor}"/>
+   </svg>`,
+  )}`;
+};
+
 // Composant de carte mémorisé pour éviter les re-renders
 const TemplateCard = memo(
-  ({ template, index, isHovered, onHover, onLeave, onClick }) => {
+  ({
+    template,
+    index,
+    isHovered,
+    onHover,
+    onLeave,
+    onClick,
+    onTouchStart,
+    onTouchEnd,
+  }) => {
     const templateType = getTemplateType(template);
-
-    // Ou mieux : générer dynamiquement
-    const generateBlurDataURL = (dominantColor = '#0c0c1d') => {
-      // Utilise la couleur dominante de votre thème
-      return `data:image/svg+xml;base64,${btoa(
-        `<svg width="10" height="10" xmlns="http://www.w3.org/2000/svg">
-      <rect width="10" height="10" fill="${dominantColor}"/>
-    </svg>`,
-      )}`;
-    };
 
     return (
       <Link
@@ -35,12 +67,15 @@ const TemplateCard = memo(
         className="minimalCard"
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
             onClick(template);
           }
         }}
         tabIndex={0}
         onMouseEnter={() => onHover(template.template_id)}
         onMouseLeave={onLeave}
+        onTouchStart={() => onTouchStart(template.template_id)}
+        onTouchEnd={onTouchEnd}
         onClick={() => onClick(template)}
         aria-label={`Voir le template ${template.template_name} - ${templateType}`}
       >
@@ -56,7 +91,6 @@ const TemplateCard = memo(
               loading={index < 2 ? 'eager' : 'lazy'}
               placeholder="blur"
               blurDataURL={generateBlurDataURL()}
-              // Ajouter ces transformations Cloudinary
               crop="fill"
               gravity="center"
               quality="auto"
@@ -86,22 +120,27 @@ const TemplatesList = ({
   adaptiveConfig = {},
 }) => {
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Commence par true
   const [error, setError] = useState(null);
 
+  // Gestion correcte du loading state
   useEffect(() => {
-    if (!templates && !error) {
+    // Si templates est undefined, on est en train de charger
+    if (templates === undefined && !error) {
       setIsLoading(true);
-    } else {
+    }
+    // Si templates est défini (même tableau vide) ou si erreur, on n'est plus en loading
+    else {
       setIsLoading(false);
     }
   }, [templates, error]);
 
   // Validation des props
   useEffect(() => {
-    if (!Array.isArray(templates)) {
+    if (templates !== undefined && !Array.isArray(templates)) {
       setError('Format de données invalide');
       console.error('Templates must be an array', templates);
+      setIsLoading(false);
     }
   }, [templates]);
 
@@ -116,28 +155,42 @@ const TemplatesList = ({
     }
   }, [performanceMetrics]);
 
-  // Ajouter le tracking LCP/CLS
+  // Tracking Web Vitals avec cleanup amélioré
   useEffect(() => {
     // Mesurer Largest Contentful Paint
     if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
+      let observer = null;
+
       try {
-        const observer = new PerformanceObserver((list) => {
+        observer = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
 
-          trackEvent('web_vitals', {
-            metric_name: 'LCP',
-            value: lastEntry.renderTime || lastEntry.loadTime,
-            page: 'templates_list',
-          });
+          if (lastEntry) {
+            trackEvent('web_vitals', {
+              metric_name: 'LCP',
+              value: lastEntry.renderTime || lastEntry.loadTime,
+              page: 'templates_list',
+            });
+          }
         });
 
         observer.observe({ entryTypes: ['largest-contentful-paint'] });
-
-        return () => observer.disconnect();
       } catch (e) {
         // Silently fail for unsupported browsers
+        console.debug('PerformanceObserver not supported:', e);
       }
+
+      // Cleanup function
+      return () => {
+        if (observer) {
+          try {
+            observer.disconnect();
+          } catch (e) {
+            // Silently fail cleanup
+          }
+        }
+      };
     }
   }, []);
 
@@ -167,22 +220,32 @@ const TemplatesList = ({
     setHoveredCard(null);
   }, []);
 
+  // Touch handlers correctement implémentés
   const handleTouchStart = useCallback((id) => {
-    if ('ontouchstart' in window) {
+    // Vérifier si c'est vraiment un device tactile et non juste un navigateur qui supporte touch
+    if (
+      'ontouchstart' in window &&
+      window.matchMedia('(pointer: coarse)').matches
+    ) {
       setHoveredCard(id);
     }
   }, []);
 
   const handleTouchEnd = useCallback(() => {
-    if ('ontouchstart' in window) {
-      setTimeout(() => setHoveredCard(null), 100);
+    // Vérifier si c'est vraiment un device tactile
+    if (
+      'ontouchstart' in window &&
+      window.matchMedia('(pointer: coarse)').matches
+    ) {
+      // Petit délai pour permettre de voir l'effet hover avant de le retirer
+      setTimeout(() => setHoveredCard(null), 150);
     }
   }, []);
 
-  // Et ajouter un skeleton loader
-  // if (isLoading) {
-  //   return <TemplatesListSkeleton />;
-  // }
+  // Afficher le skeleton loader pendant le chargement
+  if (isLoading && templates === undefined) {
+    return <TemplatesListSkeleton />;
+  }
 
   // Gestion des erreurs
   if (error) {
@@ -190,13 +253,18 @@ const TemplatesList = ({
       <div className="templates-error">
         <h2>Une erreur est survenue</h2>
         <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Réessayer</button>
+        <button
+          onClick={() => window.location.reload()}
+          aria-label="Recharger la page"
+        >
+          Réessayer
+        </button>
       </div>
     );
   }
 
   // État vide
-  if (!templates || templates.length === 0) {
+  if (!isLoading && (!templates || templates.length === 0)) {
     return (
       <div className="templates-empty">
         <PageTracker pageName="templates_list_empty" />
@@ -214,6 +282,7 @@ const TemplatesList = ({
     );
   }
 
+  // Rendu normal avec templates
   return (
     <div className="templates-container">
       <PageTracker
@@ -240,6 +309,8 @@ const TemplatesList = ({
               onHover={handleHover}
               onLeave={handleLeave}
               onClick={handleTemplateClick}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
             />
           </section>
         ))}
