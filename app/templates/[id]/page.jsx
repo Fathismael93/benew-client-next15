@@ -459,7 +459,6 @@ async function SingleTemplatePage({ params }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
           />
         )}
-
         {/* Prefetch des ressources critiques */}
         <link
           rel="prefetch"
@@ -467,7 +466,6 @@ async function SingleTemplatePage({ params }) {
           as="fetch"
           crossOrigin="anonymous"
         />
-
         {templateData.applications.slice(0, 3).map((app) => (
           <link
             key={app.application_id}
@@ -476,7 +474,6 @@ async function SingleTemplatePage({ params }) {
             as="document"
           />
         ))}
-
         <Suspense fallback={<SingleTemplatePageSkeleton />}>
           <SingleTemplateShops
             templateID={templateId}
@@ -540,9 +537,6 @@ function generateJsonLD(templateData) {
       '@type': 'Brand',
       name: 'Benew',
     },
-    category: template.template_category || 'Web Template',
-    datePublished: template.template_added,
-    dateModified: template.template_updated || template.template_added,
 
     // Agrégation des prix des applications
     offers:
@@ -570,8 +564,6 @@ function generateJsonLD(templateData) {
     aggregateRating: template.template_rating
       ? {
           '@type': 'AggregateRating',
-          ratingValue: template.template_rating,
-          reviewCount: template.template_reviews_count || 0,
           bestRating: 5,
           worstRating: 1,
         }
@@ -739,98 +731,98 @@ export async function invalidateTemplateApplicationsCache(templateId) {
 }
 
 // Statistiques simplifiées
-export async function getSingleTemplateStats(templateId) {
-  try {
-    const validationResult = await validateTemplateId(templateId);
-    if (!validationResult.isValid) {
-      throw new Error(`Invalid template ID: ${templateId}`);
-    }
+// export async function getSingleTemplateStats(templateId) {
+//   try {
+//     const validationResult = await validateTemplateId(templateId);
+//     if (!validationResult.isValid) {
+//       throw new Error(`Invalid template ID: ${templateId}`);
+//     }
 
-    const validTemplateId = validationResult.templateId;
-    const cacheKey = generateCacheKey('single_template_stats', {
-      templateId: validTemplateId,
-    });
-    const cachedStats = await projectCache.singleTemplate.get(
-      `${cacheKey}_stats`,
-    );
+//     const validTemplateId = validationResult.templateId;
+//     const cacheKey = generateCacheKey('single_template_stats', {
+//       templateId: validTemplateId,
+//     });
+//     const cachedStats = await projectCache.singleTemplate.get(
+//       `${cacheKey}_stats`,
+//     );
 
-    if (cachedStats) {
-      return cachedStats;
-    }
+//     if (cachedStats) {
+//       return cachedStats;
+//     }
 
-    const client = await getClient();
-    try {
-      const statsQuery = `
-        SELECT 
-          t.template_id,
-          t.template_name,
-          COUNT(a.application_id) as total_applications,
-          COUNT(a.application_id) FILTER (WHERE a.is_active = true) as active_applications,
-          AVG(a.application_fee) as avg_fee,
-          AVG(a.application_rent) as avg_rent,
-          COUNT(DISTINCT a.application_category) as categories_count,
-          MIN(a.application_level) as min_level,
-          MAX(a.application_level) as max_level
-        FROM catalog.templates t
-        LEFT JOIN catalog.applications a ON t.template_id = a.application_template_id
-        WHERE t.template_id = $1 AND t.is_active = true
-        GROUP BY t.template_id, t.template_name
-      `;
+//     const client = await getClient();
+//     try {
+//       // const statsQuery = `
+//       //   SELECT
+//       //     t.template_id,
+//       //     t.template_name,
+//       //     COUNT(a.application_id) as total_applications,
+//       //     COUNT(a.application_id) FILTER (WHERE a.is_active = true) as active_applications,
+//       //     AVG(a.application_fee) as avg_fee,
+//       //     AVG(a.application_rent) as avg_rent,
+//       //     COUNT(DISTINCT a.application_category) as categories_count,
+//       //     MIN(a.application_level) as min_level,
+//       //     MAX(a.application_level) as max_level
+//       //   FROM catalog.templates t
+//       //   LEFT JOIN catalog.applications a ON t.template_id = a.application_template_id
+//       //   WHERE t.template_id = $1 AND t.is_active = true
+//       //   GROUP BY t.template_id, t.template_name
+//       // `;
 
-      const result = await client.query(statsQuery, [validTemplateId]);
-      const stats = result.rows[0];
+//       // const result = await client.query(statsQuery, [validTemplateId]);
+//       // const stats = result.rows[0];
 
-      if (!stats) {
-        return {
-          error: 'Template not found',
-          templateId: validTemplateId,
-          timestamp: new Date().toISOString(),
-        };
-      }
+//       // if (!stats) {
+//       //   return {
+//       //     error: 'Template not found',
+//       //     templateId: validTemplateId,
+//       //     timestamp: new Date().toISOString(),
+//       //   };
+//       // }
 
-      const enrichedStats = {
-        ...stats,
-        total_applications: parseInt(stats.total_applications),
-        active_applications: parseInt(stats.active_applications),
-        avg_fee: parseFloat(stats.avg_fee) || 0,
-        avg_rent: parseFloat(stats.avg_rent) || 0,
-        categories_count: parseInt(stats.categories_count),
-        min_level: parseInt(stats.min_level) || 0,
-        max_level: parseInt(stats.max_level) || 0,
-        active_ratio:
-          stats.total_applications > 0
-            ? (stats.active_applications / stats.total_applications).toFixed(3)
-            : 0,
-        timestamp: new Date().toISOString(),
-      };
+//       // const enrichedStats = {
+//       //   ...stats,
+//       //   total_applications: parseInt(stats.total_applications),
+//       //   active_applications: parseInt(stats.active_applications),
+//       //   avg_fee: parseFloat(stats.avg_fee) || 0,
+//       //   avg_rent: parseFloat(stats.avg_rent) || 0,
+//       //   categories_count: parseInt(stats.categories_count),
+//       //   min_level: parseInt(stats.min_level) || 0,
+//       //   max_level: parseInt(stats.max_level) || 0,
+//       //   active_ratio:
+//       //     stats.total_applications > 0
+//       //       ? (stats.active_applications / stats.total_applications).toFixed(3)
+//       //       : 0,
+//       //   timestamp: new Date().toISOString(),
+//       // };
 
-      await projectCache.singleTemplate.set(
-        `${cacheKey}_stats`,
-        enrichedStats,
-        {
-          ttl: 10 * 60 * 1000,
-        },
-      );
+//       // await projectCache.singleTemplate.set(
+//       //   `${cacheKey}_stats`,
+//       //   // enrichedStats,
+//       //   {
+//       //     ttl: 10 * 60 * 1000,
+//       //   },
+//       // );
 
-      return enrichedStats;
-    } finally {
-      client.release();
-    }
-  } catch (error) {
-    captureException(error, {
-      tags: {
-        component: 'single_template_page',
-        action: 'get_template_stats_error',
-      },
-      extra: { templateId },
-    });
+//       return enrichedStats;
+//     } finally {
+//       client.release();
+//     }
+//   } catch (error) {
+//     captureException(error, {
+//       tags: {
+//         component: 'single_template_page',
+//         action: 'get_template_stats_error',
+//       },
+//       extra: { templateId },
+//     });
 
-    return {
-      error: error.message,
-      templateId,
-      timestamp: new Date().toISOString(),
-    };
-  }
-}
+//     return {
+//       error: error.message,
+//       templateId,
+//       timestamp: new Date().toISOString(),
+//     };
+//   }
+// }
 
 export default SingleTemplatePage;
