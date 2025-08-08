@@ -101,7 +101,7 @@ function getTemplateDataQuery(templateId) {
         SELECT 
           platform_id, 
           platform_name, 
-          platform_number, 
+          platform_number
         FROM admin.platforms
         WHERE is_active = true
         ORDER BY platform_name ASC
@@ -113,7 +113,7 @@ function getTemplateDataQuery(templateId) {
       query: `
         SELECT 
           template_id,
-          template_name,
+          template_name
         FROM catalog.templates 
         WHERE template_id = $1 AND is_active = true
       `,
