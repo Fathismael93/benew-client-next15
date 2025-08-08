@@ -91,11 +91,7 @@ const TemplateCard = memo(
               loading={index < 2 ? 'eager' : 'lazy'}
               placeholder="blur"
               blurDataURL={generateBlurDataURL()}
-              crop="fill"
-              gravity="center"
-              quality="auto"
-              format="auto"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              crop={{ type: 'fill', gravity: 'auto', source: true }}
             />
           </div>
           <div className="minimalContent">
