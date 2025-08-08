@@ -391,6 +391,7 @@ async function SingleTemplatePage({ params }) {
       return notFound();
     }
 
+    console.log(`Validated template ID: ${validationResult}`);
     const templateId = validationResult.templateId;
 
     // Rate Limiting
@@ -408,7 +409,11 @@ async function SingleTemplatePage({ params }) {
     }
 
     const adaptiveConfig = getAdaptiveSiteConfig();
+    console.log(
+      `Adaptive config for template page: ${JSON.stringify(adaptiveConfig)}`,
+    );
     const templateData = await getOptimizedSingleTemplate(templateId);
+    console.log(`Fetched template data: ${JSON.stringify(templateData)}`);
 
     // Vérification des résultats
     if (
