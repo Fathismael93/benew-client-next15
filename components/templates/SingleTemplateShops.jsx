@@ -43,6 +43,7 @@ const SingleTemplateShops = ({
 
   // Tracker les performances de la page template avec contexte enrichi
   useEffect(() => {
+    console.log('first useEffect for performance tracking');
     if (performanceMetrics?.loadTime && templateID) {
       trackPagePerformance(
         `template_${templateID}`,
@@ -54,6 +55,7 @@ const SingleTemplateShops = ({
 
   // Tracker la vue initiale du template
   useEffect(() => {
+    console.log('second useEffect for initial template view tracking');
     if (templateID && applications && applications.length > 0) {
       const templateName = applications[0]?.template_name;
 
@@ -79,6 +81,7 @@ const SingleTemplateShops = ({
 
   // Intersection Observer pour tracker les vues automatiques d'applications
   useEffect(() => {
+    console.log('third useEffect for Intersection Observer setup');
     if (!applications || applications.length === 0) return;
 
     observerRef.current = new IntersectionObserver(
@@ -132,6 +135,7 @@ const SingleTemplateShops = ({
 
   // Stocker le temps d'ouverture de la modal
   useEffect(() => {
+    console.log('fourth useEffect for modal open time tracking');
     if (isModalOpen) {
       window.modalOpenTime = Date.now();
     }
@@ -139,6 +143,7 @@ const SingleTemplateShops = ({
 
   // Tracker les scrolls profonds sur la liste des applications
   useEffect(() => {
+    console.log('fifth useEffect for scroll tracking');
     if (
       typeof window === 'undefined' ||
       !applications ||
