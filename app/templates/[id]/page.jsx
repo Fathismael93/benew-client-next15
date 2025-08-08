@@ -112,8 +112,12 @@ function getTemplateDataQuery(templateId) {
     templateExistsQuery: {
       query: `
         SELECT 
-          template_id,
-          template_name
+          template_id, 
+          template_name, 
+          template_image, 
+          template_has_web, 
+          template_has_mobile, 
+          template_added
         FROM catalog.templates 
         WHERE template_id = $1 AND is_active = true
       `,
@@ -316,9 +320,7 @@ export async function generateMetadata({ params }) {
 
   // Créer un titre et une description optimisés pour le SEO
   const title = `${template.template_name} - Template ${template.template_has_web ? 'Web' : ''}${template.template_has_web && template.template_has_mobile ? ' & ' : ''}${template.template_has_mobile ? 'Mobile' : ''} | Benew`;
-  const description = template.template_description
-    ? template.template_description.substring(0, 160)
-    : `Découvrez ${template.template_name}, un template professionnel avec ${templateData.applications.length} applications disponibles. Solutions web et mobile pour votre business.`;
+  const description = `Découvrez ${template.template_name}, un template professionnel avec ${templateData.applications.length} applications disponibles. Solutions web et mobile pour votre business.`;
 
   return {
     title,
@@ -326,8 +328,6 @@ export async function generateMetadata({ params }) {
     keywords: [
       template.template_name,
       'template',
-      template.template_category,
-      ...(template.template_tags || []),
       'Benew',
       'application web',
       'application mobile',
@@ -528,9 +528,7 @@ function generateJsonLD(templateData) {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: template.template_name,
-    description:
-      template.template_description ||
-      `Template professionnel ${template.template_name}`,
+    description: `Template professionnel ${template.template_name}`,
     image: template.template_image,
     url: `${siteUrl}/templates/${template.template_id}`,
     brand: {
@@ -561,13 +559,13 @@ function generateJsonLD(templateData) {
         : undefined,
 
     // Rating si disponible
-    aggregateRating: template.template_rating
-      ? {
-          '@type': 'AggregateRating',
-          bestRating: 5,
-          worstRating: 1,
-        }
-      : undefined,
+    // aggregateRating: template.template_rating
+    //   ? {
+    //       '@type': 'AggregateRating',
+    //       bestRating: 5,
+    //       worstRating: 1,
+    //     }
+    //   : undefined,
 
     // Applications comme variantes du produit
     hasVariant: applications.map((app) => ({
