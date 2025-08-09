@@ -1,84 +1,127 @@
 /* eslint-disable no-unused-vars */
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { CldImage } from 'next-cloudinary';
 import parse from 'html-react-parser';
+import Link from 'next/link';
 import './styling/singlePost/index.scss';
-
-// ⭐ AJOUT : Analytics imports
-import {
-  trackPagePerformance,
-  trackEvent,
-  trackBlogView,
-} from '@/utils/analytics';
+import { trackEvent } from '@/utils/analytics';
 import PageTracker from '../analytics/PageTracker';
 
-const SinglePost = ({
-  article,
-  relatedArticles,
-  contextStats,
-  adaptiveConfig,
-  performanceMetrics,
-  context,
-}) => {
-  const [errorMessage, setErrorMessage] = useState('');
+// Composant d'en-tête mémorisé
+const ArticleHeader = memo(({ article, onImageClick }) => (
+  <div className="article-header">
+    <h1>{article.article_title}</h1>
+    {article.article_image && (
+      <CldImage
+        priority
+        src={article.article_image}
+        alt="Article illustration"
+        width={640}
+        height={400}
+        className="imageContainer"
+        style={{ width: '100%', height: 'auto', maxHeight: '400px' }}
+        onClick={() => onImageClick(article.article_image)}
+      />
+    )}
+  </div>
+));
 
-  // ⭐ AJOUT : États pour tracking de lecture
+ArticleHeader.displayName = 'ArticleHeader';
+
+// Composant de contenu mémorisé
+const ArticleContent = memo(({ article, onImageClick, contentRef }) => {
+  // Options de parsing enrichi pour tracker les clics d'images
+  const parseOptions = {
+    replace: (domNode) => {
+      if (domNode.name === 'img' && domNode.attribs?.src) {
+        const originalSrc = domNode.attribs.src;
+        return (
+          <img
+            {...domNode.attribs}
+            onClick={() => onImageClick(originalSrc)}
+            style={{ cursor: 'pointer' }}
+            alt={domNode.attribs.alt || "Image de l'article"}
+          />
+        );
+      }
+    },
+  };
+
+  return (
+    <div className="part" ref={contentRef}>
+      {article.article_text && parse(article.article_text, parseOptions)}
+    </div>
+  );
+});
+
+ArticleContent.displayName = 'ArticleContent';
+
+// Composant d'articles liés mémorisé
+const RelatedArticles = memo(({ relatedArticles, onRelatedClick }) => {
+  if (!relatedArticles || relatedArticles.length === 0) return null;
+
+  return (
+    <div className="related-articles">
+      <h3>Articles similaires</h3>
+      <div className="related-grid">
+        {relatedArticles.map((relatedArticle) => (
+          <Link
+            key={relatedArticle.article_id}
+            href={`/blog/${relatedArticle.article_id}`}
+            className="related-card"
+            onClick={() => onRelatedClick(relatedArticle)}
+          >
+            {relatedArticle.article_image && (
+              <CldImage
+                src={relatedArticle.article_image}
+                alt={relatedArticle.article_title}
+                width={200}
+                height={130}
+                className="related-image"
+                loading="lazy"
+                quality="auto"
+                format="auto"
+              />
+            )}
+            <div className="related-content">
+              <h4>{relatedArticle.article_title}</h4>
+              <span className="related-date">{relatedArticle.created}</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+});
+
+RelatedArticles.displayName = 'RelatedArticles';
+
+// Composant principal simplifié
+const SinglePost = ({ article, relatedArticles = [], context = {} }) => {
   const [readingProgress, setReadingProgress] = useState(0);
-  const [readingStartTime] = useState(Date.now());
-  const [readingMilestones, setReadingMilestones] = useState({
-    25: false,
-    50: false,
-    75: false,
-    100: false,
-  });
   const [hasStartedReading, setHasStartedReading] = useState(false);
-  const [timeSpentReading, setTimeSpentReading] = useState(0);
+  const [readingTracked, setReadingTracked] = useState(false);
 
-  // ⭐ AJOUT : Refs pour tracking
   const articleContentRef = useRef(null);
-  const readingTimerRef = useRef(null);
 
-  // ⭐ AJOUT : Tracking des performances de page
-  useEffect(() => {
-    if (performanceMetrics?.loadTime && context?.articleId) {
-      trackPagePerformance(
-        `article_${context.articleId}`,
-        performanceMetrics.loadTime,
-        performanceMetrics.fromCache,
-      );
-    }
-  }, [performanceMetrics, context]);
-
-  // ⭐ AJOUT : Tracking de la vue initiale de l'article
+  // Tracking de la vue initiale (une seule fois)
   useEffect(() => {
     if (context?.articleId && article?.article_title) {
-      // Utiliser la fonction spécialisée blog
-      trackBlogView(context.articleId, article.article_title);
-
-      // Tracking enrichi supplémentaire
       trackEvent('blog_article_view', {
         event_category: 'blog',
         event_label: article.article_title,
         article_id: context.articleId,
         article_title: article.article_title,
-        word_count: context.stats?.article?.wordCount || 0,
-        estimated_reading_time:
-          context.stats?.article?.estimatedReadingTime || 0,
-        has_images: context.stats?.article?.hasImages || false,
-        is_recent: context.stats?.article?.isRecent || false,
-        age_in_days: context.stats?.article?.ageInDays || 0,
-        has_cloudinary_image:
-          context.stats?.article?.hasCloudinaryImage || false,
-        total_blog_articles: context.stats?.blog?.totalActiveArticles || 0,
-        load_time: performanceMetrics?.loadTime || 0,
-        from_cache: performanceMetrics?.fromCache || false,
+        word_count: article.word_count || 0,
+        estimated_reading_time: article.estimated_reading_time || 0,
+        has_images: article.has_images || false,
       });
     }
-  }, [context, article, performanceMetrics]);
+  }, []); // Dépendance vide intentionnelle
 
-  // ⭐ AJOUT : Tracking du progrès de lecture
+  // Tracking de lecture simplifié (seulement à 50%)
   useEffect(() => {
     if (!articleContentRef.current) return;
 
@@ -91,31 +134,22 @@ const SinglePost = ({
       const windowHeight = window.innerHeight;
       const scrollTop = window.scrollY;
 
-      // Calculer le progrès de lecture
+      // Calculer le progrès de lecture simplifié
       const contentBottom = contentTop + contentHeight;
-      const readableTop = contentTop - windowHeight * 0.3; // Début de lecture
-      const readableBottom = contentBottom - windowHeight * 0.7; // Fin de lecture
+      const readableTop = contentTop - windowHeight * 0.3;
+      const readableBottom = contentBottom - windowHeight * 0.7;
 
       if (scrollTop >= readableTop && scrollTop <= readableBottom) {
         if (!hasStartedReading) {
           setHasStartedReading(true);
 
-          // Démarrer le timer de temps de lecture
-          readingTimerRef.current = setInterval(() => {
-            setTimeSpentReading((prev) => prev + 1);
-          }, 1000);
-
           trackEvent('article_reading_start', {
             event_category: 'engagement',
             event_label: 'reading_started',
             article_id: context?.articleId,
-            article_title: article?.article_title,
-            estimated_reading_time:
-              context?.stats?.article?.estimatedReadingTime || 0,
           });
         }
 
-        // Calculer le pourcentage de lecture
         const progress = Math.min(
           100,
           Math.max(
@@ -126,140 +160,72 @@ const SinglePost = ({
 
         setReadingProgress(progress);
 
-        // Tracker les milestones de lecture
-        Object.keys(readingMilestones).forEach((milestone) => {
-          const milestoneValue = parseInt(milestone);
-          if (progress >= milestoneValue && !readingMilestones[milestone]) {
-            setReadingMilestones((prev) => ({
-              ...prev,
-              [milestone]: true,
-            }));
+        // Tracker seulement le milestone de 50% une fois
+        if (progress >= 50 && !readingTracked) {
+          setReadingTracked(true);
 
-            trackEvent('article_reading_milestone', {
-              event_category: 'engagement',
-              event_label: `${milestone}_percent_read`,
-              reading_progress: milestoneValue,
-              time_spent: timeSpentReading,
-              article_id: context?.articleId,
-              estimated_vs_actual:
-                timeSpentReading /
-                ((context?.stats?.article?.estimatedReadingTime || 1) * 60),
-              word_count: context?.stats?.article?.wordCount || 0,
-            });
-          }
-        });
+          trackEvent('article_reading_milestone', {
+            event_category: 'engagement',
+            event_label: 'halfway_read',
+            article_id: context?.articleId,
+            reading_progress: 50,
+          });
+        }
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (readingTimerRef.current) {
-        clearInterval(readingTimerRef.current);
-      }
-    };
-  }, [
-    hasStartedReading,
-    readingMilestones,
-    timeSpentReading,
-    context,
-    article,
-  ]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasStartedReading, readingTracked, context?.articleId]);
 
-  // ⭐ AJOUT : Tracking de sortie avec temps de lecture final
-  useEffect(() => {
-    return () => {
-      if (hasStartedReading && context?.articleId) {
-        const actualReadingTimeMinutes = timeSpentReading / 60;
-        const estimatedTimeMinutes =
-          context?.stats?.article?.estimatedReadingTime || 0;
-        const completionRate = readingProgress;
-
-        trackEvent('article_reading_end', {
-          event_category: 'engagement',
-          event_label: 'reading_ended',
-          article_id: context.articleId,
-          actual_reading_time: timeSpentReading,
-          estimated_reading_time: estimatedTimeMinutes * 60,
-          reading_efficiency:
-            estimatedTimeMinutes > 0
-              ? actualReadingTimeMinutes / estimatedTimeMinutes
-              : 0,
-          completion_rate: completionRate,
-          reading_type:
-            completionRate >= 90
-              ? 'complete'
-              : completionRate >= 50
-                ? 'partial'
-                : 'quick_scan',
-          word_count: context?.stats?.article?.wordCount || 0,
-        });
-      }
-    };
-  }, [hasStartedReading, timeSpentReading, readingProgress, context]);
-
-  // ⭐ AJOUT : Tracking des clics sur images
-  const handleImageClick = (imageSrc) => {
-    trackEvent('article_image_click', {
-      event_category: 'content_interaction',
-      event_label: 'image_clicked',
-      article_id: context?.articleId,
-      image_src: imageSrc,
-      reading_progress: readingProgress,
-      time_spent: timeSpentReading,
-    });
-  };
-
-  // ⭐ AJOUT : Tracking des erreurs de contenu
-  useEffect(() => {
-    if (!article || !article.article_title || !article.article_text) {
-      trackEvent('article_content_error', {
-        event_category: 'errors',
-        event_label: 'missing_content',
+  // Handler pour les clics d'images
+  const handleImageClick = useCallback(
+    (imageSrc) => {
+      trackEvent('article_image_click', {
+        event_category: 'content_interaction',
+        event_label: 'image_clicked',
         article_id: context?.articleId,
-        has_title: !!article?.article_title,
-        has_content: !!article?.article_text,
-        has_image: !!article?.article_image,
-        error_message: errorMessage,
+        reading_progress: Math.round(readingProgress),
       });
-    }
-  }, [article, context, errorMessage]);
-
-  // ⭐ AJOUT : Tracking de performance lente
-  useEffect(() => {
-    if (performanceMetrics && performanceMetrics.loadTime > 2000) {
-      trackEvent('article_slow_loading', {
-        event_category: 'performance',
-        event_label: 'slow_article_load',
-        load_time: performanceMetrics.loadTime,
-        from_cache: performanceMetrics.fromCache,
-        word_count: context?.stats?.article?.wordCount || 0,
-        has_images: context?.stats?.article?.hasImages || false,
-        severity: performanceMetrics.loadTime > 4000 ? 'critical' : 'warning',
-      });
-    }
-  }, [performanceMetrics, context]);
-
-  // ⭐ AJOUT : Enrichir le parsing HTML pour tracker les clics d'images
-  const enrichedParseOptions = {
-    replace: (domNode) => {
-      if (domNode.name === 'img' && domNode.attribs?.src) {
-        const originalSrc = domNode.attribs.src;
-        return (
-          <img
-            {...domNode.attribs}
-            onClick={() => handleImageClick(originalSrc)}
-            style={{ cursor: 'pointer' }}
-            alt={domNode.attribs.alt || "Image de l'article"}
-          />
-        );
-      }
     },
-  };
+    [context?.articleId, readingProgress],
+  );
+
+  // Handler pour les clics sur articles liés
+  const handleRelatedClick = useCallback(
+    (relatedArticle) => {
+      trackEvent('related_article_click', {
+        event_category: 'navigation',
+        event_label: relatedArticle.article_title,
+        source_article_id: context?.articleId,
+        target_article_id: relatedArticle.article_id,
+      });
+    },
+    [context?.articleId],
+  );
+
+  // Gestion de l'état vide
+  if (!article || !article.article_title) {
+    return (
+      <article className="article-empty">
+        <PageTracker
+          pageName={`article_${context?.articleId}`}
+          pageType="blog_article"
+          sections={['article_error']}
+        />
+        <div className="post">
+          <h1>Article non disponible</h1>
+          <p>Cet article n&apos;est pas disponible pour le moment.</p>
+          <Link href="/blog" className="back-link">
+            Retour au blog
+          </Link>
+        </div>
+      </article>
+    );
+  }
 
   return (
     <article>
-      {/* ⭐ AJOUT : PageTracker pour tracking standardisé */}
       <PageTracker
         pageName={`article_${context?.articleId}`}
         pageType="blog_article"
@@ -272,66 +238,29 @@ const SinglePost = ({
       />
 
       <div className="post">
-        <h1>{article && article.article_title}</h1>
-        {article && (
-          <CldImage
-            priority
-            src={article.article_image}
-            alt="Article illustration"
-            width={640}
-            height={100}
-            className="imageContainer"
-            style={{ width: '100%', height: 'auto', maxHeight: '400px' }}
-            onClick={() => handleImageClick(article.article_image)}
-          />
-        )}
+        <ArticleHeader article={article} onImageClick={handleImageClick} />
 
-        {/* ⭐ AJOUT : Indicateur de progrès de lecture (optionnel, caché par défaut) */}
-        {hasStartedReading && (
-          <div
-            className="reading-progress-indicator"
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              height: '3px',
-              backgroundColor: '#f6a037',
-              width: `${readingProgress}%`,
-              zIndex: 1000,
-              transition: 'width 0.1s ease',
-              display: 'none', // Caché par défaut, peut être affiché via CSS si désiré
-            }}
-          />
-        )}
+        <ArticleContent
+          article={article}
+          onImageClick={handleImageClick}
+          contentRef={articleContentRef}
+        />
 
-        <div className="part" ref={articleContentRef}>
-          {article && parse(article.article_text, enrichedParseOptions)}
-        </div>
-        {article && <em>{`Publié le ${article.created}`}</em>}
-
-        {/* ⭐ AJOUT : Métadonnées de lecture (cachées, pour debug si nécessaire) */}
-        {process.env.NODE_ENV === 'development' && hasStartedReading && (
-          <div
-            style={{
-              position: 'fixed',
-              bottom: '10px',
-              right: '10px',
-              background: 'rgba(0,0,0,0.8)',
-              color: 'white',
-              padding: '10px',
-              fontSize: '12px',
-              borderRadius: '5px',
-              zIndex: 1000,
-              display: 'none', // Visible seulement en mode debug
-            }}
-          >
-            <div>Progrès: {Math.round(readingProgress)}%</div>
-            <div>Temps: {Math.round(timeSpentReading)}s</div>
-            <div>
-              Estimé: {context?.stats?.article?.estimatedReadingTime || 0}min
-            </div>
+        {article.created && (
+          <div className="article-meta">
+            <em>{`Publié le ${article.created}`}</em>
+            {article.estimated_reading_time && (
+              <span className="reading-time">
+                {article.estimated_reading_time} min de lecture
+              </span>
+            )}
           </div>
         )}
+
+        <RelatedArticles
+          relatedArticles={relatedArticles}
+          onRelatedClick={handleRelatedClick}
+        />
       </div>
     </article>
   );
