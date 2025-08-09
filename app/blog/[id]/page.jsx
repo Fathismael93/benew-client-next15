@@ -83,7 +83,7 @@ async function getArticleData(articleId) {
             article_id,
             article_title,
             article_image,
-            TO_CHAR(created, 'DD/MM/YYYY') as created
+            TO_CHAR(article_created, 'DD/MM/YYYY') as created
           FROM admin.articles 
           WHERE article_id != $1 AND is_active = true 
           ORDER BY created DESC 
