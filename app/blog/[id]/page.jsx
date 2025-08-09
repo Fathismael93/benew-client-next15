@@ -86,7 +86,7 @@ async function getArticleData(articleId) {
             TO_CHAR(article_created, 'DD/MM/YYYY') as created
           FROM admin.articles 
           WHERE article_id != $1 AND is_active = true 
-          ORDER BY article_created DESC 
+          ORDER BY created DESC 
           LIMIT 4`,
           [articleId],
         ),
@@ -240,8 +240,8 @@ export async function generateMetadata({ params }) {
           article_title,
           article_text,
           article_image,
-          created,
-          updated
+          article_created,
+          article_updated
         FROM admin.articles 
         WHERE article_id = $1 AND is_active = true`,
         [validation.articleId],
