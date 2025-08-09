@@ -7,10 +7,10 @@ import './styles/index.scss';
 import HeroSkeleton from './HeroSkeleton';
 import QualitiesSkeleton from './QualitiesSkeleton';
 import MarketingSkeleton from './MarketingSkeleton';
+import AppExamplesSkeleton from './AppExamplesSkeleton';
+import ContactSkeleton from './ContactSkeleton';
 
 import PageTracker from 'components/analytics/PageTracker';
-import AppExamples from 'components/layouts/home/appExamples';
-import ContactHome from 'components/layouts/home/contact';
 
 // Import dynamique des composants
 const Hero = dynamic(() => import('components/layouts/home/hero'), {
@@ -35,6 +35,19 @@ const QualitiesHome = dynamic(
     ssr: true,
   },
 );
+
+const AppExamples = dynamic(
+  () => import('components/layouts/home/appExamples'),
+  {
+    loading: () => <AppExamplesSkeleton />,
+    ssr: true,
+  },
+);
+
+const ContactHome = dynamic(() => import('components/layouts/home/contact'), {
+  loading: () => <ContactSkeleton />,
+  ssr: true,
+});
 
 const HomeComponent = () => {
   return (

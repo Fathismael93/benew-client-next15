@@ -6,6 +6,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
+import SingleTemplateSkeleton from '@/components/templates/skeletons/SingleTemplateSkeleton';
 import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../../instrumentation';
@@ -159,43 +160,13 @@ export default async function SingleTemplatePage({ params }) {
 
   // Rendu normal avec Suspense
   return (
-    <Suspense fallback={<SingleTemplatePageSkeleton />}>
+    <Suspense fallback={<SingleTemplateSkeleton />}>
       <SingleTemplateShops
         templateID={templateId}
         applications={data.applications}
         platforms={data.platforms}
       />
     </Suspense>
-  );
-}
-
-// Skeleton component simple et efficace
-function SingleTemplatePageSkeleton() {
-  return (
-    <div className="single-template-skeleton">
-      {/* Header skeleton */}
-      <div className="skeleton-header">
-        <div className="skeleton-title-large"></div>
-      </div>
-
-      {/* Applications grid skeleton */}
-      <div className="skeleton-grid">
-        {Array.from({ length: 6 }, (_, i) => (
-          <div key={i} className="skeleton-card">
-            <div className="skeleton-image"></div>
-            <div className="skeleton-content">
-              <div className="skeleton-text"></div>
-              <div className="skeleton-text short"></div>
-              <div className="skeleton-price"></div>
-              <div className="skeleton-buttons">
-                <div className="skeleton-button"></div>
-                <div className="skeleton-button"></div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 

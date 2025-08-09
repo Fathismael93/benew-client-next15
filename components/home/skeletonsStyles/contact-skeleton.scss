@@ -1,0 +1,599 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 contact-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATION SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes skeletonGlow {
+  0% {
+    box-shadow: 0 0 10px rgba($color-orange, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($color-orange, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba($color-orange, 0.2);
+  }
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.1) 25%,
+    rgba($text-color, 0.2) 50%,
+    rgba($text-color, 0.1) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// CONTENEUR PRINCIPAL - LAYOUT 50/50
+// =============================
+.contact-skeleton-main-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  // Layout horizontal par défaut (desktop)
+  flex-direction: row;
+
+  // =============================
+  // RESPONSIVE - MOBILE VERTICAL
+  // =============================
+  @include until('medium-sm') {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+// =============================
+// BLOC GAUCHE - SKELETON TEXTE ET BOUTON
+// =============================
+.skeleton-contact-text-block {
+  // Desktop : 50% largeur, 100% hauteur
+  width: 50%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  // Padding identique au composant original
+  padding: 2rem;
+
+  @include small-screens {
+    padding: 1.5rem;
+  }
+
+  @include from('small-sm') {
+    padding: 1.55rem;
+  }
+
+  @include from('small-lg') {
+    padding: 1.6rem;
+  }
+
+  @include from('small-xl') {
+    padding: 1.65rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    padding: 1.75rem;
+  }
+
+  @include from('medium-sm') {
+    padding: 2rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 2.25rem;
+  }
+
+  @include from('medium-xxl') {
+    padding: 2.5rem;
+  }
+
+  @include from('large-xs') {
+    padding: 3rem;
+  }
+
+  // Mobile : largeur pleine, 60% hauteur (pour correspondre au layout original)
+  @include until('medium-sm') {
+    width: 100%;
+    height: 60%;
+  }
+}
+
+// =============================
+// SKELETON TEXTE PRINCIPAL
+// =============================
+.skeleton-contact-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 90%; // max-width du composant original
+  align-items: center;
+  margin-bottom: 2rem; // margin du texte original
+
+  @include small-screens {
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+  }
+
+  @include from('small-sm') {
+    margin-bottom: 1.55rem;
+    gap: 0.51rem;
+  }
+
+  @include from('small-lg') {
+    margin-bottom: 1.6rem;
+    gap: 0.52rem;
+  }
+
+  @include from('small-xl') {
+    margin-bottom: 1.65rem;
+    gap: 0.53rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    margin-bottom: 1.75rem;
+    gap: 0.55rem;
+  }
+
+  @include from('medium-lg') {
+    margin-bottom: 2.1rem;
+    gap: 0.6rem;
+  }
+
+  @include from('medium-xxl') {
+    margin-bottom: 2.3rem;
+    gap: 0.65rem;
+  }
+
+  @include from('large-xs') {
+    margin-bottom: 2.5rem;
+    gap: 0.7rem;
+  }
+
+  .skeleton-text-line-1,
+  .skeleton-text-line-2,
+  .skeleton-text-line-3 {
+    border-radius: 4px;
+    background: linear-gradient(
+      90deg,
+      rgba($text-color, 0.15) 25%,
+      rgba($text-color, 0.25) 50%,
+      rgba($text-color, 0.15) 75%
+    );
+
+    // Hauteur basée sur les font-size du composant original
+    height: 1.2rem;
+
+    @include small-screens {
+      height: 1rem;
+    }
+
+    @include from('small-sm') {
+      height: 1.02rem;
+    }
+
+    @include from('small-lg') {
+      height: 1.04rem;
+    }
+
+    @include from('small-xl') {
+      height: 1.06rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      height: 1.1rem;
+    }
+
+    @include from('medium-sm') {
+      height: 1.3rem;
+    }
+
+    @include from('medium-lg') {
+      height: 1.32rem;
+    }
+
+    @include from('medium-xxl') {
+      height: 1.35rem;
+    }
+
+    @include from('large-xs') {
+      height: 1.4rem;
+    }
+  }
+
+  // Variation des largeurs pour un effet naturel
+  .skeleton-text-line-1 {
+    width: 100%; // "Pour plus d'informations, n'hésitez pas à nous contacter !"
+  }
+
+  .skeleton-text-line-2 {
+    width: 85%; // "Nous serons ravis de vous en dire"
+  }
+
+  .skeleton-text-line-3 {
+    width: 40%; // "plus."
+  }
+}
+
+// =============================
+// SKELETON BOUTON CONTACT
+// =============================
+.skeleton-contact-button {
+  border-radius: 50px;
+  background: linear-gradient(
+    135deg,
+    rgba($color-orange, 0.3) 25%,
+    rgba($color-pink, 0.3) 50%,
+    rgba($color-orange, 0.3) 75%
+  );
+  border: 2px solid rgba($color-light, 0.1);
+
+  // Animation spéciale pour le bouton
+  animation: skeletonGlow 3s ease-in-out infinite;
+
+  // Dimensions basées sur le composant original
+  height: 3.2rem; // padding + font-size approximatif
+  width: 200px; // Largeur approximative de "CONTACTEZ NOUS"
+
+  @include small-screens {
+    height: 2.7rem;
+    width: 160px;
+  }
+
+  @include from('small-sm') {
+    height: 2.74rem;
+    width: 165px;
+  }
+
+  @include from('small-lg') {
+    height: 2.78rem;
+    width: 170px;
+  }
+
+  @include from('small-xl') {
+    height: 2.82rem;
+    width: 175px;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    height: 2.9rem;
+    width: 180px;
+  }
+
+  @include from('medium-sm') {
+    height: 3rem;
+    width: 185px;
+  }
+
+  @include from('medium-lg') {
+    height: 3.04rem;
+    width: 190px;
+  }
+
+  @include from('medium-xxl') {
+    height: 3.06rem;
+    width: 195px;
+  }
+
+  @include from('large-xs') {
+    height: 3.4rem;
+    width: 220px;
+  }
+}
+
+// =============================
+// BLOC DROITE - SKELETON IMAGE LOGO
+// =============================
+.skeleton-contact-image-block {
+  // Desktop : 50% largeur, 100% hauteur
+  width: 50%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  // Mobile : largeur pleine, 40% hauteur
+  @include until('medium-sm') {
+    width: 100%;
+    height: 40%;
+  }
+
+  // =============================
+  // CONTENEUR DE L'IMAGE - 90% DU BLOC
+  // =============================
+  .skeleton-contact-logo-container {
+    position: relative;
+    width: 90%;
+    height: 90%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // =============================
+    // SKELETON IMAGE LOGO
+    // =============================
+    .skeleton-contact-logo-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+
+      background: linear-gradient(
+        90deg,
+        rgba($color-orange, 0.2) 25%,
+        rgba($color-orange, 0.3) 50%,
+        rgba($color-orange, 0.2) 75%
+      );
+
+      // Effet subtil pour s'harmoniser avec le design
+      box-shadow: 0 10px 30px rgba($color-dark, 0.2);
+
+      // Animation plus lente pour l'image
+      animation: skeletonShimmer 3s infinite linear;
+    }
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Écrans très petits
+@media (max-width: 360px) {
+  .skeleton-contact-text-block {
+    padding: 1.25rem;
+  }
+
+  .skeleton-contact-text {
+    margin-bottom: 1.25rem;
+
+    .skeleton-text-line-1,
+    .skeleton-text-line-2,
+    .skeleton-text-line-3 {
+      height: 0.9rem;
+    }
+  }
+
+  .skeleton-contact-button {
+    height: 2.45rem;
+    width: 140px;
+  }
+
+  .skeleton-contact-image-block .skeleton-contact-logo-container {
+    width: 95%;
+    height: 95%;
+  }
+}
+
+// Mode paysage mobile
+@include mobile-landscape {
+  .contact-skeleton-main-container {
+    flex-direction: row; // Revenir en horizontal en paysage
+  }
+
+  .skeleton-contact-text-block,
+  .skeleton-contact-image-block {
+    width: 50%;
+    height: 100%;
+  }
+
+  .skeleton-contact-text-block {
+    padding: 1.5rem;
+  }
+
+  .skeleton-contact-text {
+    margin-bottom: 1.5rem;
+
+    .skeleton-text-line-1,
+    .skeleton-text-line-2,
+    .skeleton-text-line-3 {
+      height: 0.95rem;
+    }
+  }
+
+  .skeleton-contact-button {
+    height: 2.6rem;
+    width: 155px;
+  }
+}
+
+// Écrans très hauts
+@include tall-screen {
+  .skeleton-contact-text-block {
+    @include until('medium-sm') {
+      height: 35%; // Moins d'espace sur écrans très hauts
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  .skeleton-contact-image-block {
+    @include until('medium-sm') {
+      height: 45%; // Plus d'espace pour l'image
+    }
+  }
+}
+
+// Écrans courts
+@include short-screen {
+  .skeleton-contact-text-block {
+    padding: 1.5rem;
+  }
+
+  .skeleton-contact-text {
+    margin-bottom: 1.5rem;
+
+    .skeleton-text-line-1,
+    .skeleton-text-line-2,
+    .skeleton-text-line-3 {
+      height: 1rem;
+    }
+  }
+
+  .skeleton-contact-button {
+    height: 2.8rem;
+    width: 170px;
+  }
+
+  .skeleton-contact-image-block .skeleton-contact-logo-container {
+    width: 85%;
+    height: 85%;
+  }
+}
+
+// Accessibilité - Réduction des animations
+@include reduced-motion {
+  .skeleton-animate {
+    animation: skeletonPulse 2s infinite ease-in-out;
+  }
+
+  .skeleton-contact-button {
+    animation: none;
+    background: linear-gradient(
+      135deg,
+      rgba($color-orange, 0.3),
+      rgba($color-pink, 0.3)
+    );
+  }
+
+  .skeleton-contact-logo-image {
+    animation: skeletonPulse 2s infinite ease-in-out;
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  .skeleton-contact-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+// Support écrans haute densité
+@include high-density {
+  .skeleton-contact-logo-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Contraste élevé
+@include high-contrast {
+  .skeleton-contact-button {
+    border-width: 3px;
+    border-color: rgba($color-light, 0.8);
+  }
+
+  .skeleton-contact-text {
+    .skeleton-text-line-1,
+    .skeleton-text-line-2,
+    .skeleton-text-line-3 {
+      background: linear-gradient(
+        90deg,
+        rgba($text-color, 0.3) 25%,
+        rgba($text-color, 0.4) 50%,
+        rgba($text-color, 0.3) 75%
+      );
+    }
+  }
+}
+
+// Très grands écrans
+@include from('large-xxxl') {
+  .skeleton-contact-text-block {
+    padding: 3.5rem;
+  }
+
+  .skeleton-contact-text {
+    margin-bottom: 3rem;
+    max-width: 85%;
+
+    .skeleton-text-line-1,
+    .skeleton-text-line-2,
+    .skeleton-text-line-3 {
+      height: 1.5rem;
+    }
+  }
+
+  .skeleton-contact-button {
+    height: 3.8rem;
+    width: 280px;
+  }
+
+  .skeleton-contact-image-block .skeleton-contact-logo-container {
+    width: 85%;
+    height: 85%;
+  }
+}
+
+// Orientation paysage tablettes
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .contact-skeleton-main-container {
+    flex-direction: row;
+  }
+
+  .skeleton-contact-text-block {
+    width: 50%;
+    height: 100%;
+    padding: 2rem;
+  }
+
+  .skeleton-contact-text {
+    margin-bottom: 1.8rem;
+
+    .skeleton-text-line-1,
+    .skeleton-text-line-2,
+    .skeleton-text-line-3 {
+      height: 1.1rem;
+    }
+  }
+
+  .skeleton-contact-button {
+    height: 3.05rem;
+    width: 190px;
+  }
+
+  .skeleton-contact-image-block {
+    width: 50%;
+    height: 100%;
+  }
+}

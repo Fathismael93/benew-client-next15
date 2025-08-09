@@ -1,0 +1,879 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 app-examples-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATION SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes skeletonGlow {
+  0% {
+    box-shadow: 0 0 10px rgba($color-purple, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($color-purple, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba($color-purple, 0.2);
+  }
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.1) 25%,
+    rgba($text-color, 0.2) 50%,
+    rgba($text-color, 0.1) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// GESTION D'AFFICHAGE PAR BREAKPOINT
+// =============================
+
+// VERSION DESKTOP - Visible seulement sur grands écrans
+.app-examples-skeleton-desktop {
+  @include until('large-xs') {
+    display: none; // Caché sur petits/moyens écrans
+  }
+  @include from('large-xs') {
+    display: block; // Visible sur grands écrans
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// VERSION MOBILE/TABLETTE - Visible seulement sur petits/moyens écrans
+.app-examples-skeleton-mobile {
+  @include until('large-xs') {
+    display: block; // Visible sur petits/moyens écrans
+    width: 100%;
+    height: 100%;
+  }
+  @include from('large-xs') {
+    display: none; // Caché sur grands écrans
+  }
+}
+
+// =============================
+// CONTENEUR PRINCIPAL DU SLIDER - COMMUN
+// =============================
+.skeleton-slider-container {
+  position: relative;
+  width: 85%;
+  height: 85%;
+
+  // ✅ CENTRAGE PARFAIT - ABSOLU
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  // Style du conteneur
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 25px 80px rgba($color-dark, 0.3),
+    0 0 60px rgba($color-purple, 0.1);
+
+  // Background subtil
+  background: rgba($color-dark, 0.05);
+
+  // Responsive - ajustements pour petits écrans
+  @include small-screens {
+    width: 92%;
+    height: 90%;
+    border-radius: 16px;
+  }
+
+  @include from('small-sm') {
+    width: 91%;
+    height: 89%;
+    border-radius: 16.5px;
+  }
+
+  @include from('small-lg') {
+    width: 90%;
+    height: 88%;
+    border-radius: 17px;
+  }
+
+  @include from('small-xl') {
+    width: 89%;
+    height: 87.5%;
+    border-radius: 17.5px;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    width: 88%;
+    height: 87%;
+    border-radius: 18px;
+  }
+
+  @include from('medium-sm') {
+    width: 87%;
+    height: 86%;
+    border-radius: 19px;
+  }
+
+  @include from('medium-lg') {
+    width: 86%;
+    height: 85.5%;
+    border-radius: 20px;
+  }
+
+  @include from('medium-xxl') {
+    width: 85.5%;
+    height: 85%;
+    border-radius: 22px;
+  }
+
+  @include from('large-xs') {
+    border-radius: 24px;
+  }
+}
+
+// =============================
+// VERSION DESKTOP - STRUCTURE OVERLAY
+// =============================
+
+.app-examples-skeleton-desktop {
+  .skeleton-slide-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+      90deg,
+      rgba($color-purple, 0.15) 25%,
+      rgba($color-purple, 0.25) 50%,
+      rgba($color-purple, 0.15) 75%
+    );
+    animation: skeletonShimmer 3s infinite linear;
+  }
+
+  .skeleton-text-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    // Style glass-morphism
+    background: rgba($color-dark, 0.3);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 2px solid rgba($color-light, 0.1);
+
+    // Dimensions identiques au composant original
+    padding: 2.5rem;
+    max-width: 70%;
+    min-width: 400px;
+
+    // Centrage du contenu
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    // Ombres pour la profondeur
+    box-shadow:
+      0 20px 60px rgba($color-dark, 0.4),
+      0 0 40px rgba($color-light, 0.05);
+
+    // Animation subtile
+    animation: skeletonGlow 4s ease-in-out infinite;
+  }
+
+  .skeleton-description {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    align-items: center;
+
+    .skeleton-description-line-1,
+    .skeleton-description-line-2,
+    .skeleton-description-line-3 {
+      height: 1.3rem; // Basé sur font-size: 1.3rem
+      border-radius: 4px;
+      background: linear-gradient(
+        90deg,
+        rgba($text-color, 0.15) 25%,
+        rgba($text-color, 0.25) 50%,
+        rgba($text-color, 0.15) 75%
+      );
+    }
+
+    // Variation des largeurs pour un effet naturel
+    .skeleton-description-line-1 {
+      width: 95%;
+    }
+
+    .skeleton-description-line-2 {
+      width: 100%;
+    }
+
+    .skeleton-description-line-3 {
+      width: 85%;
+    }
+  }
+
+  .skeleton-shop-button {
+    border-radius: 50px;
+    height: 3rem; // Basé sur padding + font-size
+    width: 220px; // Largeur approximative
+
+    background: linear-gradient(
+      90deg,
+      rgba($color-purple, 0.3) 25%,
+      rgba($color-pink, 0.3) 50%,
+      rgba($color-purple, 0.3) 75%
+    );
+    border: 2px solid rgba($color-light, 0.1);
+
+    // Animation spéciale pour le bouton
+    animation: skeletonGlow 3s ease-in-out infinite;
+  }
+}
+
+// =============================
+// VERSION MOBILE/TABLETTE - STRUCTURE SÉPARÉE
+// =============================
+
+.app-examples-skeleton-mobile {
+  .skeleton-slider-container {
+    // Layout en colonne
+    display: flex;
+    flex-direction: column;
+  }
+
+  // SECTION IMAGE - 60% de la hauteur
+  .skeleton-image-section {
+    width: 100%;
+    height: 60%;
+    position: relative;
+
+    .skeleton-slide-image {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba($color-purple, 0.15) 25%,
+        rgba($color-purple, 0.25) 50%,
+        rgba($color-purple, 0.15) 75%
+      );
+      animation: skeletonShimmer 3s infinite linear;
+    }
+  }
+
+  // SECTION TEXTE - 40% de la hauteur
+  .skeleton-text-section {
+    width: 100%;
+    height: 40%;
+
+    // Pas de background sur petits/moyens écrans (comme l'original)
+    background: none;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+
+    // Centrage du contenu
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+
+    // Padding selon la taille d'écran
+    padding: 1rem;
+
+    @include small-screens {
+      padding: 0.75rem;
+      gap: 0.75rem;
+    }
+
+    @include from('small-sm') {
+      padding: 0.8rem;
+      gap: 0.8rem;
+    }
+
+    @include from('small-lg') {
+      padding: 0.85rem;
+      gap: 0.82rem;
+    }
+
+    @include from('small-xl') {
+      padding: 0.9rem;
+      gap: 0.85rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      padding: 1rem;
+      gap: 0.85rem;
+    }
+
+    @include from('medium-sm') {
+      padding: 1.1rem;
+      gap: 0.9rem;
+    }
+
+    @include from('medium-lg') {
+      padding: 1.15rem;
+      gap: 0.95rem;
+    }
+
+    @include from('medium-xxl') {
+      padding: 1.25rem;
+      gap: 1.1rem;
+    }
+  }
+
+  .skeleton-description {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    align-items: center;
+
+    .skeleton-description-line-1,
+    .skeleton-description-line-2 {
+      border-radius: 4px;
+      background: linear-gradient(
+        90deg,
+        rgba($text-color, 0.15) 25%,
+        rgba($text-color, 0.25) 50%,
+        rgba($text-color, 0.15) 75%
+      );
+
+      // Hauteur basée sur les font-size responsives
+      @include small-screens {
+        height: 0.8rem;
+      }
+
+      @include from('small-sm') {
+        height: 0.81rem;
+      }
+
+      @include from('small-lg') {
+        height: 0.82rem;
+      }
+
+      @include from('small-xl') {
+        height: 0.83rem;
+      }
+
+      @include between('small-xl', 'medium-sm') {
+        height: 0.85rem;
+      }
+
+      @include from('medium-sm') {
+        height: 0.87rem;
+      }
+
+      @include from('medium-lg') {
+        height: 0.88rem;
+      }
+
+      @include from('medium-xxl') {
+        height: 0.9rem;
+      }
+    }
+
+    // Variation des largeurs
+    .skeleton-description-line-1 {
+      width: 95%;
+    }
+
+    .skeleton-description-line-2 {
+      width: 85%;
+    }
+  }
+
+  .skeleton-shop-button {
+    border-radius: 50px;
+    background: linear-gradient(
+      90deg,
+      rgba($color-purple, 0.3) 25%,
+      rgba($color-pink, 0.3) 50%,
+      rgba($color-purple, 0.3) 75%
+    );
+    border: 2px solid rgba($color-light, 0.1);
+
+    // Dimensions responsives identiques au composant original
+    @include small-screens {
+      height: 2.3rem; // padding + font-size
+      width: 180px;
+    }
+
+    @include from('small-sm') {
+      height: 2.32rem;
+      width: 185px;
+    }
+
+    @include from('small-lg') {
+      height: 2.34rem;
+      width: 190px;
+    }
+
+    @include from('small-xl') {
+      height: 2.36rem;
+      width: 195px;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      height: 2.4rem;
+      width: 200px;
+    }
+
+    @include from('medium-sm') {
+      height: 2.44rem;
+      width: 210px;
+    }
+
+    @include from('medium-lg') {
+      height: 2.46rem;
+      width: 215px;
+    }
+
+    @include from('medium-xxl') {
+      height: 2.5rem;
+      width: 220px;
+    }
+  }
+}
+
+// =============================
+// SKELETON FLÈCHES DE NAVIGATION - COMMUNES
+// =============================
+
+.skeleton-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  // Style des boutons
+  background: rgba($color-dark, 0.3);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba($color-light, 0.1);
+  border-radius: 50%;
+
+  // Dimensions
+  width: 60px;
+  height: 60px;
+
+  // Animation pulse subtile
+  animation: skeletonPulse 3s infinite ease-in-out;
+
+  // =============================
+  // RESPONSIVE - TAILLES ET POSITIONS
+  // =============================
+
+  // 📱 PETITS ÉCRANS
+  @include small-screens {
+    width: 50px;
+    height: 50px;
+    background: rgba($color-dark, 0.2);
+    border: 1px solid rgba($color-light, 0.05);
+  }
+
+  @include from('small-sm') {
+    width: 51px;
+    height: 51px;
+  }
+
+  @include from('small-lg') {
+    width: 52px;
+    height: 52px;
+  }
+
+  @include from('small-xl') {
+    width: 53px;
+    height: 53px;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include between('small-xl', 'medium-sm') {
+    width: 55px;
+    height: 55px;
+  }
+
+  @include from('medium-sm') {
+    width: 57px;
+    height: 57px;
+  }
+
+  @include from('medium-lg') {
+    width: 58px;
+    height: 58px;
+  }
+
+  @include from('medium-xxl') {
+    width: 60px;
+    height: 60px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    width: 70px;
+    height: 70px;
+  }
+
+  // =============================
+  // POSITIONS FLÈCHES
+  // =============================
+
+  // Flèche précédente
+  &.prev {
+    left: 2rem;
+
+    @include small-screens {
+      left: 1rem;
+    }
+
+    @include from('small-sm') {
+      left: 1.1rem;
+    }
+
+    @include from('small-lg') {
+      left: 1.2rem;
+    }
+
+    @include from('small-xl') {
+      left: 1.3rem;
+    }
+
+    @include from('medium-sm') {
+      left: 1.5rem;
+    }
+
+    @include from('medium-lg') {
+      left: 1.75rem;
+    }
+
+    @include from('medium-xxl') {
+      left: 2rem;
+    }
+
+    @include from('large-xs') {
+      left: 3rem;
+    }
+  }
+
+  // Flèche suivante
+  &.next {
+    right: 2rem;
+
+    @include small-screens {
+      right: 1rem;
+    }
+
+    @include from('small-sm') {
+      right: 1.1rem;
+    }
+
+    @include from('small-lg') {
+      right: 1.2rem;
+    }
+
+    @include from('small-xl') {
+      right: 1.3rem;
+    }
+
+    @include from('medium-sm') {
+      right: 1.5rem;
+    }
+
+    @include from('medium-lg') {
+      right: 1.75rem;
+    }
+
+    @include from('medium-xxl') {
+      right: 2rem;
+    }
+
+    @include from('large-xs') {
+      right: 3rem;
+    }
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Écrans très petits
+@media (max-width: 360px) {
+  .skeleton-slider-container {
+    width: 95%;
+    height: 92%;
+  }
+
+  .app-examples-skeleton-mobile {
+    .skeleton-text-section {
+      padding: 0.5rem;
+      gap: 0.6rem;
+    }
+
+    .skeleton-description {
+      .skeleton-description-line-1,
+      .skeleton-description-line-2 {
+        height: 0.75rem;
+      }
+    }
+
+    .skeleton-shop-button {
+      height: 2.1rem;
+      width: 160px;
+    }
+  }
+
+  .skeleton-nav-arrow {
+    width: 45px;
+    height: 45px;
+
+    &.prev {
+      left: 0.5rem;
+    }
+
+    &.next {
+      right: 0.5rem;
+    }
+  }
+}
+
+// Mode paysage mobile
+@include mobile-landscape {
+  .app-examples-skeleton-mobile {
+    .skeleton-text-section {
+      padding: 0.75rem;
+      gap: 0.6rem;
+    }
+
+    .skeleton-description {
+      .skeleton-description-line-1,
+      .skeleton-description-line-2 {
+        height: 0.8rem;
+      }
+    }
+
+    .skeleton-shop-button {
+      height: 2.15rem;
+      width: 170px;
+    }
+  }
+}
+
+// Écrans hauts
+@include tall-screen {
+  .app-examples-skeleton-desktop {
+    .skeleton-text-card {
+      padding: 3rem;
+      gap: 2rem;
+
+      .skeleton-description {
+        gap: 1rem;
+
+        .skeleton-description-line-1,
+        .skeleton-description-line-2,
+        .skeleton-description-line-3 {
+          height: 1.5rem;
+        }
+      }
+
+      .skeleton-shop-button {
+        height: 3.5rem;
+        width: 240px;
+      }
+    }
+  }
+}
+
+// Écrans courts
+@include short-screen {
+  .skeleton-slider-container {
+    height: 95%;
+  }
+
+  .app-examples-skeleton-mobile {
+    .skeleton-text-section {
+      padding: 0.75rem;
+      gap: 0.75rem;
+    }
+
+    .skeleton-description {
+      .skeleton-description-line-1,
+      .skeleton-description-line-2 {
+        height: 0.85rem;
+      }
+    }
+
+    .skeleton-shop-button {
+      height: 2.2rem;
+      width: 180px;
+    }
+  }
+}
+
+// Accessibilité - Réduction des animations
+@include reduced-motion {
+  .skeleton-animate {
+    animation: skeletonPulse 2s infinite ease-in-out;
+  }
+
+  .skeleton-text-card {
+    animation: none;
+  }
+
+  .skeleton-nav-arrow {
+    animation: none;
+  }
+
+  .skeleton-slide-image {
+    animation: skeletonPulse 2s infinite ease-in-out;
+  }
+}
+
+// Support écrans haute densité
+@include high-density {
+  .skeleton-slider-container {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Très grands écrans
+@include from('large-xxxl') {
+  .skeleton-slider-container {
+    max-width: 85%;
+    max-height: 85%;
+  }
+
+  .app-examples-skeleton-desktop {
+    .skeleton-text-card {
+      padding: 3.5rem;
+      max-width: 75%;
+      min-width: 500px;
+      gap: 2rem;
+
+      .skeleton-description {
+        gap: 1rem;
+
+        .skeleton-description-line-1,
+        .skeleton-description-line-2,
+        .skeleton-description-line-3 {
+          height: 1.6rem;
+        }
+      }
+
+      .skeleton-shop-button {
+        height: 3.8rem;
+        width: 280px;
+      }
+    }
+  }
+
+  .skeleton-nav-arrow {
+    width: 80px;
+    height: 80px;
+
+    &.prev {
+      left: 4rem;
+    }
+
+    &.next {
+      right: 4rem;
+    }
+  }
+}
+
+// Orientation paysage tablettes
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .app-examples-skeleton-mobile {
+    .skeleton-image-section {
+      height: 65%; // Plus d'espace pour l'image en paysage
+    }
+
+    .skeleton-text-section {
+      height: 35%; // Moins d'espace pour le texte
+      padding: 1rem 1.5rem;
+      gap: 0.8rem;
+    }
+
+    .skeleton-description {
+      .skeleton-description-line-1,
+      .skeleton-description-line-2 {
+        height: 0.9rem;
+      }
+    }
+
+    .skeleton-shop-button {
+      height: 2.4rem;
+      width: 200px;
+    }
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  .skeleton-nav-arrow {
+    // Augmenter la zone tactile
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .skeleton-shop-button {
+    min-height: 44px;
+  }
+}
+
+// Contraste élevé
+@include high-contrast {
+  .app-examples-skeleton-desktop .skeleton-text-card {
+    background: rgba($color-dark, 0.9);
+    border-color: rgba($color-light, 0.5);
+  }
+
+  .skeleton-shop-button {
+    border-width: 3px;
+    border-color: rgba($color-light, 0.8);
+  }
+
+  .skeleton-nav-arrow {
+    border-width: 3px;
+    border-color: rgba($color-light, 0.8);
+  }
+}

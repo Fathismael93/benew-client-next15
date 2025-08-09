@@ -5,6 +5,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
+import TemplatesSkeleton from '@/components/templates/skeletons/TemplatesSkeleton';
 import TemplatesList from '@/components/templates/TemplatesList';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../instrumentation';
@@ -111,31 +112,9 @@ export default async function TemplatesPage() {
 
   // Rendu normal avec Suspense pour UX
   return (
-    <Suspense fallback={<TemplatesPageSkeleton />}>
+    <Suspense fallback={<TemplatesSkeleton />}>
       <TemplatesList templates={data.templates} />
     </Suspense>
-  );
-}
-
-// Skeleton component simple
-function TemplatesPageSkeleton() {
-  return (
-    <div className="templates-page-skeleton">
-      <div className="templates-header-skeleton">
-        <div className="skeleton-title"></div>
-      </div>
-      <div className="templates-grid-skeleton">
-        {Array.from({ length: 6 }, (_, i) => (
-          <div key={i} className="template-card-skeleton">
-            <div className="skeleton-image"></div>
-            <div className="skeleton-content">
-              <div className="skeleton-text"></div>
-              <div className="skeleton-text"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
