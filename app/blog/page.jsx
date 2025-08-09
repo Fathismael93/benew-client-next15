@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import ListBlog from '@/components/blog/ListBlog';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../instrumentation';
+import ListBlogSkeleton from '@/components/blog/skeletons/ListBlogSkeleton';
 
 // Configuration simplifiée mais robuste pour blog
 const CONFIG = {
@@ -127,33 +128,9 @@ export default async function BlogPage() {
 
   // Rendu normal avec Suspense pour UX
   return (
-    <Suspense fallback={<BlogPageSkeleton />}>
+    <Suspense fallback={<ListBlogSkeleton />}>
       <ListBlog posts={data.articles} />
     </Suspense>
-  );
-}
-
-// Skeleton component simple et efficace
-function BlogPageSkeleton() {
-  return (
-    <div className="blog-page-skeleton">
-      <div className="blog-header-skeleton">
-        <div className="skeleton-title"></div>
-        <div className="skeleton-subtitle"></div>
-      </div>
-      <div className="blog-grid-skeleton">
-        {Array.from({ length: 9 }, (_, i) => (
-          <div key={i} className="blog-card-skeleton">
-            <div className="skeleton-image"></div>
-            <div className="skeleton-content">
-              <div className="skeleton-text"></div>
-              <div className="skeleton-text"></div>
-              <div className="skeleton-date"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
