@@ -1,5 +1,3 @@
-'use client';
-
 import './skeletonsStyles/qualities-skeleton.scss';
 
 const QualitiesSkeleton = () => {

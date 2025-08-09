@@ -1,5 +1,3 @@
-'use client';
-
 import './skeletonsStyles/marketing-skeleton.scss';
 
 const MarketingSkeleton = () => {
