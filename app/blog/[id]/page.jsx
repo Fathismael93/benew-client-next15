@@ -86,7 +86,7 @@ async function getArticleData(articleId) {
             TO_CHAR(article_created, 'DD/MM/YYYY') as created
           FROM admin.articles 
           WHERE article_id != $1 AND is_active = true 
-          ORDER BY created DESC 
+          ORDER BY article_created DESC 
           LIMIT 4`,
           [articleId],
         ),
