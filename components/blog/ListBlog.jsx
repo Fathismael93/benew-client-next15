@@ -1,10 +1,18 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+import './styling/blog.scss';
 import { useRef, useState, useEffect, useCallback, memo } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import ArticleItem from '@/components/blog/articleItem';
-import Parallax from '@/components/layouts/parallax';
-import './styling/blog.scss';
+
+import ParallaxSkeleton from '../layouts/parallax/ParallaxSkeleton';
+// Import dynamique des composants
+const Parallax = dynamic(() => import('components/layouts/parallax'), {
+  loading: () => <ParallaxSkeleton />,
+  ssr: true,
+});
+
 import { trackEvent } from '@/utils/analytics';
 import PageTracker from '../analytics/PageTracker';
 

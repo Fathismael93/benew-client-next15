@@ -1,13 +1,21 @@
 // components/templates/SingleTemplateShops.jsx
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState, useEffect, useCallback, memo } from 'react';
 import { CldImage } from 'next-cloudinary';
 import Link from 'next/link';
 import { FaDollarSign } from 'react-icons/fa';
 import { IoEye } from 'react-icons/io5';
 import './shopsStyles/index.scss';
-import Parallax from '@/components/layouts/parallax';
+
+import ParallaxSkeleton from '../layouts/parallax/ParallaxSkeleton';
+// Import dynamique des composants
+const Parallax = dynamic(() => import('components/layouts/parallax'), {
+  loading: () => <ParallaxSkeleton />,
+  ssr: true,
+});
+
 import OrderModal from '../modal/OrderModal';
 import { formatPrice, getApplicationLevelLabel } from '@/utils/helpers';
 import { trackEvent } from '@/utils/analytics';

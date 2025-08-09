@@ -12,6 +12,7 @@ import {
   captureException,
   captureMessage,
 } from '../../../../../instrumentation';
+import SingleApplicationSkeleton from '@/components/templates/skeletons/SingleApplicationSkeleton';
 
 // Configuration simple et efficace
 const CONFIG = {
@@ -223,7 +224,7 @@ export default async function SingleApplicationPage({ params }) {
 
   // Rendu normal avec Suspense
   return (
-    <Suspense fallback={<SingleApplicationPageSkeleton />}>
+    <Suspense fallback={<SingleApplicationSkeleton />}>
       <SingleApplication
         application={data.application}
         template={data.template}
@@ -235,66 +236,6 @@ export default async function SingleApplicationPage({ params }) {
         }}
       />
     </Suspense>
-  );
-}
-
-// Skeleton component simple et efficace
-function SingleApplicationPageSkeleton() {
-  return (
-    <div className="single-application-skeleton">
-      {/* Breadcrumb skeleton */}
-      <div className="skeleton-breadcrumb">
-        <div className="skeleton-text-small"></div>
-        <div className="skeleton-text-small"></div>
-        <div className="skeleton-text-small"></div>
-      </div>
-
-      {/* Header avec images et infos */}
-      <div className="skeleton-header">
-        <div className="skeleton-images">
-          <div className="skeleton-image-large"></div>
-          <div className="skeleton-thumbnails">
-            {Array.from({ length: 4 }, (_, i) => (
-              <div key={i} className="skeleton-image-small"></div>
-            ))}
-          </div>
-        </div>
-
-        <div className="skeleton-info">
-          <div className="skeleton-title-large"></div>
-          <div className="skeleton-text"></div>
-          <div className="skeleton-text"></div>
-          <div className="skeleton-price-large"></div>
-          <div className="skeleton-buttons">
-            <div className="skeleton-button"></div>
-            <div className="skeleton-button"></div>
-          </div>
-        </div>
-      </div>
-
-      {/* Description */}
-      <div className="skeleton-description">
-        <div className="skeleton-title"></div>
-        <div className="skeleton-text-block"></div>
-        <div className="skeleton-text-block"></div>
-      </div>
-
-      {/* Applications similaires */}
-      <div className="skeleton-related">
-        <div className="skeleton-title"></div>
-        <div className="skeleton-grid">
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="skeleton-card">
-              <div className="skeleton-image"></div>
-              <div className="skeleton-content">
-                <div className="skeleton-text"></div>
-                <div className="skeleton-price"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 

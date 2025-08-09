@@ -1,12 +1,20 @@
 // components/templates/TemplatesList.jsx
 'use client';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { CldImage } from 'next-cloudinary';
 import { useState, useEffect, memo, useCallback } from 'react';
 import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 import './templatesStyles/index.scss';
-import Parallax from '@/components/layouts/parallax';
+
+import ParallaxSkeleton from '../layouts/parallax/ParallaxSkeleton';
+// Import dynamique des composants
+const Parallax = dynamic(() => import('components/layouts/parallax'), {
+  loading: () => <ParallaxSkeleton />,
+  ssr: true,
+});
+
 import { trackEvent } from '@/utils/analytics';
 import PageTracker from '../analytics/PageTracker';
 

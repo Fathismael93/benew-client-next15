@@ -1,0 +1,877 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 parallax-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATIONS SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes skeletonFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes skeletonTwinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.08) 25%,
+    rgba($text-color, 0.15) 50%,
+    rgba($text-color, 0.08) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// CONTENEUR PRINCIPAL PARALLAX SKELETON
+// =============================
+.parallax-skeleton {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  // Background gradient similaire au composant original
+  background: linear-gradient(
+    135deg,
+    rgba($background-color, 0.9) 0%,
+    rgba($color-purple, 0.1) 50%,
+    rgba($background-color, 0.95) 100%
+  );
+}
+
+// =============================
+// SKELETON TITRE - MOBILE-FIRST
+// =============================
+.skeleton-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  border-radius: 12px;
+
+  // Couleur spéciale pour le titre avec gradient
+  background: linear-gradient(
+    45deg,
+    rgba($text-color, 0.15) 0%,
+    rgba($color-orange, 0.25) 25%,
+    rgba($color-pink, 0.25) 50%,
+    rgba($color-purple, 0.25) 75%,
+    rgba($text-color, 0.15) 100%
+  );
+
+  background-size: 300px 100%;
+  animation: skeletonShimmer 3s infinite linear;
+
+  // Dimensions responsive identiques au composant original
+  // 📱 MOBILE FIRST
+  height: 2.5rem;
+
+  @include until('small-sm') {
+    height: 2.2rem;
+  }
+
+  @include from('small-sm') {
+    height: 2.6rem;
+  }
+
+  @include from('small-lg') {
+    height: 2.8rem;
+  }
+
+  @include from('small-xl') {
+    height: 3rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 3.5rem;
+  }
+
+  @include from('medium-lg') {
+    height: 3.8rem;
+  }
+
+  @include from('medium-xl') {
+    height: 4rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 4.2rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    height: 4.5rem;
+  }
+
+  @include from('large-lg') {
+    height: 4.7rem;
+  }
+
+  @include from('large-xxl') {
+    height: 5rem;
+  }
+
+  @include from('large-xxxl') {
+    height: 5.2rem;
+  }
+
+  // Variantes de largeur selon le type de titre
+  &.skeleton-title-small {
+    // Pour des titres courts comme "Accueil"
+    width: 180px;
+
+    @include until('small-sm') {
+      width: 140px;
+    }
+
+    @include from('small-sm') {
+      width: 150px;
+    }
+
+    @include from('medium-sm') {
+      width: 160px;
+    }
+
+    @include from('large-xs') {
+      width: 180px;
+    }
+
+    @include from('large-xxxl') {
+      width: 200px;
+    }
+  }
+
+  &.skeleton-title-medium {
+    // Pour des titres moyens comme "Nos Modèles"
+    width: 280px;
+
+    @include until('small-sm') {
+      width: 220px;
+    }
+
+    @include from('small-sm') {
+      width: 230px;
+    }
+
+    @include from('small-lg') {
+      width: 240px;
+    }
+
+    @include from('small-xl') {
+      width: 250px;
+    }
+
+    @include from('medium-sm') {
+      width: 260px;
+    }
+
+    @include from('medium-lg') {
+      width: 270px;
+    }
+
+    @include from('medium-xxl') {
+      width: 280px;
+    }
+
+    @include from('large-xs') {
+      width: 320px;
+    }
+
+    @include from('large-xxxl') {
+      width: 350px;
+    }
+  }
+
+  &.skeleton-title-large {
+    // Pour des titres longs comme "Nom d'Application Complexe"
+    width: 400px;
+
+    @include until('small-sm') {
+      width: 280px;
+    }
+
+    @include from('small-sm') {
+      width: 300px;
+    }
+
+    @include from('small-lg') {
+      width: 320px;
+    }
+
+    @include from('small-xl') {
+      width: 340px;
+    }
+
+    @include from('medium-sm') {
+      width: 360px;
+    }
+
+    @include from('medium-lg') {
+      width: 380px;
+    }
+
+    @include from('medium-xxl') {
+      width: 400px;
+    }
+
+    @include from('large-xs') {
+      width: 450px;
+    }
+
+    @include from('large-xxxl') {
+      width: 500px;
+    }
+  }
+}
+
+// =============================
+// SKELETON MONTAGNES - MOBILE-FIRST
+// =============================
+.skeleton-mountains {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+
+  // Simuler la forme des montagnes avec un gradient complexe
+  background: linear-gradient(
+    to top,
+    rgba($text-color, 0.15) 0%,
+    rgba($text-color, 0.12) 20%,
+    rgba($text-color, 0.08) 40%,
+    rgba($text-color, 0.05) 60%,
+    transparent 80%
+  );
+
+  // Mask pour créer une forme de montagne
+  mask: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+
+  // Animation subtile
+  animation: skeletonPulse 4s infinite ease-in-out;
+
+  // Effet de pseudo-éléments pour simuler les pics
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(
+      to top,
+      rgba($text-color, 0.1) 0%,
+      rgba($text-color, 0.06) 50%,
+      transparent 100%
+    );
+  }
+
+  &::before {
+    left: -20%;
+    transform: skewX(-5deg);
+    z-index: 1;
+  }
+
+  &::after {
+    right: -20%;
+    transform: skewX(5deg);
+    z-index: 1;
+  }
+}
+
+// =============================
+// SKELETON PLANÈTES - MOBILE-FIRST
+// =============================
+.skeleton-planets {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+
+  // Animation flottante pour simuler l'effet parallax
+  animation: skeletonFloat 6s ease-in-out infinite;
+
+  // Créer des formes circulaires pour simuler les planètes
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(
+      135deg,
+      rgba($color-orange, 0.15) 0%,
+      rgba($color-pink, 0.12) 50%,
+      rgba($color-purple, 0.1) 100%
+    );
+    animation: skeletonPulse 5s infinite ease-in-out;
+  }
+
+  // Planète principale
+  &::before {
+    width: 120px;
+    height: 120px;
+    top: 15%;
+    right: 10%;
+    animation-delay: 0s;
+
+    @include until('small-sm') {
+      width: 80px;
+      height: 80px;
+      top: 20%;
+      right: 5%;
+    }
+
+    @include from('small-sm') {
+      width: 90px;
+      height: 90px;
+      top: 18%;
+      right: 7%;
+    }
+
+    @include from('medium-sm') {
+      width: 100px;
+      height: 100px;
+      top: 16%;
+      right: 8%;
+    }
+
+    @include from('medium-lg') {
+      width: 110px;
+      height: 110px;
+      top: 15%;
+      right: 9%;
+    }
+
+    @include from('large-xs') {
+      width: 120px;
+      height: 120px;
+      top: 15%;
+      right: 10%;
+    }
+
+    @include from('large-xs') {
+      width: 150px;
+      height: 150px;
+      top: 12%;
+      right: 12%;
+    }
+  }
+
+  // Planète secondaire
+  &::after {
+    width: 60px;
+    height: 60px;
+    top: 60%;
+    left: 15%;
+    animation-delay: 1s;
+    opacity: 0.6;
+
+    @include until('small-sm') {
+      width: 40px;
+      height: 40px;
+      top: 65%;
+      left: 10%;
+    }
+
+    @include from('small-sm') {
+      width: 45px;
+      height: 45px;
+      top: 62%;
+      left: 12%;
+    }
+
+    @include from('medium-sm') {
+      width: 50px;
+      height: 50px;
+      top: 60%;
+      left: 13%;
+    }
+
+    @include from('medium-lg') {
+      width: 55px;
+      height: 55px;
+      top: 58%;
+      left: 14%;
+    }
+
+    @include from('large-xs') {
+      width: 60px;
+      height: 60px;
+      top: 60%;
+      left: 15%;
+    }
+
+    @include from('large-xs') {
+      width: 80px;
+      height: 80px;
+      top: 55%;
+      left: 18%;
+    }
+  }
+}
+
+// =============================
+// SKELETON ÉTOILES - MOBILE-FIRST
+// =============================
+.skeleton-stars {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+
+  // Background pattern pour simuler les étoiles
+  background:
+    radial-gradient(
+      circle at 20% 80%,
+      rgba($color-light, 0.15) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba($color-light, 0.12) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      rgba($color-light, 0.1) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 60% 90%,
+      rgba($color-light, 0.08) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 90% 60%,
+      rgba($color-light, 0.06) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    100px 100px,
+    150px 150px,
+    120px 120px,
+    80px 80px,
+    200px 200px;
+
+  // Animation scintillement
+  animation: skeletonTwinkle 3s infinite ease-in-out;
+
+  // Variations pour différentes tailles d'écran
+  @include until('small-sm') {
+    background-size:
+      80px 80px,
+      120px 120px,
+      100px 100px,
+      60px 60px,
+      160px 160px;
+  }
+
+  @include from('medium-lg') {
+    background-size:
+      120px 120px,
+      180px 180px,
+      140px 140px,
+      100px 100px,
+      240px 240px;
+  }
+
+  @include from('large-xs') {
+    background-size:
+      140px 140px,
+      200px 200px,
+      160px 160px,
+      120px 120px,
+      280px 280px;
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile
+@include mobile-landscape {
+  .parallax-skeleton {
+    .skeleton-title {
+      &.skeleton-title-small {
+        height: 1.8rem;
+        width: 120px;
+      }
+
+      &.skeleton-title-medium {
+        height: 2rem;
+        width: 180px;
+      }
+
+      &.skeleton-title-large {
+        height: 2.2rem;
+        width: 220px;
+      }
+    }
+
+    .skeleton-planets {
+      &::before {
+        width: 60px;
+        height: 60px;
+        top: 10%;
+        right: 5%;
+      }
+
+      &::after {
+        width: 30px;
+        height: 30px;
+        top: 70%;
+        left: 5%;
+      }
+    }
+
+    .skeleton-stars {
+      background-size:
+        60px 60px,
+        90px 90px,
+        80px 80px,
+        50px 50px,
+        120px 120px;
+    }
+  }
+}
+
+// Écrans très hauts
+@include tall-screen {
+  .parallax-skeleton {
+    .skeleton-title {
+      @include until('large-xs') {
+        &.skeleton-title-small {
+          height: 2.2rem;
+          width: 160px;
+        }
+
+        &.skeleton-title-medium {
+          height: 3.2rem;
+          width: 300px;
+        }
+
+        &.skeleton-title-large {
+          height: 3.8rem;
+          width: 420px;
+        }
+      }
+    }
+  }
+}
+
+// Amélioration pour l'accessibilité - Réduction des animations
+@include reduced-motion {
+  .parallax-skeleton {
+    .skeleton-title,
+    .skeleton-mountains,
+    .skeleton-planets,
+    .skeleton-stars {
+      animation: skeletonPulse 2s infinite ease-in-out !important;
+    }
+
+    .skeleton-planets {
+      &::before,
+      &::after {
+        animation: none !important;
+      }
+    }
+  }
+}
+
+// Support pour écrans haute densité
+@include high-density {
+  .parallax-skeleton {
+    .skeleton-mountains {
+      background: linear-gradient(
+        to top,
+        rgba($text-color, 0.2) 0%,
+        rgba($text-color, 0.15) 20%,
+        rgba($text-color, 0.1) 40%,
+        rgba($text-color, 0.08) 60%,
+        transparent 80%
+      );
+    }
+
+    .skeleton-planets {
+      &::before,
+      &::after {
+        box-shadow:
+          0 0 20px rgba($color-orange, 0.2),
+          inset 0 0 20px rgba($color-pink, 0.1);
+      }
+    }
+  }
+}
+
+// Contraste élevé
+@include high-contrast {
+  .parallax-skeleton {
+    .skeleton-title {
+      background: linear-gradient(
+        45deg,
+        rgba($text-color, 0.3) 0%,
+        rgba($color-orange, 0.4) 25%,
+        rgba($color-pink, 0.4) 50%,
+        rgba($color-purple, 0.4) 75%,
+        rgba($text-color, 0.3) 100%
+      );
+    }
+
+    .skeleton-mountains {
+      background: linear-gradient(
+        to top,
+        rgba($text-color, 0.25) 0%,
+        rgba($text-color, 0.2) 20%,
+        rgba($text-color, 0.15) 40%,
+        rgba($text-color, 0.1) 60%,
+        transparent 80%
+      );
+    }
+
+    .skeleton-planets {
+      &::before,
+      &::after {
+        background: linear-gradient(
+          135deg,
+          rgba($color-orange, 0.25) 0%,
+          rgba($color-pink, 0.22) 50%,
+          rgba($color-purple, 0.2) 100%
+        );
+      }
+    }
+
+    .skeleton-stars {
+      background:
+        radial-gradient(
+          circle at 20% 80%,
+          rgba($color-light, 0.25) 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          circle at 80% 20%,
+          rgba($color-light, 0.22) 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          circle at 40% 40%,
+          rgba($color-light, 0.2) 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          circle at 60% 90%,
+          rgba($color-light, 0.18) 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          circle at 90% 60%,
+          rgba($color-light, 0.16) 1px,
+          transparent 1px
+        );
+    }
+  }
+}
+
+// Très grands écrans
+@include from('large-xxxl') {
+  .parallax-skeleton {
+    .skeleton-title {
+      &.skeleton-title-small {
+        height: 5.8rem;
+        width: 250px;
+      }
+
+      &.skeleton-title-medium {
+        height: 5.5rem;
+        width: 400px;
+      }
+
+      &.skeleton-title-large {
+        height: 5.2rem;
+        width: 550px;
+      }
+    }
+
+    .skeleton-planets {
+      &::before {
+        width: 180px;
+        height: 180px;
+        top: 10%;
+        right: 15%;
+      }
+
+      &::after {
+        width: 100px;
+        height: 100px;
+        top: 50%;
+        left: 20%;
+      }
+    }
+
+    .skeleton-stars {
+      background-size:
+        160px 160px,
+        240px 240px,
+        200px 200px,
+        140px 140px,
+        320px 320px;
+    }
+  }
+}
+
+// Mode sombre
+@include dark-mode {
+  .parallax-skeleton {
+    background: linear-gradient(
+      135deg,
+      rgba($background-color, 0.95) 0%,
+      rgba($color-purple, 0.05) 50%,
+      rgba($background-color, 0.98) 100%
+    );
+
+    .skeleton-title {
+      background: linear-gradient(
+        45deg,
+        rgba($text-color, 0.1) 0%,
+        rgba($color-orange, 0.2) 25%,
+        rgba($color-pink, 0.2) 50%,
+        rgba($color-purple, 0.2) 75%,
+        rgba($text-color, 0.1) 100%
+      );
+    }
+
+    .skeleton-mountains {
+      background: linear-gradient(
+        to top,
+        rgba($text-color, 0.08) 0%,
+        rgba($text-color, 0.06) 20%,
+        rgba($text-color, 0.04) 40%,
+        rgba($text-color, 0.02) 60%,
+        transparent 80%
+      );
+    }
+
+    .skeleton-planets {
+      &::before,
+      &::after {
+        background: linear-gradient(
+          135deg,
+          rgba($color-orange, 0.08) 0%,
+          rgba($color-pink, 0.06) 50%,
+          rgba($color-purple, 0.05) 100%
+        );
+      }
+    }
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  .parallax-skeleton {
+    // Pas d'interaction tactile nécessaire pour un skeleton
+    pointer-events: none;
+  }
+}
+
+// Écrans très petits
+@media (max-width: 360px) {
+  .parallax-skeleton {
+    .skeleton-title {
+      &.skeleton-title-small {
+        height: 2rem;
+        width: 120px;
+      }
+
+      &.skeleton-title-medium {
+        height: 2rem;
+        width: 180px;
+      }
+
+      &.skeleton-title-large {
+        height: 2.2rem;
+        width: 240px;
+      }
+    }
+
+    .skeleton-planets {
+      &::before {
+        width: 60px;
+        height: 60px;
+        top: 25%;
+        right: 3%;
+      }
+
+      &::after {
+        width: 30px;
+        height: 30px;
+        top: 70%;
+        left: 5%;
+      }
+    }
+
+    .skeleton-stars {
+      background-size:
+        60px 60px,
+        90px 90px,
+        80px 80px,
+        50px 50px,
+        120px 120px;
+    }
+  }
+}

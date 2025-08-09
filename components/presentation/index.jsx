@@ -1,10 +1,18 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import './index.scss';
 import Image from 'next/image';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
-import Parallax from 'components/layouts/parallax';
+
+import ParallaxSkeleton from '../layouts/parallax/ParallaxSkeleton';
+// Import dynamique des composants
+const Parallax = dynamic(() => import('components/layouts/parallax'), {
+  loading: () => <ParallaxSkeleton />,
+  ssr: true,
+});
+
 import PresentationModal from 'components/modal/PresentationModal';
 import PageTracker from '../analytics/PageTracker';
 import { trackEvent } from '@/utils/analytics';
