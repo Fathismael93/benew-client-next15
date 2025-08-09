@@ -1,6 +1,6 @@
 'use client';
 
-import './styles/marketing-skeleton.scss';
+import './skeletonsStyles/marketing-skeleton.scss';
 
 const MarketingSkeleton = () => {
   return (

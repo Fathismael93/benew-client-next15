@@ -1,6 +1,6 @@
 'use client';
 
-import './styles/qualities-skeleton.scss';
+import './skeletonsStyles/qualities-skeleton.scss';
 
 const QualitiesSkeleton = () => {
   return (

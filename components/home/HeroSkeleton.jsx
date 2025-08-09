@@ -1,6 +1,6 @@
 'use client';
 
-import './styles/hero-skeleton.scss';
+import './skeletonsStyles/hero-skeleton.scss';
 
 const HeroSkeleton = () => {
   return (
