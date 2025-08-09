@@ -67,9 +67,9 @@ async function getArticleData(articleId) {
             article_title,
             article_text,
             article_image,
-            TO_CHAR(created, 'DD/MM/YYYY') as created,
+            TO_CHAR(article_created, 'DD/MM/YYYY') as created,
             created as created_raw,
-            TO_CHAR(updated, 'DD/MM/YYYY') as updated,
+            TO_CHAR(article_updated, 'DD/MM/YYYY') as updated,
             updated as updated_raw,
             (SELECT COUNT(*) FROM admin.articles WHERE is_active = true) as total_active_articles
           FROM admin.articles 
