@@ -283,6 +283,7 @@ export async function generateMetadata({ params }) {
     } finally {
       client.release();
     }
+    // eslint-disable-next-line no-unused-vars
   } catch (error) {
     // Fallback metadata si erreur
   }
