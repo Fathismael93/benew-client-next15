@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // app/templates/[id]/applications/[appID]/page.jsx
 // Server Component optimisé pour détail d'une application e-commerce
 // Next.js 15 + PostgreSQL + Monitoring essentiel
