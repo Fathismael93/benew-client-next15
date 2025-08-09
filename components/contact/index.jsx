@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import {
   MdMail,
@@ -9,11 +9,54 @@ import {
   MdKeyboardArrowDown,
 } from 'react-icons/md';
 import Parallax from '@/components/layouts/parallax';
-import './styles/index.scss'; // Assuming you have a separate CSS file for styling
 import FormContainer from './formContainer';
 import { trackEvent } from '@/utils/analytics';
 import PageTracker from '../analytics/PageTracker';
+import './styles/index.scss';
 
+// Composant d'en-tête de contact mémorisé
+const ContactHeader = memo(({ isCollapsed, onToggle }) => (
+  <div className="collapsible-header" onClick={onToggle}>
+    <h2>Coordonnées</h2>
+    <MdKeyboardArrowDown
+      className={`toggle-icon ${!isCollapsed ? 'open' : ''}`}
+    />
+  </div>
+));
+
+ContactHeader.displayName = 'ContactHeader';
+
+// Composant d'élément de contact mémorisé
+const ContactItem = memo(({ icon: Icon, text, variants }) => (
+  <motion.div className="item" variants={variants}>
+    <div className="icon">
+      <Icon />
+    </div>
+    <p>{text}</p>
+  </motion.div>
+));
+
+ContactItem.displayName = 'ContactItem';
+
+// Composant des informations de contact mémorisé
+const ContactInfo = memo(({ isCollapsed, variants }) => (
+  <div className={`collapsible-content ${!isCollapsed ? 'open' : ''}`}>
+    <div className="content-wrapper">
+      {/* Titre principal - Desktop uniquement */}
+      <motion.h1 variants={variants}>Coordonnées</motion.h1>
+
+      <ContactItem icon={MdPhone} text="77.86.00.64" variants={variants} />
+
+      <ContactItem icon={MdWhatsapp} text="77.86.00.64" variants={variants} />
+
+      <ContactItem icon={MdMail} text="benew@gmail.com" variants={variants} />
+    </div>
+  </div>
+));
+
+ContactInfo.displayName = 'ContactInfo';
+
+// Animations simplifiées
 const variants = {
   initial: {
     y: 500,
@@ -29,24 +72,24 @@ const variants = {
   },
 };
 
+// Composant principal simplifié
 const Contact = () => {
   const ref = useRef();
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const toggleCollapse = () => {
-    // ⭐ TRACKING COLLAPSE TOGGLE
+  // Handler pour le toggle optimisé
+  const handleToggle = useCallback(() => {
     trackEvent('contact_info_toggle', {
       event_category: 'contact',
       event_label: isCollapsed ? 'expand' : 'collapse',
       action: isCollapsed ? 'expand' : 'collapse',
     });
 
-    setIsCollapsed(!isCollapsed);
-  };
+    setIsCollapsed((prev) => !prev);
+  }, [isCollapsed]);
 
   return (
     <div>
-      {/* ⭐ AJOUTER LE PAGETRACKER */}
       <PageTracker
         pageName="contact"
         pageType="conversion"
@@ -61,6 +104,7 @@ const Contact = () => {
       <section className="first">
         <Parallax bgColor="#0c0c1d" title="Contact" planets="/planets.png" />
       </section>
+
       <section className="others">
         <motion.div
           ref={ref}
@@ -70,44 +114,9 @@ const Contact = () => {
           whileInView="animate"
         >
           <motion.div className="textContainer" variants={variants}>
-            {/* Header collapsible - Visible uniquement sur mobile/tablette */}
-            <div className="collapsible-header" onClick={toggleCollapse}>
-              <h2>Coordonnées</h2>
-              <MdKeyboardArrowDown
-                className={`toggle-icon ${!isCollapsed ? 'open' : ''}`}
-              />
-            </div>
+            <ContactHeader isCollapsed={isCollapsed} onToggle={handleToggle} />
 
-            {/* Contenu collapsible */}
-            <div
-              className={`collapsible-content ${!isCollapsed ? 'open' : ''}`}
-            >
-              <div className="content-wrapper">
-                {/* Titre principal - Visible uniquement sur desktop */}
-                <motion.h1 variants={variants}>Coordonnées</motion.h1>
-
-                <motion.div className="item" variants={variants}>
-                  <div className="icon">
-                    <MdPhone />
-                  </div>
-                  <p>77.86.00.64</p>
-                </motion.div>
-
-                <motion.div className="item" variants={variants}>
-                  <div className="icon">
-                    <MdWhatsapp />
-                  </div>
-                  <p>77.86.00.64</p>
-                </motion.div>
-
-                <motion.div className="item" variants={variants}>
-                  <div className="icon">
-                    <MdMail />
-                  </div>
-                  <p>benew@gmail.com</p>
-                </motion.div>
-              </div>
-            </div>
+            <ContactInfo isCollapsed={isCollapsed} variants={variants} />
           </motion.div>
 
           <FormContainer ref={ref} />
