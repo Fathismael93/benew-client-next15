@@ -164,7 +164,7 @@ export const metadata = {
 };
 
 // Configuration Next.js 15 pour cache ISR
-export const revalidate = CONFIG.cache.revalidate; // ISR de 5 minutes
+export const revalidate = 300; // ISR de 5 minutes
 
 // Dynamic si besoin de personnalisation par utilisateur (désactivé par défaut)
 export const dynamic = 'force-static'; // Pour e-commerce, on peut garder statique
