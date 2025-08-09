@@ -1,0 +1,636 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 marketing-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATION SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+// =============================
+// MARKETING SKELETON - BASE STRUCTURE
+// =============================
+.marketing-skeleton {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.1) 25%,
+    rgba($text-color, 0.2) 50%,
+    rgba($text-color, 0.1) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// STRUCTURE DESKTOP/TABLETTE (medium-sm et plus)
+// =============================
+@include from('medium-sm') {
+  .main-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100vh;
+
+    gap: 2rem;
+    box-sizing: border-box;
+
+    @include from('large-xs') {
+      gap: 3rem;
+    }
+  }
+}
+
+// =============================
+// STRUCTURE MOBILE (jusqu'à medium-sm exclu)
+// =============================
+@include until('medium-sm') {
+  .main-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0;
+    box-sizing: border-box;
+  }
+}
+
+// =============================
+// SKELETON IMAGE DESKTOP/TABLETTE - À GAUCHE
+// =============================
+@include from('medium-sm') {
+  .skeleton-profit-image {
+    max-height: 90vh;
+    width: 256px; // Largeur de l'image originale
+    height: 384px; // Hauteur de l'image originale
+    flex: 0 0 auto;
+
+    margin: 0;
+    padding: 0;
+
+    // Position normale dans le flux
+    position: relative;
+    z-index: 5;
+
+    background: linear-gradient(
+      90deg,
+      rgba($color-orange, 0.2) 25%,
+      rgba($color-orange, 0.3) 50%,
+      rgba($color-orange, 0.2) 75%
+    );
+
+    @include from('large-xs') {
+      border-radius: 28px;
+    }
+
+    // Ajustements pour tablettes
+    @include between('medium-lg', 'large-xs') {
+      max-height: 85vh;
+      width: 220px;
+      height: 330px;
+    }
+  }
+}
+
+// =============================
+// SKELETON IMAGE MOBILE - EN ARRIÈRE-PLAN
+// =============================
+@include until('medium-sm') {
+  .skeleton-profit-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 1; // En arrière-plan
+
+    width: auto;
+    height: 70vh;
+
+    // Effet blur et opacité réduite comme l'original
+    opacity: 0.3;
+    filter: blur(2px);
+
+    background: linear-gradient(
+      90deg,
+      rgba($color-orange, 0.15) 25%,
+      rgba($color-orange, 0.25) 50%,
+      rgba($color-orange, 0.15) 75%
+    );
+
+    @include small-screens {
+      height: 60vh;
+      opacity: 0.25;
+      filter: blur(1.5px);
+    }
+
+    @include from('small-sm') {
+      height: 62vh;
+      opacity: 0.26;
+      filter: blur(1.6px);
+    }
+
+    @include from('small-lg') {
+      height: 64vh;
+      opacity: 0.27;
+      filter: blur(1.7px);
+    }
+
+    @include from('small-xl') {
+      height: 66vh;
+      opacity: 0.28;
+      filter: blur(1.8px);
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      height: 68vh;
+      opacity: 0.29;
+      filter: blur(1.9px);
+    }
+
+    // Dimensions fixes pour mobile
+    width: 180px; // Approximation basée sur la proportion
+  }
+}
+
+// =============================
+// SKELETON TEXT CONTAINER DESKTOP - À DROITE
+// =============================
+@include from('medium-sm') {
+  .text-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0 1rem;
+
+    position: relative;
+    z-index: 10;
+  }
+}
+
+// =============================
+// SKELETON TEXT CONTAINER MOBILE - AU PREMIER PLAN
+// =============================
+@include until('medium-sm') {
+  .text-container {
+    position: relative;
+    z-index: 10; // Au premier plan
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 2rem 1rem;
+    margin: 0;
+
+    @include small-screens {
+      padding: 1.5rem 0.8rem;
+    }
+
+    @include from('small-sm') {
+      padding: 1.55rem 0.85rem;
+    }
+
+    @include from('small-lg') {
+      padding: 1.6rem 0.9rem;
+    }
+
+    @include from('small-xl') {
+      padding: 1.65rem 0.95rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      padding: 1.8rem 1rem;
+    }
+  }
+}
+
+// =============================
+// SKELETON TITLES
+// =============================
+.skeleton-title-1,
+.skeleton-title-2 {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+
+  background: linear-gradient(
+    90deg,
+    rgba($color-orange, 0.2) 25%,
+    rgba($color-orange, 0.3) 50%,
+    rgba($color-orange, 0.2) 75%
+  );
+
+  // Tailles responsives identiques aux titres originaux
+  height: 2.2rem;
+
+  @include small-screens {
+    height: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  @include from('small-sm') {
+    height: 1.65rem;
+  }
+
+  @include from('small-lg') {
+    height: 1.7rem;
+  }
+
+  @include from('small-xl') {
+    height: 1.75rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    height: 1.9rem;
+  }
+
+  @include from('medium-sm') {
+    height: 2.6rem;
+  }
+
+  @include from('medium-lg') {
+    height: 2.7rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 2.8rem;
+  }
+
+  @include from('large-sm') {
+    height: 2.9rem;
+  }
+
+  @include from('large-xs') {
+    height: 3.4rem;
+    margin-bottom: 1rem;
+  }
+
+  // Transition spéciale pour tablettes
+  @include between('medium-lg', 'large-xs') {
+    height: 2.4rem;
+  }
+}
+
+// Différenciation des deux titres
+.skeleton-title-1 {
+  max-width: 90%; // Premier titre un peu plus long
+}
+
+.skeleton-title-2 {
+  max-width: 85%; // Deuxième titre un peu plus court
+  margin-bottom: 1.5rem; // Plus d'espace avant le bouton
+
+  @include small-screens {
+    margin-bottom: 1.2rem;
+  }
+
+  @include from('large-xs') {
+    margin-bottom: 2rem;
+  }
+}
+
+// =============================
+// SKELETON BUTTON
+// =============================
+.skeleton-profit-button {
+  border-radius: 50px;
+  margin-top: 1.5rem;
+
+  background: linear-gradient(
+    90deg,
+    rgba($color-orange, 0.3) 25%,
+    rgba($color-pink, 0.3) 50%,
+    rgba($color-orange, 0.3) 75%
+  );
+
+  // Dimensions responsive identiques au bouton original
+  height: 2.4rem; // Approximation pour padding + font-size
+  width: 160px; // Largeur approximative du bouton
+
+  @include small-screens {
+    height: 2.1rem;
+    width: 140px;
+    margin-top: 1.2rem;
+  }
+
+  @include from('small-sm') {
+    height: 2.15rem;
+    width: 145px;
+    margin-top: 1.25rem;
+  }
+
+  @include from('small-lg') {
+    height: 2.18rem;
+    width: 148px;
+    margin-top: 1.28rem;
+  }
+
+  @include from('small-xl') {
+    height: 2.2rem;
+    width: 150px;
+    margin-top: 1.3rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    height: 2.25rem;
+    width: 152px;
+  }
+
+  @include from('medium-sm') {
+    height: 2.35rem;
+    width: 155px;
+    margin-top: 1.4rem;
+  }
+
+  @include from('medium-lg') {
+    height: 2.4rem;
+    width: 158px;
+    margin-top: 1.45rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 2.4rem;
+    width: 160px;
+    margin-top: 1.5rem;
+  }
+
+  @include from('large-xs') {
+    height: 2.7rem;
+    width: 180px;
+    margin-top: 2rem;
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Écrans très petits
+@media (max-width: 360px) {
+  .main-content {
+    gap: 0;
+  }
+
+  .skeleton-profit-image {
+    @include until('medium-sm') {
+      height: 55vh;
+      width: 150px;
+      opacity: 0.2;
+      filter: blur(1.2px);
+    }
+  }
+
+  .text-container {
+    @include until('medium-sm') {
+      padding: 1.2rem 0.6rem;
+    }
+  }
+
+  .skeleton-title-1,
+  .skeleton-title-2 {
+    height: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .skeleton-profit-button {
+    height: 1.9rem;
+    width: 120px;
+    margin-top: 1rem;
+  }
+}
+
+// Mode paysage mobile
+@include mobile-landscape {
+  .main-content {
+    @include until('medium-sm') {
+      flex-direction: row;
+      gap: 1rem;
+    }
+  }
+
+  .skeleton-profit-image {
+    @include until('medium-sm') {
+      position: relative;
+      transform: none;
+      top: auto;
+      left: auto;
+      width: 40%;
+      height: 80vh;
+      opacity: 0.8;
+      filter: none;
+      z-index: 5;
+    }
+  }
+
+  .text-container {
+    @include until('medium-sm') {
+      width: 60%;
+      height: 100%;
+      align-items: flex-start;
+      text-align: left;
+      padding: 1rem;
+      z-index: 10;
+    }
+  }
+
+  .skeleton-title-1,
+  .skeleton-title-2 {
+    height: 1.4rem;
+    margin-bottom: 0.5rem;
+    max-width: 100%;
+  }
+
+  .skeleton-profit-button {
+    height: 1.9rem;
+    width: 120px;
+    margin-top: 1rem;
+  }
+}
+
+// Écrans hauts
+@include tall-screen {
+  .skeleton-profit-image {
+    @include until('medium-sm') {
+      height: 75vh;
+      opacity: 0.35;
+    }
+
+    @include from('medium-sm') {
+      max-height: 95vh;
+      height: 450px; // Ajustement pour écrans hauts
+    }
+  }
+
+  .text-container {
+    @include until('medium-sm') {
+      padding: 2.5rem 1rem;
+    }
+  }
+}
+
+// Écrans courts
+@include short-screen {
+  .skeleton-profit-image {
+    @include until('medium-sm') {
+      height: 50vh;
+      width: 140px;
+      opacity: 0.2;
+    }
+
+    @include from('medium-sm') {
+      max-height: 75vh;
+      height: 280px;
+    }
+  }
+
+  .text-container {
+    @include until('medium-sm') {
+      padding: 1rem 0.8rem;
+    }
+  }
+
+  .skeleton-title-1,
+  .skeleton-title-2 {
+    height: 1.8rem;
+    margin-bottom: 0.5rem;
+
+    @include from('medium-sm') {
+      height: 2.2rem;
+    }
+  }
+
+  .skeleton-profit-button {
+    margin-top: 1rem;
+  }
+}
+
+// Support écrans haute densité
+@include high-density {
+  .skeleton-profit-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+// Accessibilité - Réduction des animations
+@include reduced-motion {
+  .skeleton-animate {
+    animation: skeletonPulse 2s infinite ease-in-out;
+  }
+}
+
+// Très grands écrans
+@include from('large-xxxl') {
+  .main-content {
+    gap: 4rem;
+  }
+
+  .skeleton-profit-image {
+    max-height: 95vh;
+    width: 300px;
+    height: 450px;
+    border-radius: 32px;
+  }
+
+  .text-container {
+    padding: 0 2rem;
+  }
+
+  .skeleton-title-1,
+  .skeleton-title-2 {
+    height: 3.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .skeleton-profit-button {
+    height: 3rem;
+    width: 200px;
+    margin-top: 2.5rem;
+  }
+}
+
+// Orientation paysage tablettes
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .main-content {
+    gap: 1.5rem;
+  }
+
+  .skeleton-profit-image {
+    max-height: 80vh;
+    width: 200px;
+    height: 300px;
+  }
+
+  .text-container {
+    padding: 0 0.5rem;
+  }
+
+  .skeleton-title-1,
+  .skeleton-title-2 {
+    height: 2.2rem;
+  }
+
+  .skeleton-profit-button {
+    height: 2.2rem;
+    width: 140px;
+    margin-top: 1.2rem;
+  }
+}
+
+// Breakpoint de transition spécial
+@include between('medium-lg', 'large-xs') {
+  .text-container {
+    padding: 0 0.8rem;
+  }
+}

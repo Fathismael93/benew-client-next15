@@ -1,12 +1,40 @@
 'use client';
 
+import dynamic from 'next/dynamic';
+
 import './styles/index.scss';
+
+import HeroSkeleton from './HeroSkeleton';
+import QualitiesSkeleton from './QualitiesSkeleton';
+import MarketingSkeleton from './MarketingSkeleton';
+
 import PageTracker from 'components/analytics/PageTracker';
 import AppExamples from 'components/layouts/home/appExamples';
 import ContactHome from 'components/layouts/home/contact';
-import Hero from 'components/layouts/home/hero';
-import MarketingHome from 'components/layouts/home/marketing';
-import QualitiesHome from 'components/layouts/home/qualities';
+
+// Import dynamique des composants
+const Hero = dynamic(() => import('components/layouts/home/hero'), {
+  loading: () => <HeroSkeleton />,
+  ssr: true,
+});
+
+// Import dynamique des composants
+const MarketingHome = dynamic(
+  () => import('components/layouts/home/marketing'),
+  {
+    loading: () => <MarketingSkeleton />,
+    ssr: true,
+  },
+);
+
+// Import dynamique des composants
+const QualitiesHome = dynamic(
+  () => import('components/layouts/home/qualities'),
+  {
+    loading: () => <QualitiesSkeleton />,
+    ssr: true,
+  },
+);
 
 const HomeComponent = () => {
   return (

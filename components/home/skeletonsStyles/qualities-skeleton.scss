@@ -1,0 +1,946 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 qualities-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATION SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes skeletonGlow {
+  0% {
+    box-shadow: 0 0 5px rgba($color-pink, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba($color-pink, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba($color-pink, 0.2);
+  }
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.1) 25%,
+    rgba($text-color, 0.2) 50%,
+    rgba($text-color, 0.1) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// BLOC 1 : SKELETON TITRE
+// =============================
+.services-title-block {
+  grid-area: title;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: auto;
+
+  @include small-screens {
+    min-height: auto;
+  }
+
+  .skeleton-section-title {
+    position: relative;
+    margin: 0;
+    border-radius: 6px;
+
+    background: linear-gradient(
+      90deg,
+      rgba($color-pink, 0.2) 25%,
+      rgba($color-pink, 0.3) 50%,
+      rgba($color-pink, 0.2) 75%
+    );
+
+    // Dimensions identiques au titre original
+    width: 150px; // Approximation pour "Une boutique :"
+    height: 1.8rem;
+
+    @include small-screens {
+      height: 1.3rem;
+      width: 120px;
+    }
+
+    @include from('small-sm') {
+      height: 1.35rem;
+      width: 125px;
+    }
+
+    @include from('small-lg') {
+      height: 1.4rem;
+      width: 130px;
+    }
+
+    @include from('small-xl') {
+      height: 1.45rem;
+      width: 135px;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      height: 1.5rem;
+      width: 140px;
+    }
+
+    @include from('medium-sm') {
+      height: 1.9rem;
+      width: 160px;
+    }
+
+    @include from('medium-lg') {
+      height: 2rem;
+      width: 165px;
+    }
+
+    @include from('medium-xxl') {
+      height: 2.1rem;
+      width: 170px;
+    }
+
+    @include from('large-xs') {
+      height: 2.2rem;
+      width: 175px;
+    }
+  }
+
+  // Skeleton du trait de soulignement
+  .skeleton-title-underline {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+    bottom: -0.5rem;
+
+    background: linear-gradient(
+      90deg,
+      rgba($color-pink, 0.3) 0%,
+      rgba($color-purple, 0.3) 100%
+    );
+    animation: skeletonGlow 3s ease-in-out infinite;
+
+    width: 50px;
+    height: 2px;
+
+    @include small-screens {
+      width: 35px;
+      height: 2px;
+      bottom: -0.4rem;
+    }
+
+    @include from('small-sm') {
+      width: 37px;
+    }
+
+    @include from('small-lg') {
+      width: 40px;
+    }
+
+    @include from('small-xl') {
+      width: 42px;
+    }
+
+    @include from('medium-sm') {
+      width: 45px;
+    }
+
+    @include from('medium-lg') {
+      width: 50px;
+    }
+
+    @include from('large-xs') {
+      width: 60px;
+      height: 3px;
+      bottom: -0.6rem;
+    }
+  }
+}
+
+// =============================
+// BLOC 2 : SKELETON CARTES
+// =============================
+.services-cards-block {
+  grid-area: cards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+
+  .service-card-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 280px;
+
+    @include small-screens {
+      height: 220px;
+      max-width: 300px;
+    }
+
+    @include from('small-sm') {
+      height: 225px;
+      max-width: 310px;
+    }
+
+    @include from('small-lg') {
+      height: 230px;
+      max-width: 320px;
+    }
+
+    @include from('small-xl') {
+      height: 240px;
+      max-width: 330px;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      height: 250px;
+      max-width: 350px;
+    }
+
+    @include from('medium-sm') {
+      height: 300px;
+      max-width: 400px;
+    }
+
+    @include from('medium-lg') {
+      height: 310px;
+      max-width: 420px;
+    }
+
+    @include from('medium-xxl') {
+      height: 315px;
+      max-width: 430px;
+    }
+
+    @include from('large-xs') {
+      height: 320px;
+      max-width: 450px;
+    }
+  }
+}
+
+// =============================
+// SKELETON CARTE INDIVIDUELLE
+// =============================
+.skeleton-service-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1); // Toujours active dans le skeleton
+
+  background: rgba($color-light, 0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  border: 2px solid rgba($color-pink, 0.15);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px rgba($color-dark, 0.4),
+    0 0 40px rgba($color-pink, 0.1);
+
+  opacity: 1;
+  visibility: visible;
+
+  // Dimensions identiques aux cartes originales
+  width: 300px;
+  height: 200px;
+  padding: 1.5rem 1rem;
+  gap: 1.5rem;
+
+  @include small-screens {
+    width: 260px;
+    height: 170px;
+    padding: 1.25rem 0.75rem;
+    gap: 1rem;
+  }
+
+  @include from('small-sm') {
+    width: 265px;
+    height: 175px;
+    padding: 1.3rem 0.8rem;
+    gap: 1.05rem;
+  }
+
+  @include from('small-lg') {
+    width: 270px;
+    height: 180px;
+    padding: 1.35rem 0.85rem;
+    gap: 1.1rem;
+  }
+
+  @include from('small-xl') {
+    width: 275px;
+    height: 182px;
+    padding: 1.38rem 0.9rem;
+    gap: 1.15rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    width: 280px;
+    height: 185px;
+    padding: 1.4rem 1rem;
+    gap: 1.25rem;
+  }
+
+  @include from('medium-sm') {
+    width: 340px;
+    height: 220px;
+    padding: 1.75rem 1.5rem;
+    gap: 1.75rem;
+  }
+
+  @include from('medium-lg') {
+    width: 350px;
+    height: 230px;
+    padding: 1.8rem 1.55rem;
+    gap: 1.8rem;
+  }
+
+  @include from('medium-xxl') {
+    width: 360px;
+    height: 240px;
+    padding: 1.85rem 1.6rem;
+    gap: 1.85rem;
+  }
+
+  @include from('large-xs') {
+    width: 380px;
+    height: 250px;
+    padding: 2rem 1.75rem;
+    gap: 2rem;
+  }
+
+  // Style carte active (couleur pink par défaut)
+  &.active {
+    border-color: rgba($color-pink, 0.5);
+    box-shadow:
+      0 25px 80px rgba($color-dark, 0.5),
+      0 0 60px rgba($color-pink, 0.2);
+  }
+}
+
+// =============================
+// SKELETON ICÔNE
+// =============================
+.skeleton-service-icon {
+  border-radius: 12px;
+  background: linear-gradient(
+    90deg,
+    rgba($color-pink, 0.25) 25%,
+    rgba($color-pink, 0.35) 50%,
+    rgba($color-pink, 0.25) 75%
+  );
+
+  // Dimensions approximatives de l'icône
+  width: 3.5rem;
+  height: 3.5rem;
+
+  @include small-screens {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  @include from('small-sm') {
+    width: 2.9rem;
+    height: 2.9rem;
+  }
+
+  @include from('small-lg') {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  @include from('small-xl') {
+    width: 3.1rem;
+    height: 3.1rem;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+
+  @include from('medium-sm') {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  @include from('medium-lg') {
+    width: 4.2rem;
+    height: 4.2rem;
+  }
+
+  @include from('medium-xxl') {
+    width: 4.3rem;
+    height: 4.3rem;
+  }
+
+  @include from('large-xs') {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+}
+
+// =============================
+// SKELETON LABEL (2 LIGNES)
+// =============================
+.skeleton-service-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: center;
+
+  .skeleton-label-line-1,
+  .skeleton-label-line-2 {
+    border-radius: 4px;
+    background: linear-gradient(
+      90deg,
+      rgba($text-color, 0.15) 25%,
+      rgba($text-color, 0.25) 50%,
+      rgba($text-color, 0.15) 75%
+    );
+
+    // Hauteur basée sur la font-size
+    height: 1rem;
+
+    @include small-screens {
+      height: 0.85rem;
+    }
+
+    @include from('small-sm') {
+      height: 0.87rem;
+    }
+
+    @include from('small-lg') {
+      height: 0.9rem;
+    }
+
+    @include from('small-xl') {
+      height: 0.92rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      height: 0.95rem;
+    }
+
+    @include from('medium-sm') {
+      height: 1.1rem;
+    }
+
+    @include from('medium-lg') {
+      height: 1.15rem;
+    }
+
+    @include from('medium-xxl') {
+      height: 1.2rem;
+    }
+
+    @include from('large-xs') {
+      height: 1.25rem;
+    }
+  }
+
+  // Première ligne plus longue
+  .skeleton-label-line-1 {
+    width: 90%;
+  }
+
+  // Deuxième ligne plus courte
+  .skeleton-label-line-2 {
+    width: 75%;
+  }
+}
+
+// =============================
+// BLOC 3 : SKELETON DOTS
+// =============================
+.services-dots-block {
+  grid-area: dots;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .slider-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    @include small-screens {
+      gap: 0.4rem;
+    }
+
+    @include from('small-sm') {
+      gap: 0.42rem;
+    }
+
+    @include from('small-lg') {
+      gap: 0.45rem;
+    }
+
+    @include from('small-xl') {
+      gap: 0.48rem;
+    }
+
+    @include between('small-xl', 'medium-sm') {
+      gap: 0.6rem;
+    }
+
+    @include from('medium-sm') {
+      gap: 0.65rem;
+    }
+
+    @include from('medium-lg') {
+      gap: 0.7rem;
+    }
+
+    @include from('medium-xxl') {
+      gap: 0.75rem;
+    }
+
+    @include from('large-xs') {
+      gap: 0.8rem;
+    }
+  }
+}
+
+// =============================
+// SKELETON DOTS
+// =============================
+.skeleton-dot {
+  border-radius: 50%;
+  background: rgba($color-light, 0.1);
+  border: 1px solid rgba($color-light, 0.3);
+
+  // Dimensions identiques aux dots originaux
+  width: 4px;
+  height: 4px;
+
+  @include small-screens {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('small-sm') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('small-lg') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('small-xl') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    width: 3px;
+    height: 3px;
+  }
+
+  @include from('medium-sm') {
+    width: 5px;
+    height: 5px;
+  }
+
+  @include from('medium-lg') {
+    width: 6px;
+    height: 6px;
+  }
+
+  @include from('medium-xxl') {
+    width: 7px;
+    height: 7px;
+  }
+
+  @include from('large-xs') {
+    width: 8px;
+    height: 8px;
+    border: 2px solid rgba($color-light, 0.3);
+  }
+
+  // Dot actif (premier par défaut)
+  &.active {
+    transform: scale(1.2);
+    background: $color-pink;
+    border-color: $color-pink;
+    box-shadow: 0 0 8px rgba($color-pink, 0.5);
+
+    @include small-screens {
+      transform: scale(1.1);
+    }
+
+    @include from('small-sm') {
+      transform: scale(1.12);
+    }
+
+    @include from('small-lg') {
+      transform: scale(1.15);
+    }
+
+    @include from('small-xl') {
+      transform: scale(1.17);
+    }
+
+    @include from('medium-sm') {
+      transform: scale(1.3);
+    }
+
+    @include from('medium-lg') {
+      transform: scale(1.4);
+    }
+
+    @include from('large-xs') {
+      transform: scale(1.5);
+    }
+
+    // Animation pulse pour le dot actif
+    &::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: 50%;
+      border: 1px solid $color-pink;
+      opacity: 0.3;
+      animation: skeletonPulse 2s infinite;
+
+      @include from('large-xs') {
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+      }
+    }
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Écrans très petits
+@media (max-width: 360px) {
+  .skeleton-section-title {
+    width: 100px;
+    height: 1.1rem;
+
+    .skeleton-title-underline {
+      width: 30px;
+      height: 1.5px;
+    }
+  }
+
+  .services-cards-block .service-card-container {
+    height: 200px;
+    max-width: 280px;
+  }
+
+  .skeleton-service-card {
+    width: 240px;
+    height: 150px;
+    padding: 1rem 0.5rem;
+    gap: 0.75rem;
+  }
+
+  .skeleton-service-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .skeleton-service-label {
+    .skeleton-label-line-1,
+    .skeleton-label-line-2 {
+      height: 0.8rem;
+    }
+  }
+
+  .skeleton-dot {
+    width: 4px;
+    height: 4px;
+
+    &.active {
+      transform: scale(1.25);
+    }
+  }
+}
+
+// Mode paysage mobile
+@include mobile-landscape {
+  .skeleton-section-title {
+    height: 1.2rem;
+    width: 110px;
+  }
+
+  .services-cards-block .service-card-container {
+    height: 160px;
+    max-width: 350px;
+  }
+
+  .skeleton-service-card {
+    width: 280px;
+    height: 130px;
+    gap: 0.75rem;
+  }
+
+  .skeleton-service-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .skeleton-service-label {
+    .skeleton-label-line-1,
+    .skeleton-label-line-2 {
+      height: 0.75rem;
+    }
+  }
+}
+
+// Écrans hauts
+@include tall-screen {
+  .services-cards-block .service-card-container {
+    height: 300px;
+    max-width: 520px;
+
+    @include until('medium-sm') {
+      height: 240px;
+      max-width: 320px;
+    }
+  }
+
+  .skeleton-service-card {
+    @include from('medium-sm') {
+      width: 360px;
+      height: 260px;
+      gap: 2rem;
+    }
+  }
+
+  .skeleton-service-icon {
+    @include from('medium-sm') {
+      width: 4.8rem;
+      height: 4.8rem;
+    }
+  }
+
+  .skeleton-service-label {
+    @include from('medium-sm') {
+      .skeleton-label-line-1,
+      .skeleton-label-line-2 {
+        height: 1.3rem;
+      }
+    }
+  }
+}
+
+// Écrans courts
+@include short-screen {
+  .skeleton-section-title {
+    height: 1.5rem;
+    width: 130px;
+
+    @include from('medium-sm') {
+      height: 1.8rem;
+      width: 140px;
+    }
+  }
+
+  .services-cards-block .service-card-container {
+    height: 180px;
+
+    @include from('medium-sm') {
+      height: 220px;
+    }
+  }
+
+  .skeleton-service-card {
+    height: 150px;
+    gap: 1rem;
+
+    @include from('medium-sm') {
+      height: 180px;
+      gap: 1.2rem;
+    }
+  }
+
+  .skeleton-service-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    @include from('medium-sm') {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+  }
+
+  .skeleton-service-label {
+    .skeleton-label-line-1,
+    .skeleton-label-line-2 {
+      height: 0.8rem;
+
+      @include from('medium-sm') {
+        height: 1rem;
+      }
+    }
+  }
+}
+
+// Accessibilité - Réduction des animations
+@include reduced-motion {
+  .skeleton-animate {
+    animation: skeletonPulse 2s infinite ease-in-out;
+  }
+
+  .skeleton-title-underline {
+    animation: none;
+  }
+
+  .skeleton-dot.active::after {
+    animation: none;
+  }
+}
+
+// Support écrans haute densité
+@include high-density {
+  .skeleton-service-card {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .skeleton-title-underline {
+    image-rendering: crisp-edges;
+  }
+}
+
+// Très grands écrans
+@include from('large-xxxl') {
+  .skeleton-section-title {
+    height: 2.4rem;
+    width: 200px;
+
+    .skeleton-title-underline {
+      width: 70px;
+      height: 4px;
+      bottom: -0.8rem;
+    }
+  }
+
+  .services-cards-block .service-card-container {
+    height: 350px;
+    max-width: 500px;
+  }
+
+  .skeleton-service-card {
+    width: 420px;
+    height: 280px;
+    padding: 2.5rem 2rem;
+    gap: 2.5rem;
+  }
+
+  .skeleton-service-icon {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .skeleton-service-label {
+    .skeleton-label-line-1,
+    .skeleton-label-line-2 {
+      height: 1.4rem;
+    }
+  }
+
+  .skeleton-dot {
+    width: 10px;
+    height: 10px;
+
+    &.active {
+      transform: scale(1.6);
+    }
+  }
+
+  .slider-dots {
+    gap: 1rem;
+  }
+}
+
+// Orientation paysage tablettes
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .skeleton-section-title {
+    height: 1.6rem;
+    width: 140px;
+  }
+
+  .services-cards-block .service-card-container {
+    height: 200px;
+    max-width: 380px;
+  }
+
+  .skeleton-service-card {
+    width: 320px;
+    height: 160px;
+    padding: 1.2rem 1rem;
+    gap: 1rem;
+  }
+
+  .skeleton-service-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .skeleton-service-label {
+    .skeleton-label-line-1,
+    .skeleton-label-line-2 {
+      height: 0.9rem;
+    }
+  }
+
+  .skeleton-dot {
+    width: 6px;
+    height: 6px;
+
+    &.active {
+      transform: scale(1.3);
+    }
+  }
+}

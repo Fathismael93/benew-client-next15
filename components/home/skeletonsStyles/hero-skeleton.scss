@@ -1,0 +1,945 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 hero-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATION SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+// =============================
+// HERO SKELETON - BASE STRUCTURE
+// =============================
+.hero-skeleton {
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    $background-color,
+    color.adjust($background-color, $lightness: -3%)
+  );
+  position: relative;
+
+  .wrapper {
+    // 📱 MOBILE FIRST - Configuration identique au composant original
+    max-width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+
+    // 📟 TRÈS PETITS ÉCRANS
+    @media (max-width: 360px) and (max-height: 680px) {
+      padding: 0.5rem;
+    }
+
+    // 📱 PETITS ÉCRANS - Progression avec nouveaux breakpoints
+    @include from('small-sm') {
+      padding: 0.8rem;
+    }
+
+    @include from('small-lg') {
+      padding: 0.9rem;
+    }
+
+    @include from('small-xl') {
+      padding: 1rem;
+    }
+
+    // 📟 MOYENS ÉCRANS (Tablettes)
+    @include from('medium-sm') {
+      padding: 1.5rem;
+      max-width: 90%;
+    }
+
+    @include from('medium-lg') {
+      max-width: 80%;
+      padding: 2rem;
+    }
+
+    @include from('medium-xxl') {
+      max-width: 75rem;
+      padding: 2.5rem;
+    }
+
+    // 🖥️ GRANDS ÉCRANS - Layout desktop
+    @include from('large-xs') {
+      max-width: 70rem;
+      padding: 0;
+      flex-direction: row;
+    }
+  }
+}
+
+// =============================
+// SKELETON TEXT CONTAINER
+// =============================
+.textContainer {
+  // 📱 MOBILE FIRST - Configuration identique
+  width: 100%;
+  height: auto;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  padding: 0.75rem 0.25rem;
+  z-index: 10;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @media (max-width: 400px) and (max-height: 680px) {
+    height: 100vh;
+    gap: 0.75rem;
+    padding: 0.5rem 0.15rem;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    height: 100vh;
+    gap: 0.5rem;
+    padding: 0.25rem 0.1rem;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+
+  // 📱 PETITS ÉCRANS
+  @include small-screens {
+    height: 100vh;
+    gap: 1rem;
+    padding: 0.5rem 0.2rem;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+
+  @include from('small-sm') {
+    gap: 1.1rem;
+    padding: 0.6rem 0.25rem;
+  }
+
+  @include from('small-lg') {
+    gap: 1.2rem;
+    padding: 0.7rem 0.3rem;
+  }
+
+  @include from('small-xl') {
+    gap: 1.3rem;
+    padding: 0.8rem 0.35rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 55%;
+    min-height: auto;
+    gap: 2.25rem;
+    padding: 1.5rem 1rem;
+  }
+
+  @include from('medium-lg') {
+    height: 50%;
+    gap: 2.5rem;
+    padding: 2rem 1.5rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 48%;
+    gap: 2.75rem;
+    padding: 2.25rem 1.75rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Layout desktop
+  @include from('large-xs') {
+    width: 50%;
+    height: 100%;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1.5rem;
+    padding: 0;
+    z-index: auto;
+    min-height: auto;
+  }
+
+  @include from('large-lg') {
+    gap: 1.6rem;
+  }
+
+  @include from('large-xxl') {
+    gap: 1.7rem;
+  }
+
+  @include from('large-xxxl') {
+    gap: 1.8rem;
+  }
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.1) 25%,
+    rgba($text-color, 0.2) 50%,
+    rgba($text-color, 0.1) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// SKELETON SUBTITLE
+// =============================
+.skeleton-subtitle {
+  width: 70%;
+  max-width: 200px;
+
+  // 📱 MOBILE - Hauteur adaptée
+  height: 1.1rem;
+
+  @media (max-width: 400px) and (max-height: 680px) {
+    height: 0.9rem;
+    width: 60%;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    height: 0.85rem;
+    width: 55%;
+  }
+
+  @include small-screens {
+    height: 1rem;
+    width: 65%;
+  }
+
+  @include from('small-sm') {
+    height: 1.05rem;
+  }
+
+  @include from('small-lg') {
+    height: 1.08rem;
+  }
+
+  @include from('small-xl') {
+    height: 1.1rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 1.35rem;
+    width: 75%;
+    max-width: 250px;
+  }
+
+  @include from('medium-lg') {
+    height: 1.3rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 1.25rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    height: 1.3rem;
+    width: 80%;
+    max-width: 300px;
+  }
+
+  @include from('large-lg') {
+    height: 1.32rem;
+  }
+
+  @include from('large-xxl') {
+    height: 1.35rem;
+  }
+}
+
+// =============================
+// SKELETON TITLE
+// =============================
+.skeleton-title {
+  width: 90%;
+  max-width: 350px;
+
+  // 📱 MOBILE - Hauteur adaptée
+  height: 2.2rem;
+
+  @media (max-width: 400px) and (max-height: 680px) {
+    height: 1.8rem;
+    width: 95%;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    height: 1.6rem;
+    width: 100%;
+  }
+
+  @include small-screens {
+    height: 2rem;
+    width: 95%;
+  }
+
+  @include from('small-sm') {
+    height: 2.1rem;
+  }
+
+  @include from('small-lg') {
+    height: 2.15rem;
+  }
+
+  @include from('small-xl') {
+    height: 2.2rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 3.5rem;
+    width: 85%;
+    max-width: 450px;
+  }
+
+  @include from('medium-lg') {
+    height: 4rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 4.2rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    height: 4.5rem;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  @include from('large-lg') {
+    height: 4.6rem;
+  }
+
+  @include from('large-xxl') {
+    height: 4.7rem;
+  }
+
+  @include from('large-xxxl') {
+    height: 4.8rem;
+  }
+}
+
+// =============================
+// SKELETON BUTTON GROUP
+// =============================
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 300px;
+
+  // 📟 TRÈS PETITS ÉCRANS
+  @media (max-width: 400px) and (max-height: 680px) {
+    gap: 0.5rem;
+    max-width: 280px;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    gap: 0.4rem;
+    max-width: 260px;
+  }
+
+  // 📱 PETITS ÉCRANS
+  @include small-screens {
+    gap: 0.75rem;
+    max-width: 300px;
+  }
+
+  @include from('small-sm') {
+    gap: 0.8rem;
+    max-width: 310px;
+  }
+
+  @include from('small-lg') {
+    gap: 0.85rem;
+    max-width: 320px;
+  }
+
+  @include from('small-xl') {
+    gap: 0.9rem;
+    max-width: 330px;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    flex-direction: row;
+    justify-content: center;
+    max-width: 500px;
+    gap: 1.25rem;
+  }
+
+  @include from('medium-lg') {
+    gap: 1.3rem;
+    max-width: 520px;
+  }
+
+  @include from('medium-xxl') {
+    gap: 1.35rem;
+    max-width: 540px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    justify-content: flex-start;
+    max-width: none;
+    gap: 1rem;
+  }
+
+  @include from('large-lg') {
+    gap: 1.1rem;
+  }
+
+  @include from('large-xxl') {
+    gap: 1.2rem;
+  }
+}
+
+// =============================
+// SKELETON BUTTONS
+// =============================
+.skeleton-button {
+  border-radius: 25px;
+
+  // 📱 MOBILE - Hauteur adaptée
+  height: 48px;
+  width: 100%;
+
+  @media (max-width: 400px) and (max-height: 680px) {
+    height: 44px;
+    border-radius: 22px;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    height: 40px;
+    border-radius: 20px;
+  }
+
+  @include small-screens {
+    height: 46px;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 56px;
+    flex: 1;
+    border-radius: 30px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    flex: none;
+    width: 180px;
+  }
+
+  &.primary {
+    background: linear-gradient(
+      90deg,
+      rgba($primary-color, 0.3) 25%,
+      rgba($primary-color, 0.4) 50%,
+      rgba($primary-color, 0.3) 75%
+    );
+  }
+
+  &.secondary {
+    background: linear-gradient(
+      90deg,
+      rgba($text-color, 0.1) 25%,
+      rgba($text-color, 0.2) 50%,
+      rgba($text-color, 0.1) 75%
+    );
+    border: 2px solid rgba($primary-color, 0.3);
+
+    @media (max-width: 400px) and (max-height: 680px) {
+      border-width: 1px;
+    }
+  }
+}
+
+// =============================
+// SKELETON SCROLL ICON
+// =============================
+.skeleton-scroll-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+
+  @media (max-width: 400px) and (max-height: 680px) {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.1rem;
+  }
+
+  @include small-screens {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-top: 0.3rem;
+  }
+
+  @include from('small-sm') {
+    width: 1.35rem;
+    height: 1.35rem;
+    margin-top: 0.35rem;
+  }
+
+  @include from('small-lg') {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-top: 0.4rem;
+  }
+
+  @include from('small-xl') {
+    width: 1.45rem;
+    height: 1.45rem;
+    margin-top: 0.45rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-top: 1.25rem;
+  }
+
+  @include from('medium-lg') {
+    width: 2.3rem;
+    height: 2.3rem;
+    margin-top: 1.3rem;
+  }
+
+  @include from('medium-xxl') {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-top: 1.4rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-top: 0;
+  }
+
+  @include from('large-lg') {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  @include from('large-xxl') {
+    width: 2.7rem;
+    height: 2.7rem;
+  }
+}
+
+// =============================
+// SKELETON SLIDING TEXT
+// =============================
+.skeleton-sliding-text {
+  position: absolute;
+  bottom: -40px;
+  width: 60%;
+  height: 8rem;
+  border-radius: 8px;
+  z-index: 0;
+
+  @media (max-width: 400px) and (max-height: 680px) {
+    height: 6rem;
+    bottom: -30px;
+    width: 50%;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    height: 5rem;
+    bottom: -25px;
+    width: 45%;
+  }
+
+  @include small-screens {
+    height: 7rem;
+    bottom: -35px;
+    width: 55%;
+  }
+
+  @include from('small-sm') {
+    height: 7.5rem;
+    bottom: -37px;
+  }
+
+  @include from('small-lg') {
+    height: 8rem;
+    bottom: -40px;
+  }
+
+  @include from('small-xl') {
+    height: 8.5rem;
+    bottom: -42px;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 14rem;
+    bottom: -70px;
+    width: 70%;
+  }
+
+  @include from('medium-lg') {
+    height: 17rem;
+    bottom: -80px;
+  }
+
+  @include from('medium-xxl') {
+    height: 18rem;
+    bottom: -85px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    height: 20rem;
+    bottom: -90px;
+    width: 75%;
+  }
+
+  @include from('large-lg') {
+    height: 21rem;
+    bottom: -95px;
+  }
+
+  @include from('large-xxl') {
+    height: 22rem;
+    bottom: -100px;
+  }
+
+  @include from('large-xxxl') {
+    height: 24rem;
+    bottom: -120px;
+  }
+}
+
+// =============================
+// SKELETON IMAGE CONTAINER
+// =============================
+.skeleton-image-container {
+  height: auto;
+  min-height: 35vh;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+
+  @media (max-width: 400px) and (max-height: 680px) {
+    min-height: 30vh;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    min-height: 25vh;
+  }
+
+  @include small-screens {
+    min-height: 32vh;
+  }
+
+  @include from('small-sm') {
+    min-height: 33vh;
+  }
+
+  @include from('small-lg') {
+    min-height: 34vh;
+  }
+
+  @include from('small-xl') {
+    min-height: 35vh;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 45%;
+    min-height: auto;
+  }
+
+  @include from('medium-lg') {
+    height: 50%;
+  }
+
+  @include from('medium-xxl') {
+    height: 52%;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    height: 100%;
+    width: 50%;
+    top: 0;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    z-index: auto;
+    min-height: auto;
+  }
+}
+
+// =============================
+// SKELETON HERO IMAGE
+// =============================
+.skeleton-hero-image {
+  width: 80%;
+  height: 80%;
+  border-radius: 12px;
+
+  @media (max-width: 400px) and (max-height: 680px) {
+    width: 70%;
+    height: 70%;
+  }
+
+  @media (max-width: 360px) and (max-height: 650px) {
+    width: 65%;
+    height: 65%;
+  }
+
+  @include small-screens {
+    width: 75%;
+    height: 75%;
+  }
+
+  @include from('small-sm') {
+    width: 76%;
+    height: 76%;
+  }
+
+  @include from('small-lg') {
+    width: 78%;
+    height: 78%;
+  }
+
+  @include from('small-xl') {
+    width: 80%;
+    height: 80%;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    width: 90%;
+    height: 90%;
+  }
+
+  @include from('medium-lg') {
+    width: 92%;
+    height: 92%;
+  }
+
+  @include from('medium-xxl') {
+    width: 95%;
+    height: 95%;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile
+@include mobile-landscape {
+  .hero-skeleton .wrapper {
+    flex-direction: row;
+    padding: 0.5rem;
+
+    .textContainer {
+      width: 65%;
+      height: 100%;
+      min-height: auto;
+      gap: 1rem;
+      align-items: flex-start;
+      text-align: left;
+      padding: 0.75rem;
+
+      .skeleton-subtitle {
+        width: 80%;
+        height: 0.95rem;
+      }
+
+      .skeleton-title {
+        width: 90%;
+        height: 2rem;
+      }
+
+      .buttonGroup {
+        flex-direction: row;
+        gap: 0.5rem;
+
+        .skeleton-button {
+          height: 40px;
+        }
+      }
+
+      .skeleton-scroll-icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-top: 0.25rem;
+      }
+    }
+  }
+
+  .hero-skeleton .skeleton-image-container {
+    width: 35%;
+    height: 100%;
+    min-height: auto;
+    position: absolute;
+    right: 0;
+    bottom: auto;
+    top: 0;
+
+    .skeleton-hero-image {
+      width: 85%;
+      height: 85%;
+    }
+  }
+
+  .hero-skeleton .skeleton-sliding-text {
+    height: 5rem;
+    bottom: -25px;
+  }
+}
+
+// Écrans hauts
+@include tall-screen {
+  .hero-skeleton .wrapper .textContainer {
+    gap: 2rem;
+
+    @include until('large-xs') {
+      min-height: 55vh;
+    }
+  }
+
+  .hero-skeleton .skeleton-image-container {
+    @include until('large-xs') {
+      min-height: 40vh;
+    }
+  }
+}
+
+// Écrans courts
+@include short-screen {
+  .hero-skeleton .wrapper .textContainer {
+    gap: 1rem;
+    min-height: 50vh;
+
+    .skeleton-subtitle {
+      height: 0.95rem;
+    }
+
+    .skeleton-title {
+      height: 1.8rem;
+    }
+
+    .buttonGroup {
+      gap: 0.5rem;
+      max-width: 280px;
+
+      .skeleton-button {
+        height: 44px;
+      }
+    }
+
+    .skeleton-scroll-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .hero-skeleton .skeleton-image-container {
+    min-height: 30vh;
+  }
+
+  .hero-skeleton .skeleton-sliding-text {
+    height: 6rem;
+    bottom: -30px;
+  }
+}
+
+// Accessibilité - Réduction des animations
+@include reduced-motion {
+  .skeleton-animate {
+    animation: skeletonPulse 2s infinite ease-in-out;
+  }
+}
+
+// Très grands écrans
+@include from('large-xxxl') {
+  .hero-skeleton .wrapper .textContainer {
+    .skeleton-subtitle {
+      height: 1.4rem;
+      max-width: 350px;
+    }
+
+    .skeleton-title {
+      height: 5rem;
+      max-width: 600px;
+    }
+
+    .buttonGroup {
+      gap: 1.3rem;
+
+      .skeleton-button {
+        width: 200px;
+      }
+    }
+
+    .skeleton-scroll-icon {
+      width: 2.8rem;
+      height: 2.8rem;
+    }
+  }
+}
