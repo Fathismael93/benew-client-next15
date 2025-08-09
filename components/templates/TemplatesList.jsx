@@ -8,6 +8,7 @@ import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 import './templatesStyles/index.scss';
 import Parallax from '@/components/layouts/parallax';
 import { trackEvent } from '@/utils/analytics';
+import PageTracker from '../analytics/PageTracker';
 
 // Composant de carte mémorisé pour performance
 const TemplateCard = memo(
@@ -106,18 +107,25 @@ const TemplatesList = ({ templates = [] }) => {
   // Gestion des états vides
   if (!templates || templates.length === 0) {
     return (
-      <div className="templates-empty">
-        <section className="first">
-          <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
-        </section>
-        <section className="empty-state">
-          <h2>Aucun template disponible</h2>
-          <p>Revenez bientôt pour découvrir nos nouveaux templates</p>
-          <Link href="/" className="cta-button">
-            Retour à l&apos;accueil
-          </Link>
-        </section>
-      </div>
+      <>
+        <PageTracker pageName="templates_list_empty" />
+        <div className="templates-empty">
+          <section className="first">
+            <Parallax
+              bgColor="#0c0c1d"
+              title="Nos Modèles"
+              planets="/sun.png"
+            />
+          </section>
+          <section className="empty-state">
+            <h2>Aucun template disponible</h2>
+            <p>Revenez bientôt pour découvrir nos nouveaux templates</p>
+            <Link href="/" className="cta-button">
+              Retour à l&apos;accueil
+            </Link>
+          </section>
+        </div>
+      </>
     );
   }
 
