@@ -179,17 +179,14 @@ const SinglePost = ({ article, relatedArticles = [], context = {} }) => {
   }, [hasStartedReading, readingTracked, context?.articleId]);
 
   // Handler pour les clics d'images
-  const handleImageClick = useCallback(
-    (imageSrc) => {
-      trackEvent('article_image_click', {
-        event_category: 'content_interaction',
-        event_label: 'image_clicked',
-        article_id: context?.articleId,
-        reading_progress: Math.round(readingProgress),
-      });
-    },
-    [context?.articleId, readingProgress],
-  );
+  const handleImageClick = useCallback(() => {
+    trackEvent('article_image_click', {
+      event_category: 'content_interaction',
+      event_label: 'image_clicked',
+      article_id: context?.articleId,
+      reading_progress: Math.round(readingProgress),
+    });
+  }, [context?.articleId, readingProgress]);
 
   // Handler pour les clics sur articles liés
   const handleRelatedClick = useCallback(
