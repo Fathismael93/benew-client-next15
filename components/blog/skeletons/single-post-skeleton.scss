@@ -1,0 +1,1426 @@
+@use 'sass:color';
+@use 'sass:string';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 single-post-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATIONS SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes skeletonGlow {
+  0% {
+    box-shadow: 0 0 10px rgba($primary-color, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($primary-color, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba($primary-color, 0.1);
+  }
+}
+
+@keyframes skeletonFloat {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.01);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes skeletonImagePattern {
+  0% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  33% {
+    opacity: 0.6;
+    transform: scale(1.02) rotate(0.5deg);
+  }
+  66% {
+    opacity: 0.4;
+    transform: scale(0.98) rotate(-0.5deg);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes skeletonTextFlow {
+  0% {
+    background-position: -100% 0;
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 100% 0;
+    opacity: 0.8;
+  }
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.08) 25%,
+    rgba($text-color, 0.15) 50%,
+    rgba($text-color, 0.08) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// CONTENEUR PRINCIPAL
+// =============================
+.single-post-skeleton {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scroll-snap-align: center;
+  margin-bottom: 5rem;
+  background-image: url('/stars.png');
+
+  // Responsive margin comme le composant original
+  @include mobile-landscape {
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 360px) {
+    margin-bottom: 3rem;
+  }
+
+  @include from('large-xxxl') {
+    margin-bottom: 6rem;
+  }
+}
+
+.skeleton-post {
+  width: 40.625rem;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1.875rem;
+  border-radius: 10px;
+  gap: 2.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba($background-color, 0.8),
+    rgba(color.adjust($background-color, $lightness: 5%), 0.8)
+  );
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 16px rgba($background-color, 0.4);
+  position: relative;
+
+  // Effet de bordure gradiant identique au composant original
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      $primary-color,
+      $secondary-color,
+      $accent-color
+    );
+    border-radius: inherit;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+  }
+
+  // 📱 PETITS ÉCRANS - Suppression des effets visuels (identique au composant)
+  @include small-screens {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('small-sm') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('small-lg') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('small-xl') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // 📟 MOYENS ÉCRANS - Maintien du style mobile
+  @include between('small-xl', 'medium-sm') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('medium-sm') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('medium-lg') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  @include from('medium-xxl') {
+    border: none;
+    width: inherit;
+    background: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Retour aux effets visuels desktop
+  @include from('large-xs') {
+    border: 2px solid transparent;
+    width: 40.625rem;
+    background: linear-gradient(
+      135deg,
+      rgba($background-color, 0.8),
+      rgba(color.adjust($background-color, $lightness: 5%), 0.8)
+    );
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 16px rgba($background-color, 0.4);
+
+    &::before {
+      display: block;
+    }
+  }
+
+  // Responsive padding et gap
+  @include mobile-landscape {
+    gap: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  @include tall-screen {
+    @include until('large-xs') {
+      gap: 2rem;
+      padding: 1.5rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  @include from('large-xxxl') {
+    width: 45rem;
+    gap: 3rem;
+    padding: 2.5rem;
+  }
+}
+
+// =============================
+// ARTICLE HEADER SKELETON
+// =============================
+.skeleton-article-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+// =============================
+// TITRE PRINCIPAL SKELETON
+// =============================
+.skeleton-main-title {
+  text-align: center;
+  border-radius: 12px;
+  margin: 0;
+
+  // Couleur spéciale pour le titre principal
+  background: linear-gradient(
+    90deg,
+    rgba($color-orange, 0.2) 25%,
+    rgba($color-orange, 0.4) 50%,
+    rgba($color-orange, 0.2) 75%
+  );
+
+  // Animation spéciale avec glow
+  animation:
+    skeletonShimmer 2s infinite linear,
+    skeletonGlow 4s infinite ease-in-out;
+
+  // Responsive height identique au composant original
+  height: 2.5rem;
+
+  // 📱 PETITS ÉCRANS - Taille drastiquement réduite
+  @include small-screens {
+    height: 1.2rem;
+  }
+
+  @include from('small-sm') {
+    height: 1.25rem;
+  }
+
+  @include from('small-lg') {
+    height: 1.3rem;
+  }
+
+  @include from('small-xl') {
+    height: 1.35rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression vers desktop
+  @include between('small-xl', 'medium-sm') {
+    height: 1.5rem;
+  }
+
+  @include from('medium-sm') {
+    height: 1.8rem;
+  }
+
+  @include from('medium-lg') {
+    height: 2rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 2.2rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Retour à la taille desktop
+  @include from('large-xs') {
+    height: 2.5rem;
+  }
+
+  @include from('large-xxxl') {
+    height: 2.8rem;
+  }
+
+  // Largeurs variables selon la prop titleLength
+  &.title-short {
+    width: 60%;
+    min-width: 300px;
+
+    @include small-screens {
+      width: 70%;
+      min-width: 200px;
+    }
+
+    @include from('large-xs') {
+      width: 55%;
+      min-width: 350px;
+    }
+  }
+
+  &.title-medium {
+    width: 80%;
+    min-width: 400px;
+
+    @include small-screens {
+      width: 90%;
+      min-width: 280px;
+    }
+
+    @include from('large-xs') {
+      width: 75%;
+      min-width: 450px;
+    }
+  }
+
+  &.title-long {
+    width: 95%;
+    min-width: 500px;
+
+    @include small-screens {
+      width: 98%;
+      min-width: 320px;
+    }
+
+    @include from('large-xs') {
+      width: 90%;
+      min-width: 550px;
+    }
+  }
+
+  // Responsive breakpoints
+  @media (max-width: 360px) {
+    &.title-short {
+      min-width: 150px;
+    }
+    &.title-medium {
+      min-width: 200px;
+    }
+    &.title-long {
+      min-width: 250px;
+    }
+  }
+
+  @include from('large-xxxl') {
+    &.title-short {
+      min-width: 400px;
+    }
+    &.title-medium {
+      min-width: 500px;
+    }
+    &.title-long {
+      min-width: 600px;
+    }
+  }
+}
+
+// =============================
+// IMAGE D'EN-TÊTE SKELETON
+// =============================
+.skeleton-header-image {
+  width: 100%;
+  max-width: 640px;
+  height: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 8px rgba($background-color, 0.3);
+  border: 2px solid rgba($primary-color, 0.1);
+
+  // Background de base avec gradient complexe
+  background: linear-gradient(
+    135deg,
+    rgba($color-purple, 0.15) 0%,
+    rgba($color-pink, 0.15) 25%,
+    rgba($color-orange, 0.15) 50%,
+    rgba($color-pink, 0.15) 75%,
+    rgba($color-purple, 0.15) 100%
+  );
+
+  // Animation globale
+  animation: skeletonFloat 6s ease-in-out infinite;
+
+  // Responsive height
+  @include small-screens {
+    height: 250px;
+  }
+
+  @include from('small-sm') {
+    height: 280px;
+  }
+
+  @include from('small-lg') {
+    height: 300px;
+  }
+
+  @include from('small-xl') {
+    height: 320px;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    height: 340px;
+  }
+
+  @include from('medium-sm') {
+    height: 360px;
+  }
+
+  @include from('medium-lg') {
+    height: 380px;
+  }
+
+  @include from('large-xs') {
+    height: 400px;
+  }
+
+  @include from('large-xxxl') {
+    height: 450px;
+  }
+
+  @media (max-width: 360px) {
+    height: 200px;
+  }
+
+  @include mobile-landscape {
+    height: 200px;
+  }
+}
+
+// Overlay simulant une vraie image d'article
+.skeleton-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 20%,
+    rgba($text-color, 0.05) 30%,
+    rgba($text-color, 0.1) 50%,
+    rgba($text-color, 0.05) 70%,
+    transparent 80%
+  );
+  z-index: 1;
+  animation: skeletonShimmer 3s infinite linear;
+}
+
+// Pattern simulant le contenu d'image principale
+.skeleton-image-pattern {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+  background:
+    radial-gradient(
+      circle at 25% 25%,
+      rgba($color-orange, 0.25) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba($color-pink, 0.2) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba($color-purple, 0.15) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      rgba($color-orange, 0.1) 0%,
+      rgba($color-pink, 0.1) 50%,
+      rgba($color-purple, 0.1) 100%
+    );
+  border-radius: 4px;
+  z-index: 2;
+  animation: skeletonImagePattern 6s ease-in-out infinite;
+}
+
+// Point focal simulant un sujet photo
+.skeleton-image-focal-point {
+  position: absolute;
+  top: 40%;
+  left: 45%;
+  width: 10%;
+  height: 20%;
+  background: radial-gradient(
+    ellipse,
+    rgba($text-color, 0.15) 0%,
+    rgba($text-color, 0.08) 50%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  z-index: 3;
+  animation: skeletonPulse 4s ease-in-out infinite;
+}
+
+// =============================
+// CONTENU ARTICLE SKELETON
+// =============================
+.skeleton-article-content {
+  width: 100%;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.938rem;
+}
+
+// =============================
+// PARAGRAPHE SKELETON
+// =============================
+.skeleton-paragraph {
+  height: 1rem;
+  border-radius: 4px;
+  margin: 0.938rem 0;
+
+  // Largeurs variables pour simuler du vrai texte
+  &:nth-child(odd) {
+    width: 100%;
+  }
+
+  &:nth-child(even) {
+    width: 85%;
+  }
+
+  &:nth-child(3n) {
+    width: 92%;
+  }
+
+  &:nth-child(5n) {
+    width: 78%;
+  }
+
+  // Dernière ligne souvent plus courte
+  &:last-child {
+    width: 65%;
+  }
+
+  // Background avec animation de flux de texte
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.08) 0%,
+    rgba($text-color, 0.12) 25%,
+    rgba($text-color, 0.15) 50%,
+    rgba($text-color, 0.12) 75%,
+    rgba($text-color, 0.08) 100%
+  );
+  background-size: 300% 100%;
+  animation: skeletonTextFlow 3s infinite linear;
+
+  // Mobile alignment
+  @include small-screens {
+    margin: 0.8rem 0;
+  }
+
+  @include from('large-xs') {
+    margin: 0.938rem 0;
+  }
+}
+
+// =============================
+// SOUS-TITRE SKELETON
+// =============================
+.skeleton-subtitle {
+  height: 1.5rem;
+  width: 70%;
+  border-radius: 6px;
+  margin: 1.5rem 0 1rem 0;
+
+  // Couleur spéciale pour les sous-titres
+  background: linear-gradient(
+    90deg,
+    rgba($color-pink, 0.2) 25%,
+    rgba($color-pink, 0.35) 50%,
+    rgba($color-pink, 0.2) 75%
+  );
+
+  // Animation avec glow
+  animation:
+    skeletonShimmer 2s infinite linear,
+    skeletonGlow 3s infinite ease-in-out;
+
+  // Responsive
+  @include small-screens {
+    height: 1.3rem;
+    width: 75%;
+    margin: 1.2rem 0 0.8rem 0;
+  }
+
+  @include from('large-xs') {
+    height: 1.5rem;
+    width: 70%;
+    margin: 1.5rem 0 1rem 0;
+  }
+
+  @include from('large-xxxl') {
+    height: 1.7rem;
+  }
+
+  @media (max-width: 360px) {
+    height: 1.2rem;
+    width: 80%;
+  }
+
+  @include mobile-landscape {
+    height: 1.2rem;
+  }
+}
+
+// =============================
+// IMAGE DANS LE CONTENU SKELETON
+// =============================
+.skeleton-content-image {
+  width: 100%;
+  height: 250px;
+  border-radius: 8px;
+  margin: 1.5rem auto;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 8px rgba($background-color, 0.3);
+  border: 2px solid rgba($primary-color, 0.1);
+
+  background: linear-gradient(
+    45deg,
+    rgba($color-purple, 0.12) 0%,
+    rgba($color-orange, 0.12) 50%,
+    rgba($color-pink, 0.12) 100%
+  );
+
+  animation: skeletonFloat 5s ease-in-out infinite;
+
+  @include small-screens {
+    height: 200px;
+    margin: 1rem auto;
+    border-radius: 6px;
+  }
+
+  @include from('large-xxxl') {
+    height: 300px;
+  }
+
+  @media (max-width: 360px) {
+    height: 180px;
+    margin: 1rem auto;
+  }
+
+  @include mobile-landscape {
+    height: 150px;
+  }
+}
+
+.skeleton-image-placeholder {
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  background: radial-gradient(
+    circle,
+    rgba($text-color, 0.1) 0%,
+    rgba($text-color, 0.05) 50%,
+    transparent 100%
+  );
+  border-radius: 8px;
+  animation: skeletonPulse 3s ease-in-out infinite;
+}
+
+// =============================
+// BLOCKQUOTE SKELETON
+// =============================
+.skeleton-blockquote {
+  border-left: 4px solid $primary-color;
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  background: rgba($primary-color, 0.05);
+  border-radius: 0 8px 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @include small-screens {
+    margin: 1rem 0;
+    padding: 0.8rem 1.2rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  @include from('large-xxxl') {
+    padding: 1.2rem 1.8rem;
+  }
+
+  @media (max-width: 360px) {
+    margin: 1rem 0;
+    padding: 0.8rem 1.2rem;
+  }
+
+  @include mobile-landscape {
+    margin: 0.8rem 0;
+    padding: 0.7rem 1rem;
+  }
+}
+
+.skeleton-quote-line {
+  height: 0.9rem;
+  border-radius: 4px;
+  background: rgba($text-color, 0.15);
+
+  &.short {
+    width: 75%;
+  }
+
+  &:not(.short) {
+    width: 100%;
+  }
+}
+
+// =============================
+// LISTE SKELETON
+// =============================
+.skeleton-list {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @include small-screens {
+    padding-left: 1.2rem;
+  }
+
+  @include from('large-xxxl') {
+    margin: 1.2rem 0;
+    padding-left: 1.8rem;
+  }
+
+  @media (max-width: 360px) {
+    padding-left: 1rem;
+  }
+}
+
+.skeleton-list-item {
+  height: 0.9rem;
+  border-radius: 4px;
+  position: relative;
+
+  &:nth-child(1) {
+    width: 90%;
+  }
+  &:nth-child(2) {
+    width: 85%;
+  }
+  &:nth-child(3) {
+    width: 95%;
+  }
+
+  // Point de liste
+  &::before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: rgba($text-color, 0.3);
+    border-radius: 50%;
+  }
+}
+
+// =============================
+// META ARTICLE SKELETON
+// =============================
+.skeleton-article-meta {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+
+  // Centrage sur mobile comme le composant original
+  @include small-screens {
+    align-items: center;
+  }
+
+  @include from('small-sm') {
+    align-items: center;
+  }
+
+  @include from('small-lg') {
+    align-items: center;
+  }
+
+  @include from('small-xl') {
+    align-items: center;
+  }
+
+  @include between('small-xl', 'medium-sm') {
+    align-items: center;
+  }
+
+  @include from('medium-sm') {
+    align-items: center;
+  }
+
+  @include from('medium-lg') {
+    align-items: center;
+  }
+
+  @include from('medium-xxl') {
+    align-items: center;
+  }
+
+  @include from('large-xs') {
+    align-items: flex-end;
+  }
+}
+
+.skeleton-publish-date {
+  height: 0.7rem;
+  width: 150px;
+  border-radius: 4px;
+
+  // Couleur similaire aux em du composant original
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.12) 25%,
+    rgba($text-color, 0.18) 50%,
+    rgba($text-color, 0.12) 75%
+  );
+
+  @include small-screens {
+    height: 0.7rem;
+    width: 120px;
+  }
+
+  @include from('large-xs') {
+    height: 0.7rem;
+    width: 150px;
+  }
+
+  @media (max-width: 360px) {
+    height: 0.65rem;
+    width: 100px;
+  }
+}
+
+.skeleton-reading-time {
+  height: 0.7rem;
+  width: 120px;
+  border-radius: 4px;
+
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.1) 25%,
+    rgba($text-color, 0.15) 50%,
+    rgba($text-color, 0.1) 75%
+  );
+
+  @include small-screens {
+    width: 100px;
+  }
+
+  @include from('large-xs') {
+    width: 120px;
+  }
+
+  @media (max-width: 360px) {
+    height: 0.65rem;
+    width: 90px;
+  }
+}
+
+// =============================
+// ARTICLES LIÉS SKELETON
+// =============================
+.skeleton-related-articles {
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @include small-screens {
+    margin-top: 1.5rem;
+    gap: 1.2rem;
+  }
+
+  @include from('large-xxxl') {
+    margin-top: 2.5rem;
+    gap: 2rem;
+  }
+
+  @media (max-width: 360px) {
+    margin-top: 1.2rem;
+    gap: 1rem;
+  }
+
+  @include mobile-landscape {
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+}
+
+.skeleton-related-title {
+  height: 1.5rem;
+  width: 200px;
+  border-radius: 8px;
+  margin: 0 0 0.5rem 0;
+
+  // Couleur spéciale pour "Articles similaires"
+  background: linear-gradient(
+    90deg,
+    rgba($color-orange, 0.2) 25%,
+    rgba($color-orange, 0.4) 50%,
+    rgba($color-orange, 0.2) 75%
+  );
+
+  animation:
+    skeletonShimmer 2s infinite linear,
+    skeletonGlow 3s infinite ease-in-out;
+
+  @include small-screens {
+    height: 1.3rem;
+    width: 180px;
+  }
+
+  @include from('large-xxxl') {
+    height: 1.7rem;
+    width: 220px;
+  }
+
+  @media (max-width: 360px) {
+    height: 1.2rem;
+    width: 160px;
+  }
+
+  @include mobile-landscape {
+    height: 1.1rem;
+    width: 150px;
+  }
+}
+
+.skeleton-related-grid {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+
+  // Grille responsive
+  grid-template-columns: 1fr;
+
+  @include from('small-lg') {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+
+  @include from('medium-lg') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @include from('large-xs') {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+  }
+
+  @include from('large-xxxl') {
+    gap: 2rem;
+  }
+
+  @media (max-width: 360px) {
+    gap: 1rem;
+  }
+
+  @include mobile-landscape {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+.skeleton-related-card {
+  background: rgba($color-light, 0.02);
+  border: 1px solid rgba($color-light, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+
+  // Animation pulse globale pour la carte
+  animation: skeletonPulse 3s infinite ease-in-out;
+
+  &:hover {
+    border-color: rgba($color-orange, 0.15);
+    box-shadow: 0 6px 20px rgba($color-orange, 0.1);
+    transform: translateY(-2px);
+  }
+
+  // Effet de brillance
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba($color-orange, 0.05),
+      transparent
+    );
+    z-index: 1;
+    animation: skeletonShimmer 4s infinite linear;
+  }
+}
+
+.skeleton-related-image {
+  width: 100%;
+  height: 130px;
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    rgba($color-purple, 0.1) 0%,
+    rgba($color-pink, 0.1) 50%,
+    rgba($color-orange, 0.1) 100%
+  );
+
+  animation: skeletonFloat 4s ease-in-out infinite;
+
+  @include small-screens {
+    height: 120px;
+  }
+
+  @include from('large-xxxl') {
+    height: 150px;
+  }
+
+  @media (max-width: 360px) {
+    height: 100px;
+  }
+
+  @include mobile-landscape {
+    height: 90px;
+  }
+}
+
+.skeleton-related-image-pattern {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  right: 20%;
+  bottom: 20%;
+  background:
+    radial-gradient(
+      circle at 30% 40%,
+      rgba($color-orange, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba($color-pink, 0.12) 0%,
+      transparent 40%
+    );
+  border-radius: 4px;
+  animation: skeletonImagePattern 5s ease-in-out infinite;
+}
+
+.skeleton-related-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+
+  @include small-screens {
+    padding: 0.8rem;
+  }
+
+  @include from('large-xxxl') {
+    padding: 1.2rem;
+    gap: 0.6rem;
+  }
+
+  @media (max-width: 360px) {
+    padding: 0.7rem;
+    gap: 0.4rem;
+  }
+
+  @include mobile-landscape {
+    padding: 0.6rem;
+    gap: 0.4rem;
+  }
+}
+
+.skeleton-related-card-title {
+  height: 1rem;
+  width: 100%;
+  border-radius: 4px;
+  margin: 0;
+
+  // Couleur pour les titres d'articles liés
+  background: linear-gradient(
+    90deg,
+    rgba($color-pink, 0.15) 25%,
+    rgba($color-pink, 0.25) 50%,
+    rgba($color-pink, 0.15) 75%
+  );
+
+  @include small-screens {
+    height: 0.9rem;
+  }
+
+  @include from('large-xxxl') {
+    height: 1.1rem;
+  }
+
+  @media (max-width: 360px) {
+    height: 0.85rem;
+  }
+
+  @include mobile-landscape {
+    height: 0.8rem;
+  }
+}
+
+.skeleton-related-date {
+  height: 0.8rem;
+  width: 80px;
+  border-radius: 3px;
+  margin: 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.08) 25%,
+    rgba($text-color, 0.12) 50%,
+    rgba($text-color, 0.08) 75%
+  );
+
+  @include small-screens {
+    height: 0.75rem;
+    width: 70px;
+  }
+
+  @include from('large-xxxl') {
+    height: 0.85rem;
+    width: 90px;
+  }
+
+  @media (max-width: 360px) {
+    height: 0.7rem;
+    width: 60px;
+  }
+
+  @include mobile-landscape {
+    height: 0.65rem;
+    width: 55px;
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Accessibilité - Réduction des animations
+@include reduced-motion {
+  .skeleton-animate,
+  .skeleton-main-title,
+  .skeleton-header-image,
+  .skeleton-paragraph,
+  .skeleton-subtitle,
+  .skeleton-content-image,
+  .skeleton-related-card,
+  .skeleton-related-title {
+    animation: skeletonPulse 2s infinite ease-in-out !important;
+  }
+
+  .skeleton-image-pattern,
+  .skeleton-image-overlay,
+  .skeleton-image-focal-point,
+  .skeleton-related-image-pattern {
+    animation: none !important;
+  }
+
+  .skeleton-related-card:hover {
+    transform: none !important;
+  }
+
+  .single-post-skeleton {
+    scroll-behavior: auto;
+  }
+}
+
+// Support tactile
+@media (pointer: coarse) {
+  .skeleton-related-card {
+    min-height: 200px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+  }
+}
+
+// Mode sombre
+@include dark-mode {
+  .skeleton-post {
+    background: linear-gradient(
+      135deg,
+      rgba($background-color, 0.6),
+      rgba(color.adjust($background-color, $lightness: 3%), 0.6)
+    );
+    box-shadow: 0 8px 16px rgba($background-color, 0.2);
+  }
+
+  .skeleton-header-image,
+  .skeleton-content-image,
+  .skeleton-related-image {
+    background: linear-gradient(
+      135deg,
+      rgba($color-purple, 0.08) 0%,
+      rgba($color-pink, 0.08) 25%,
+      rgba($color-orange, 0.08) 50%,
+      rgba($color-pink, 0.08) 75%,
+      rgba($color-purple, 0.08) 100%
+    );
+    box-shadow: 0 4px 8px rgba($background-color, 0.2);
+    border-color: rgba($primary-color, 0.05);
+  }
+
+  .skeleton-related-card {
+    background: rgba($text-color, 0.01);
+    border-color: rgba($color-orange, 0.06);
+  }
+
+  .skeleton-image-overlay {
+    background: linear-gradient(
+      45deg,
+      transparent 20%,
+      rgba($text-color, 0.02) 30%,
+      rgba($text-color, 0.05) 50%,
+      rgba($text-color, 0.02) 70%,
+      transparent 80%
+    );
+  }
+}
+
+// Support écrans haute densité
+@include high-density {
+  .skeleton-header-image,
+  .skeleton-content-image {
+    box-shadow:
+      0 4px 8px rgba($background-color, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .skeleton-post {
+    backdrop-filter: blur(15px);
+    box-shadow:
+      0 8px 16px rgba($background-color, 0.4),
+      0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .skeleton-related-card:hover {
+    box-shadow:
+      0 6px 20px rgba($color-orange, 0.1),
+      0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Contraste élevé
+@include high-contrast {
+  .skeleton-animate {
+    background: linear-gradient(
+      90deg,
+      rgba($text-color, 0.15) 25%,
+      rgba($text-color, 0.25) 50%,
+      rgba($text-color, 0.15) 75%
+    );
+  }
+
+  .skeleton-main-title {
+    background: linear-gradient(
+      90deg,
+      rgba($color-orange, 0.3) 25%,
+      rgba($color-orange, 0.5) 50%,
+      rgba($color-orange, 0.3) 75%
+    );
+  }
+
+  .skeleton-subtitle {
+    background: linear-gradient(
+      90deg,
+      rgba($color-pink, 0.3) 25%,
+      rgba($color-pink, 0.5) 50%,
+      rgba($color-pink, 0.3) 75%
+    );
+  }
+
+  .skeleton-related-card {
+    border-color: rgba($color-orange, 0.2);
+  }
+
+  .skeleton-blockquote {
+    background: rgba($primary-color, 0.1);
+    border-left-color: $primary-color;
+  }
+}

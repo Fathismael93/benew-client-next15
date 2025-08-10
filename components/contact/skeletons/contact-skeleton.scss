@@ -1,0 +1,1196 @@
+@use 'sass:color';
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 contact-skeleton.scss
+// ================================
+
+// =============================
+// ANIMATIONS SKELETON
+// =============================
+@keyframes skeletonPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes skeletonFloat {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.01);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes skeletonTwinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes skeletonGlow {
+  0% {
+    box-shadow: 0 0 5px rgba($primary-color, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba($primary-color, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba($primary-color, 0.1);
+  }
+}
+
+@keyframes skeletonToggleRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+// =============================
+// SKELETON ELEMENTS - BASE
+// =============================
+.skeleton-animate {
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.08) 25%,
+    rgba($text-color, 0.15) 50%,
+    rgba($text-color, 0.08) 75%
+  );
+  background-size: 200px 100%;
+  animation: skeletonShimmer 2s infinite linear;
+  border-radius: 8px;
+}
+
+// =============================
+// CONTENEUR PRINCIPAL
+// =============================
+.contact-skeleton-wrapper {
+  width: 100%;
+}
+
+// =============================
+// SECTION PARALLAX SKELETON (réutilisée)
+// =============================
+.skeleton-parallax-section {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    rgba($background-color, 0.95),
+    rgba($background-color, 0.85)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  // Skeleton titre parallax
+  .skeleton-parallax-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    border-radius: 12px;
+
+    // Gradient spécial pour le titre
+    background: linear-gradient(
+      90deg,
+      rgba($color-orange, 0.2) 25%,
+      rgba($color-orange, 0.3) 50%,
+      rgba($color-orange, 0.2) 75%
+    );
+
+    // Animation avec glow
+    animation:
+      skeletonShimmer 2s infinite linear,
+      skeletonGlow 3s infinite ease-in-out;
+
+    // Dimensions selon titleLength
+    &.title-short {
+      width: 120px;
+      height: 2.5rem;
+
+      @include small-screens {
+        width: 100px;
+        height: 2rem;
+      }
+
+      @include from('large-xs') {
+        width: 140px;
+        height: 3rem;
+      }
+    }
+
+    &.title-medium {
+      width: 180px;
+      height: 3rem;
+
+      @include small-screens {
+        width: 150px;
+        height: 2.5rem;
+      }
+
+      @include from('large-xs') {
+        width: 200px;
+        height: 3.5rem;
+      }
+    }
+
+    &.title-long {
+      width: 250px;
+      height: 3.5rem;
+
+      @include small-screens {
+        width: 200px;
+        height: 3rem;
+      }
+
+      @include from('large-xs') {
+        width: 280px;
+        height: 4rem;
+      }
+    }
+  }
+
+  // Skeleton planète
+  .skeleton-parallax-planet {
+    position: absolute;
+    top: 20%;
+    right: 10%;
+    z-index: 3;
+    border-radius: 50%;
+    background: linear-gradient(
+      135deg,
+      rgba($color-pink, 0.15) 0%,
+      rgba($color-orange, 0.15) 50%,
+      rgba($color-purple, 0.15) 100%
+    );
+
+    animation: skeletonFloat 4s ease-in-out infinite;
+
+    width: 120px;
+    height: 120px;
+
+    @include small-screens {
+      width: 80px;
+      height: 80px;
+      top: 25%;
+      right: 5%;
+    }
+
+    @include from('large-xs') {
+      width: 150px;
+      height: 150px;
+      top: 18%;
+      right: 12%;
+    }
+  }
+
+  // Skeleton étoiles en arrière-plan
+  .skeleton-parallax-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background:
+      radial-gradient(
+        2px 2px at 20px 30px,
+        rgba($text-color, 0.1),
+        transparent
+      ),
+      radial-gradient(
+        2px 2px at 40px 70px,
+        rgba($text-color, 0.08),
+        transparent
+      ),
+      radial-gradient(
+        1px 1px at 90px 40px,
+        rgba($text-color, 0.12),
+        transparent
+      ),
+      radial-gradient(
+        1px 1px at 130px 80px,
+        rgba($text-color, 0.06),
+        transparent
+      ),
+      radial-gradient(
+        2px 2px at 160px 30px,
+        rgba($text-color, 0.1),
+        transparent
+      );
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: skeletonTwinkle 4s ease-in-out infinite;
+  }
+}
+
+// =============================
+// SECTION CONTACT SKELETON
+// =============================
+.skeleton-contact {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+
+  // 📱 MOBILE FIRST - Layout vertical identique au composant original
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0.75rem;
+  min-height: 100vh;
+  max-width: none;
+
+  // 📱 TRÈS PETITS ÉCRANS
+  @include until('small-sm') {
+    gap: 0.75rem;
+    padding: 0.75rem 0.5rem;
+  }
+
+  // 📱 PETITS ÉCRANS - Progression avec nouveaux breakpoints
+  @include from('small-sm') {
+    gap: 1.1rem;
+    padding: 0.8rem 0.6rem;
+  }
+
+  @include from('small-lg') {
+    gap: 1.2rem;
+    padding: 0.9rem 0.7rem;
+  }
+
+  @include from('small-xl') {
+    gap: 1.3rem;
+    padding: 1rem 0.8rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Transition progressive
+  @include from('medium-sm') {
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+    max-width: 90%;
+  }
+
+  @include from('medium-lg') {
+    gap: 1.75rem;
+    padding: 1.75rem 1.25rem;
+    max-width: 85%;
+  }
+
+  @include from('medium-xl') {
+    gap: 2rem;
+    padding: 2rem 1.5rem;
+    max-width: 80%;
+  }
+
+  @include from('medium-xxl') {
+    gap: 2.25rem;
+    padding: 2rem 1.5rem;
+    max-width: 75%;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Retour au layout original
+  @include from('large-xs') {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 3rem;
+    padding: 2rem;
+    max-width: 70rem;
+    min-height: auto;
+    height: 80vh; // Hauteur fixe pour desktop
+  }
+
+  @include from('large-lg') {
+    gap: 3.2rem;
+    max-width: 75rem;
+  }
+
+  @include from('large-xxl') {
+    gap: 3.5rem;
+    max-width: 80rem;
+  }
+}
+
+// =============================
+// TEXT CONTAINER SKELETON
+// =============================
+.skeleton-text-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+
+  // 📱 MOBILE FIRST - TextContainer en PREMIER
+  order: 1;
+  text-align: center;
+  align-items: center;
+
+  // Hauteur automatique sur mobile/tablette
+  @include until('large-xs') {
+    height: auto;
+    min-height: auto;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Hauteur fixe 50%
+  @include from('large-xs') {
+    flex: 1;
+    width: 50%;
+    height: 100%;
+    text-align: left;
+    align-items: flex-start;
+    order: 1;
+    justify-content: center;
+  }
+}
+
+// =============================
+// HEADER COLLAPSIBLE SKELETON
+// =============================
+.skeleton-collapsible-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba($text-color, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  margin-bottom: 1rem;
+
+  // Animation hover
+  animation: skeletonPulse 3s infinite ease-in-out;
+
+  &:hover {
+    background: rgba($primary-color, 0.1);
+    border-color: rgba($primary-color, 0.3);
+    cursor: pointer;
+  }
+
+  // Caché sur desktop comme le composant original
+  @include from('large-xs') {
+    display: none;
+  }
+}
+
+.skeleton-header-title {
+  height: 1.2rem;
+  width: 120px; // Largeur pour "Coordonnées"
+  border-radius: 6px;
+  margin: 0;
+
+  // Couleur spéciale pour le titre collapsible
+  background: linear-gradient(
+    90deg,
+    rgba($text-color, 0.15) 25%,
+    rgba($text-color, 0.25) 50%,
+    rgba($text-color, 0.15) 75%
+  );
+
+  @include until('small-sm') {
+    height: 1.1rem;
+    width: 100px;
+  }
+
+  @include from('small-sm') {
+    height: 1.25rem;
+    width: 125px;
+  }
+
+  @include from('small-lg') {
+    height: 1.3rem;
+    width: 130px;
+  }
+
+  @include from('medium-sm') {
+    height: 1.4rem;
+    width: 140px;
+  }
+}
+
+.skeleton-toggle-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+
+  // Couleur pour l'icône
+  background: linear-gradient(
+    90deg,
+    rgba($primary-color, 0.3) 25%,
+    rgba($primary-color, 0.4) 50%,
+    rgba($primary-color, 0.3) 75%
+  );
+
+  // Animation de rotation
+  animation:
+    skeletonShimmer 2s infinite linear,
+    skeletonToggleRotate 4s infinite ease-in-out;
+}
+
+// =============================
+// CONTENU COLLAPSIBLE SKELETON
+// =============================
+.skeleton-collapsible-content {
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.4s ease;
+
+  // Mobile/Tablette - Système collapsible
+  @include until('large-xs') {
+    max-height: 0;
+    opacity: 0;
+
+    &.open {
+      max-height: 1000px;
+      opacity: 1;
+    }
+  }
+
+  // Desktop - Toujours visible
+  @include from('large-xs') {
+    max-height: none;
+    opacity: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.skeleton-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+
+  @include until('small-sm') {
+    gap: 1rem;
+  }
+
+  @include from('small-sm') {
+    gap: 1.3rem;
+  }
+
+  @include from('small-lg') {
+    gap: 1.35rem;
+  }
+
+  @include from('small-xl') {
+    gap: 1.4rem;
+  }
+
+  @include from('medium-sm') {
+    gap: 1.5rem;
+  }
+
+  @include from('medium-lg') {
+    gap: 1.6rem;
+  }
+
+  @include from('medium-xl') {
+    gap: 1.7rem;
+  }
+
+  @include from('medium-xxl') {
+    gap: 1.8rem;
+  }
+
+  @include from('large-xs') {
+    gap: 0.625rem;
+    align-items: flex-start;
+  }
+
+  @include from('large-lg') {
+    gap: 0.7rem;
+  }
+
+  @include from('large-xxl') {
+    gap: 0.8rem;
+  }
+}
+
+// =============================
+// TITRE PRINCIPAL SKELETON
+// =============================
+.skeleton-main-title {
+  height: 4rem;
+  width: 350px; // Largeur pour "Coordonnées" en grand
+  border-radius: 12px;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba($background-color, 0.5);
+
+  // Couleur spéciale pour le titre principal
+  background: linear-gradient(
+    90deg,
+    rgba($color-orange, 0.2) 25%,
+    rgba($color-orange, 0.4) 50%,
+    rgba($color-orange, 0.2) 75%
+  );
+
+  // Animation avec glow
+  animation:
+    skeletonShimmer 2s infinite linear,
+    skeletonGlow 4s infinite ease-in-out;
+
+  // Caché sur mobile/tablette comme le composant original
+  @include until('large-xs') {
+    display: none;
+  }
+
+  @include from('large-xs') {
+    display: block;
+    height: 4rem;
+    width: 350px;
+  }
+
+  @include from('large-lg') {
+    height: 4.2rem;
+    width: 370px;
+  }
+
+  @include from('large-xxl') {
+    height: 4.4rem;
+    width: 380px;
+  }
+}
+
+// =============================
+// ÉLÉMENTS DE CONTACT SKELETON
+// =============================
+.skeleton-contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  align-items: center;
+
+  @include from('large-xs') {
+    align-items: flex-start;
+    gap: 0.625rem;
+  }
+}
+
+.skeleton-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: rgba($text-color, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba($primary-color, 0.2);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 320px;
+
+  // Animation globale
+  animation: skeletonPulse 2.5s infinite ease-in-out;
+
+  // 📱 MOBILE FIRST
+  justify-content: center;
+  text-align: center;
+
+  @include until('small-sm') {
+    gap: 0.75rem;
+    padding: 0.75rem 0.875rem;
+    max-width: 300px;
+  }
+
+  // 📱 PETITS ÉCRANS - Progression
+  @include from('small-sm') {
+    max-width: 330px;
+    gap: 1.05rem;
+    padding: 0.9rem 1.05rem;
+  }
+
+  @include from('small-lg') {
+    max-width: 340px;
+    gap: 1.1rem;
+    padding: 0.9rem 1.1rem;
+  }
+
+  @include from('small-xl') {
+    max-width: 350px;
+    gap: 1.15rem;
+    padding: 0.95rem 1.15rem;
+  }
+
+  // 📟 MOYENS ÉCRANS - Progression
+  @include from('medium-sm') {
+    max-width: 370px;
+  }
+
+  @include from('medium-lg') {
+    max-width: 380px;
+  }
+
+  @include from('medium-xl') {
+    max-width: 390px;
+  }
+
+  @include from('medium-xxl') {
+    max-width: 400px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Style desktop
+  @include from('large-xs') {
+    justify-content: flex-start;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    max-width: none;
+    gap: 1.875rem;
+  }
+
+  &:hover {
+    background: rgba($primary-color, 0.1);
+    border-color: rgba($primary-color, 0.3);
+    transform: translateY(-2px);
+
+    // 🖥️ DESKTOP - Pas d'effet hover
+    @include from('large-xs') {
+      background: transparent;
+      border: none;
+      transform: none;
+    }
+  }
+}
+
+.skeleton-contact-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  // Couleur pour les icônes
+  background: linear-gradient(
+    90deg,
+    rgba($primary-color, 0.3) 25%,
+    rgba($primary-color, 0.4) 50%,
+    rgba($primary-color, 0.3) 75%
+  );
+
+  @include until('small-sm') {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+
+  // 📱 PETITS ÉCRANS - Progression
+  @include from('small-sm') {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+
+  @include from('small-lg') {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  @include from('small-xl') {
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+
+  @include from('medium-lg') {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  @include from('medium-xl') {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  @include from('medium-xxl') {
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+.skeleton-contact-text {
+  height: 0.95rem;
+  flex: 1;
+  border-radius: 4px;
+  margin: 0;
+
+  // Largeurs variables pour les différents contacts
+  &:nth-of-type(1n) {
+    width: 100px; // Téléphone
+  }
+
+  &:nth-of-type(2n) {
+    width: 110px; // WhatsApp
+  }
+
+  &:nth-of-type(3n) {
+    width: 150px; // Email
+  }
+
+  @include until('small-sm') {
+    height: 0.85rem;
+
+    &:nth-of-type(1n) {
+      width: 90px;
+    }
+    &:nth-of-type(2n) {
+      width: 95px;
+    }
+    &:nth-of-type(3n) {
+      width: 130px;
+    }
+  }
+
+  // 📱 PETITS ÉCRANS - Progression
+  @include from('small-sm') {
+    height: 0.97rem;
+  }
+
+  @include from('small-lg') {
+    height: 0.99rem;
+  }
+
+  @include from('small-xl') {
+    height: 1.01rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    height: 1.05rem;
+  }
+
+  @include from('medium-lg') {
+    height: 1.07rem;
+  }
+
+  @include from('medium-xl') {
+    height: 1.09rem;
+  }
+
+  @include from('medium-xxl') {
+    height: 1.1rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    height: 1rem;
+  }
+}
+
+// =============================
+// FORM CONTAINER PLACEHOLDER (optionnel)
+// =============================
+.skeleton-form-container {
+  // 📱 MOBILE FIRST - FormContainer en SECOND
+  order: 2;
+  width: 100%;
+
+  // Hauteur automatique sur mobile/tablette
+  @include until('large-xs') {
+    height: auto;
+    min-height: auto;
+  }
+
+  // 🖥️ GRANDS ÉCRANS - Hauteur fixe 50%
+  @include from('large-xs') {
+    flex: 1;
+    width: 50%;
+    height: 100%;
+    order: 2;
+  }
+}
+
+.skeleton-form-placeholder {
+  width: 100%;
+  height: 100%;
+  background: rgba($text-color, 0.03);
+  border: 1px solid rgba($primary-color, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  min-height: 400px;
+
+  @include until('large-xs') {
+    min-height: 300px;
+    padding: 1.5rem;
+  }
+
+  @include from('large-xs') {
+    height: 100%;
+    min-height: auto;
+  }
+}
+
+.skeleton-form-title {
+  height: 1.5rem;
+  width: 200px;
+  border-radius: 8px;
+  margin: 0 0 1rem 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba($color-orange, 0.2) 25%,
+    rgba($color-orange, 0.35) 50%,
+    rgba($color-orange, 0.2) 75%
+  );
+}
+
+.skeleton-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.skeleton-form-field {
+  height: 3rem;
+  border-radius: 8px;
+
+  &.large {
+    height: 8rem; // Pour textarea
+  }
+}
+
+.skeleton-form-button {
+  height: 3rem;
+  width: 150px;
+  border-radius: 8px;
+  align-self: flex-end;
+
+  background: linear-gradient(
+    135deg,
+    rgba($primary-color, 0.8),
+    rgba($color-orange, 0.8)
+  );
+
+  animation: skeletonGlow 3s infinite ease-in-out;
+
+  @include until('large-xs') {
+    align-self: stretch;
+    width: 100%;
+  }
+}
+
+// =============================
+// ADAPTATIONS SPÉCIALES
+// =============================
+
+// Mode paysage sur mobile - Layout optimisé
+@include mobile-landscape {
+  .skeleton-contact {
+    flex-direction: row;
+    gap: 1.5rem;
+    padding: 1rem 0.75rem;
+    align-items: flex-start;
+
+    .skeleton-text-container {
+      order: 1;
+      width: 40%;
+
+      .skeleton-collapsible-header .skeleton-header-title {
+        height: 1rem;
+        width: 80px;
+      }
+
+      .skeleton-main-title {
+        height: 1.75rem;
+        width: 200px;
+      }
+
+      .skeleton-contact-item {
+        padding: 0.625rem 0.75rem;
+        gap: 0.75rem;
+
+        .skeleton-contact-text {
+          height: 0.8rem;
+
+          &:nth-of-type(1n) {
+            width: 70px;
+          }
+          &:nth-of-type(2n) {
+            width: 75px;
+          }
+          &:nth-of-type(3n) {
+            width: 100px;
+          }
+        }
+      }
+    }
+
+    .skeleton-form-container {
+      order: 2;
+      width: 60%;
+    }
+  }
+}
+
+// Écrans très hauts
+@include tall-screen {
+  .skeleton-contact {
+    @include until('large-xs') {
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+
+    .skeleton-text-container .skeleton-main-title {
+      @include until('large-xs') {
+        height: 3rem;
+        width: 400px;
+      }
+    }
+  }
+}
+
+// Support tactile - Zones tactiles optimisées
+@media (pointer: coarse) {
+  .skeleton-contact {
+    .skeleton-text-container {
+      .skeleton-collapsible-header {
+        min-height: 48px;
+      }
+
+      .skeleton-contact-item {
+        min-height: 48px;
+      }
+    }
+  }
+}
+
+// Accessibilité - Réduction des animations
+@include reduced-motion {
+  .skeleton-animate,
+  .skeleton-parallax-title,
+  .skeleton-parallax-planet,
+  .skeleton-main-title,
+  .skeleton-contact-item,
+  .skeleton-form-button {
+    animation: skeletonPulse 2s infinite ease-in-out !important;
+  }
+
+  .skeleton-parallax-stars,
+  .skeleton-toggle-icon {
+    animation: none !important;
+  }
+
+  .skeleton-contact-item:hover {
+    transform: none !important;
+  }
+
+  .skeleton-collapsible-content {
+    transition: none !important;
+  }
+}
+
+// Support écrans haute densité
+@include high-density {
+  .skeleton-contact .skeleton-text-container {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
+  .skeleton-form-placeholder {
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba($primary-color, 0.1);
+  }
+}
+
+// Mode sombre
+@include dark-mode {
+  .skeleton-parallax-section {
+    background: linear-gradient(
+      180deg,
+      rgba($background-color, 0.9),
+      rgba($background-color, 0.8)
+    );
+  }
+
+  .skeleton-contact-item {
+    background: rgba($text-color, 0.02);
+    border-color: rgba($primary-color, 0.1);
+
+    &:hover {
+      background: rgba($primary-color, 0.05);
+      border-color: rgba($primary-color, 0.2);
+    }
+
+    @include from('large-xs') {
+      background: transparent;
+      border: none;
+
+      &:hover {
+        background: transparent;
+        border: none;
+      }
+    }
+  }
+
+  .skeleton-collapsible-header {
+    background: rgba($text-color, 0.02);
+    border-color: rgba($primary-color, 0.1);
+
+    &:hover {
+      background: rgba($primary-color, 0.05);
+      border-color: rgba($primary-color, 0.2);
+    }
+  }
+
+  .skeleton-form-placeholder {
+    background: rgba($text-color, 0.01);
+    border-color: rgba($primary-color, 0.05);
+  }
+}
+
+// Contraste élevé
+@include high-contrast {
+  .skeleton-animate {
+    background: linear-gradient(
+      90deg,
+      rgba($text-color, 0.15) 25%,
+      rgba($text-color, 0.25) 50%,
+      rgba($text-color, 0.15) 75%
+    );
+  }
+
+  .skeleton-parallax-title,
+  .skeleton-main-title {
+    background: linear-gradient(
+      90deg,
+      rgba($color-orange, 0.3) 25%,
+      rgba($color-orange, 0.5) 50%,
+      rgba($color-orange, 0.3) 75%
+    );
+  }
+
+  .skeleton-contact-icon {
+    background: linear-gradient(
+      90deg,
+      rgba($primary-color, 0.4) 25%,
+      rgba($primary-color, 0.6) 50%,
+      rgba($primary-color, 0.4) 75%
+    );
+  }
+
+  .skeleton-contact-item {
+    border-color: rgba($primary-color, 0.3);
+
+    &:hover {
+      border-color: rgba($primary-color, 0.5);
+    }
+  }
+
+  .skeleton-collapsible-header {
+    border-color: rgba($primary-color, 0.3);
+
+    &:hover {
+      border-color: rgba($primary-color, 0.5);
+    }
+  }
+
+  .skeleton-form-button {
+    background: linear-gradient(
+      135deg,
+      rgba($primary-color, 0.9),
+      rgba($color-orange, 0.9)
+    );
+    border: 2px solid rgba($primary-color, 0.5);
+  }
+}
+
+// Très grands écrans
+@include from('large-xxxl') {
+  .skeleton-contact {
+    max-width: 85rem;
+    gap: 4rem;
+  }
+
+  .skeleton-parallax-title {
+    &.title-short {
+      width: 160px;
+      height: 3.5rem;
+    }
+    &.title-medium {
+      width: 220px;
+      height: 4rem;
+    }
+    &.title-long {
+      width: 320px;
+      height: 4.5rem;
+    }
+  }
+
+  .skeleton-main-title {
+    height: 4.6rem;
+    width: 400px;
+  }
+
+  .skeleton-contact-items {
+    gap: 1rem;
+  }
+
+  .skeleton-form-placeholder {
+    padding: 2.5rem;
+  }
+}
+
+// GESTION SPÉCIALE DU CLAVIER MOBILE
+// Évite que le viewport soit rogné par le clavier
+@media screen and (max-height: 600px) and (max-width: 768px) {
+  .skeleton-contact {
+    min-height: 100vh;
+    padding-bottom: 2rem;
+  }
+
+  .skeleton-form-placeholder {
+    min-height: 250px;
+  }
+}

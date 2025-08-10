@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import SinglePost from '@/components/blog/SinglePost';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../../instrumentation';
+import SinglePostSkeleton from '@/components/blog/skeletons/SinglePostSkeleton';
 
 // Configuration simple et efficace
 const CONFIG = {
@@ -165,7 +166,7 @@ export default async function SingleBlogPage({ params }) {
 
   // Rendu normal avec Suspense
   return (
-    <Suspense fallback={<SingleBlogPageSkeleton />}>
+    <Suspense fallback={<SinglePostSkeleton />}>
       <SinglePost
         article={data.article}
         relatedArticles={data.relatedArticles}
@@ -174,48 +175,6 @@ export default async function SingleBlogPage({ params }) {
         }}
       />
     </Suspense>
-  );
-}
-
-// Skeleton component simple et efficace
-function SingleBlogPageSkeleton() {
-  return (
-    <div className="single-blog-skeleton">
-      {/* Header skeleton */}
-      <div className="skeleton-header">
-        <div className="skeleton-title-large"></div>
-        <div className="skeleton-meta">
-          <div className="skeleton-date"></div>
-          <div className="skeleton-reading-time"></div>
-        </div>
-        <div className="skeleton-image-hero"></div>
-      </div>
-
-      {/* Content skeleton */}
-      <div className="skeleton-content">
-        <div className="skeleton-text-block"></div>
-        <div className="skeleton-text-block"></div>
-        <div className="skeleton-text-block"></div>
-        <div className="skeleton-image-content"></div>
-        <div className="skeleton-text-block"></div>
-      </div>
-
-      {/* Related articles skeleton */}
-      <div className="skeleton-related">
-        <div className="skeleton-title"></div>
-        <div className="skeleton-grid">
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="skeleton-card">
-              <div className="skeleton-image"></div>
-              <div className="skeleton-card-content">
-                <div className="skeleton-text"></div>
-                <div className="skeleton-date"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 

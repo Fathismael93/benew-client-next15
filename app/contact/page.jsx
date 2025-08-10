@@ -4,49 +4,12 @@
 
 import { Suspense } from 'react';
 import Contact from '@/components/contact';
-
-// Skeleton component simple
-function ContactPageSkeleton() {
-  return (
-    <div className="contact-page-skeleton">
-      {/* Header skeleton */}
-      <div className="skeleton-header">
-        <div className="skeleton-title-large"></div>
-        <div className="skeleton-text"></div>
-      </div>
-
-      {/* Form skeleton */}
-      <div className="skeleton-form">
-        <div className="skeleton-form-group">
-          <div className="skeleton-label"></div>
-          <div className="skeleton-input"></div>
-        </div>
-        <div className="skeleton-form-group">
-          <div className="skeleton-label"></div>
-          <div className="skeleton-input"></div>
-        </div>
-        <div className="skeleton-form-group">
-          <div className="skeleton-label"></div>
-          <div className="skeleton-textarea"></div>
-        </div>
-        <div className="skeleton-button"></div>
-      </div>
-
-      {/* Contact info skeleton */}
-      <div className="skeleton-contact-info">
-        <div className="skeleton-title"></div>
-        <div className="skeleton-contact-item"></div>
-        <div className="skeleton-contact-item"></div>
-        <div className="skeleton-contact-item"></div>
-      </div>
-    </div>
-  );
-}
+import ContactSkeleton from '@/components/contact/skeletons/ContactSkeleton';
 
 // Composant principal épuré
 export default function ContactPage() {
   return (
-    <Suspense fallback={<ContactPageSkeleton />}>
+    <Suspense fallback={<ContactSkeleton />}>
       <Contact />
     </Suspense>
   );
