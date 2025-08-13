@@ -226,6 +226,29 @@ export const captureDatabaseError = (error, context = {}) => {
   captureException(error, dbContext);
 };
 
+/**
+ * Capture les erreurs EmailJS avec contexte spécifique
+ * @param {Error} error - L'erreur EmailJS
+ * @param {Object} context - Contexte de l'email
+ */
+export const captureEmailError = (error, context = {}) => {
+  const emailContext = {
+    tags: {
+      error_category: 'email_service',
+      service: 'emailjs',
+      ...context.tags,
+    },
+    extra: {
+      email_type: context.emailType || 'contact',
+      template_id: '[FILTERED]', // Ne pas exposer les IDs de template
+      ...context.extra,
+    },
+    level: 'warning',
+  };
+
+  captureException(error, emailContext);
+};
+
 // =============================================
 // UTILITAIRES
 // =============================================
