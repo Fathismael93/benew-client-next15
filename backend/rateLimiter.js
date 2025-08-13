@@ -281,6 +281,29 @@ export const contactRateLimit = createRateLimit('contact');
 export const orderRateLimit = createRateLimit('order');
 
 // =============================================
+// COMPATIBILITÉ AVEC L'ANCIENNE API
+// =============================================
+
+/**
+ * Fonction pour maintenir la compatibilité avec limitBenewAPI
+ * Utilisée dans les Server Actions
+ */
+export function limitBenewAPI(apiType = 'api') {
+  const limitFunction = createRateLimit(apiType);
+
+  return function (requestLike) {
+    // Adapter l'objet request pour notre système simplifié
+    const adaptedRequest = {
+      nextUrl: { pathname: requestLike.url || '/api' },
+      headers: requestLike.headers,
+      url: requestLike.url,
+    };
+
+    return limitFunction(adaptedRequest);
+  };
+}
+
+// =============================================
 // UTILITAIRES D'ADMINISTRATION
 // =============================================
 
