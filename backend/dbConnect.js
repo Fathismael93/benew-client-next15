@@ -23,6 +23,7 @@ const requiredEnvVars = [
   'DB_NAME',
   'DB_PASSWORD',
   'DB_PORT',
+  'DB_CA',
 ];
 
 requiredEnvVars.forEach((key) => {
