@@ -13,61 +13,55 @@
   background-color: transparent;
   border: none;
   z-index: 999;
-
-  // 📱 PETITS ÉCRANS - Bouton plus grand et mieux positionné
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
   position: fixed;
-  top: 1.625rem; // = 26px (26 + 48/2 = 50px centre)
-  left: 1.625rem; // = 26px
   cursor: pointer;
   transition: all 0.3s ease;
+  border-radius: 50%;
 
-  // Ajustements progressifs simplifiés pour smartphones
+  // 📱 MOBILE - Calcul automatique du centre
+  width: 3rem;
+  height: 3rem;
+  left: 1.625rem;
+
+  // ✅ CALCUL AUTOMATIQUE: (hauteur navbar - hauteur button) / 2
+  top: calc((5rem - 3rem) / 2); // = 1rem = 16px (centre parfait)
+
   @include from('small-xs') {
     width: 2.9rem;
     height: 2.9rem;
-    top: 1.55rem;
-    left: 1.55rem;
+    top: calc((5rem - 2.9rem) / 2);
   }
 
   @include from('small-sm') {
     width: 2.8rem;
     height: 2.8rem;
-    top: 1.6rem;
-    left: 1.6rem;
+    top: calc((5rem - 2.8rem) / 2);
   }
 
-  // Fusion optimisée small-md + small-lg
   @include from('small-lg') {
     width: 2.7rem;
     height: 2.7rem;
-    top: 1.65rem;
-    left: 1.65rem;
+    top: calc((5rem - 2.7rem) / 2);
   }
 
-  // 📟 MOYENS ÉCRANS - Taille intermédiaire
-  @include medium-screens {
+  // 📟 MOYENS ÉCRANS - Navbar = 5.5rem
+  @include from('medium-sm') {
     width: 2.5rem;
     height: 2.5rem;
-    top: 1.8rem;
-    left: 1.8rem;
+    top: calc((5.5rem - 2.5rem) / 2); // = 1.5rem
   }
 
-  // 🖥️ GRANDS ÉCRANS - Taille desktop optimale
-  @include large-screens {
+  // 🖥️ DESKTOP - Navbar = 6.25rem
+  @include from('large-lg') {
     width: 2.2rem;
     height: 2.2rem;
-    top: 2.1rem;
-    left: 2.1rem;
+    top: calc((6.25rem - 2.2rem) / 2); // = 2.025rem (centre parfait)
   }
 
   @include from('large-xxxl') {
-    width: 2rem; // Taille desktop originale optimisée
+    width: 2rem;
     height: 2rem;
-    top: 2.25rem;
-    left: 2.25rem;
+    top: calc((6.25rem - 2rem) / 2); // = 2.125rem
   }
 
   &:hover {
