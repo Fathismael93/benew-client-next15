@@ -1,789 +1,393 @@
-/**
- * Système de rate limiting avancé pour BENEW - Next.js 15 - OPTIMISÉ
- * Adapté aux spécificités du projet : Server Actions, blog, templates, commandes
- * Sans dépendances externes - Version optimisée avec gestion mémoire et logging conditionnel
- */
+// backend/rateLimiter.js
+// Rate limiting simple et pragmatique pour petites applications (500 visiteurs/jour)
+// Next.js 15 - Version optimisée sans suringénierie
 
 import { NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
 
-// Configuration adaptative selon l'environnement
-const isProduction = process.env.NODE_ENV === 'production';
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-// Configuration de logging et mémoire
+// Configuration simple adaptée au trafic réel
 const CONFIG = {
-  logging: {
-    enabled: isDevelopment || process.env.BENEW_RATE_LIMIT_LOGS === 'true',
-    verboseAllowed: isDevelopment,
-    onlyErrors: isProduction,
+  // Limites raisonnables pour 500 visiteurs/jour
+  limits: {
+    public: { requests: 30, window: 60 * 1000 }, // 30 req/minute pour pages publiques
+    api: { requests: 20, window: 60 * 1000 }, // 20 req/minute pour API
+    contact: { requests: 3, window: 10 * 60 * 1000 }, // 3 req/10min pour contact
+    order: { requests: 2, window: 5 * 60 * 1000 }, // 2 req/5min pour commandes
   },
-  memory: {
-    maxCacheSize: parseInt(process.env.BENEW_RATE_LIMIT_MAX_CACHE) || 10000,
-    maxBlockedIps: parseInt(process.env.BENEW_RATE_LIMIT_MAX_BLOCKED) || 1000,
-    maxSuspiciousBehavior:
-      parseInt(process.env.BENEW_RATE_LIMIT_MAX_SUSPICIOUS) || 5000,
-    maxOrderAttempts: parseInt(process.env.BENEW_RATE_LIMIT_MAX_ORDERS) || 2000,
-    cleanupInterval: isProduction ? 15 * 60 * 1000 : 10 * 60 * 1000, // 15min prod, 10min dev
+
+  // Cache simple - pas besoin de milliers d'entrées
+  cache: {
+    maxSize: 200, // 200 IPs max en cache (largement suffisant)
+    cleanupInterval: 10 * 60 * 1000, // Nettoyage toutes les 10 minutes
   },
-  sentry: {
-    enabled: typeof window !== 'undefined' && window.Sentry,
-    onlyWarningsAndErrors: isProduction,
-  },
+
+  // Logging minimal
+  logging: process.env.NODE_ENV === 'development',
 };
 
+// Cache simple avec Map native
+const requestsCache = new Map();
+const blockedIPs = new Map();
+
+// Liste blanche basique
+const WHITELIST_IPS = new Set(['127.0.0.1', '::1']);
+
+// =============================================
+// UTILITAIRES SIMPLIFIÉS
+// =============================================
+
 /**
- * Fonction de logging conditionnelle optimisée
+ * Extraction d'IP simplifiée
  */
-function logConditional(level, message, data = {}) {
-  if (!CONFIG.logging.enabled) return;
-
-  // En production, seulement warn et error
-  if (CONFIG.logging.onlyErrors && !['warn', 'error'].includes(level)) return;
-
-  // Logging sélectif
-  if (level === 'info' && CONFIG.logging.verboseAllowed) {
-    console.log(`[BENEW Rate Limit] ${message}`, data);
-  } else if (level === 'warn') {
-    console.warn(`[BENEW Rate Limit] ${message}`, data);
-  } else if (level === 'error') {
-    console.error(`[BENEW Rate Limit] ${message}`, data);
+function getClientIP(request) {
+  // Priorité aux headers de proxy les plus courants
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
   }
+
+  const realIP = request.headers.get('x-real-ip');
+  if (realIP) {
+    return realIP;
+  }
+
+  // Fallback
+  return '127.0.0.1';
 }
 
 /**
- * Fonction Sentry conditionnelle optimisée
+ * Anonymisation basique pour les logs
  */
-function reportToSentry(message, level = 'info', extra = {}) {
-  if (!CONFIG.sentry.enabled) return;
+function anonymizeIP(ip) {
+  if (!ip || ip === '127.0.0.1') return ip;
 
-  // En production, seulement les avertissements et erreurs
-  if (CONFIG.sentry.onlyWarningsAndErrors && level === 'info') return;
+  const parts = ip.split('.');
+  if (parts.length === 4) {
+    return `${parts[0]}.${parts[1]}.xxx.xxx`;
+  }
 
-  window.Sentry.captureMessage(message, {
-    level,
-    tags: { component: 'benew-rate-limit' },
-    extra,
+  // IPv6 ou autre format
+  return ip.substring(0, 8) + 'xxx';
+}
+
+/**
+ * Log conditionnel simple
+ */
+function log(message, data = {}) {
+  if (CONFIG.logging) {
+    console.log(`[Rate Limit] ${message}`, data);
+  }
+}
+
+// =============================================
+// LOGIQUE PRINCIPALE SIMPLIFIÉE
+// =============================================
+
+/**
+ * Vérification de rate limit simple
+ */
+function checkRateLimit(ip, limit) {
+  const now = Date.now();
+  const windowStart = now - limit.window;
+
+  // Récupérer ou créer l'entrée pour cette IP
+  let userData = requestsCache.get(ip);
+  if (!userData) {
+    userData = { requests: [], blocked: false };
+    requestsCache.set(ip, userData);
+  }
+
+  // Nettoyer les requêtes expirées
+  userData.requests = userData.requests.filter(
+    (timestamp) => timestamp > windowStart,
+  );
+
+  // Vérifier la limite
+  if (userData.requests.length >= limit.requests) {
+    log(`Rate limit exceeded for IP: ${anonymizeIP(ip)}`, {
+      requests: userData.requests.length,
+      limit: limit.requests,
+      window: limit.window / 1000 + 's',
+    });
+    return false;
+  }
+
+  // Enregistrer cette requête
+  userData.requests.push(now);
+  return true;
+}
+
+/**
+ * Vérification des IPs bloquées
+ */
+function isIPBlocked(ip) {
+  const blockInfo = blockedIPs.get(ip);
+  if (!blockInfo) return false;
+
+  if (Date.now() > blockInfo.until) {
+    // Le blocage a expiré
+    blockedIPs.delete(ip);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Bloquer une IP temporairement (pour les cas extrêmes)
+ */
+function blockIP(ip, duration = 15 * 60 * 1000) {
+  // 15 minutes par défaut
+  blockedIPs.set(ip, {
+    until: Date.now() + duration,
+    reason: 'Rate limit exceeded multiple times',
+  });
+
+  log(`IP blocked temporarily: ${anonymizeIP(ip)}`, {
+    duration: duration / 1000 + 's',
   });
 }
 
-/**
- * Préréglages spécifiques aux endpoints BENEW
- */
-export const BENEW_RATE_LIMIT_PRESETS = {
-  PUBLIC_PAGES: {
-    windowMs: 60 * 1000,
-    max: 50,
-    message: 'Trop de requêtes sur cette page, veuillez réessayer plus tard',
-    skipSuccessfulRequests: false,
-    skipFailedRequests: false,
-  },
-  ORDER_ACTIONS: {
-    windowMs: 5 * 60 * 1000,
-    max: 3,
-    message:
-      'Trop de tentatives de commande, veuillez patienter avant de réessayer',
-    skipSuccessfulRequests: true,
-    skipFailedRequests: false,
-  },
-  CONTACT_FORM: {
-    windowMs: 10 * 60 * 1000,
-    max: 5,
-    message: 'Trop de messages envoyés, veuillez patienter avant de renvoyer',
-    skipSuccessfulRequests: true,
-    skipFailedRequests: false,
-  },
-  IMAGE_REQUESTS: {
-    windowMs: 2 * 60 * 1000,
-    max: 100,
-    message: "Trop de requêtes d'images, veuillez réessayer plus tard",
-    skipSuccessfulRequests: false,
-    skipFailedRequests: true,
-  },
-  BLOG_API: {
-    windowMs: 60 * 1000,
-    max: 30,
-    message: 'Trop de requêtes sur le blog, veuillez réessayer plus tard',
-    skipSuccessfulRequests: false,
-    skipFailedRequests: false,
-  },
-  TEMPLATES_API: {
-    windowMs: 60 * 1000,
-    max: 40,
-    message: 'Trop de requêtes sur les templates, veuillez réessayer plus tard',
-    skipSuccessfulRequests: false,
-    skipFailedRequests: false,
-  },
-  PRESENTATION_INTERACTIONS: {
-    windowMs: 60 * 1000,
-    max: 200,
-    message: "Trop d'interactions, veuillez ralentir",
-    skipSuccessfulRequests: false,
-    skipFailedRequests: false,
-  },
-};
-
-/**
- * Niveaux de violation optimisés pour BENEW
- */
-export const BENEW_VIOLATION_LEVELS = {
-  LOW: {
-    threshold: 1.3,
-    blockDuration: 0,
-    severity: 'low',
-    logLevel: 'info',
-    sentryLevel: 'info',
-  },
-  MEDIUM: {
-    threshold: 2.5,
-    blockDuration: 3 * 60 * 1000,
-    severity: 'medium',
-    logLevel: 'warning',
-    sentryLevel: 'warning',
-  },
-  HIGH: {
-    threshold: 5,
-    blockDuration: 15 * 60 * 1000,
-    severity: 'high',
-    logLevel: 'warning',
-    sentryLevel: 'warning',
-  },
-  SEVERE: {
-    threshold: 10,
-    blockDuration: 60 * 60 * 1000,
-    severity: 'severe',
-    logLevel: 'error',
-    sentryLevel: 'error',
-  },
-};
-
 // =============================================
-// STOCKAGE EN MÉMOIRE AVEC GESTION DE TAILLE
+// MIDDLEWARE PRINCIPAL SIMPLIFIÉ
 // =============================================
 
 /**
- * Map avec limitation de taille et éviction LRU
+ * Middleware de rate limiting adapté
  */
-class LimitedMap extends Map {
-  constructor(maxSize) {
-    super();
-    this.maxSize = maxSize;
-  }
+export function createRateLimit(limitType = 'public') {
+  const limit = CONFIG.limits[limitType] || CONFIG.limits.public;
 
-  set(key, value) {
-    // Si la clé existe déjà, la supprimer pour la remettre à la fin
-    if (this.has(key)) {
-      this.delete(key);
-    }
-    // Si on dépasse la taille maximale, supprimer le plus ancien
-    else if (this.size >= this.maxSize) {
-      const firstKey = this.keys().next().value;
-      this.delete(firstKey);
-    }
-
-    return super.set(key, value);
-  }
-}
-
-// Stockage optimisé avec limitations
-const requestCache = new LimitedMap(CONFIG.memory.maxCacheSize);
-const blockedIPs = new LimitedMap(CONFIG.memory.maxBlockedIps);
-const suspiciousBehavior = new LimitedMap(CONFIG.memory.maxSuspiciousBehavior);
-const orderAttempts = new LimitedMap(CONFIG.memory.maxOrderAttempts);
-
-// Liste blanche externalisée
-const BENEW_IP_WHITELIST = new Set(
-  (process.env.BENEW_WHITELIST_IPS || '127.0.0.1,::1')
-    .split(',')
-    .map((ip) => ip.trim()),
-);
-
-/**
- * Extraction d'IP optimisée pour déploiements BENEW
- */
-function extractRealIp(req) {
-  const vercelForwardedFor =
-    req.headers.get?.('x-vercel-forwarded-for') ||
-    req.headers['x-vercel-forwarded-for'];
-  const cfConnectingIp =
-    req.headers.get?.('cf-connecting-ip') || req.headers['cf-connecting-ip'];
-  const forwardedFor =
-    req.headers.get?.('x-forwarded-for') || req.headers['x-forwarded-for'];
-  const realIp = req.headers.get?.('x-real-ip') || req.headers['x-real-ip'];
-
-  let ip = '0.0.0.0';
-
-  if (cfConnectingIp) {
-    ip = cfConnectingIp;
-  } else if (vercelForwardedFor) {
-    ip = vercelForwardedFor.split(',')[0].trim();
-  } else if (forwardedFor) {
-    ip = forwardedFor.split(',')[0].trim();
-  } else if (realIp) {
-    ip = realIp;
-  } else if (req.socket?.remoteAddress) {
-    ip = req.socket.remoteAddress;
-  } else if (req.ip) {
-    ip = req.ip;
-  }
-
-  // Nettoyer l'IP
-  if (ip.startsWith('::ffff:')) {
-    ip = ip.substring(7);
-  }
-
-  return ip;
-}
-
-/**
- * Anonymisation d'IP optimisée
- */
-function anonymizeIp(ip) {
-  if (!ip || typeof ip !== 'string') return '0.0.0.0';
-
-  if (ip.includes('.')) {
-    const parts = ip.split('.');
-    if (parts.length === 4) {
-      parts[2] = 'xx';
-      parts[3] = 'xx';
-      return parts.join('.');
-    }
-  } else if (ip.includes(':')) {
-    const parts = ip.split(':');
-    if (parts.length >= 4) {
-      return parts.slice(0, 3).join(':') + '::xxx';
-    }
-  }
-
-  return ip.substring(0, Math.floor(ip.length / 3)) + 'xxx';
-}
-
-/**
- * Génération de clé optimisée
- */
-function generateBenewKey(req, prefix = 'benew') {
-  const ip = extractRealIp(req);
-  const path = req.url || req.nextUrl?.pathname || '';
-
-  // Pour les Server Actions de commande
-  if (prefix === 'order' && req.body) {
-    try {
-      const body =
-        typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-      if (body.email) {
-        const emailHash = Buffer.from(body.email)
-          .toString('base64')
-          .substring(0, 10);
-        return `${prefix}:email:${emailHash}:ip:${ip}`;
-      }
-    } catch (e) {
-      // Ignore silencieusement
-    }
-  }
-
-  // Pour le formulaire de contact
-  if (prefix === 'contact' && req.body) {
-    try {
-      const body =
-        typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-      if (body.email) {
-        const emailHash = Buffer.from(body.email)
-          .toString('base64')
-          .substring(0, 8);
-        return `${prefix}:contact:${emailHash}:ip:${ip}`;
-      }
-    } catch (e) {
-      // Ignore silencieusement
-    }
-  }
-
-  // Pour les templates/applications
-  if (path.includes('/templates/') || path.includes('/applications/')) {
-    const pathSegments = path.split('/').filter(Boolean);
-    const resourceId = pathSegments[pathSegments.length - 1];
-    return `${prefix}:resource:${resourceId}:ip:${ip}`;
-  }
-
-  return `${prefix}:ip:${ip}:path:${path.replace(/[^a-zA-Z0-9]/g, '_')}`;
-}
-
-/**
- * Analyse comportementale optimisée
- */
-function analyzeBenewBehavior(key, endpoint = '') {
-  const data = suspiciousBehavior.get(key);
-  if (!data)
-    return { isSuspicious: false, threatLevel: 0, detectionPoints: [] };
-
-  let threatScore = 0;
-  const results = { detectionPoints: [] };
-
-  // Violations multiples sur les commandes
-  if (data.violations >= 20 && endpoint.includes('order')) {
-    threatScore += 6;
-    results.detectionPoints.push('multiple_order_violations');
-  } else if (data.violations >= 50) {
-    threatScore += 4;
-    results.detectionPoints.push('high_violation_count');
-  }
-
-  // Scan rapide de templates
-  if (
-    data.endpoints.size >= 15 &&
-    [...data.endpoints].some((ep) => ep.includes('template'))
-  ) {
-    threatScore += 5;
-    results.detectionPoints.push('template_scanning_behavior');
-  }
-
-  // Requêtes rapides sur le slider présentation
-  const presentationEndpoints = [...data.endpoints].filter((ep) =>
-    ep.includes('presentation'),
-  );
-  if (presentationEndpoints.length > 10) {
-    threatScore += 3;
-    results.detectionPoints.push('presentation_automation_detected');
-  }
-
-  // Tentatives de commande multiples échouées
-  const orderData = orderAttempts.get(key);
-  if (orderData && orderData.failedAttempts >= 3) {
-    threatScore += 4;
-    results.detectionPoints.push('multiple_failed_orders');
-  }
-
-  // Taux d'erreur élevé
-  if (
-    data.errorRequests / Math.max(data.totalRequests, 1) > 0.4 &&
-    data.totalRequests > 3
-  ) {
-    threatScore += 3;
-    results.detectionPoints.push('high_error_rate_critical_endpoints');
-  }
-
-  // Accès aux endpoints sensibles
-  const sensitiveEndpoints = [
-    '/contact',
-    '/templates',
-    '/_next/action',
-    '/order',
-  ];
-  if (sensitiveEndpoints.some((ep) => endpoint.includes(ep))) {
-    threatScore += 1;
-    results.detectionPoints.push('sensitive_benew_endpoint_access');
-  }
-
-  // Détection de pattern de scraping d'images
-  const imageRequests = [...data.endpoints].filter(
-    (ep) =>
-      ep.includes('cloudinary') ||
-      ep.includes('image') ||
-      ep.includes('_next/image'),
-  ).length;
-  if (imageRequests > 50) {
-    threatScore += 2;
-    results.detectionPoints.push('image_scraping_pattern');
-  }
-
-  results.isSuspicious = threatScore >= 4;
-  results.threatLevel = threatScore;
-  return results;
-}
-
-/**
- * Tracking optimisé pour les commandes
- */
-function trackOrderAttempt(key, success = false) {
-  const existing = orderAttempts.get(key) || {
-    totalAttempts: 0,
-    successfulOrders: 0,
-    failedAttempts: 0,
-    lastAttempt: Date.now(),
-    firstAttempt: Date.now(),
-  };
-
-  existing.totalAttempts += 1;
-  existing.lastAttempt = Date.now();
-
-  if (success) {
-    existing.successfulOrders += 1;
-  } else {
-    existing.failedAttempts += 1;
-  }
-
-  orderAttempts.set(key, existing);
-}
-
-/**
- * Middleware principal optimisé
- */
-export function applyBenewRateLimit(
-  presetOrOptions = 'PUBLIC_PAGES',
-  additionalOptions = {},
-) {
-  let config;
-  if (typeof presetOrOptions === 'string') {
-    config = {
-      ...(BENEW_RATE_LIMIT_PRESETS[presetOrOptions] ||
-        BENEW_RATE_LIMIT_PRESETS.PUBLIC_PAGES),
-      ...additionalOptions,
-    };
-  } else {
-    config = {
-      ...BENEW_RATE_LIMIT_PRESETS.PUBLIC_PAGES,
-      ...presetOrOptions,
-      ...additionalOptions,
-    };
-  }
-
-  return async function (req) {
-    const path = req.url || req.nextUrl?.pathname || '';
-    const ip = extractRealIp(req);
+  return async function rateLimit(request) {
+    const ip = getClientIP(request);
+    const path = request.nextUrl?.pathname || request.url || '';
 
     try {
-      // Vérifier liste blanche
-      if (BENEW_IP_WHITELIST.has(ip)) {
-        logConditional(
-          'info',
-          `Request allowed from whitelisted IP: ${anonymizeIp(ip)}`,
-        );
-        return null;
+      // Vérifier la whitelist
+      if (WHITELIST_IPS.has(ip)) {
+        log(`Whitelisted IP allowed: ${anonymizeIP(ip)}`);
+        return null; // Requête autorisée
       }
 
-      // Vérifier IP bloquée
-      const blockInfo = blockedIPs.get(ip);
-      if (blockInfo && blockInfo.until > Date.now()) {
-        const eventId = uuidv4();
+      // Vérifier si l'IP est bloquée
+      if (isIPBlocked(ip)) {
+        const blockInfo = blockedIPs.get(ip);
+        const remainingTime = Math.ceil((blockInfo.until - Date.now()) / 1000);
 
-        logConditional(
-          'warn',
-          `Blocked IP request rejected: ${anonymizeIp(ip)}`,
-        );
-
-        reportToSentry('BENEW: Request from blocked IP', 'warning', {
-          eventId,
-          ip: anonymizeIp(ip),
-          path,
-        });
+        log(`Blocked IP rejected: ${anonymizeIP(ip)}`);
 
         return NextResponse.json(
           {
-            status: 429,
-            error: 'Accès temporairement restreint',
-            message: blockInfo.message || config.message,
-            retryAfter: Math.ceil((blockInfo.until - Date.now()) / 1000),
-            reference: eventId,
+            error: 'Accès temporairement bloqué',
+            message: 'Veuillez réessayer plus tard',
+            retryAfter: remainingTime,
           },
           {
             status: 429,
             headers: {
-              'Retry-After': Math.ceil(
-                (blockInfo.until - Date.now()) / 1000,
-              ).toString(),
+              'Retry-After': remainingTime.toString(),
+              'X-RateLimit-Limit': limit.requests.toString(),
+              'X-RateLimit-Remaining': '0',
             },
           },
         );
       }
 
-      // Générer clé
-      const key = generateBenewKey(
-        req,
-        additionalOptions.prefix ||
-          (typeof presetOrOptions === 'string'
-            ? presetOrOptions.toLowerCase()
-            : 'benew'),
-        additionalOptions,
-      );
+      // Vérifier le rate limit
+      if (!checkRateLimit(ip, limit)) {
+        const userData = requestsCache.get(ip);
 
-      // Gérer cache des requêtes
-      const now = Date.now();
-      const windowStart = now - config.windowMs;
-      let requestData = requestCache.get(key) || {
-        requests: [],
-        successCount: 0,
-        errorCount: 0,
-      };
-
-      // Supprimer requêtes expirées
-      requestData.requests = requestData.requests.filter(
-        (timestamp) => timestamp > windowStart,
-      );
-
-      // Vérifier limite
-      const currentRequests = requestData.requests.length;
-
-      if (currentRequests >= config.max) {
-        // Analyser comportement
-        const behavior = analyzeBenewBehavior(key, path);
-
-        // Déterminer niveau de violation
-        let violationLevel = BENEW_VIOLATION_LEVELS.LOW;
-        const violationRatio = currentRequests / config.max;
-
-        for (const level of Object.values(BENEW_VIOLATION_LEVELS)) {
-          if (violationRatio >= level.threshold) {
-            violationLevel = level;
-          }
-        }
-
-        // Calculer durée de blocage
-        let blockDuration = violationLevel.blockDuration;
-        if (behavior.isSuspicious) {
-          blockDuration *= 1 + Math.min(behavior.threatLevel, 8) / 4;
-        }
-
-        const eventId = uuidv4();
-
-        // Logging optimisé selon severity
-        if (
-          violationLevel.severity === 'severe' ||
-          violationLevel.severity === 'high'
-        ) {
-          logConditional(violationLevel.logLevel, 'Violation detected', {
-            eventId,
-            ip: anonymizeIp(ip),
-            path,
-            requests: currentRequests,
-            limit: config.max,
-            violationLevel: violationLevel.severity,
-            suspicious: behavior.isSuspicious,
-            detectionPoints: behavior.detectionPoints,
-          });
-
-          reportToSentry(
-            'BENEW: Rate limit violation',
-            violationLevel.sentryLevel,
+        // Si c'est un récidiviste, le bloquer temporairement
+        if (userData && userData.requests.length > limit.requests * 2) {
+          blockIP(ip);
+          return NextResponse.json(
             {
-              eventId,
-              ip: anonymizeIp(ip),
-              path,
-              violationLevel: violationLevel.severity,
-              threatLevel: behavior.threatLevel,
+              error: 'Accès bloqué pour abus',
+              message: 'Trop de tentatives. Accès temporairement restreint.',
             },
+            { status: 429 },
           );
         }
 
-        // Bloquer pour violations sévères
-        if (
-          violationLevel.severity === 'severe' ||
-          (violationLevel.severity === 'high' && behavior.threatLevel >= 6)
-        ) {
-          blockedIPs.set(ip, {
-            until: now + blockDuration,
-            reason: 'Severe BENEW rate limit violation',
-            message:
-              "Votre accès à BENEW est temporairement restreint en raison d'un usage abusif.",
-          });
-        }
-
-        // Message contextualisé
-        let message = config.message;
-        if (path.includes('/order') || path.includes('createOrder')) {
-          message =
-            'Trop de tentatives de commande. Veuillez patienter avant de réessayer.';
-        } else if (path.includes('/contact')) {
-          message =
-            'Trop de messages envoyés. Veuillez patienter avant de renvoyer un message.';
-        } else if (path.includes('/templates')) {
-          message =
-            'Trop de requêtes sur nos templates. Veuillez ralentir votre navigation.';
-        }
-
-        const retryAfter = Math.ceil((now + blockDuration - now) / 1000);
+        // Rate limit standard
+        const resetTime = Math.ceil((Date.now() + limit.window) / 1000);
 
         return NextResponse.json(
           {
-            status: 429,
-            error: 'Limite de requêtes BENEW dépassée',
-            message,
-            retryAfter,
-            reference: eventId,
+            error: 'Trop de requêtes',
+            message: getContextualMessage(path),
+            retryAfter: Math.ceil(limit.window / 1000),
           },
           {
             status: 429,
             headers: {
-              'Retry-After': retryAfter.toString(),
-              'X-RateLimit-Limit': config.max.toString(),
+              'Retry-After': Math.ceil(limit.window / 1000).toString(),
+              'X-RateLimit-Limit': limit.requests.toString(),
               'X-RateLimit-Remaining': '0',
-              'X-RateLimit-Reset': Math.ceil(
-                (now + config.windowMs) / 1000,
-              ).toString(),
+              'X-RateLimit-Reset': resetTime.toString(),
             },
           },
         );
       }
 
-      // Enregistrer requête
-      requestData.requests.push(now);
-      requestCache.set(key, requestData);
+      // Requête autorisée
+      const userData = requestsCache.get(ip);
+      const remaining = Math.max(0, limit.requests - userData.requests.length);
 
-      // Tracking spécialisé pour commandes
-      if (path.includes('order') || path.includes('createOrder')) {
-        trackOrderAttempt(key, true);
-      }
+      log(`Request allowed: ${anonymizeIP(ip)} -> ${path}`, {
+        remaining,
+        limit: limit.requests,
+      });
 
-      logConditional('info', `Request allowed: ${anonymizeIp(ip)} -> ${path}`);
-      return null;
+      return null; // Null = continuer la requête
     } catch (error) {
-      logConditional('error', 'Error in middleware:', {
-        message: error.message,
-      });
+      log('Rate limit error:', { error: error.message, ip: anonymizeIP(ip) });
 
-      reportToSentry('BENEW Rate Limit: Middleware error', 'error', {
-        path,
-        ip: anonymizeIp(ip),
-        error: error.message,
-      });
-
-      // Fail open pour UX
+      // En cas d'erreur, on laisse passer (fail open)
       return null;
     }
   };
 }
 
 /**
- * Middleware pour Server Actions
+ * Messages contextualisés selon l'endpoint
  */
-export function applyBenewServerActionLimit(actionType = 'order') {
-  const presets = {
-    order: 'ORDER_ACTIONS',
-    contact: 'CONTACT_FORM',
-    general: 'PUBLIC_PAGES',
-  };
+function getContextualMessage(path) {
+  if (path.includes('/contact')) {
+    return 'Trop de messages envoyés. Veuillez patienter avant de renvoyer.';
+  }
 
-  return applyBenewRateLimit(presets[actionType] || presets.general, {
-    prefix: actionType,
-  });
+  if (path.includes('/order') || path.includes('order')) {
+    return 'Trop de tentatives de commande. Veuillez patienter.';
+  }
+
+  if (path.includes('/blog')) {
+    return 'Trop de requêtes sur le blog. Veuillez ralentir.';
+  }
+
+  if (path.includes('/templates')) {
+    return 'Trop de requêtes sur les templates. Veuillez patienter.';
+  }
+
+  return 'Trop de requêtes. Veuillez réessayer plus tard.';
 }
 
-/**
- * Fonction pour routes API
- */
-export function limitBenewAPI(apiType = 'blog') {
-  const presets = {
-    blog: 'BLOG_API',
-    templates: 'TEMPLATES_API',
-    images: 'IMAGE_REQUESTS',
-    presentation: 'PRESENTATION_INTERACTIONS',
-  };
+// =============================================
+// MIDDLEWARES PRÉ-CONFIGURÉS
+// =============================================
 
-  return applyBenewRateLimit(presets[apiType] || presets.blog, {
-    prefix: apiType,
-  });
-}
+export const publicRateLimit = createRateLimit('public');
+export const apiRateLimit = createRateLimit('api');
+export const contactRateLimit = createRateLimit('contact');
+export const orderRateLimit = createRateLimit('order');
+
+// =============================================
+// UTILITAIRES D'ADMINISTRATION
+// =============================================
 
 /**
- * Ajouter IP à la liste blanche
+ * Statistiques simples
  */
-export function addToBenewWhitelist(ip) {
-  BENEW_IP_WHITELIST.add(ip);
-  logConditional('info', `Added IP to whitelist: ${anonymizeIp(ip)}`);
-}
-
-/**
- * Statistiques optimisées
- */
-export function getBenewRateLimitStats() {
-  const stats = {
-    memory: {
-      activeKeys: requestCache.size,
-      maxCacheSize: CONFIG.memory.maxCacheSize,
-      memoryUsage: `${((requestCache.size / CONFIG.memory.maxCacheSize) * 100).toFixed(1)}%`,
-    },
-    security: {
-      suspiciousBehaviors: suspiciousBehavior.size,
+export function getStats() {
+  return {
+    cache: {
+      totalIPs: requestsCache.size,
       blockedIPs: blockedIPs.size,
-      whitelistedIPs: BENEW_IP_WHITELIST.size,
-    },
-    business: {
-      orderAttempts: orderAttempts.size,
+      maxSize: CONFIG.cache.maxSize,
+      usage: `${Math.round((requestsCache.size / CONFIG.cache.maxSize) * 100)}%`,
     },
     config: {
       environment: process.env.NODE_ENV,
-      loggingEnabled: CONFIG.logging.enabled,
-      sentryEnabled: CONFIG.sentry.enabled,
+      logging: CONFIG.logging,
     },
     timestamp: new Date().toISOString(),
   };
-
-  logConditional('info', 'Current statistics:', stats);
-  return stats;
 }
 
 /**
- * Réinitialisation optimisée
+ * Ajouter une IP à la whitelist
  */
-export function resetBenewRateLimitData() {
-  const beforeStats = {
-    requestCache: requestCache.size,
-    blockedIPs: blockedIPs.size,
-    suspiciousBehavior: suspiciousBehavior.size,
-    orderAttempts: orderAttempts.size,
+export function addToWhitelist(ip) {
+  WHITELIST_IPS.add(ip);
+  log(`IP added to whitelist: ${anonymizeIP(ip)}`);
+}
+
+/**
+ * Supprimer une IP de la whitelist
+ */
+export function removeFromWhitelist(ip) {
+  WHITELIST_IPS.delete(ip);
+  log(`IP removed from whitelist: ${anonymizeIP(ip)}`);
+}
+
+/**
+ * Débloquer une IP manuellement
+ */
+export function unblockIP(ip) {
+  blockedIPs.delete(ip);
+  log(`IP manually unblocked: ${anonymizeIP(ip)}`);
+}
+
+/**
+ * Réinitialiser le cache (pour les tests)
+ */
+export function resetCache() {
+  const before = {
+    requests: requestsCache.size,
+    blocked: blockedIPs.size,
   };
 
-  requestCache.clear();
+  requestsCache.clear();
   blockedIPs.clear();
-  suspiciousBehavior.clear();
-  orderAttempts.clear();
 
-  logConditional('info', 'All data reset', { beforeStats });
+  log('Cache reset completed', before);
 }
 
 // =============================================
-// NETTOYAGE PÉRIODIQUE OPTIMISÉ
+// NETTOYAGE AUTOMATIQUE SIMPLE
 // =============================================
 
-if (typeof setInterval !== 'undefined') {
-  const cleanupInterval = setInterval(() => {
-    try {
-      const now = Date.now();
-      let cleaned = 0;
+// Nettoyage périodique simple
+setInterval(() => {
+  const now = Date.now();
+  let cleaned = 0;
 
-      // Nettoyer IPs bloquées expirées
-      for (const [ip, blockInfo] of blockedIPs.entries()) {
-        if (blockInfo.until <= now) {
-          blockedIPs.delete(ip);
-          cleaned++;
-        }
-      }
-
-      // Nettoyer tentatives de commande anciennes (1 heure)
-      for (const [key, data] of orderAttempts.entries()) {
-        if (now - data.lastAttempt > 60 * 60 * 1000) {
-          orderAttempts.delete(key);
-          cleaned++;
-        }
-      }
-
-      // Nettoyer comportements suspects anciens (2 heures)
-      for (const [key, data] of suspiciousBehavior.entries()) {
-        if (now - data.lastSeen > 2 * 60 * 60 * 1000) {
-          suspiciousBehavior.delete(key);
-          cleaned++;
-        }
-      }
-
-      if (cleaned > 0 && CONFIG.logging.enabled) {
-        logConditional('info', `Cleanup completed: ${cleaned} items removed`);
-      }
-    } catch (error) {
-      logConditional('error', 'Cleanup error:', { message: error.message });
+  // Nettoyer les IPs bloquées expirées
+  for (const [ip, blockInfo] of blockedIPs.entries()) {
+    if (now > blockInfo.until) {
+      blockedIPs.delete(ip);
+      cleaned++;
     }
-  }, CONFIG.memory.cleanupInterval);
-
-  if (cleanupInterval.unref) {
-    cleanupInterval.unref();
   }
-}
 
-// Export par défaut
+  // Si le cache devient trop gros, nettoyer les anciennes entrées
+  if (requestsCache.size > CONFIG.cache.maxSize) {
+    const entries = Array.from(requestsCache.entries());
+    const toDelete = entries.slice(0, entries.length - CONFIG.cache.maxSize);
+
+    toDelete.forEach(([ip]) => {
+      requestsCache.delete(ip);
+      cleaned++;
+    });
+  }
+
+  if (cleaned > 0) {
+    log(`Cleanup completed: ${cleaned} entries removed`);
+  }
+}, CONFIG.cache.cleanupInterval);
+
+// =============================================
+// EXPORT PAR DÉFAUT
+// =============================================
+
 export default {
-  applyBenewRateLimit,
-  applyBenewServerActionLimit,
-  limitBenewAPI,
-  addToBenewWhitelist,
-  getBenewRateLimitStats,
-  resetBenewRateLimitData,
-  BENEW_RATE_LIMIT_PRESETS,
-  BENEW_VIOLATION_LEVELS,
+  createRateLimit,
+  publicRateLimit,
+  apiRateLimit,
+  contactRateLimit,
+  orderRateLimit,
+  getStats,
+  addToWhitelist,
+  removeFromWhitelist,
+  unblockIP,
+  resetCache,
 };
