@@ -14,201 +14,60 @@ import {
   detectBotBehavior,
 } from '@/utils/schemas/contactEmailSchema';
 import { limitBenewAPI } from '@/backend/rateLimiter';
-import { initializeBenewConfig } from '@/utils/doppler';
 
-// Configuration consolidée
+// Configuration simple
 const CONFIG = {
   rateLimiting: { enabled: true, preset: 'CONTACT_FORM' },
-  validation: { botActionThreshold: 5, reviewThreshold: 3 },
+  validation: { botActionThreshold: 5 },
   email: { maxRetries: 2, retryDelay: 2000, timeout: 15000 },
-  duplicateProtection: { windowMs: 5 * 60 * 1000, maxSize: 100 },
-  performance: { slowThreshold: 3000, alertThreshold: 5000 },
+  performance: { slowThreshold: 3000 },
 };
 
-// Configuration Doppler
-let dopplerConfig = null;
-let isConfigLoaded = false;
-
-async function loadDopplerConfig() {
-  if (dopplerConfig && isConfigLoaded) return dopplerConfig;
-
-  try {
-    const benewConfig = await initializeBenewConfig();
-    dopplerConfig = benewConfig.email || {};
-    isConfigLoaded = true;
-    return dopplerConfig;
-  } catch (error) {
-    dopplerConfig = {
-      resendApiKey: process.env.RESEND_API_KEY,
-      fromAddress: process.env.RESEND_FROM_EMAIL,
-      toAddress: process.env.RESEND_TO_EMAIL,
-    };
-    isConfigLoaded = true;
-    return dopplerConfig;
-  }
-}
-
-// Initialisation Resend
+// Initialisation Resend simple
 let resend;
-async function initializeResend() {
-  try {
-    const config = await loadDopplerConfig();
-    if (!config.resendApiKey) {
-      throw new Error('RESEND_API_KEY manquante dans la configuration');
-    }
-    resend = new Resend(config.resendApiKey);
-    return resend;
-  } catch (error) {
-    captureException(error, {
-      tags: { component: 'contact_email', issue_type: 'resend_init_failed' },
-    });
-
-    if (process.env.RESEND_API_KEY) {
-      resend = new Resend(process.env.RESEND_API_KEY);
-    }
-    return resend;
-  }
-}
-
-initializeResend();
-
-// Cache anti-duplicate simplifié
-class ContactEmailCache {
-  constructor() {
-    this.cache = new Map();
-    this.maxSize = CONFIG.duplicateProtection.maxSize;
-    this.windowMs = CONFIG.duplicateProtection.windowMs;
-  }
-
-  generateKey(data) {
-    const contentHash = this.hashContent(
-      `${data.name}${data.subject}${data.message}`,
+function initializeResend() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error(
+      "RESEND_API_KEY manquante dans les variables d'environnement",
     );
-    return `${data.email}:${contentHash}`;
   }
-
-  hashContent(content) {
-    let hash = 0;
-    for (let i = 0; i < content.length; i++) {
-      const char = content.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash;
-    }
-    return Math.abs(hash).toString(16);
-  }
-
-  isDuplicate(data) {
-    const key = this.generateKey(data);
-    const now = Date.now();
-
-    // Nettoyer les entrées expirées
-    this.cleanup();
-
-    if (this.cache.has(key)) {
-      const timestamp = this.cache.get(key);
-      if (now - timestamp < this.windowMs) {
-        return {
-          isDuplicate: true,
-          waitTime: this.windowMs - (now - timestamp),
-        };
-      }
-    }
-
-    this.cache.set(key, now);
-
-    if (this.cache.size > this.maxSize) {
-      const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
-    }
-
-    return { isDuplicate: false };
-  }
-
-  cleanup() {
-    const now = Date.now();
-    for (const [key, timestamp] of this.cache.entries()) {
-      if (now - timestamp > this.windowMs) {
-        this.cache.delete(key);
-      }
-    }
-  }
-
-  clear() {
-    this.cache.clear();
-  }
+  resend = new Resend(process.env.RESEND_API_KEY);
+  return resend;
 }
 
-const emailCache = new ContactEmailCache();
+// Initialiser au démarrage
+try {
+  initializeResend();
+} catch (error) {
+  console.error('Erreur initialisation Resend:', error.message);
+}
 
-// Métriques simplifiées
-class ContactEmailMetrics {
-  constructor() {
-    this.reset();
-  }
+// Protection anti-doublons simple
+const recentEmails = new Map();
+const DUPLICATE_WINDOW = 5 * 60 * 1000; // 5 minutes
 
-  reset() {
-    this.metrics = {
-      totalAttempts: 0,
-      successful: 0,
-      failed: 0,
-      blocked: 0,
-      duplicates: 0,
-      botDetections: 0,
-      startTime: Date.now(),
-    };
-  }
+function isDuplicateEmail(data) {
+  const key = `${data.email}:${data.subject}:${data.message.substring(0, 50)}`;
+  const now = Date.now();
 
-  recordAttempt() {
-    this.metrics.totalAttempts++;
-  }
-
-  recordSuccess() {
-    this.metrics.successful++;
-  }
-
-  recordFailure(type) {
-    this.metrics.failed++;
-    switch (type) {
-      case 'bot':
-        this.metrics.botDetections++;
-        break;
-      case 'duplicate':
-        this.metrics.duplicates++;
-        break;
-      case 'blocked':
-        this.metrics.blocked++;
-        break;
+  // Nettoyer les anciens
+  for (const [k, timestamp] of recentEmails.entries()) {
+    if (now - timestamp > DUPLICATE_WINDOW) {
+      recentEmails.delete(k);
     }
   }
 
-  getStats() {
-    const successRate =
-      this.metrics.totalAttempts > 0
-        ? (this.metrics.successful / this.metrics.totalAttempts) * 100
-        : 0;
-
-    return {
-      ...this.metrics,
-      successRate: Math.round(successRate * 100) / 100,
-      uptime: Date.now() - this.metrics.startTime,
-    };
+  if (recentEmails.has(key)) {
+    const sentAt = recentEmails.get(key);
+    const timeLeft = DUPLICATE_WINDOW - (now - sentAt);
+    return { isDuplicate: true, waitTime: timeLeft };
   }
+
+  recentEmails.set(key, now);
+  return { isDuplicate: false };
 }
 
-const emailMetrics = new ContactEmailMetrics();
-
-// Utilitaires
-function anonymizeContactData(data) {
-  return {
-    name: data.name ? `${data.name[0]}***` : '',
-    email: data.email
-      ? `${data.email.split('@')[0][0]}***@${data.email.split('@')[1]}`
-      : '',
-    subject: data.subject ? `${data.subject.substring(0, 10)}...` : '',
-    message: data.message ? `${data.message.substring(0, 20)}...` : '',
-  };
-}
-
+// Génération du contenu email
 function generateEmailContent(data) {
   const timestamp = new Date().toLocaleString('fr-FR', {
     timeZone: 'Europe/Paris',
@@ -242,23 +101,20 @@ Vous pouvez répondre directement à cet email pour contacter ${data.name}.
 `;
 }
 
-async function validateEnvironment() {
-  if (!resend) {
-    await initializeResend();
-  }
-
-  const config = await loadDopplerConfig();
-  if (!config.fromAddress || !config.toAddress) {
-    throw new Error('Adresses email manquantes dans la configuration');
-  }
-}
-
 export async function sendContactEmail(formData) {
   const startTime = performance.now();
-  emailMetrics.recordAttempt();
 
   try {
-    await validateEnvironment();
+    // Vérifier que Resend est initialisé
+    if (!resend) {
+      initializeResend();
+    }
+
+    if (!process.env.RESEND_FROM_EMAIL || !process.env.RESEND_TO_EMAIL) {
+      throw new Error(
+        'Adresses email manquantes (RESEND_FROM_EMAIL, RESEND_TO_EMAIL)',
+      );
+    }
 
     // Rate Limiting
     if (CONFIG.rateLimiting.enabled) {
@@ -270,7 +126,6 @@ export async function sendContactEmail(formData) {
       });
 
       if (rateLimitCheck) {
-        emailMetrics.recordFailure('blocked');
         return {
           success: false,
           message:
@@ -286,7 +141,6 @@ export async function sendContactEmail(formData) {
     const validationResult = await validateContactEmail(rawData);
 
     if (!validationResult.success) {
-      emailMetrics.recordFailure('validation');
       return {
         success: false,
         message: formatContactValidationErrors(validationResult.errors),
@@ -304,8 +158,6 @@ export async function sendContactEmail(formData) {
     });
 
     if (botAnalysis.riskScore >= CONFIG.validation.botActionThreshold) {
-      emailMetrics.recordFailure('bot');
-
       captureMessage('Bot behavior detected in contact form', {
         level: 'warning',
         tags: { component: 'contact_email', issue_type: 'bot_detected' },
@@ -325,11 +177,9 @@ export async function sendContactEmail(formData) {
     }
 
     // Vérification des doublons
-    const duplicateCheck = emailCache.isDuplicate(validatedData);
+    const duplicateCheck = isDuplicateEmail(validatedData);
     if (duplicateCheck.isDuplicate) {
-      emailMetrics.recordFailure('duplicate');
       const waitMinutes = Math.ceil(duplicateCheck.waitTime / 60000);
-
       return {
         success: false,
         message: `Message identique déjà envoyé récemment. Veuillez attendre ${waitMinutes} minute(s) avant de renvoyer.`,
@@ -339,7 +189,6 @@ export async function sendContactEmail(formData) {
     }
 
     // Génération et envoi de l'email
-    const config = await loadDopplerConfig();
     const emailContent = generateEmailContent(validatedData);
     const emailSubject = `[Contact Benew] ${validatedData.subject}`;
 
@@ -351,8 +200,8 @@ export async function sendContactEmail(formData) {
       try {
         const emailResult = await Promise.race([
           resend.emails.send({
-            from: config.fromAddress || process.env.RESEND_FROM_EMAIL,
-            to: [config.toAddress || process.env.RESEND_TO_EMAIL],
+            from: process.env.RESEND_FROM_EMAIL,
+            to: [process.env.RESEND_TO_EMAIL],
             subject: emailSubject,
             text: emailContent,
             replyTo: validatedData.email,
@@ -371,13 +220,11 @@ export async function sendContactEmail(formData) {
         ]);
 
         const duration = performance.now() - startTime;
-        emailMetrics.recordSuccess();
 
         // Log seulement si lent
         if (duration > CONFIG.performance.slowThreshold) {
           captureMessage('Slow contact email detected', {
-            level:
-              duration > CONFIG.performance.alertThreshold ? 'warning' : 'info',
+            level: 'warning',
             tags: { component: 'contact_email', performance: 'slow_operation' },
             extra: { duration, threshold: CONFIG.performance.slowThreshold },
           });
@@ -401,17 +248,17 @@ export async function sendContactEmail(formData) {
         attempt++;
 
         if (attempt > maxRetries) {
-          emailMetrics.recordFailure('resend');
           break;
         }
 
+        // Attendre avant le retry
         await new Promise((resolve) =>
           setTimeout(resolve, CONFIG.email.retryDelay * attempt),
         );
       }
     }
 
-    // Échec final
+    // Échec final après tous les retries
     captureEmailError(lastError, {
       emailType: 'contact',
       tags: { contact_email_retry: true, attempts: maxRetries + 1 },
@@ -427,9 +274,7 @@ export async function sendContactEmail(formData) {
         process.env.NODE_ENV === 'production' ? undefined : lastError?.message,
     };
   } catch (error) {
-    emailMetrics.recordFailure('unexpected');
-
-    // Catégorisation simplifiée
+    // Catégorisation d'erreur simplifiée
     let errorCategory = 'unknown';
     if (/rate.?limit/i.test(error.message)) {
       errorCategory = 'rate_limiting';
@@ -462,133 +307,6 @@ export async function sendContactEmail(formData) {
       code: `${errorCategory.toUpperCase()}_ERROR`,
       reference: Date.now().toString(36).toUpperCase(),
       error: process.env.NODE_ENV === 'production' ? undefined : error.message,
-    };
-  }
-}
-
-export async function getContactEmailStats() {
-  const config = await loadDopplerConfig();
-
-  return {
-    metrics: emailMetrics.getStats(),
-    cache: { size: emailCache.cache.size },
-    config: {
-      rateLimitingEnabled: CONFIG.rateLimiting.enabled,
-      maxRetries: CONFIG.email.maxRetries,
-      timeout: CONFIG.email.timeout,
-      configSource: dopplerConfig ? 'doppler' : 'env',
-    },
-    environment: {
-      hasResendKey: !!(config.resendApiKey || process.env.RESEND_API_KEY),
-      hasFromEmail: !!(config.fromAddress || process.env.RESEND_FROM_EMAIL),
-      hasToEmail: !!(config.toAddress || process.env.RESEND_TO_EMAIL),
-      resendInitialized: !!resend,
-    },
-    timestamp: new Date().toISOString(),
-  };
-}
-
-export async function resetContactEmailData() {
-  const beforeStats = {
-    metricsCount: emailMetrics.metrics.totalAttempts,
-    cacheSize: emailCache.cache.size,
-  };
-
-  emailMetrics.reset();
-  emailCache.clear();
-
-  return {
-    success: true,
-    message: 'Données de contact email réinitialisées',
-    beforeStats,
-    timestamp: new Date().toISOString(),
-  };
-}
-
-export async function checkContactEmailHealth() {
-  const health = {
-    status: 'healthy',
-    checks: {},
-    timestamp: new Date().toISOString(),
-  };
-
-  try {
-    // Vérifier Resend
-    health.checks.resend = {
-      status: resend ? 'ok' : 'error',
-      message: resend ? 'Resend initialisé' : 'Resend non initialisé',
-    };
-
-    // Vérifier configuration
-    const config = await loadDopplerConfig();
-    const requiredKeys = ['resendApiKey', 'fromAddress', 'toAddress'];
-    const missingKeys = requiredKeys.filter(
-      (key) => !config[key] && !process.env[key.toUpperCase()],
-    );
-
-    health.checks.configuration = {
-      status: missingKeys.length === 0 ? 'ok' : 'error',
-      message:
-        missingKeys.length === 0
-          ? 'Configuration email complète'
-          : `Configuration manquante: ${missingKeys.join(', ')}`,
-      configSource: dopplerConfig ? 'doppler' : 'env',
-    };
-
-    // Vérifier métriques
-    const stats = emailMetrics.getStats();
-    health.checks.metrics = {
-      status:
-        stats.successRate >= 80
-          ? 'ok'
-          : stats.successRate >= 60
-            ? 'warning'
-            : 'error',
-      message: `Taux de succès: ${stats.successRate}%`,
-      successRate: stats.successRate,
-    };
-
-    // Statut global
-    const statuses = Object.values(health.checks).map((check) => check.status);
-    if (statuses.includes('error')) {
-      health.status = 'unhealthy';
-    } else if (statuses.includes('warning')) {
-      health.status = 'degraded';
-    }
-  } catch (error) {
-    health.status = 'unhealthy';
-    health.error = error.message;
-    captureException(error, {
-      tags: { component: 'contact_email', operation: 'health_check' },
-    });
-  }
-
-  return health;
-}
-
-export async function refreshEmailConfiguration() {
-  try {
-    dopplerConfig = null;
-    isConfigLoaded = false;
-    await loadDopplerConfig();
-    await initializeResend();
-
-    return {
-      success: true,
-      message: 'Configuration email rafraîchie depuis Doppler',
-      configSource: 'doppler',
-      timestamp: new Date().toISOString(),
-    };
-  } catch (error) {
-    captureException(error, {
-      tags: { component: 'contact_email', operation: 'config_refresh_error' },
-    });
-
-    return {
-      success: false,
-      message: 'Erreur lors du rafraîchissement de la configuration',
-      error: error.message,
-      timestamp: new Date().toISOString(),
     };
   }
 }
