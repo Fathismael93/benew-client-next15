@@ -1,172 +1,183 @@
 // instrumentation.js
-// Configuration Sentry v9.35.0 - Architecture moderne
-// Next.js 15 + PostgreSQL + Cloudinary + EmailJS
+// Configuration Sentry v10 simplifiée - Erreurs uniquement
+// Next.js 15 - Configuration minimale pour 500 visiteurs/jour
 
 import * as Sentry from '@sentry/nextjs';
-import { EventEmitter } from 'events';
-
-// Augmenter la limite d'écouteurs d'événements pour éviter l'avertissement
-if (typeof EventEmitter !== 'undefined') {
-  EventEmitter.defaultMaxListeners = 25;
-}
+import { containsSensitiveData, filterMessage } from './utils/sentry-utils.js';
 
 // =============================================
-// CONFIGURATION SYSTÈME NEXT.JS V9
+// CONFIGURATION SYSTÈME NEXT.JS 15
 // =============================================
 
 export async function register() {
-  // Import conditionnel selon l'environnement d'exécution
+  // Import conditionnel selon l'environnement
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     console.log('🔧 Loading Sentry server configuration...');
-    await import('./sentry.server.config.js');
+    await initSentryServer();
   }
 
-  if (process.env.NEXT_RUNTIME === 'edge') {
-    console.log('🔧 Loading Sentry edge configuration...');
-    await import('./sentry.edge.config.js');
-  }
-
-  console.log('✅ Sentry instrumentation registered successfully');
+  console.log('✅ Sentry instrumentation registered');
 }
 
 // =============================================
-// ✅ CORRECTION 1: HOOK ONREQUESTERROR v9 - API MODERNE NEXT.JS 15
+// HOOK NEXT.JS 15 - ERREURS DE REQUÊTE
 // =============================================
 
-/**
- * Hook Next.js 15 pour capturer les erreurs de requête serveur
- * Compatible avec React Server Components et Server Actions
- * Utilise la nouvelle API Sentry v9
- */
 export const onRequestError = Sentry.captureRequestError;
 
 // =============================================
-// API DÉVELOPPEUR - FONCTIONS UTILITAIRES
+// CONFIGURATION SERVEUR SIMPLIFIÉE
+// =============================================
+
+function initSentryServer() {
+  const sentryDSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
+  const environment = process.env.NODE_ENV || 'development';
+  const isProduction = environment === 'production';
+
+  if (!sentryDSN || !isValidDSN(sentryDSN)) {
+    console.warn('⚠️ Sentry: Invalid or missing DSN');
+    return;
+  }
+
+  Sentry.init({
+    dsn: sentryDSN,
+    environment,
+    release: process.env.SENTRY_RELEASE || '1.0.0',
+
+    // Configuration minimale - erreurs uniquement
+    debug: !isProduction,
+    enabled: isProduction,
+
+    // PAS de performance monitoring
+    tracesSampleRate: 0,
+    profilesSampleRate: 0,
+
+    // PAS de session replay
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 0,
+
+    // Intégrations minimales
+    integrations: [
+      // Pas de browserTracingIntegration
+      // Pas de replayIntegration
+    ],
+
+    // Erreurs communes à ignorer
+    ignoreErrors: [
+      // Erreurs réseau courantes
+      'Network request failed',
+      'Failed to fetch',
+      'NetworkError',
+      'AbortError',
+
+      // Erreurs Next.js courantes
+      'NEXT_REDIRECT',
+      'NEXT_NOT_FOUND',
+      'ChunkLoadError',
+
+      // Extensions navigateur
+      'Script error',
+      'Non-Error promise rejection captured',
+      'chrome-extension',
+      'moz-extension',
+    ],
+
+    // Filtrage basique des breadcrumbs
+    beforeBreadcrumb(breadcrumb) {
+      // Filtrer les requêtes sensibles
+      if (
+        ['xhr', 'fetch'].includes(breadcrumb.category) &&
+        breadcrumb.data?.url
+      ) {
+        const url = breadcrumb.data.url;
+        if (url.includes('/api/contact') || url.includes('/api/order')) {
+          return null; // Ignorer complètement
+        }
+
+        // Filtrer les données sensibles dans le body
+        if (
+          breadcrumb.data.body &&
+          containsSensitiveData(breadcrumb.data.body)
+        ) {
+          breadcrumb.data.body = '[FILTERED]';
+        }
+      }
+
+      return breadcrumb;
+    },
+
+    // Filtrage basique des événements
+    beforeSend(event) {
+      // Ne pas envoyer les erreurs des routes sensibles
+      if (event.request?.url) {
+        const url = event.request.url;
+        if (url.includes('/api/contact') || url.includes('/api/order')) {
+          return null;
+        }
+      }
+
+      // Filtrer les messages sensibles
+      if (event.message && containsSensitiveData(event.message)) {
+        event.message = filterMessage(event.message);
+      }
+
+      // Tags basiques
+      event.tags = {
+        ...event.tags,
+        project: 'benew-client',
+        runtime: 'nodejs',
+      };
+
+      return event;
+    },
+  });
+
+  console.log('✅ Sentry server initialized (errors only)');
+}
+
+// =============================================
+// API DÉVELOPPEUR SIMPLIFIÉE
 // =============================================
 
 /**
- * Capture une exception avec des informations contextuelles pour le site Benew
+ * Capture une exception simple
  * @param {Error} error - L'erreur à capturer
- * @param {Object} context - Contexte supplémentaire sur l'erreur
+ * @param {Object} context - Contexte optionnel
  */
 export const captureException = (error, context = {}) => {
   Sentry.withScope((scope) => {
-    // Tags spécifiques au site Benew
-    const defaultTags = {
-      component: 'benew-client',
-      project: 'benew-ecommerce',
-      ...context.tags,
-    };
-
-    Object.entries(defaultTags).forEach(([key, value]) => {
-      scope.setTag(key, value);
-    });
-
-    // Catégoriser les erreurs par type
-    if (error?.message) {
-      if (/postgres|pg|database|db|connection/i.test(error.message)) {
-        scope.setTag('error_category', 'database');
-      } else if (/cloudinary|upload|image/i.test(error.message)) {
-        scope.setTag('error_category', 'media_upload');
-      } else if (/emailjs|email|mail/i.test(error.message)) {
-        scope.setTag('error_category', 'email_service');
-      } else if (/validation|yup|schema/i.test(error.message)) {
-        scope.setTag('error_category', 'validation');
-      } else if (/framer|motion|animation/i.test(error.message)) {
-        scope.setTag('error_category', 'animation');
-      }
+    // Tags basiques
+    if (context.tags) {
+      Object.entries(context.tags).forEach(([key, value]) => {
+        scope.setTag(key, value);
+      });
     }
 
-    // Ajouter des données supplémentaires filtrées
-    const filteredExtra = {};
-    Object.entries(context.extra || {}).forEach(([key, value]) => {
-      // Filtrer les données sensibles dans les extras
-      const sensitiveKeys = [
-        'password',
-        'token',
-        'secret',
-        'api_key',
-        'account_number',
-        'email',
-        'phone',
-        'cloudinary_api_secret',
-        'emailjs_user_id',
-      ];
-
-      if (sensitiveKeys.some((sk) => key.toLowerCase().includes(sk))) {
-        filteredExtra[key] = '[Filtered]';
-      } else {
-        filteredExtra[key] = value;
-      }
-    });
-
-    Object.entries(filteredExtra).forEach(([key, value]) => {
-      scope.setExtra(key, value);
-    });
-
-    // Définir le niveau de l'erreur
+    // Niveau d'erreur
     if (context.level) {
       scope.setLevel(context.level);
     }
 
-    // Capturer l'exception
     Sentry.captureException(error);
   });
 };
 
 /**
- * Capture un message avec des informations contextuelles pour le site Benew
+ * Capture un message simple
  * @param {string} message - Le message à capturer
- * @param {Object} context - Contexte supplémentaire sur le message
+ * @param {string} level - Niveau du message
  */
-export const captureMessage = (message, context = {}) => {
-  Sentry.withScope((scope) => {
-    // Tags par défaut pour le site
-    const defaultTags = {
-      component: 'benew-client',
-      project: 'benew-ecommerce',
-      ...context.tags,
-    };
+export const captureMessage = (message, level = 'info') => {
+  const filteredMessage = containsSensitiveData(message)
+    ? filterMessage(message)
+    : message;
 
-    Object.entries(defaultTags).forEach(([key, value]) => {
-      scope.setTag(key, value);
-    });
-
-    // Filtrer le message s'il contient des données sensibles
-    let filteredMessage = message;
-    const sensitivePatterns = [
-      /password[=:]\s*[^\s]+/gi,
-      /token[=:]\s*[^\s]+/gi,
-      /secret[=:]\s*[^\s]+/gi,
-      /account[_-]?number[=:]\s*[^\s]+/gi,
-      /email[=:]\s*[^\s@]+@[^\s]+/gi,
-    ];
-
-    sensitivePatterns.forEach((pattern) => {
-      filteredMessage = filteredMessage.replace(
-        pattern,
-        '[Filtered Sensitive Data]',
-      );
-    });
-
-    // Ajouter des données supplémentaires filtrées
-    Object.entries(context.extra || {}).forEach(([key, value]) => {
-      scope.setExtra(key, value);
-    });
-
-    // Définir le niveau du message
-    if (context.level) {
-      scope.setLevel(context.level);
-    }
-
-    // Capturer le message filtré
-    Sentry.captureMessage(filteredMessage);
-  });
+  Sentry.captureMessage(filteredMessage, level);
 };
 
 /**
- * Enregistre l'utilisateur actuel dans Sentry pour le suivi des erreurs
- * @param {Object} user - Informations de l'utilisateur à enregistrer
+ * Définir un utilisateur (version anonyme)
+ * @param {Object} user - Données utilisateur
  */
 export const setUser = (user) => {
   if (!user) {
@@ -174,140 +185,18 @@ export const setUser = (user) => {
     return;
   }
 
-  // Anonymiser complètement les données utilisateur pour la sécurité
-  function hashCode(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash;
-    }
-    return Math.abs(hash).toString(16);
-  }
-
-  const anonymizedUser = {
-    id: user.id || user._id || 'anonymous',
-    // Anonymiser l'email avec hash
-    email: user.email ? `${hashCode(user.email)}@benew.client` : undefined,
-    // Type d'utilisateur
-    type: 'site_visitor',
-  };
-
-  // Ne jamais envoyer d'informations personnelles identifiables
-  Sentry.setUser(anonymizedUser);
+  // Version ultra-simplifiée - juste un ID anonyme
+  Sentry.setUser({
+    id: user.id || 'anonymous',
+    type: 'visitor',
+  });
 };
 
-/**
- * Capture les erreurs de base de données PostgreSQL avec contexte spécifique
- * @param {Error} error - L'erreur PostgreSQL
- * @param {Object} context - Contexte de la requête DB
- */
-export const captureDatabaseError = (error, context = {}) => {
-  const dbContext = {
-    tags: {
-      error_category: 'database',
-      database_type: 'postgresql',
-      ...context.tags,
-    },
-    extra: {
-      postgres_code: error.code,
-      table: context.table || 'unknown',
-      operation: context.operation || 'unknown',
-      query_type: context.queryType || 'unknown',
-      ...context.extra,
-    },
-    level: 'error',
-  };
+// =============================================
+// UTILITAIRES
+// =============================================
 
-  // Filtrer les informations sensibles de la DB
-  if (dbContext.extra.query) {
-    // Masquer les valeurs dans les requêtes SQL
-    dbContext.extra.query = dbContext.extra.query.replace(
-      /(password|token|secret|account_number)\s*=\s*'[^']*'/gi,
-      "$1 = '[Filtered]'",
-    );
-  }
-
-  captureException(error, dbContext);
-};
-
-/**
- * Capture les erreurs Cloudinary avec contexte spécifique
- * @param {Error} error - L'erreur Cloudinary
- * @param {Object} context - Contexte de l'upload
- */
-export const captureCloudinaryError = (error, context = {}) => {
-  const cloudinaryContext = {
-    tags: {
-      error_category: 'media_upload',
-      service: 'cloudinary',
-      ...context.tags,
-    },
-    extra: {
-      upload_type: context.uploadType || 'unknown',
-      file_size: context.fileSize || 'unknown',
-      file_type: context.fileType || 'unknown',
-      ...context.extra,
-    },
-    level: 'error',
-  };
-
-  captureException(error, cloudinaryContext);
-};
-
-/**
- * Capture les erreurs EmailJS avec contexte spécifique
- * @param {Error} error - L'erreur EmailJS
- * @param {Object} context - Contexte de l'email
- */
-export const captureEmailError = (error, context = {}) => {
-  const emailContext = {
-    tags: {
-      error_category: 'email_service',
-      service: 'emailjs',
-      ...context.tags,
-    },
-    extra: {
-      email_type: context.emailType || 'contact',
-      template_id: '[FILTERED]', // Ne pas exposer les IDs de template
-      ...context.extra,
-    },
-    level: 'warning',
-  };
-
-  captureException(error, emailContext);
-};
-
-/**
- * Capture les erreurs de validation avec contexte spécifique
- * @param {Error} error - L'erreur de validation
- * @param {Object} context - Contexte de la validation
- */
-export const captureValidationError = (error, context = {}) => {
-  const validationContext = {
-    tags: {
-      error_category: 'validation',
-      validation_library: 'yup',
-      ...context.tags,
-    },
-    extra: {
-      field: context.field || 'unknown',
-      form: context.form || 'unknown',
-      validation_type: context.validationType || 'unknown',
-      ...context.extra,
-    },
-    level: 'info',
-  };
-
-  captureException(error, validationContext);
-};
-
-/**
- * Initialise Sentry - fonction compatible avec l'ancien code
- * @deprecated Utilisez maintenant l'architecture v9 avec register()
- */
-export const initSentry = () => {
-  console.log(
-    '✅ Sentry init called - using modern v9 architecture with register()',
-  );
-};
+function isValidDSN(dsn) {
+  if (!dsn) return false;
+  return /^https:\/\/[^@]+@[^/]+\/\d+$/.test(dsn);
+}
