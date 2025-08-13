@@ -192,6 +192,40 @@ export const setUser = (user) => {
   });
 };
 
+/**
+ * Capture les erreurs de base de données PostgreSQL avec contexte spécifique
+ * @param {Error} error - L'erreur PostgreSQL
+ * @param {Object} context - Contexte de la requête DB
+ */
+export const captureDatabaseError = (error, context = {}) => {
+  const dbContext = {
+    tags: {
+      error_category: 'database',
+      database_type: 'postgresql',
+      ...context.tags,
+    },
+    extra: {
+      postgres_code: error.code,
+      table: context.table || 'unknown',
+      operation: context.operation || 'unknown',
+      query_type: context.queryType || 'unknown',
+      ...context.extra,
+    },
+    level: 'error',
+  };
+
+  // Filtrer les informations sensibles de la DB
+  if (dbContext.extra.query) {
+    // Masquer les valeurs dans les requêtes SQL
+    dbContext.extra.query = dbContext.extra.query.replace(
+      /(password|token|secret|account_number)\s*=\s*'[^']*'/gi,
+      "$1 = '[Filtered]'",
+    );
+  }
+
+  captureException(error, dbContext);
+};
+
 // =============================================
 // UTILITAIRES
 // =============================================
