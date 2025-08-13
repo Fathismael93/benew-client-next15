@@ -209,6 +209,7 @@ const FormContainer = ({ ref }) => {
 
         <button
           type="submit"
+          className="contact-form-button" // ← Ajouter cette classe
           disabled={formState.loading}
           aria-label={
             formState.loading ? 'Envoi en cours' : 'Envoyer le message'
