@@ -71,7 +71,6 @@ form {
     padding: 0;
     gap: 1.2rem; // Réduit pour s'adapter à la hauteur
     max-height: 100%;
-    overflow-y: auto;
   }
 
   @include from('large-lg') {
