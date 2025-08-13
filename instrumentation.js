@@ -30,11 +30,12 @@ export async function register() {
 }
 
 // =============================================
-// HOOK ONREQUESTERROR v9 - API MODERNE
+// ✅ CORRECTION 1: HOOK ONREQUESTERROR v9 - API MODERNE NEXT.JS 15
 // =============================================
 
 /**
  * Hook Next.js 15 pour capturer les erreurs de requête serveur
+ * Compatible avec React Server Components et Server Actions
  * Utilise la nouvelle API Sentry v9
  */
 export const onRequestError = Sentry.captureRequestError;

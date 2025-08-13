@@ -82,6 +82,9 @@ if (sentryDSN && isValidDSN(sentryDSN)) {
     // Configuration client optimisée
     tracesSampleRate: isProduction ? 0.1 : 1.0,
 
+    // ✅ CORRECTION 2: Configuration enableLogs v9 côté client
+    enableLogs: true,
+
     // Session Replay v9 - Configuration moderne
     replaysSessionSampleRate: isProduction ? 0.1 : 0.5,
     replaysOnErrorSampleRate: 1.0,

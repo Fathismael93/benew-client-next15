@@ -36,7 +36,10 @@ if (sentryDSN && isValidDSN(sentryDSN)) {
     tracesSampleRate: isProduction ? 0.1 : 1.0,
     profilesSampleRate: isProduction ? 0.1 : 1.0,
 
-    // Logs expérimentaux v9
+    // ✅ CORRECTION 2: Configuration enableLogs v9
+    enableLogs: true,
+
+    // Logs expérimentaux v9 (optionnel - peut être retiré si stable)
     _experiments: {
       enableLogs: true,
     },
