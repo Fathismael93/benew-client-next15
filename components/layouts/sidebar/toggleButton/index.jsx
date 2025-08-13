@@ -1,19 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+// import { usePathname } from 'next/navigation';
 
 function ToggleButton({ setOpen }) {
-  const pathname = usePathname();
-  const isTemplateDetailPage =
-    pathname.startsWith('/templates/') &&
-    pathname.split('/').filter(Boolean).length >= 2 &&
-    pathname.split('/').filter(Boolean)[0] === 'templates';
+  // const pathname = usePathname();
+  // const isTemplateDetailPage =
+  //   pathname.startsWith('/templates/') &&
+  //   pathname.split('/').filter(Boolean).length >= 2 &&
+  //   pathname.split('/').filter(Boolean)[0] === 'templates';
 
   return (
     <button
       onClick={() => setOpen((prev) => !prev)}
-      className={isTemplateDetailPage ? 'template-detail-fix' : ''}
+      // className={isTemplateDetailPage ? 'template-detail-fix' : ''}
     >
       <svg width="23" height="23" viewBox="0 0 23 23">
         <motion.path
