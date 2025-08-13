@@ -8,7 +8,7 @@
 
 import pg from 'pg';
 import { captureMessage, captureDatabaseError } from '../instrumentation.js';
-import { initializeBenewConfig } from '../config.js'; // utilisation de ta fonction
+import { initializeBenewConfig } from '@/utils/doppler';
 const { Pool } = pg;
 
 let pool;
