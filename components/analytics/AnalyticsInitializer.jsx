@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import analytics from '@/utils/analytics.gtm'; // Utiliser la version GTM
+import analytics from '@/utils/analytics'; // Utiliser la version GTM
 
 /**
  * Composant pour initialiser GTM/GA4 automatiquement
