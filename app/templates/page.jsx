@@ -3,7 +3,7 @@
 // Next.js 15 + PostgreSQL + Cache simplifié + Monitoring essentiel
 
 import { Suspense } from 'react';
-import { notFound } from 'next/navigation';
+// import { notFound } from 'next/navigation';
 
 import TemplatesSkeleton from '@/components/templates/skeletons/TemplatesSkeleton';
 import TemplatesList from '@/components/templates/TemplatesList';
