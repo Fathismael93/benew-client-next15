@@ -321,9 +321,9 @@ function startHealthCheckMonitoring() {
 // =============================================
 
 export const getClient = async () => {
-  if (!pool) {
-    throw new Error('Pool non initialisé');
-  }
+  // if (!pool) {
+  //   throw new Error('Pool non initialisé');
+  // }
 
   const startTime = Date.now();
 
