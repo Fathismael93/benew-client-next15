@@ -1,45 +1,80 @@
 // utils/analytics.js
 // Utilitaires Google Analytics optimisés pour Next.js 15 avec @next/third-parties
-// Version corrigée selon la documentation officielle
+// Version 2025 CONFORME GDPR/CCPA avec Google Consent Mode v2
 
 import { sendGTMEvent } from '@next/third-parties/google';
 
 /**
- * Vérifie si Google Analytics est disponible
+ * Vérifie si Google Analytics est disponible et si le consentement est accordé
  */
 export const isGAReady = () => {
   return (
     typeof window !== 'undefined' &&
-    (typeof window.gtag === 'function' || typeof sendGTMEvent === 'function')
+    (typeof window.gtag === 'function' || typeof sendGTMEvent === 'function') &&
+    hasAnalyticsConsent()
   );
 };
 
 /**
- * Envoie un événement à Google Analytics (méthode officielle Next.js)
+ * Vérifie le consentement Analytics (GDPR/CCPA)
+ * @returns {boolean} - True si le consentement Analytics est accordé
+ */
+export const hasAnalyticsConsent = () => {
+  if (typeof window === 'undefined') return false;
+
+  // Vérifier le localStorage pour le consentement
+  try {
+    const consent = localStorage.getItem('analytics_consent');
+    return consent === 'granted';
+  } catch (e) {
+    return false;
+  }
+};
+
+/**
+ * Vérifie le consentement Marketing/Advertising (pour les conversions)
+ * @returns {boolean} - True si le consentement Marketing est accordé
+ */
+export const hasMarketingConsent = () => {
+  if (typeof window === 'undefined') return false;
+
+  try {
+    const consent = localStorage.getItem('marketing_consent');
+    return consent === 'granted';
+  } catch (e) {
+    return false;
+  }
+};
+
+/**
+ * Envoie un événement à Google Analytics (méthode conforme GDPR 2025)
  * @param {string} eventName - Nom de l'événement
  * @param {Object} parameters - Paramètres de l'événement
  */
 export const trackEvent = (eventName, parameters = {}) => {
+  // Vérifier le consentement AVANT tout envoi
+  if (!hasAnalyticsConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[GA Debug] Event blocked - no consent: ${eventName}`);
+    }
+    return;
+  }
+
   if (typeof window !== 'undefined') {
     try {
-      console.log(`[GA Debug] Sending event: ${eventName}`, parameters);
-      // ✅ Signature correcte selon la documentation Next.js 15
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`[GA Debug] Sending event: ${eventName}`, parameters);
+      }
+
+      // ✅ Signature CORRECTE pour sendGTMEvent (2025)
       sendGTMEvent({
         event: eventName,
-        event_category: parameters.event_category || 'engagement',
-        event_label: parameters.event_label,
-        value: parameters.value,
         ...parameters,
       });
     } catch (error) {
-      // Fallback vers gtag si sendGAEvent échoue
+      // Fallback vers gtag si sendGTMEvent échoue
       if (typeof window.gtag === 'function') {
-        window.gtag('event', eventName, {
-          event_category: parameters.event_category || 'engagement',
-          event_label: parameters.event_label,
-          value: parameters.value,
-          ...parameters,
-        });
+        window.gtag('event', eventName, parameters);
       }
 
       if (process.env.NODE_ENV === 'development') {
@@ -56,68 +91,125 @@ export const trackEvent = (eventName, parameters = {}) => {
 };
 
 /**
- * Met à jour les préférences de consentement (RGPD/CCPA)
- * @param {boolean} hasConsent - L'utilisateur a-t-il donné son consentement
- * @param {Object} options - Options de consentement détaillées
+ * Met à jour les préférences de consentement (GDPR/CCPA conformité 2025)
+ * @param {Object} consentUpdates - Nouvelles préférences de consentement
  */
-export const updateConsent = (hasConsent, options = {}) => {
+export const updateConsent = (consentUpdates = {}) => {
   if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-    const consentValue = hasConsent ? 'granted' : 'denied';
+    // ✅ Google Consent Mode v2 (obligatoire 2025)
+    const defaultConsent = {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied', // ← NOUVEAU 2025
+      ad_personalization: 'denied', // ← NOUVEAU 2025
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      ...consentUpdates,
+    };
 
-    window.gtag('consent', 'update', {
-      analytics_storage: options.analytics_storage ?? consentValue,
-      ad_storage: options.ad_storage ?? consentValue,
-      ad_user_data: options.ad_user_data ?? consentValue,
-      ad_personalization: options.ad_personalization ?? consentValue,
-      functionality_storage: options.functionality_storage ?? 'granted',
-      security_storage: 'granted', // Toujours accordé pour la sécurité
-      ...options.custom,
-    });
+    window.gtag('consent', 'update', defaultConsent);
+
+    // Sauvegarder dans localStorage pour vérifications futures
+    try {
+      localStorage.setItem(
+        'analytics_consent',
+        defaultConsent.analytics_storage,
+      );
+      localStorage.setItem('marketing_consent', defaultConsent.ad_storage);
+      localStorage.setItem('consent_timestamp', Date.now().toString());
+    } catch (e) {
+      console.warn('[GA] Failed to save consent preferences');
+    }
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('[GA Debug] Consent updated:', { hasConsent, options });
+      console.log('[GA Debug] Consent updated:', defaultConsent);
     }
   }
 };
 
 /**
- * Configure le consentement initial (à appeler avant le chargement GA)
+ * Configure le consentement initial (GDPR/CCPA - à appeler avant le chargement GA)
  * @param {Object} consentSettings - Paramètres de consentement initial
  */
 export const initializeConsent = (consentSettings = {}) => {
   if (typeof window !== 'undefined') {
     window.dataLayer = window.dataLayer || [];
 
-    // Configuration du consentement par défaut
     window.gtag =
       window.gtag ||
       function () {
         window.dataLayer.push(arguments);
       };
 
-    window.gtag('consent', 'default', {
-      analytics_storage: consentSettings.analytics_storage || 'denied',
-      ad_storage: consentSettings.ad_storage || 'denied',
-      ad_user_data: consentSettings.ad_user_data || 'denied',
-      ad_personalization: consentSettings.ad_personalization || 'denied',
-      functionality_storage: consentSettings.functionality_storage || 'granted',
+    // ✅ Google Consent Mode v2 par défaut (2025)
+    const defaultConsentSettings = {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied', // ← OBLIGATOIRE 2025
+      ad_personalization: 'denied', // ← OBLIGATOIRE 2025
+      functionality_storage: 'granted',
       security_storage: 'granted',
-      wait_for_update: consentSettings.wait_for_update || 500,
-      region: consentSettings.region || ['FR', 'EU'], // RGPD par défaut
-      ...consentSettings.custom,
-    });
+      wait_for_update: 500,
+      region: ['FR', 'DJ', 'EU'], // France, Djibouti, Europe
+      ...consentSettings,
+    };
+
+    window.gtag('consent', 'default', defaultConsentSettings);
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('[GA Debug] Consent initialized:', consentSettings);
+      console.log('[GA Debug] Consent initialized:', defaultConsentSettings);
     }
   }
 };
 
 /**
- * Configure les propriétés utilisateur personnalisées
+ * Accorde le consentement Analytics (appelé depuis banner de cookies)
+ * @param {boolean} analytics - Consentement analytics
+ * @param {boolean} marketing - Consentement marketing/advertising
+ */
+export const grantConsent = (analytics = false, marketing = false) => {
+  const consentUpdates = {
+    analytics_storage: analytics ? 'granted' : 'denied',
+    ad_storage: marketing ? 'granted' : 'denied',
+    ad_user_data: marketing ? 'granted' : 'denied',
+    ad_personalization: marketing ? 'granted' : 'denied',
+  };
+
+  updateConsent(consentUpdates);
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[GA Debug] Consent granted:', { analytics, marketing });
+  }
+};
+
+/**
+ * Révoque tous les consentements
+ */
+export const revokeConsent = () => {
+  updateConsent({
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+  });
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[GA Debug] All consent revoked');
+  }
+};
+
+/**
+ * Configure les propriétés utilisateur personnalisées (avec consentement)
  * @param {Object} properties - Propriétés utilisateur
  */
 export const setUserProperties = (properties) => {
+  if (!hasAnalyticsConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[GA Debug] User properties blocked - no consent');
+    }
+    return;
+  }
+
   if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
       user_properties: properties,
@@ -130,7 +222,7 @@ export const setUserProperties = (properties) => {
 };
 
 // ========================================
-// ÉVÉNEMENTS SPÉCIFIQUES À VOTRE BUSINESS
+// ÉVÉNEMENTS SPÉCIFIQUES AU BUSINESS (Avec vérification consentement)
 // ========================================
 
 /**
@@ -185,11 +277,12 @@ export const trackApplicationView = (
 };
 
 /**
- * Track les soumissions de formulaire de contact
+ * Track les soumissions de formulaire de contact (avec consentement marketing)
  * @param {boolean} success - Succès de la soumission
  * @param {string} errorMessage - Message d'erreur (optionnel)
  */
 export const trackContactSubmission = (success = true, errorMessage = null) => {
+  // Événement de base (analytics)
   trackEvent('contact_form_submit', {
     event_category: 'contact',
     event_label: success ? 'success' : 'error',
@@ -197,6 +290,16 @@ export const trackContactSubmission = (success = true, errorMessage = null) => {
     success: success,
     error_message: errorMessage,
   });
+
+  // Conversion (nécessite consentement marketing)
+  if (success && hasMarketingConsent()) {
+    trackEvent('conversion', {
+      event_category: 'conversion',
+      event_label: 'contact_form',
+      value: 1,
+      conversion_type: 'lead_generation',
+    });
+  }
 };
 
 /**
@@ -214,7 +317,7 @@ export const trackSocialClick = (platform, location = 'unknown') => {
 };
 
 // ========================================
-// ÉVÉNEMENTS E-COMMERCE GA4 OPTIMISÉS
+// ÉVÉNEMENTS E-COMMERCE GA4 (Avec vérification consentement)
 // ========================================
 
 /**
@@ -224,7 +327,7 @@ export const trackSocialClick = (platform, location = 'unknown') => {
 export const trackOrderStart = (application) => {
   trackEvent('begin_checkout', {
     event_category: 'ecommerce',
-    currency: 'DJF', // Franc Djiboutien
+    currency: 'DJF',
     value: application.application_fee,
     items: [
       {
@@ -237,7 +340,6 @@ export const trackOrderStart = (application) => {
         quantity: 1,
       },
     ],
-    // Données business spécifiques
     template_id: application.template_id || 'unknown',
     application_level: application.application_level,
     checkout_step: 1,
@@ -245,7 +347,7 @@ export const trackOrderStart = (application) => {
 };
 
 /**
- * Track une commande finalisée
+ * Track une commande finalisée (nécessite consentement marketing pour conversion)
  * @param {Object} application - Données de l'application
  * @param {string} transactionId - ID de la transaction
  * @param {string} paymentMethod - Méthode de paiement
@@ -255,6 +357,7 @@ export const trackPurchase = (
   transactionId,
   paymentMethod = 'mobile_money',
 ) => {
+  // Événement de base (analytics)
   trackEvent('purchase', {
     event_category: 'ecommerce',
     transaction_id: transactionId,
@@ -272,13 +375,23 @@ export const trackPurchase = (
         quantity: 1,
       },
     ],
-    // Données business enrichies
     template_id: application.template_id || 'unknown',
     application_level: application.application_level,
     payment_method: paymentMethod,
     total_value:
       application.application_fee + (application.application_rent || 0),
   });
+
+  // Conversion avancée (nécessite consentement marketing)
+  if (hasMarketingConsent()) {
+    trackEvent('conversion', {
+      event_category: 'conversion',
+      event_label: 'purchase',
+      value: application.application_fee,
+      conversion_type: 'ecommerce_purchase',
+      transaction_id: transactionId,
+    });
+  }
 };
 
 /**
@@ -363,14 +476,23 @@ export const trackNavigation = (
  * @param {string} severity - Gravité de l'erreur
  */
 export const trackError = (errorMessage, errorPage, severity = 'error') => {
-  trackEvent('exception', {
-    event_category: 'errors',
-    event_label: errorMessage,
-    description: errorMessage,
-    page: errorPage,
-    fatal: severity === 'fatal',
-    error_severity: severity,
-  });
+  // Les erreurs sont trackées même sans consentement (sécurité/technique)
+  if (typeof window !== 'undefined') {
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'exception', {
+          event_category: 'errors',
+          event_label: errorMessage,
+          description: errorMessage,
+          page: errorPage,
+          fatal: severity === 'fatal',
+          error_severity: severity,
+        });
+      }
+    } catch (e) {
+      // Fail silently pour les erreurs
+    }
+  }
 };
 
 // ========================================
@@ -378,13 +500,12 @@ export const trackError = (errorMessage, errorPage, severity = 'error') => {
 // ========================================
 
 /**
- * Track les performances de page
+ * Track les performances de page (avec consentement)
  * @param {string} pageName - Nom de la page
  * @param {number} loadTime - Temps de chargement en ms
  * @param {boolean} fromCache - Chargé depuis le cache
  */
 export const trackPagePerformance = (pageName, loadTime, fromCache = false) => {
-  // Envoyer seulement si le temps de chargement est significatif
   if (loadTime > 100) {
     trackEvent('page_load_time', {
       event_category: 'performance',
@@ -411,11 +532,11 @@ const getPerformanceBucket = (loadTime) => {
 };
 
 /**
- * Track les Core Web Vitals
+ * Track les Core Web Vitals (avec consentement)
  * @param {string} name - Nom de la métrique (CLS, FID, LCP, etc.)
  * @param {number} value - Valeur de la métrique
  * @param {string} id - ID unique de la métrique
- * @param {string} rating - Rating de la performance (good, needs-improvement, poor)
+ * @param {string} rating - Rating de la performance
  */
 export const trackWebVitals = (name, value, id, rating = 'unknown') => {
   trackEvent('web_vitals', {
@@ -426,7 +547,7 @@ export const trackWebVitals = (name, value, id, rating = 'unknown') => {
     metric_value: Math.round(name === 'CLS' ? value * 1000 : value),
     metric_id: id,
     metric_rating: rating,
-    non_interaction: true, // N'affecte pas le bounce rate
+    non_interaction: true,
   });
 };
 
@@ -449,13 +570,19 @@ export const enableGADebug = () => {
 };
 
 /**
- * Configure Enhanced Measurements
+ * Configure Enhanced Measurements (avec vérification consentement)
  * @param {Object} config - Configuration des mesures enrichies
  */
 export const configureEnhancedMeasurements = (config = {}) => {
+  if (!hasAnalyticsConsent()) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[GA Debug] Enhanced measurements blocked - no consent');
+    }
+    return;
+  }
+
   if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, {
-      // Mesures enrichies automatiques
       enhanced_measurement: {
         scrolls: config.scrolls ?? true,
         clicks: config.clicks ?? true,
@@ -466,7 +593,6 @@ export const configureEnhancedMeasurements = (config = {}) => {
         page_changes: config.page_changes ?? true,
         ...config.custom,
       },
-      // Configuration supplémentaire
       anonymize_ip: config.anonymize_ip ?? true,
       cookie_flags: 'SameSite=None;Secure',
       ...config.additional,
@@ -479,31 +605,38 @@ export const configureEnhancedMeasurements = (config = {}) => {
 };
 
 /**
- * Affiche des informations de debug sur GA
+ * Affiche des informations de debug sur GA et le consentement
  */
 export const debugGA = () => {
   if (process.env.NODE_ENV === 'development') {
     console.log('[GA Debug] Analytics Info:', {
       gtag_available:
         typeof window !== 'undefined' && typeof window.gtag === 'function',
-      sendGAEvent_available: typeof sendGAEvent === 'function',
+      sendGTMEvent_available: typeof sendGTMEvent === 'function',
       measurement_id: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
       page_url: typeof window !== 'undefined' ? window.location.href : 'SSR',
       data_layer:
         typeof window !== 'undefined' ? window.dataLayer : 'undefined',
-      consent_status:
-        typeof window !== 'undefined' && window.gtag
-          ? 'gtag available'
-          : 'gtag not available',
+      analytics_consent: hasAnalyticsConsent(),
+      marketing_consent: hasMarketingConsent(),
+      consent_timestamp:
+        typeof window !== 'undefined'
+          ? localStorage.getItem('consent_timestamp')
+          : 'N/A',
     });
   }
 };
 
 /**
- * Test si le tracking fonctionne
+ * Test si le tracking fonctionne (seulement si consentement accordé)
  */
 export const testTracking = () => {
   if (process.env.NODE_ENV === 'development') {
+    if (!hasAnalyticsConsent()) {
+      console.log('[GA Debug] Test blocked - no analytics consent');
+      return;
+    }
+
     trackEvent('debug_test', {
       event_category: 'debug',
       event_label: 'manual_test',
@@ -517,69 +650,74 @@ export const testTracking = () => {
 };
 
 /**
- * Initialisation complète de GA avec configuration optimale
+ * Initialisation complète de GA avec configuration GDPR/CCPA 2025
  * @param {Object} options - Options d'initialisation
  */
 export const initializeAnalytics = (options = {}) => {
   if (typeof window !== 'undefined') {
-    // Initialiser le consentement si requis
-    if (options.requireConsent) {
+    // ✅ ÉTAPE 1: Initialiser le consentement AVANT tout
+    if (options.requireConsent !== false) {
       initializeConsent(options.consentSettings);
     }
 
-    // Configurer les mesures enrichies
-    if (options.enhancedMeasurements !== false) {
+    // ✅ ÉTAPE 2: Vérifier si on a déjà le consentement
+    const hasConsent = hasAnalyticsConsent();
+
+    // ✅ ÉTAPE 3: Configurer seulement si consentement accordé
+    if (hasConsent && options.enhancedMeasurements !== false) {
       configureEnhancedMeasurements(options.enhancedConfig);
     }
 
-    // Activer le debug en développement
+    // ✅ ÉTAPE 4: Debug en développement
     if (process.env.NODE_ENV === 'development' && options.debug !== false) {
       enableGADebug();
     }
 
-    // Définir les propriétés utilisateur si fournies
-    if (options.userProperties) {
+    // ✅ ÉTAPE 5: Propriétés utilisateur seulement si consentement
+    if (hasConsent && options.userProperties) {
       setUserProperties(options.userProperties);
     }
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('[GA Debug] Analytics initialized with options:', options);
+      console.log('[GA Debug] Analytics initialized (GDPR compliant):', {
+        ...options,
+        consentStatus: {
+          analytics: hasConsent,
+          marketing: hasMarketingConsent(),
+        },
+      });
     }
   }
 };
-
-// ========================================
-// HOOKS POUR NEXT.JS 15 APP ROUTER
-// ========================================
 
 /**
- * Hook pour initialiser automatiquement GA dans un composant
- * À utiliser dans un composant client uniquement
+ * Hook pour vérifier le statut de consentement (pour les composants React)
+ * @returns {Object} Statut des consentements
  */
-export const useAnalyticsInitialization = (options = {}) => {
-  if (typeof window !== 'undefined') {
-    const initOnce = () => {
-      if (!window._gaInitialized) {
-        initializeAnalytics(options);
-        window._gaInitialized = true;
-      }
-    };
-
-    // Initialiser après hydration
-    if (document.readyState === 'complete') {
-      initOnce();
-    } else {
-      window.addEventListener('load', initOnce);
-      return () => window.removeEventListener('load', initOnce);
-    }
-  }
+export const getConsentStatus = () => {
+  return {
+    analytics: hasAnalyticsConsent(),
+    marketing: hasMarketingConsent(),
+    isReady: isGAReady(),
+  };
 };
 
+// ========================================
+// EXPORT PAR DÉFAUT - API Complète 2025
+// ========================================
 export default {
-  // Fonctions principales
+  // Fonctions principales avec vérification consentement
   trackEvent,
+  isGAReady,
+
+  // Gestion du consentement GDPR/CCPA
+  hasAnalyticsConsent,
+  hasMarketingConsent,
   updateConsent,
   initializeConsent,
+  grantConsent,
+  revokeConsent,
+  getConsentStatus,
   setUserProperties,
 
   // Événements business
@@ -605,10 +743,9 @@ export default {
   trackWebVitals,
 
   // Utilitaires
-  isGAReady,
   debugGA,
   testTracking,
   initializeAnalytics,
-  useAnalyticsInitialization,
   configureEnhancedMeasurements,
+  enableGADebug,
 };
