@@ -86,7 +86,7 @@ export default async function TemplatesPage() {
   console.log('Templates loaded:', data);
 
   // Gestion d'erreur simple
-  if (!data.success) {
+  if (data.success === false) {
     // En production, on pourrait logger et afficher une page d'erreur custom
     if (process.env.NODE_ENV === 'production') {
       notFound();
