@@ -110,10 +110,6 @@ export default async function TemplatesPage() {
     );
   }
 
-  console.log('GTM Ready?', window.google_tag_manager);
-  console.log('DataLayer?', window.dataLayer);
-  console.log('GTM ID?', window.google_tag_data);
-
   // Rendu normal avec Suspense pour UX
   return (
     <Suspense fallback={<TemplatesSkeleton />}>
