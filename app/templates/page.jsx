@@ -3,7 +3,7 @@
 // Next.js 15 + PostgreSQL + Cache simplifié + Monitoring essentiel
 
 import { Suspense } from 'react';
-// import { notFound } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
 import TemplatesSkeleton from '@/components/templates/skeletons/TemplatesSkeleton';
 import TemplatesList from '@/components/templates/TemplatesList';
@@ -83,34 +83,32 @@ async function getTemplates() {
 export default async function TemplatesPage() {
   const data = await getTemplates();
 
-  console.log('Templates loaded:', data);
-
   // Gestion d'erreur simple
-  // if (data.success === false) {
-  //   // En production, on pourrait logger et afficher une page d'erreur custom
-  //   // if (process.env.NODE_ENV === 'production') {
-  //   //   notFound();
-  //   // }
+  if (!data.success) {
+    // En production, on pourrait logger et afficher une page d'erreur custom
+    if (process.env.NODE_ENV === 'production') {
+      notFound();
+    }
 
-  //   // En dev, on affiche l'erreur
-  //   // return (
-  //   //   <div className="templates-error-fallback">
-  //   //     <h1>Erreur de chargement</h1>
-  //   //     <p>Impossible de charger les templates.</p>
-  //   //     {process.env.NODE_ENV !== 'production' && <pre>{data.error}</pre>}
-  //   //   </div>
-  //   // );
-  // }
+    // En dev, on affiche l'erreur
+    return (
+      <div className="templates-error-fallback">
+        <h1>Erreur de chargement</h1>
+        <p>Impossible de charger les templates.</p>
+        {process.env.NODE_ENV !== 'production' && <pre>{data.error}</pre>}
+      </div>
+    );
+  }
 
   // Si pas de templates (cas valide pour e-commerce)
-  // if (!data.templates || data.templates.length === 0) {
-  //   return (
-  //     <div className="templates-empty-state">
-  //       <h1>Aucun template disponible</h1>
-  //       <p>Revenez bientôt pour découvrir nos nouveaux templates.</p>
-  //     </div>
-  //   );
-  // }
+  if (!data.templates || data.templates.length === 0) {
+    return (
+      <div className="templates-empty-state">
+        <h1>Aucun template disponible</h1>
+        <p>Revenez bientôt pour découvrir nos nouveaux templates.</p>
+      </div>
+    );
+  }
 
   // Rendu normal avec Suspense pour UX
   return (
