@@ -83,6 +83,8 @@ async function getTemplates() {
 export default async function TemplatesPage() {
   const data = await getTemplates();
 
+  console.log('Templates loaded:', data);
+
   // Gestion d'erreur simple
   if (!data.success) {
     // En production, on pourrait logger et afficher une page d'erreur custom
@@ -109,8 +111,6 @@ export default async function TemplatesPage() {
       </div>
     );
   }
-
-  console.log('Templates loaded:', data.templates);
 
   // Rendu normal avec Suspense pour UX
   return (
