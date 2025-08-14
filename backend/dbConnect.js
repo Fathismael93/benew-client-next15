@@ -44,6 +44,9 @@ let dopplerConfig = null;
 let isConfigLoaded = false;
 let healthCheckInterval;
 
+// 🔥 NOUVELLE VARIABLE : Promise d'initialisation
+let initializationPromise = null;
+
 // Utilitaires
 const getTimestamp = () => new Date().toISOString();
 
@@ -317,13 +320,85 @@ function startHealthCheckMonitoring() {
 }
 
 // =============================================
-// CLIENT MANAGEMENT
+// 🔥 FONCTION D'INITIALISATION REFACTORISÉE
+// =============================================
+
+async function initializePool() {
+  try {
+    if (CONFIG.logging.enabled) {
+      console.log(
+        `[${getTimestamp()}] 🚀 Initialisation du pool PostgreSQL...`,
+      );
+    }
+
+    pool = await createPool();
+
+    // Test initial
+    const client = await pool.connect();
+    const testResult = await client.query(
+      'SELECT NOW() as startup_time, version() as pg_version',
+    );
+    client.release();
+
+    console.log(`[${getTimestamp()}] ✅ Connexion PostgreSQL établie`);
+    if (CONFIG.logging.enabled) {
+      console.log(
+        `[${getTimestamp()}] 🐘 ${testResult.rows[0].pg_version.split(' ')[0]}`,
+      );
+    }
+
+    captureMessage('Database pool initialized successfully', {
+      level: 'info',
+      tags: { component: 'database_pool', operation: 'initialization' },
+      extra: {
+        pgVersion: testResult.rows[0].pg_version.split(' ')[0],
+        maxConnections: CONFIG.pool.max,
+        environment: process.env.NODE_ENV,
+      },
+    });
+
+    // Démarrer le monitoring
+    setTimeout(() => {
+      startHealthCheckMonitoring();
+      if (CONFIG.logging.enabled) {
+        console.log(`[${getTimestamp()}] ✅ Pool prêt avec monitoring`);
+      }
+    }, 1000);
+
+    return pool;
+  } catch (error) {
+    console.error(
+      `[${getTimestamp()}] ❌ Échec initialisation:`,
+      error.message,
+    );
+
+    captureException(error, {
+      tags: { component: 'database_pool', error_type: 'initialization_failed' },
+      extra: { retryAction: 'attempting_reconnection' },
+    });
+
+    // Tentative de reconnexion
+    setTimeout(() => reconnectPool(), 2000);
+    throw error;
+  }
+}
+
+// =============================================
+// 🔥 CLIENT MANAGEMENT AVEC ATTENTE
 // =============================================
 
 export const getClient = async () => {
-  // if (!pool) {
-  //   throw new Error('Pool non initialisé');
-  // }
+  // 🔥 ATTENDRE QUE L'INITIALISATION SOIT TERMINÉE
+  if (!initializationPromise) {
+    initializationPromise = initializePool();
+  }
+
+  await initializationPromise;
+
+  // Maintenant on est sûr que pool existe
+  if (!pool) {
+    throw new Error('Pool non initialisé après attente');
+  }
 
   const startTime = Date.now();
 
@@ -373,67 +448,6 @@ export const getClient = async () => {
     throw new Error('Erreur de connexion base de données');
   }
 };
-
-// =============================================
-// INITIALISATION
-// =============================================
-
-(async () => {
-  try {
-    if (CONFIG.logging.enabled) {
-      console.log(
-        `[${getTimestamp()}] 🚀 Initialisation du pool PostgreSQL...`,
-      );
-    }
-
-    pool = await createPool();
-
-    // Test initial
-    const client = await pool.connect();
-    const testResult = await client.query(
-      'SELECT NOW() as startup_time, version() as pg_version',
-    );
-    client.release();
-
-    console.log(`[${getTimestamp()}] ✅ Connexion PostgreSQL établie`);
-    if (CONFIG.logging.enabled) {
-      console.log(
-        `[${getTimestamp()}] 🐘 ${testResult.rows[0].pg_version.split(' ')[0]}`,
-      );
-    }
-
-    captureMessage('Database pool initialized successfully', {
-      level: 'info',
-      tags: { component: 'database_pool', operation: 'initialization' },
-      extra: {
-        pgVersion: testResult.rows[0].pg_version.split(' ')[0],
-        maxConnections: CONFIG.pool.max,
-        environment: process.env.NODE_ENV,
-      },
-    });
-
-    // Démarrer le monitoring
-    setTimeout(() => {
-      startHealthCheckMonitoring();
-      if (CONFIG.logging.enabled) {
-        console.log(`[${getTimestamp()}] ✅ Pool prêt avec monitoring`);
-      }
-    }, 1000);
-  } catch (error) {
-    console.error(
-      `[${getTimestamp()}] ❌ Échec initialisation:`,
-      error.message,
-    );
-
-    captureException(error, {
-      tags: { component: 'database_pool', error_type: 'initialization_failed' },
-      extra: { retryAction: 'attempting_reconnection' },
-    });
-
-    // Tentative de reconnexion
-    setTimeout(() => reconnectPool(), 2000);
-  }
-})();
 
 // =============================================
 // GRACEFUL SHUTDOWN
