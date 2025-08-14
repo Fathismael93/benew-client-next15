@@ -113,24 +113,17 @@ export default function RootLayout({ children }) {
         <meta name="msapplication-TileColor" content="#f6a037" />
       </head>
       <body>
+        {/* GTM EN PREMIER - CRITIQUE */}
+        {gtmId && <GoogleTagManager gtmId={gtmId} />}
+
         <Navbar />
         {children}
 
-        {/* <AudioPlayer /> */}
-
-        {/* Analytics */}
-        {process.env.NODE_ENV === 'production' && gtmId && (
-          <>
-            <GoogleTagManager gtmId={gtmId} />
-            <AnalyticsInitializer />
-          </>
-        )}
-
-        {process.env.NODE_ENV === 'development' && gtmId && (
-          <>
-            <GoogleTagManager gtmId={gtmId} />
-            <AnalyticsInitializer isDevelopment />
-          </>
+        {/* AnalyticsInitializer peut rester après */}
+        {gtmId && (
+          <AnalyticsInitializer
+            isDevelopment={process.env.NODE_ENV === 'development'}
+          />
         )}
       </body>
     </html>
