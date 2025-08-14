@@ -1,7 +1,7 @@
 // app/layout.js
 import './styles/main.scss';
 import Navbar from '../components/layouts/navbar';
-import { GoogleTagManager } from '@next/third-parties/google';
+// import { GoogleTagManager } from '@next/third-parties/google';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
 // import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
 import { HydrationFix } from '@/components/layouts/hydrationFix';
@@ -114,6 +114,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {/* GTM EN PREMIER - CRITIQUE */}
+        {/* {gtmId && <GoogleTagManager gtmId={gtmId} />} */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
