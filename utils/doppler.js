@@ -358,10 +358,10 @@ export async function initializeBenewConfig() {
     const config = {
       // Base de données PostgreSQL
       database: {
-        host: secrets.HOST_NAME?.computed || process.env.HOST_NAME,
-        port: secrets.PORT_NUMBER?.computed || process.env.PORT_NUMBER,
+        host: secrets.HOST_NAME?.computed || process.env.DB_HOST_NAME,
+        port: secrets.PORT_NUMBER?.computed || process.env.DB_PORT,
         database: secrets.DB_NAME?.computed || process.env.DB_NAME,
-        username: secrets.USER_NAME?.computed || process.env.USER_NAME,
+        username: secrets.USER_NAME?.computed || process.env.DB_USER_NAME,
         password: secrets.DB_PASSWORD?.computed || process.env.DB_PASSWORD,
         ssl: {
           ca: secrets.DB_CA?.computed || process.env.DB_CA,
@@ -469,10 +469,10 @@ export async function initializeBenewConfig() {
     // Fallback vers les variables d'environnement existantes
     return {
       database: {
-        host: process.env.HOST_NAME,
-        port: process.env.PORT_NUMBER,
+        host: process.env.DB_HOST_NAME,
+        port: process.env.DB_PORT,
         database: process.env.DB_NAME,
-        username: process.env.USER_NAME,
+        username: process.env.DB_USER_NAME,
         password: process.env.DB_PASSWORD,
         ssl: { ca: process.env.DB_CA },
         connectionTimeout: process.env.CONNECTION_TIMEOUT,

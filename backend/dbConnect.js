@@ -73,11 +73,10 @@ async function loadDopplerConfig() {
 
     // Fallback simple vers les variables d'environnement
     dopplerConfig = {
-      host: process.env.DB_HOST_NAME || process.env.HOST_NAME,
-      port:
-        Number(process.env.DB_PORT) || Number(process.env.PORT_NUMBER) || 5432,
+      host: process.env.DB_HOST_NAME || process.env.DB_HOST_NAME,
+      port: Number(process.env.DB_PORT) || Number(process.env.DB_PORT) || 5432,
       database: process.env.DB_NAME,
-      username: process.env.DB_USER_NAME || process.env.USER_NAME,
+      username: process.env.DB_USER_NAME || process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
       ssl: process.env.DB_CA ? { ca: process.env.DB_CA } : false,
     };
