@@ -110,6 +110,8 @@ export default async function TemplatesPage() {
     );
   }
 
+  console.log('Templates loaded:', data.templates);
+
   // Rendu normal avec Suspense pour UX
   return (
     <Suspense fallback={<TemplatesSkeleton />}>
