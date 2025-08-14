@@ -2,81 +2,50 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import {
-  initializeAnalytics,
-  debugGA,
-  testTracking,
-  trackPagePerformance,
-  trackError,
-} from '@/utils/analytics';
+import analytics from '@/utils/analytics.gtm'; // Utiliser la version GTM
 
 /**
- * Composant pour initialiser Google Analytics automatiquement
+ * Composant pour initialiser GTM/GA4 automatiquement
  * @param {boolean} isDevelopment - Mode développement
  */
 export default function AnalyticsInitializer({ isDevelopment = false }) {
   const pathname = usePathname();
 
-  // Initialisation une seule fois
+  // Initialisation GTM une seule fois
   useEffect(() => {
-    const initGA = () => {
+    const initGTM = () => {
       try {
-        // Configuration selon l'environnement
-        const analyticsConfig = {
-          requireConsent: true, // RGPD activé
-          enhancedMeasurements: true,
-          debug: isDevelopment,
+        // Initialiser le consentement GTM
+        analytics.initializeGTMConsent();
 
-          // Configuration du consentement par défaut
-          consentSettings: {
-            analytics_storage: 'denied', // Par défaut refusé (RGPD)
-            ad_storage: 'denied',
-            ad_user_data: 'denied',
-            ad_personalization: 'denied',
-            functionality_storage: 'granted',
-            wait_for_update: 500,
-            region: ['FR', 'DJ', 'EU'], // France, Djibouti, Europe
-          },
+        // Vérifier si on a déjà un consentement stocké
+        const hasAnalytics = analytics.hasAnalyticsConsent();
+        const hasMarketing = analytics.hasMarketingConsent();
 
-          // Configuration des mesures enrichies
-          enhancedConfig: {
-            scrolls: true,
-            clicks: true,
-            views: true,
-            downloads: true,
-            video_engagement: true,
-            file_downloads: true,
-            page_changes: true,
-            // Configuration pour ton site
-            anonymize_ip: true,
-            cookie_flags: 'SameSite=None;Secure',
-          },
-
-          // Propriétés utilisateur par défaut
-          userProperties: {
-            site_version: '2.0',
-            user_type: 'visitor',
-            site_language: 'fr',
-            site_country: 'DJ', // Djibouti
-          },
-        };
-
-        // Initialiser Analytics
-        initializeAnalytics(analyticsConfig);
+        // Si consentement déjà accordé, le mettre à jour
+        if (hasAnalytics || hasMarketing) {
+          analytics.grantConsent(hasAnalytics, hasMarketing);
+        }
 
         // Debug en développement
         if (isDevelopment) {
           setTimeout(() => {
-            debugGA();
-            console.log('[Analytics] Initialized for development');
+            analytics.debugGA();
+            console.log('[GTM] Initialized for development');
+            console.log(
+              '[GTM] Container ID:',
+              process.env.NEXT_PUBLIC_GTM_CONTAINER_ID,
+            );
+            console.log(
+              '[GTM] GA4 ID (configure in GTM):',
+              process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+            );
           }, 1000);
         }
       } catch (error) {
-        console.error('[Analytics] Initialization error:', error);
-
-        // Tracker l'erreur d'initialisation
-        trackError(
-          `Analytics initialization failed: ${error.message}`,
+        console.error('[GTM] Initialization error:', error);
+        analytics.trackError(
+          `GTM initialization failed: ${error.message}`,
           pathname,
           'fatal',
         );
@@ -86,27 +55,36 @@ export default function AnalyticsInitializer({ isDevelopment = false }) {
     // Initialiser après hydration
     if (typeof window !== 'undefined') {
       if (document.readyState === 'complete') {
-        initGA();
+        initGTM();
       } else {
-        window.addEventListener('load', initGA);
-        return () => window.removeEventListener('load', initGA);
+        window.addEventListener('load', initGTM);
+        return () => window.removeEventListener('load', initGTM);
       }
     }
   }, []); // Une seule fois au montage
 
   // Tracking des changements de page (App Router)
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.gtag) {
+    if (typeof window !== 'undefined') {
       const startTime = performance.now();
 
       // Tracker la vue de page avec performance
       setTimeout(() => {
         const loadTime = performance.now() - startTime;
-        trackPagePerformance(pathname, loadTime, false);
+
+        // Envoyer page_view event pour GTM
+        analytics.trackEvent('page_view', {
+          page_path: pathname,
+          page_title: document.title,
+          page_location: window.location.href,
+        });
+
+        // Tracker la performance
+        analytics.trackPagePerformance(pathname, loadTime, false);
 
         if (isDevelopment) {
           console.log(
-            `[Analytics] Page tracked: ${pathname} (${loadTime.toFixed(2)}ms)`,
+            `[GTM] Page tracked: ${pathname} (${loadTime.toFixed(2)}ms)`,
           );
         }
       }, 100);
@@ -118,8 +96,10 @@ export default function AnalyticsInitializer({ isDevelopment = false }) {
     if (isDevelopment && typeof window !== 'undefined') {
       // Test automatique après 3 secondes
       const testTimer = setTimeout(() => {
-        testTracking();
-        console.log('[Analytics] Test event sent - Check Network tab');
+        analytics.testTracking();
+        console.log(
+          '[GTM] Test event sent - Check GTM Preview & GA4 DebugView',
+        );
       }, 3000);
 
       return () => clearTimeout(testTimer);

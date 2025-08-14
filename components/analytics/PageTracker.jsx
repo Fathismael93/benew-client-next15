@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { trackEvent, trackPagePerformance } from '@/utils/analytics';
+import analytics from '@/utils/analytics'; // Utiliser la version GTM
 
 /**
  * Composant pour tracker les interactions sur une page spécifique
@@ -19,9 +19,7 @@ export default function PageTracker({
 
   useEffect(() => {
     // Tracker l'entrée sur la page
-    trackEvent('page_enter', {
-      event_category: 'navigation',
-      event_label: pageName,
+    analytics.trackEvent('page_enter', {
       page_name: pageName,
       page_type: pageType,
       sections_count: sections.length,
@@ -30,16 +28,14 @@ export default function PageTracker({
     // Performance initiale
     const initialLoadTime = performance.now() - startTimeRef.current;
     if (initialLoadTime > 0) {
-      trackPagePerformance(pageName, initialLoadTime, false);
+      analytics.trackPagePerformance(pageName, initialLoadTime, false);
     }
 
     // Cleanup: tracker la sortie de page
     return () => {
       const timeOnPage = performance.now() - startTimeRef.current;
 
-      trackEvent('page_exit', {
-        event_category: 'navigation',
-        event_label: pageName,
+      analytics.trackEvent('page_exit', {
         page_name: pageName,
         page_type: pageType,
         time_on_page: Math.round(timeOnPage),
@@ -61,9 +57,7 @@ export default function PageTracker({
             if (sectionName && !sectionsTrackedRef.current.has(sectionName)) {
               sectionsTrackedRef.current.add(sectionName);
 
-              trackEvent('section_view', {
-                event_category: 'content',
-                event_label: sectionName,
+              analytics.trackEvent('section_view', {
                 page_name: pageName,
                 section_name: sectionName,
                 section_position: sections.indexOf(sectionName) + 1,
@@ -104,9 +98,7 @@ export default function PageTracker({
       if (scrollPercent >= 90) {
         deepScrollTracked = true;
 
-        trackEvent('deep_scroll', {
-          event_category: 'engagement',
-          event_label: pageName,
+        analytics.trackEvent('deep_scroll', {
           page_name: pageName,
           scroll_depth: 90,
         });
@@ -130,9 +122,7 @@ export default function PageTracker({
 
       // Liens externes
       if (href && !href.startsWith(window.location.origin)) {
-        trackEvent('external_link_click', {
-          event_category: 'navigation',
-          event_label: text,
+        analytics.trackEvent('external_link_click', {
           link_url: href,
           page_name: pageName,
           link_text: text,
@@ -146,9 +136,7 @@ export default function PageTracker({
           href.includes('/contact') ||
           href.includes('/blog'))
       ) {
-        trackEvent('internal_link_click', {
-          event_category: 'navigation',
-          event_label: text,
+        analytics.trackEvent('internal_link_click', {
           link_url: href,
           page_name: pageName,
           link_text: text,
