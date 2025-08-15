@@ -1,7 +1,7 @@
 'use client';
 
 import './styles/index.scss';
-import dynamic from 'next/dynamic';
+// import dynamic from 'next/dynamic';
 import { useRef, useState, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -11,16 +11,17 @@ import {
   MdKeyboardArrowDown,
 } from 'react-icons/md';
 
-import ParallaxSkeleton from '../layouts/parallax/ParallaxSkeleton';
+// import ParallaxSkeleton from '../layouts/parallax/ParallaxSkeleton';
 // Import dynamique des composants
-const Parallax = dynamic(() => import('components/layouts/parallax'), {
-  loading: () => <ParallaxSkeleton />,
-  ssr: true,
-});
+// const Parallax = dynamic(() => import('components/layouts/parallax'), {
+//   loading: () => <ParallaxSkeleton />,
+//   ssr: true,
+// });
 
 import FormContainer from './formContainer';
 import { trackEvent } from '@/utils/analytics';
 import PageTracker from '../analytics/PageTracker';
+import Parallax from '../layouts/parallax';
 
 // Composant d'en-tête de contact mémorisé
 const ContactHeader = memo(({ isCollapsed, onToggle }) => (
