@@ -114,8 +114,8 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {/* GTM EN PREMIER - CRITIQUE */}
-        {/* {gtmId && <GoogleTagManager gtmId={gtmId} />} */}
-        <script
+        {gtmId && <GoogleTagManager gtmId={gtmId} />}
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -123,7 +123,7 @@ export default function RootLayout({ children }) {
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-K4F2X42H');`,
           }}
-        />
+        /> */}
         <Navbar />
         {children}
         {/* AnalyticsInitializer peut rester après */}

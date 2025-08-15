@@ -21,15 +21,6 @@ import PageTracker from '../analytics/PageTracker';
 // Composant de carte mémorisé pour performance
 const TemplateCard = memo(
   ({ template, isHovered, onHover, onLeave, onClick }) => {
-    useEffect(() => {
-      // Logique pour le hover
-      if (typeof window !== 'undefined') {
-        console.log('GTM Ready?', window.google_tag_manager);
-        console.log('DataLayer?', window.dataLayer);
-        console.log('GTM ID?', window.google_tag_data);
-      }
-    }, []);
-
     const categoryIcons = [];
     const categoryLabel = [];
 
