@@ -8,7 +8,6 @@ import { notFound } from 'next/navigation';
 import SinglePost from '@/components/blog/SinglePost';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../../instrumentation';
-import SinglePostSkeleton from '@/components/blog/skeletons/SinglePostSkeleton';
 import Loading from './loading';
 
 // Configuration simple et efficace
