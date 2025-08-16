@@ -1,0 +1,287 @@
+// app/global-error.scss
+// Styles inline pour garantir l'affichage même si les CSS sont cassés
+// Utilise un système minimal mais cohérent avec le projet
+
+.global-error {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #0c0c1d 0%, #1a1a2e 100%);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  // 📱 MOBILE FIRST - Responsive simple
+  @media (min-width: 375px) {
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 3rem;
+  }
+}
+
+/* ==========================================
+   CONTENEUR PRINCIPAL
+========================================== */
+.error-container {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid rgba(246, 160, 55, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+  // 📱 MOBILE FIRST - Padding
+  padding: 2rem 1.5rem;
+
+  @media (min-width: 375px) {
+    padding: 2.5rem 1.8rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 3rem 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 3.5rem 2.5rem;
+  }
+}
+
+/* ==========================================
+   ICÔNE D'ERREUR
+========================================== */
+.error-icon {
+  margin-bottom: 1.5rem;
+  animation: pulse 2s infinite;
+
+  // 📱 MOBILE FIRST
+  font-size: 3rem;
+
+  @media (min-width: 375px) {
+    font-size: 3.5rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 4.5rem;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ==========================================
+   TYPOGRAPHIE
+========================================== */
+.error-title {
+  color: #f6a037;
+  font-weight: bold;
+  margin-bottom: 1rem;
+
+  // 📱 MOBILE FIRST
+  font-size: 1.75rem;
+
+  @media (min-width: 375px) {
+    font-size: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 2.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 2.5rem;
+  }
+}
+
+.error-message {
+  color: #e0e0e0;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+
+  // 📱 MOBILE FIRST
+  font-size: 1rem;
+
+  @media (min-width: 375px) {
+    font-size: 1.05rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1.1rem;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 1.15rem;
+  }
+}
+
+.error-details {
+  background: rgba(246, 160, 55, 0.1);
+  border: 1px solid rgba(246, 160, 55, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  color: #f6a037;
+  text-align: left;
+  word-break: break-word;
+  max-height: 150px;
+  overflow-y: auto;
+
+  // 📱 MOBILE FIRST
+  font-size: 0.8rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+  }
+}
+
+/* ==========================================
+   BOUTONS
+========================================== */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+
+  // 📱 MOBILE - Stack vertical
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.btn {
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  // 📱 MOBILE FIRST
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+
+  @media (min-width: 375px) {
+    padding: 0.8rem 1.75rem;
+    font-size: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0.85rem 2rem;
+  }
+}
+
+.btn-primary {
+  background: #f6a037;
+  color: #0c0c1d;
+
+  &:hover {
+    background: #e89027;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(246, 160, 55, 0.3);
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #f6a037;
+  border: 2px solid #f6a037;
+
+  &:hover {
+    background: rgba(246, 160, 55, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+/* ==========================================
+   SECTION SUPPORT
+========================================== */
+.support-text {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #999;
+
+  // 📱 MOBILE FIRST
+  font-size: 0.8rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.85rem;
+  }
+
+  a {
+    color: #f6a037;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  small {
+    font-size: 0.75rem;
+  }
+}
+
+/* ==========================================
+   OPTIMISATIONS POUR L'ACCESSIBILITÉ
+========================================== */
+
+// Réduction de mouvement
+@media (prefers-reduced-motion: reduce) {
+  .error-icon {
+    animation: none !important;
+  }
+
+  .btn {
+    &:hover {
+      transform: none !important;
+    }
+  }
+}
+
+// Mode sombre (déjà appliqué par défaut)
+@media (prefers-color-scheme: light) {
+  .global-error {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 100%);
+    color: #333;
+  }
+
+  .error-container {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(246, 160, 55, 0.3);
+  }
+
+  .error-message {
+    color: #555;
+  }
+
+  .support-text {
+    color: #666;
+    border-top-color: rgba(0, 0, 0, 0.1);
+  }
+}

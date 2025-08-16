@@ -1,0 +1,569 @@
+// app/templates/[id]/not-found.scss
+@use '../../styles/abstracts' as *;
+
+.not-found-container {
+  min-height: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  // 📱 MOBILE FIRST - Padding avec nouveaux breakpoints
+  padding: 1rem;
+
+  @include from('small-sm') {
+    padding: 1.5rem;
+  }
+
+  @include from('small-lg') {
+    padding: 2rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    padding: 2.5rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    padding: 3rem;
+  }
+
+  // Arrière-plan dégradé avec les couleurs du projet
+  background: linear-gradient(
+    135deg,
+    css-var(background-color) 0%,
+    rgba(css-var(background-color), 0.8) 100%
+  );
+}
+
+/* ==========================================
+   FORMES GÉOMÉTRIQUES ANIMÉES
+========================================== */
+.geometric-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.shape {
+  position: absolute;
+  border: 2px solid css-var(primary-color);
+  animation: float 20s infinite ease-in-out;
+}
+
+.shape-1 {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  animation-delay: 0s;
+
+  // 📱 MOBILE
+  width: 200px;
+  height: 200px;
+  top: 15%;
+  left: 5%;
+
+  @include from('small-lg') {
+    width: 250px;
+    height: 250px;
+    top: 10%;
+    left: 10%;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+.shape-2 {
+  border-radius: 50%;
+  animation-delay: 5s;
+
+  // 📱 MOBILE
+  width: 120px;
+  height: 120px;
+  top: 65%;
+  right: 5%;
+
+  @include from('small-lg') {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 10%;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.shape-3 {
+  transform: rotate(45deg);
+  animation-delay: 10s;
+
+  // 📱 MOBILE
+  width: 100px;
+  height: 100px;
+  bottom: 25%;
+  left: 45%;
+
+  @include from('small-lg') {
+    width: 130px;
+    height: 130px;
+    bottom: 20%;
+    left: 50%;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-30px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(30px) rotate(240deg);
+  }
+}
+
+/* ==========================================
+   CONTENEUR PRINCIPAL
+========================================== */
+.content-wrapper {
+  width: 100%;
+  background: rgba(css-var(text-color), 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  text-align: center;
+  border: 1px solid rgba(css-var(primary-color), 0.2);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(css-var(text-color), 0.1);
+  position: relative;
+  z-index: 1;
+  animation: slideIn 0.6s ease-out;
+
+  // 📱 MOBILE FIRST - Padding et max-width
+  padding: 2rem 1.5rem;
+  max-width: 90%;
+
+  @include from('small-sm') {
+    padding: 2.5rem 1.8rem;
+    max-width: 500px;
+  }
+
+  @include from('small-lg') {
+    padding: 3rem 2rem;
+    max-width: 550px;
+  }
+
+  @include from('small-xl') {
+    padding: 3.2rem 2.2rem;
+    max-width: 600px;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    padding: 3.5rem 2.5rem;
+    max-width: 650px;
+  }
+
+  @include from('medium-lg') {
+    padding: 4rem;
+    max-width: 700px;
+  }
+
+  @include from('medium-xxl') {
+    max-width: 750px;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    max-width: 800px;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================
+   ICÔNE D'ERREUR
+========================================== */
+.error-icon-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2rem;
+
+  @include small-screens {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.error-icon {
+  animation: bounce 2s infinite;
+
+  // 📱 MOBILE FIRST
+  font-size: 4rem;
+
+  @include from('small-sm') {
+    font-size: 4.5rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 5rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    font-size: 5.5rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    font-size: 6rem;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.error-code {
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color) 0%,
+    rgba(css-var(primary-color), 0.8) 100%
+  );
+  color: css-var(background-color);
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(css-var(primary-color), 0.3);
+
+  // 📱 MOBILE FIRST
+  font-size: 1rem;
+  padding: 0.25rem 0.6rem;
+
+  @include from('small-lg') {
+    font-size: 1.1rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    font-size: 1.2rem;
+    padding: 0.3rem 0.8rem;
+  }
+}
+
+/* ==========================================
+   TYPOGRAPHIE
+========================================== */
+.error-title {
+  color: css-var(primary-color);
+  font-weight: bold;
+  margin: 1rem 0;
+  letter-spacing: -1px;
+
+  // 📱 MOBILE FIRST
+  font-size: 1.8rem;
+
+  @include from('small-sm') {
+    font-size: 2rem;
+  }
+
+  @include from('small-lg') {
+    font-size: 2.2rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    font-size: 2.4rem;
+  }
+
+  // 🖥️ GRANDS ÉCRANS
+  @include from('large-xs') {
+    font-size: 2.5rem;
+  }
+}
+
+.template-id-badge {
+  display: inline-block;
+  background: rgba(css-var(primary-color), 0.1);
+  color: css-var(primary-color);
+  border-radius: 20px;
+  font-family: monospace;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(css-var(primary-color), 0.3);
+
+  // 📱 MOBILE FIRST
+  padding: 0.3rem 1rem;
+  font-size: 0.85rem;
+
+  @include from('small-lg') {
+    padding: 0.4rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+
+.error-message {
+  color: css-var(text-color-muted);
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+
+  // 📱 MOBILE FIRST
+  font-size: 1rem;
+
+  @include from('small-lg') {
+    font-size: 1.1rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    font-size: 1.2rem;
+  }
+}
+
+/* ==========================================
+   BOUTONS
+========================================== */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+
+  // 📱 MOBILE - Stack vertical
+  @include small-screens {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  @include from('medium-sm') {
+    flex-direction: row;
+  }
+}
+
+.btn {
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+  overflow: hidden;
+
+  // 📱 MOBILE FIRST
+  padding: 0.8rem 1.8rem;
+  font-size: 0.95rem;
+
+  @include from('small-lg') {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  // 📟 MOYENS ÉCRANS
+  @include from('medium-sm') {
+    padding: 1rem 2.2rem;
+    font-size: 1.05rem;
+  }
+
+  // 📱 MOBILE - Largeur complète
+  @include small-screens {
+    width: 100%;
+    justify-content: center;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(css-var(text-color), 0.15);
+    transform: translate(-50%, -50%);
+    transition:
+      width 0.4s,
+      height 0.4s;
+  }
+
+  &:hover::before {
+    width: 500px;
+    height: 500px;
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color) 0%,
+    rgba(css-var(primary-color), 0.8) 100%
+  );
+  color: css-var(background-color);
+  box-shadow:
+    0 6px 20px rgba(css-var(primary-color), 0.3),
+    inset 0 1px 0 rgba(css-var(text-color), 0.2);
+
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+      0 10px 35px rgba(css-var(primary-color), 0.4),
+      inset 0 1px 0 rgba(css-var(text-color), 0.3);
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: css-var(primary-color);
+  border: 2px solid css-var(primary-color);
+
+  &:hover {
+    background: rgba(css-var(primary-color), 0.1);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(css-var(primary-color), 0.2);
+  }
+}
+
+/* ==========================================
+   SECTION D'AIDE
+========================================== */
+.help-section {
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(css-var(text-color), 0.1);
+
+  @include small-screens {
+    margin-top: 2rem;
+    padding-top: 2rem;
+  }
+}
+
+.help-text {
+  color: rgba(css-var(text-color), 0.6);
+  line-height: 1.6;
+
+  // 📱 MOBILE FIRST
+  font-size: 0.9rem;
+
+  @include from('small-lg') {
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: css-var(primary-color);
+    text-decoration: none;
+    transition: all 0.3s;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+  }
+}
+
+.reference-code {
+  margin-top: 1rem;
+  font-family: monospace;
+  color: rgba(css-var(text-color), 0.4);
+
+  // 📱 MOBILE FIRST
+  font-size: 0.75rem;
+
+  @include from('small-lg') {
+    font-size: 0.8rem;
+  }
+}
+
+/* ==========================================
+   OPTIMISATIONS POUR L'ACCESSIBILITÉ
+========================================== */
+
+// Réduction de mouvement
+@include reduced-motion {
+  .error-icon,
+  .shape-1,
+  .shape-2,
+  .shape-3,
+  .content-wrapper {
+    animation: none !important;
+  }
+
+  .btn {
+    &:hover {
+      transform: none !important;
+    }
+
+    &::before {
+      transition: none !important;
+    }
+  }
+}
+
+// Mode sombre
+@include dark-mode {
+  .content-wrapper {
+    background: rgba(css-var(text-color), 0.03);
+    border-color: rgba(css-var(primary-color), 0.3);
+  }
+
+  .help-section {
+    border-top-color: rgba(css-var(text-color), 0.15);
+  }
+}
+
+// Écrans haute densité
+@include high-density {
+  .content-wrapper {
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(css-var(text-color), 0.15);
+  }
+
+  .btn-primary {
+    box-shadow:
+      0 6px 20px rgba(css-var(primary-color), 0.4),
+      inset 0 1px 0 rgba(css-var(text-color), 0.25);
+  }
+}
