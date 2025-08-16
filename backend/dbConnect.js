@@ -13,8 +13,8 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 const CONFIG = {
   // Pool adapté pour 500 visiteurs/jour
   pool: {
-    max: 3, // Largement suffisant pour le trafic
-    min: 1, // Une connexion minimum
+    max: 20, // Largement suffisant pour le trafic
+    min: 10, // Une connexion minimum
     idleTimeoutMillis: 30000, // 30 secondes
     connectionTimeoutMillis: 5000,
   },

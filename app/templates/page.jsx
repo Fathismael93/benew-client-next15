@@ -5,10 +5,10 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
-import TemplatesSkeleton from '@/components/templates/skeletons/TemplatesSkeleton';
 import TemplatesList from '@/components/templates/TemplatesList';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../instrumentation';
+import Loading from './loading';
 
 // Configuration simplifiée mais robuste pour e-commerce
 const CONFIG = {
@@ -112,7 +112,7 @@ export default async function TemplatesPage() {
 
   // Rendu normal avec Suspense pour UX
   return (
-    <Suspense fallback={<TemplatesSkeleton />}>
+    <Suspense fallback={<Loading />}>
       <TemplatesList templates={data.templates} />
     </Suspense>
   );
