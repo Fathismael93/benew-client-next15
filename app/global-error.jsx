@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { captureException } from '@/instrumentation';
-import './styles/global-error.css';
+import './styles/global-error.scss';
 
 /**
  * Composant de gestion d'erreurs globales pour Next.js 15
