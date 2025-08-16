@@ -6,10 +6,10 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
-import SingleTemplateSkeleton from '@/components/templates/skeletons/SingleTemplateSkeleton';
 import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../../instrumentation';
+import Loading from './loading';
 
 // Configuration simple et efficace
 const CONFIG = {
@@ -160,7 +160,7 @@ export default async function SingleTemplatePage({ params }) {
 
   // Rendu normal avec Suspense
   return (
-    <Suspense fallback={<SingleTemplateSkeleton />}>
+    <Suspense fallback={<Loading />}>
       <SingleTemplateShops
         templateID={templateId}
         applications={data.applications}

@@ -12,7 +12,7 @@ import {
   captureException,
   captureMessage,
 } from '../../../../../instrumentation';
-import SingleApplicationSkeleton from '@/components/templates/skeletons/SingleApplicationSkeleton';
+import { Loading } from './loading';
 
 // Configuration simple et efficace
 const CONFIG = {
@@ -224,7 +224,7 @@ export default async function SingleApplicationPage({ params }) {
 
   // Rendu normal avec Suspense
   return (
-    <Suspense fallback={<SingleApplicationSkeleton />}>
+    <Suspense fallback={<Loading />}>
       <SingleApplication
         application={data.application}
         template={data.template}

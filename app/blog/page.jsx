@@ -7,7 +7,7 @@ import { Suspense } from 'react';
 import ListBlog from '@/components/blog/ListBlog';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../instrumentation';
-import ListBlogSkeleton from '@/components/blog/skeletons/ListBlogSkeleton';
+import Loading from './loading';
 
 // Configuration simplifiée mais robuste pour blog
 const CONFIG = {
@@ -128,7 +128,7 @@ export default async function BlogPage() {
 
   // Rendu normal avec Suspense pour UX
   return (
-    <Suspense fallback={<ListBlogSkeleton />}>
+    <Suspense fallback={<Loading />}>
       <ListBlog posts={data.articles} />
     </Suspense>
   );

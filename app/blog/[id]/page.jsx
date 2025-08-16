@@ -9,6 +9,7 @@ import SinglePost from '@/components/blog/SinglePost';
 import { getClient } from '@/backend/dbConnect';
 import { captureException, captureMessage } from '../../../instrumentation';
 import SinglePostSkeleton from '@/components/blog/skeletons/SinglePostSkeleton';
+import Loading from './loading';
 
 // Configuration simple et efficace
 const CONFIG = {
@@ -166,7 +167,7 @@ export default async function SingleBlogPage({ params }) {
 
   // Rendu normal avec Suspense
   return (
-    <Suspense fallback={<SinglePostSkeleton />}>
+    <Suspense fallback={<Loading />}>
       <SinglePost
         article={data.article}
         relatedArticles={data.relatedArticles}

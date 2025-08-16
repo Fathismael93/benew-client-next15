@@ -2,19 +2,17 @@
 // Server Component optimisé pour page de contact
 // Next.js 15 - Page statique simple sans DB
 
-// import { Suspense } from 'react';
+import { Suspense } from 'react';
 import Contact from '@/components/contact';
-// import ContactSkeleton from '@/components/contact/skeletons/ContactSkeleton';
+import Loading from './loading';
 
 // Composant principal épuré
 export default function ContactPage() {
-  // return (
-  //   <Suspense fallback={<ContactSkeleton />}>
-  //     <Contact />
-  //   </Suspense>
-  // );
-
-  return <Contact />;
+  return (
+    <Suspense fallback={<Loading />}>
+      <Contact />
+    </Suspense>
+  );
 }
 
 // Metadata pour SEO
