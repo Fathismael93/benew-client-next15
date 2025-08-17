@@ -65,20 +65,7 @@ export default function TemplateDetailNotFound() {
   return (
     <section className="first">
       <div className="not-found-container">
-        {/* Formes géométriques animées */}
-        <div className="geometric-bg">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-          <div className="shape shape-3"></div>
-        </div>
-
         <div className="content-wrapper">
-          {/* Icône avec badge 404 */}
-          <div className="error-icon-wrapper">
-            <div className="error-icon">🔍</div>
-            <span className="error-code">404</span>
-          </div>
-
           {/* Titre principal */}
           <h1 className="error-title">Template Introuvable</h1>
 
