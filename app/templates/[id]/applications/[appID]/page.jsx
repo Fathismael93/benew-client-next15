@@ -222,13 +222,40 @@ export default async function SingleApplicationPage({ params }) {
     notFound();
   }
 
+  // Debug pour trouver la source
+  console.log('=== DEBUG DATA TYPES ===');
+  console.log('application:', {
+    type: typeof data.application,
+    keys: Object.keys(data.application || {}),
+    hasFunctions: Object.values(data.application || {}).some(
+      (v) => typeof v === 'function',
+    ),
+  });
+
+  console.log('template:', {
+    type: typeof data.template,
+    keys: Object.keys(data.template || {}),
+    hasFunctions: Object.values(data.template || {}).some(
+      (v) => typeof v === 'function',
+    ),
+  });
+
+  console.log('platforms:', {
+    type: typeof data.platforms,
+    isArray: Array.isArray(data.platforms),
+    firstItem: data.platforms?.[0],
+    hasFunctions: data.platforms?.some((p) =>
+      Object.values(p).some((v) => typeof v === 'function'),
+    ),
+  });
+
   // Rendu normal avec Suspense
   return (
     <Suspense fallback={<Loading />}>
       <SingleApplication
         application={data.application}
         template={data.template}
-        relatedApplications={data.relatedApplications}
+        // relatedApplications={data.relatedApplications}
         platforms={data.platforms}
         context={{
           templateId: validation.templateId,

@@ -305,7 +305,7 @@ PricingSection.displayName = 'PricingSection';
 const SingleApplication = ({
   application,
   template,
-  relatedApplications,
+  // relatedApplications,
   platforms,
   context,
 }) => {
