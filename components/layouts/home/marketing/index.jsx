@@ -21,7 +21,12 @@ const MarketingHome = () => {
         <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
 
         {/* AJOUTER CE BOUTON ICI */}
-        <Link href="/blog" className="profit-blog-link">
+        <Link
+          href="/blog"
+          className="profit-blog-link"
+          scroll={true}
+          prefetch={false}
+        >
           En savoir plus
         </Link>
       </div>
