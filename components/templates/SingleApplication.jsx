@@ -302,7 +302,13 @@ const PricingSection = memo(({ application }) => {
 PricingSection.displayName = 'PricingSection';
 
 // Composant principal simplifié
-const SingleApplication = ({ application, template, platforms, context }) => {
+const SingleApplication = ({
+  application,
+  template,
+  relatedApplications,
+  platforms,
+  context,
+}) => {
   const images = application?.application_images || [];
   const [selectedImage, setSelectedImage] = useState(images[0] || '');
   const [isModalOpen, setIsModalOpen] = useState(false);
