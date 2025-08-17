@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { captureException } from '@/instrumentation';
 import { trackError } from '@/utils/analytics';
+import './error.scss';
 
 /**
  * Composant de gestion d'erreurs pour la page des templates
@@ -143,278 +144,82 @@ export default function TemplatesError({ error, reset }) {
     }, delay);
   };
 
-  /**
-   * Handler pour rafraîchir la page complètement
-   */
-  const handleHardRefresh = () => {
-    // Track l'action de refresh complet
-    if (typeof window !== 'undefined' && window.dataLayer) {
-      window.dataLayer.push({
-        event: 'error_hard_refresh',
-        error_type: 'templates_error',
-      });
-    }
-
-    if (typeof window !== 'undefined') {
-      window.location.reload();
-    }
-  };
-
   // Déterminer si on peut encore réessayer
   const canRetry = retryCount < MAX_RETRIES;
 
   return (
-    <div className="templates-error">
-      <style>{`
-        .templates-error {
-          min-height: 60vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem;
-          background: linear-gradient(135deg, #0c0c1d 0%, #1a1a2e 100%);
-        }
+    <section className="first">
+      <div className="templates-error">
+        <div className="error-container">
+          {/* Icône d'erreur */}
+          <div className="error-icon">⚠️</div>
 
-        .error-container {
-          max-width: 600px;
-          width: 100%;
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(10px);
-          border-radius: 16px;
-          padding: 3rem;
-          text-align: center;
-          border: 1px solid rgba(246, 160, 55, 0.2);
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
+          {/* Titre */}
+          <h2 className="error-title">Erreur de chargement</h2>
 
-        .error-icon {
-          font-size: 4rem;
-          margin-bottom: 1.5rem;
-          animation: pulse 2s infinite;
-        }
+          {/* Message principal */}
+          <p className="error-message">
+            Une erreur est survenue lors du chargement de la page des templates.
+            Veuillez réessayer ou revenir plus tard.
+          </p>
 
-        @keyframes pulse {
-          0%,
-          100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.5;
-          }
-        }
-
-        .error-title {
-          color: #f6a037;
-          font-size: 1.75rem;
-          font-weight: bold;
-          margin-bottom: 1rem;
-        }
-
-        .error-message {
-          color: #e0e0e0;
-          font-size: 1.1rem;
-          line-height: 1.6;
-          margin-bottom: 2rem;
-        }
-
-        .error-details {
-          background: rgba(246, 160, 55, 0.1);
-          border: 1px solid rgba(246, 160, 55, 0.3);
-          border-radius: 8px;
-          padding: 1rem;
-          margin-bottom: 2rem;
-          color: #f6a037;
-          font-size: 0.9rem;
-        }
-
-        .retry-info {
-          color: #999;
-          font-size: 0.85rem;
-          margin-bottom: 2rem;
-        }
-
-        .button-group {
-          display: flex;
-          gap: 1rem;
-          justify-content: center;
-          flex-wrap: wrap;
-        }
-
-        .btn {
-          padding: 0.75rem 1.5rem;
-          font-size: 1rem;
-          font-weight: 600;
-          border-radius: 8px;
-          border: none;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .btn-primary {
-          background: #f6a037;
-          color: #0c0c1d;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-          background: #e89027;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(246, 160, 55, 0.3);
-        }
-
-        .btn-secondary {
-          background: transparent;
-          color: #f6a037;
-          border: 2px solid #f6a037;
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-          background: rgba(246, 160, 55, 0.1);
-          transform: translateY(-2px);
-        }
-
-        .btn-tertiary {
-          background: transparent;
-          color: #999;
-          border: 2px solid #999;
-        }
-
-        .btn-tertiary:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: #fff;
-          border-color: #fff;
-        }
-
-        .spinner {
-          display: inline-block;
-          width: 14px;
-          height: 14px;
-          border: 2px solid transparent;
-          border-top-color: currentColor;
-          border-radius: 50%;
-          animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        .support-text {
-          margin-top: 2rem;
-          padding-top: 2rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          color: #999;
-          font-size: 0.85rem;
-        }
-
-        .support-text a {
-          color: #f6a037;
-          text-decoration: none;
-        }
-
-        .support-text a:hover {
-          text-decoration: underline;
-        }
-
-        @media (max-width: 640px) {
-          .error-container {
-            padding: 2rem 1.5rem;
-          }
-
-          .button-group {
-            flex-direction: column;
-          }
-
-          .btn {
-            width: 100%;
-            justify-content: center;
-          }
-        }
-      `}</style>
-
-      <div className="error-container">
-        {/* Icône d'erreur */}
-        <div className="error-icon">⚠️</div>
-
-        {/* Titre */}
-        <h2 className="error-title">Erreur de chargement des templates</h2>
-
-        {/* Message principal */}
-        <p className="error-message">{getUserFriendlyMessage()}</p>
-
-        {/* Détails de l'erreur (dev uniquement) */}
-        {process.env.NODE_ENV === 'development' && error && (
-          <div className="error-details">
-            <strong>Détails techniques:</strong>
-            <br />
-            {error.name}: {error.message?.substring(0, 150)}
-          </div>
-        )}
-
-        {/* Info sur les tentatives */}
-        {retryCount > 0 && (
-          <div className="retry-info">
-            Tentative {retryCount} sur {MAX_RETRIES}
-            {!canRetry && ' - Maximum de tentatives atteint'}
-          </div>
-        )}
-
-        {/* Boutons d'action */}
-        <div className="button-group">
-          {canRetry && (
-            <button
-              onClick={handleRetry}
-              disabled={isRetrying}
-              className="btn btn-primary"
-            >
-              {isRetrying ? (
-                <>
-                  <span className="spinner"></span>
-                  Nouvelle tentative...
-                </>
-              ) : (
-                <>
-                  🔄 Réessayer
-                  {retryCount > 0 && ` (${MAX_RETRIES - retryCount} restantes)`}
-                </>
-              )}
-            </button>
+          {/* Détails de l'erreur (dev uniquement) */}
+          {process.env.NODE_ENV === 'development' && error && (
+            <div className="error-details">
+              <strong>Détails techniques:</strong>
+              <br />
+              {error.name}: {error.message?.substring(0, 150)}
+            </div>
           )}
 
-          <button
-            onClick={handleHardRefresh}
-            className="btn btn-secondary"
-            disabled={isRetrying}
-          >
-            🔃 Rafraîchir la page
-          </button>
+          {/* Info sur les tentatives */}
+          {retryCount > 0 && (
+            <div className="retry-info">
+              Tentative {retryCount} sur {MAX_RETRIES}
+              {!canRetry && ' - Maximum de tentatives atteint'}
+            </div>
+          )}
 
-          <Link href="/" className="btn btn-tertiary">
-            🏠 Retour à l&apos;accueil
-          </Link>
-        </div>
+          {/* Boutons d'action */}
+          <div className="button-group">
+            {canRetry && (
+              <button
+                onClick={handleRetry}
+                disabled={isRetrying}
+                className="btn btn-primary"
+              >
+                {isRetrying ? (
+                  <>
+                    <span className="spinner"></span>
+                    Nouvelle tentative...
+                  </>
+                ) : (
+                  <>
+                    🔄 Réessayer
+                    {retryCount > 0 &&
+                      ` (${MAX_RETRIES - retryCount} restantes)`}
+                  </>
+                )}
+              </button>
+            )}
 
-        {/* Support */}
-        <div className="support-text">
-          Si le problème persiste, contactez notre support à{' '}
-          <a href="mailto:support@benew-dj.com">support@benew-dj.com</a>
-          <br />
-          <small>
-            Référence: TPL-{Date.now()}-
-            {Math.random().toString(36).substr(2, 5).toUpperCase()}
-          </small>
+            <Link href="/" className="btn btn-secondary">
+              🏠 Retour à l&apos;accueil
+            </Link>
+          </div>
+
+          {/* Support */}
+          <div className="support-text">
+            Si le problème persiste, contactez notre support à{' '}
+            <a href="mailto:support@benew-dj.com">support@benew-dj.com</a>
+            <br />
+            <small>
+              Référence: TPL-{Date.now()}-
+              {Math.random().toString(36).substr(2, 5).toUpperCase()}
+            </small>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
