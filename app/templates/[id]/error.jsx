@@ -237,17 +237,6 @@ export default function TemplateDetailError({ error, reset }) {
               🏠 Retour à l&apos;accueil
             </Link>
           </div>
-
-          {/* Section support */}
-          <div className="support-text">
-            Si le problème persiste, contactez notre support à{' '}
-            <a href="mailto:support@benew-dj.com">support@benew-dj.com</a>
-            <br />
-            <small>
-              Référence: TPL-{templateId || 'XXX'}-{Date.now()}-
-              {Math.random().toString(36).substr(2, 5).toUpperCase()}
-            </small>
-          </div>
         </div>
       </div>
     </section>

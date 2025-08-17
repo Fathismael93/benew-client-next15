@@ -158,8 +158,10 @@ export default function TemplatesError({ error, reset }) {
           <h2 className="error-title">Erreur de chargement</h2>
 
           {/* Message principal */}
-          <p className="error-message">
-            Une erreur est survenue lors du chargement de la page des templates.
+          <p className="error-message">{getUserFriendlyMessage()}</p>
+
+          {/* Message générique en complément */}
+          <p className="error-submessage">
             Veuillez réessayer ou revenir plus tard.
           </p>
 
@@ -206,17 +208,6 @@ export default function TemplatesError({ error, reset }) {
             <Link href="/" className="btn btn-secondary">
               🏠 Retour à l&apos;accueil
             </Link>
-          </div>
-
-          {/* Support */}
-          <div className="support-text">
-            Si le problème persiste, contactez notre support à{' '}
-            <a href="mailto:support@benew-dj.com">support@benew-dj.com</a>
-            <br />
-            <small>
-              Référence: TPL-{Date.now()}-
-              {Math.random().toString(36).substr(2, 5).toUpperCase()}
-            </small>
           </div>
         </div>
       </div>

@@ -112,26 +112,6 @@ export default function TemplateDetailNotFound() {
               🏠 Retour à l&apos;accueil
             </Link>
           </div>
-
-          {/* Section d'aide */}
-          <div className="help-section">
-            <div className="help-text">
-              Besoin d&apos;aide ? Contactez notre équipe support ou consultez
-              notre{' '}
-              <Link href="/help" onClick={() => handleLinkClick('help')}>
-                centre d&apos;aide
-              </Link>
-              .
-              <br />
-              Vous pouvez aussi nous signaler ce problème si vous pensez
-              qu&apos;il s&apos;agit d&apos;une erreur.
-            </div>
-
-            <div className="reference-code">
-              Référence: 404-TEMPLATE-{templateId?.toUpperCase() || 'UNKNOWN'}-
-              {Date.now().toString(36).toUpperCase()}
-            </div>
-          </div>
         </div>
       </div>
     </section>

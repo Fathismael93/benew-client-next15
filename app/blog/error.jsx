@@ -155,17 +155,6 @@ export default function BlogError({ error, reset }) {
               🏠 Retour à l&apos;accueil
             </Link>
           </div>
-
-          {/* Support */}
-          <div className="support-text">
-            Si le problème persiste, contactez notre support à{' '}
-            <a href="mailto:support@benew-dj.com">support@benew-dj.com</a>
-            <br />
-            <small>
-              Référence: BLG-{Date.now()}-
-              {Math.random().toString(36).substr(2, 5).toUpperCase()}
-            </small>
-          </div>
         </div>
       </div>
     </section>

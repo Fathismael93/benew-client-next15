@@ -112,17 +112,6 @@ export default function GlobalError({ error, reset }) {
                 🏠 Retour à l&apos;accueil
               </button>
             </div>
-
-            {/* Support */}
-            <div className="support-text">
-              Si le problème persiste, contactez-nous à{' '}
-              <a href="mailto:support@benew-dj.com">support@benew-dj.com</a>
-              <br />
-              <small>
-                Référence: GLB-{Date.now()}-
-                {Math.random().toString(36).substr(2, 9).toUpperCase()}
-              </small>
-            </div>
           </div>
         </div>
       </body>
