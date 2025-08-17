@@ -1,10 +1,16 @@
 'use client';
-
-import './index.scss';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const MarketingHome = () => {
+  const router = useRouter();
+
+  const handleBlogClick = () => {
+    // Force un rechargement complet de la page
+    router.push('/blog');
+    router.refresh(); // ✅ Force le refresh
+  };
+
   return (
     <div className="main-content">
       <Image
@@ -20,15 +26,9 @@ const MarketingHome = () => {
         <h2 className="main-title">GÉNÈRES PLUS DE PROFIT,</h2>
         <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
 
-        {/* AJOUTER CE BOUTON ICI */}
-        <Link
-          href="/blog"
-          className="profit-blog-link"
-          scroll={true}
-          prefetch={false}
-        >
+        <button onClick={handleBlogClick} className="profit-blog-link">
           En savoir plus
-        </Link>
+        </button>
       </div>
     </div>
   );
