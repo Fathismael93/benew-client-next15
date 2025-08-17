@@ -98,7 +98,7 @@ export default function TemplateDetailNotFound() {
           <div className="button-group">
             <Link
               href="/templates"
-              className="btn btn-primary"
+              className="retry-button"
               onClick={() => handleLinkClick('templates_list')}
             >
               📋 Voir tous les templates
@@ -106,7 +106,7 @@ export default function TemplateDetailNotFound() {
 
             <Link
               href="/"
-              className="btn btn-secondary"
+              className="home-button"
               onClick={() => handleLinkClick('home')}
             >
               🏠 Retour à l&apos;accueil

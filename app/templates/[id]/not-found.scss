@@ -360,7 +360,7 @@
 }
 
 /* ==========================================
-   BOUTONS
+   BOUTONS - STYLE MODAL (comme error.scss)
 ========================================== */
 .button-group {
   display: flex;
@@ -380,32 +380,27 @@
   }
 }
 
-.btn {
+.retry-button,
+.home-button {
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  position: relative;
-  overflow: hidden;
+  gap: 0.5rem;
 
-  // 📱 MOBILE FIRST
-  padding: 0.8rem 1.8rem;
-  font-size: 0.95rem;
+  // 📱 MOBILE FIRST - Zone tactile optimale
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  min-height: 48px;
 
-  @include from('small-lg') {
-    padding: 1rem 2rem;
-    font-size: 1rem;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    padding: 1rem 2.2rem;
-    font-size: 1.05rem;
+  @include until('small-sm') {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 44px;
   }
 
   // 📱 MOBILE - Largeur complète
@@ -414,55 +409,65 @@
     justify-content: center;
   }
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(css-var(text-color), 0.15);
-    transform: translate(-50%, -50%);
-    transition:
-      width 0.4s,
-      height 0.4s;
+  // 📟 MOYENS ÉCRANS - Transition
+  @include from('medium-sm') {
+    width: auto;
+    flex: 1;
+    padding: 0.9rem 1.4rem;
   }
 
-  &:hover::before {
-    width: 500px;
-    height: 500px;
+  @include from('medium-lg') {
+    padding: 0.85rem 1.35rem;
+  }
+
+  // 🖥️ DESKTOP - Valeurs optimales
+  @include from('large-xs') {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    min-height: auto;
+    width: auto;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
 
-.btn-primary {
+// STYLE MODAL - Bouton Principal ("Voir tous les templates")
+.retry-button {
   background: linear-gradient(
     135deg,
-    css-var(primary-color) 0%,
-    rgba(css-var(primary-color), 0.8) 100%
+    css-var(primary-color),
+    rgba(css-var(primary-color), 0.9)
   );
   color: css-var(background-color);
-  box-shadow:
-    0 6px 20px rgba(css-var(primary-color), 0.3),
-    inset 0 1px 0 rgba(css-var(text-color), 0.2);
+  box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
 
-  &:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow:
-      0 10px 35px rgba(css-var(primary-color), 0.4),
-      inset 0 1px 0 rgba(css-var(text-color), 0.3);
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      135deg,
+      rgba(css-var(primary-color), 0.9),
+      rgba(css-var(primary-color), 0.8)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
-.btn-secondary {
-  background: transparent;
+// STYLE MODAL - Bouton Secondaire ("Retour à l'accueil")
+.home-button {
+  background-color: transparent;
   color: css-var(primary-color);
-  border: 2px solid css-var(primary-color);
+  border: 1px solid css-var(primary-color);
 
-  &:hover {
-    background: rgba(css-var(primary-color), 0.1);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(css-var(primary-color), 0.2);
+  &:hover:not(:disabled) {
+    background-color: rgba(css-var(primary-color), 0.1);
+    border-color: rgba(css-var(primary-color), 0.8);
   }
 }
 
@@ -530,13 +535,27 @@
     animation: none !important;
   }
 
-  .btn {
+  .retry-button,
+  .home-button {
     &:hover {
       transform: none !important;
     }
+  }
+}
 
-    &::before {
-      transition: none !important;
+// Support pour écrans tactiles
+@media (pointer: coarse) {
+  .retry-button,
+  .home-button {
+    min-height: 48px;
+    min-width: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: scale(0.98);
     }
   }
 }
@@ -561,9 +580,11 @@
       inset 0 1px 0 rgba(css-var(text-color), 0.15);
   }
 
-  .btn-primary {
-    box-shadow:
-      0 6px 20px rgba(css-var(primary-color), 0.4),
-      inset 0 1px 0 rgba(css-var(text-color), 0.25);
+  .retry-button {
+    box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.4);
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.5);
+    }
   }
 }
