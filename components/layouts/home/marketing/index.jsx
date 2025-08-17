@@ -2,13 +2,9 @@
 
 import './index.scss';
 import Image from 'next/image';
-// import Link from 'next/link';
+import Link from 'next/link';
 
 const MarketingHome = () => {
-  const handleBlogClick = () => {
-    window.location.href = '/blog';
-  };
-
   return (
     <div className="main-content">
       <Image
@@ -25,9 +21,9 @@ const MarketingHome = () => {
         <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
 
         {/* AJOUTER CE BOUTON ICI */}
-        <button onClick={handleBlogClick} className="profit-blog-link">
+        <Link href="/blog" className="profit-blog-link">
           En savoir plus
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -228,7 +228,7 @@ export default async function SingleApplicationPage({ params }) {
       <SingleApplication
         application={data.application}
         template={data.template}
-        // relatedApplications={data.relatedApplications}
+        relatedApplications={data.relatedApplications}
         platforms={data.platforms}
         context={{
           templateId: validation.templateId,
@@ -326,4 +326,4 @@ export async function generateMetadata({ params }) {
 export const revalidate = 300;
 
 // Force static pour performance optimale
-export const dynamic = 'auto';
+export const dynamic = 'force-static';

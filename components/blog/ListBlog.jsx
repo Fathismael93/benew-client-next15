@@ -123,6 +123,14 @@ const ListBlog = ({ posts = [], blogMetrics = {} }) => {
     }
   }, []); // Dépendance vide intentionnelle
 
+  useEffect(() => {
+    console.log('ListBlog mounted:', {
+      posts: posts.length,
+      hasRef: !!ref.current,
+      viewport: { width: window.innerWidth, height: window.innerHeight },
+    });
+  }, [posts]);
+
   // Handler pour le clic sur un article
   const handleArticleView = useCallback(
     (article) => {
