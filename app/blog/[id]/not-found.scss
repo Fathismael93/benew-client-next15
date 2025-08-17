@@ -109,44 +109,6 @@
 }
 
 /* ==========================================
-   ICÔNE BLOG
-========================================== */
-.blog-icon {
-  margin-bottom: 1.5rem;
-  animation: float 3s ease-in-out infinite;
-
-  // 📱 MOBILE FIRST
-  font-size: 4rem;
-
-  @include from('small-sm') {
-    font-size: 4.5rem;
-  }
-
-  @include from('small-lg') {
-    font-size: 5rem;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    font-size: 5.5rem;
-  }
-
-  @include small-screens {
-    margin-bottom: 1rem;
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* ==========================================
    TYPOGRAPHIE
 ========================================== */
 .error-title {
@@ -200,7 +162,7 @@
 .error-message {
   color: css-var(text-color-muted);
   line-height: 1.7;
-  margin-bottom: 1.5rem;
+  margin-bottom: 3rem;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -215,28 +177,6 @@
   // 📟 MOYENS ÉCRANS
   @include from('medium-sm') {
     font-size: 1.15rem;
-  }
-}
-
-.error-submessage {
-  color: rgba(css-var(text-color), 0.65);
-  line-height: 1.6;
-  margin-bottom: 3rem;
-  max-width: 550px;
-  margin-left: auto;
-  margin-right: auto;
-  font-style: italic;
-
-  // 📱 MOBILE FIRST
-  font-size: 0.95rem;
-
-  @include from('small-lg') {
-    font-size: 1rem;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    font-size: 1.05rem;
   }
 }
 
