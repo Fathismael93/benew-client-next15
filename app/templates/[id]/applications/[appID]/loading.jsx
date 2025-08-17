@@ -1,5 +1,7 @@
 import SingleApplicationSkeleton from '@/components/templates/skeletons/SingleApplicationSkeleton';
 
-export const Loading = () => {
+const Loading = () => {
   return <SingleApplicationSkeleton />;
 };
+
+export default Loading;

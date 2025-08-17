@@ -12,7 +12,7 @@ import {
   captureException,
   captureMessage,
 } from '../../../../../instrumentation';
-import { Loading } from './loading';
+import Loading from './loading';
 
 // Configuration simple et efficace
 const CONFIG = {
