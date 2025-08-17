@@ -66,9 +66,6 @@ export default function BlogArticleNotFound() {
     <section className="first">
       <div className="blog-not-found-container">
         <div className="content-wrapper">
-          {/* Icône spéciale blog */}
-          <div className="blog-icon">📖</div>
-
           {/* Titre principal */}
           <h1 className="error-title">Article Introuvable</h1>
 
@@ -82,12 +79,6 @@ export default function BlogArticleNotFound() {
             Désolé, l&apos;article que vous recherchez n&apos;existe pas ou a
             peut-être été retiré de notre blog. Découvrez nos autres articles
             qui pourraient vous intéresser !
-          </p>
-
-          {/* Message d'encouragement */}
-          <p className="error-submessage">
-            Notre blog contient de nombreux articles passionnants sur le
-            développement, les technologies et l&apos;entrepreneuriat.
           </p>
 
           {/* Boutons d'action */}
