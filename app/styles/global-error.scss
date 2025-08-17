@@ -154,7 +154,7 @@
 }
 
 /* ==========================================
-   BOUTONS
+   BOUTONS - STYLE MODAL
 ========================================== */
 .button-group {
   display: flex;
@@ -170,9 +170,9 @@
   }
 }
 
-.btn {
-  font-weight: 600;
+button {
   border-radius: 8px;
+  font-weight: 600;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -181,9 +181,16 @@
   justify-content: center;
   gap: 0.5rem;
 
-  // 📱 MOBILE FIRST
-  padding: 0.75rem 1.5rem;
-  font-size: 0.95rem;
+  // 📱 MOBILE FIRST - Zone tactile optimale
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  min-height: 48px;
+
+  @media (max-width: 374px) {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+  }
 
   @media (min-width: 375px) {
     padding: 0.8rem 1.75rem;
@@ -192,58 +199,41 @@
 
   @media (min-width: 768px) {
     padding: 0.85rem 2rem;
+    min-height: auto;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }
 
-.btn-primary {
-  background: #f6a037;
+// STYLE MODAL - Bouton Principal (Réessayer)
+.nextButton {
+  background: linear-gradient(135deg, #f6a037, #e89027);
   color: #0c0c1d;
+  box-shadow: 0 4px 8px rgba(246, 160, 55, 0.3);
 
-  &:hover {
-    background: #e89027;
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e89027, #d6821f);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(246, 160, 55, 0.3);
+    box-shadow: 0 6px 12px rgba(246, 160, 55, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
-.btn-secondary {
-  background: transparent;
+// STYLE MODAL - Bouton Secondaire (Retour à l'accueil)
+.cancelButton {
+  background-color: transparent;
   color: #f6a037;
-  border: 2px solid #f6a037;
+  border: 1px solid #f6a037;
 
-  &:hover {
-    background: rgba(246, 160, 55, 0.1);
-    transform: translateY(-2px);
-  }
-}
-
-/* ==========================================
-   SECTION SUPPORT
-========================================== */
-.support-text {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: #999;
-
-  // 📱 MOBILE FIRST
-  font-size: 0.8rem;
-
-  @media (min-width: 768px) {
-    font-size: 0.85rem;
-  }
-
-  a {
-    color: #f6a037;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  small {
-    font-size: 0.75rem;
+  &:hover:not(:disabled) {
+    background-color: rgba(246, 160, 55, 0.1);
+    border-color: #e89027;
   }
 }
 
@@ -257,9 +247,25 @@
     animation: none !important;
   }
 
-  .btn {
+  button {
     &:hover {
       transform: none !important;
+    }
+  }
+}
+
+// Support pour écrans tactiles
+@media (pointer: coarse) {
+  button {
+    min-height: 48px;
+    min-width: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: scale(0.98);
     }
   }
 }
@@ -278,10 +284,5 @@
 
   .error-message {
     color: #555;
-  }
-
-  .support-text {
-    color: #666;
-    border-top-color: rgba(0, 0, 0, 0.1);
   }
 }

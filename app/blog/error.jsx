@@ -134,7 +134,7 @@ export default function BlogError({ error, reset }) {
               <button
                 onClick={handleRetry}
                 disabled={isRetrying}
-                className="btn btn-primary"
+                className="retry-button"
               >
                 {isRetrying ? (
                   <>
@@ -151,7 +151,7 @@ export default function BlogError({ error, reset }) {
               </button>
             )}
 
-            <Link href="/" className="btn btn-secondary">
+            <Link href="/" className="home-button">
               🏠 Retour à l&apos;accueil
             </Link>
           </div>

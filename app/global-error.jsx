@@ -104,11 +104,11 @@ export default function GlobalError({ error, reset }) {
 
             {/* Boutons d'action */}
             <div className="button-group">
-              <button onClick={handleReset} className="btn btn-primary">
+              <button onClick={handleReset} className="nextButton">
                 🔄 Réessayer
               </button>
 
-              <button onClick={handleGoHome} className="btn btn-secondary">
+              <button onClick={handleGoHome} className="cancelButton">
                 🏠 Retour à l&apos;accueil
               </button>
             </div>

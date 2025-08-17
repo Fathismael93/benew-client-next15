@@ -192,7 +192,7 @@
 }
 
 /* ==========================================
-   BOUTONS
+   BOUTONS - STYLE MODAL
 ========================================== */
 .button-group {
   display: flex;
@@ -212,7 +212,9 @@
   }
 }
 
-.btn {
+button,
+.blog-button,
+.home-button {
   font-weight: 600;
   border-radius: 8px;
   border: none;
@@ -223,12 +225,15 @@
   align-items: center;
   gap: 0.5rem;
 
-  // 📱 MOBILE FIRST
-  padding: 0.75rem 1.5rem;
-  font-size: 0.95rem;
+  // 📱 MOBILE FIRST - Zone tactile optimale
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  min-height: 48px;
 
-  @include from('small-lg') {
-    font-size: 1rem;
+  @include until('small-sm') {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+    min-height: 44px;
   }
 
   // 📱 MOBILE - Largeur complète
@@ -237,31 +242,66 @@
     justify-content: center;
   }
 
+  // 📟 MOYENS ÉCRANS - Transition
+  @include from('medium-sm') {
+    width: auto;
+    flex: 1;
+    padding: 0.9rem 1.4rem;
+  }
+
+  @include from('medium-lg') {
+    padding: 0.85rem 1.35rem;
+  }
+
+  // 🖥️ DESKTOP - Valeurs optimales
+  @include from('large-xs') {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    min-height: auto;
+    width: auto;
+  }
+
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
   }
 }
 
-.btn-primary {
-  background: css-var(primary-color);
+// STYLE MODAL - Bouton Principal (Réessayer)
+.retry-button {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    rgba(css-var(primary-color), 0.9)
+  );
   color: css-var(background-color);
+  box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
 
   &:hover:not(:disabled) {
-    background: rgba(css-var(primary-color), 0.9);
+    background: linear-gradient(
+      135deg,
+      rgba(css-var(primary-color), 0.9),
+      rgba(css-var(primary-color), 0.8)
+    );
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(css-var(primary-color), 0.3);
+    box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
-.btn-secondary {
-  background: transparent;
+// STYLE MODAL - Boutons Secondaires (Blog et Accueil)
+.blog-button,
+.home-button {
+  background-color: transparent;
   color: css-var(primary-color);
-  border: 2px solid css-var(primary-color);
+  border: 1px solid css-var(primary-color);
 
   &:hover:not(:disabled) {
-    background: rgba(css-var(primary-color), 0.1);
-    transform: translateY(-2px);
+    background-color: rgba(css-var(primary-color), 0.1);
+    border-color: rgba(css-var(primary-color), 0.8);
   }
 }
 
@@ -285,36 +325,6 @@
 }
 
 /* ==========================================
-   SECTION SUPPORT
-========================================== */
-.support-text {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(css-var(text-color), 0.1);
-  color: rgba(css-var(text-color), 0.6);
-
-  // 📱 MOBILE FIRST
-  font-size: 0.8rem;
-
-  @include from('small-lg') {
-    font-size: 0.85rem;
-  }
-
-  a {
-    color: css-var(primary-color);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  small {
-    font-size: 0.75rem;
-  }
-}
-
-/* ==========================================
    OPTIMISATIONS POUR L'ACCESSIBILITÉ
 ========================================== */
 
@@ -324,9 +334,29 @@
     animation: none !important;
   }
 
-  .btn {
+  button,
+  .blog-button,
+  .home-button {
     &:hover {
       transform: none !important;
+    }
+  }
+}
+
+// Support pour écrans tactiles
+@media (pointer: coarse) {
+  button,
+  .blog-button,
+  .home-button {
+    min-height: 48px;
+    min-width: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: scale(0.98);
     }
   }
 }
@@ -337,10 +367,6 @@
     background: rgba(css-var(text-color), 0.03);
     border-color: rgba(css-var(primary-color), 0.3);
   }
-
-  .support-text {
-    border-top-color: rgba(css-var(text-color), 0.15);
-  }
 }
 
 // Écrans haute densité
@@ -349,11 +375,11 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   }
 
-  .btn-primary {
-    box-shadow: 0 2px 8px rgba(css-var(primary-color), 0.2);
+  .retry-button {
+    box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.4);
 
     &:hover:not(:disabled) {
-      box-shadow: 0 5px 15px rgba(css-var(primary-color), 0.4);
+      box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.5);
     }
   }
 }
