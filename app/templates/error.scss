@@ -210,7 +210,7 @@
 }
 
 /* ==========================================
-   BOUTONS - STYLE MODAL
+   BOUTONS - STYLE ORDERMODAL (CORRIGÉ)
 ========================================== */
 .button-group {
   display: flex;
@@ -284,24 +284,26 @@ button,
   }
 }
 
-// STYLE MODAL - Bouton Principal (Réessayer)
+// STYLE ORDERMODAL - Bouton Principal (Réessayer) - ✅ CORRIGÉ
 .retry-button {
+  // ✅ CORRIGÉ : Utilise l'approche d'OrderModal qui fonctionne
   background: linear-gradient(
     135deg,
     css-var(primary-color),
-    rgba(css-var(primary-color), 0.9)
+    css-var(secondary-color)
   );
   color: css-var(background-color);
-  box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.3);
+  box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.3)'};
 
   &:hover:not(:disabled) {
+    // ✅ CORRIGÉ : Même approche que OrderModal
     background: linear-gradient(
       135deg,
-      rgba(css-var(primary-color), 0.9),
-      rgba(css-var(primary-color), 0.8)
+      css-var(secondary-color),
+      css-var(accent-color)
     );
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.4);
+    box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.4)'};
   }
 
   &:active {
@@ -309,15 +311,16 @@ button,
   }
 }
 
-// STYLE MODAL - Bouton Secondaire (Retour à l'accueil)
+// STYLE ORDERMODAL - Bouton Secondaire (Retour à l'accueil)
 .home-button {
   background-color: transparent;
   color: css-var(primary-color);
   border: 1px solid css-var(primary-color);
 
   &:hover:not(:disabled) {
-    background-color: rgba(css-var(primary-color), 0.1);
-    border-color: rgba(css-var(primary-color), 0.8);
+    // ✅ CORRIGÉ : Utilise l'interpolation de string comme OrderModal
+    background-color: #{'rgba(#{css-var(primary-color)}, 0.1)'};
+    border-color: css-var(secondary-color);
   }
 }
 
@@ -347,6 +350,10 @@ button,
 // Réduction de mouvement
 @include reduced-motion {
   .error-icon {
+    animation: none !important;
+  }
+
+  .spinner {
     animation: none !important;
   }
 
@@ -390,10 +397,10 @@ button,
   }
 
   .retry-button {
-    box-shadow: 0 4px 8px rgba(css-var(primary-color), 0.4);
+    box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.4)'};
 
     &:hover:not(:disabled) {
-      box-shadow: 0 6px 12px rgba(css-var(primary-color), 0.5);
+      box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.5)'};
     }
   }
 }

@@ -40,109 +40,6 @@
 }
 
 /* ==========================================
-   FORMES GÉOMÉTRIQUES ANIMÉES
-========================================== */
-.geometric-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  opacity: 0.1;
-  z-index: 0;
-}
-
-.shape {
-  position: absolute;
-  border: 2px solid css-var(primary-color);
-  animation: float 20s infinite ease-in-out;
-}
-
-.shape-1 {
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  animation-delay: 0s;
-
-  // 📱 MOBILE
-  width: 200px;
-  height: 200px;
-  top: 15%;
-  left: 5%;
-
-  @include from('small-lg') {
-    width: 250px;
-    height: 250px;
-    top: 10%;
-    left: 10%;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    width: 300px;
-    height: 300px;
-  }
-}
-
-.shape-2 {
-  border-radius: 50%;
-  animation-delay: 5s;
-
-  // 📱 MOBILE
-  width: 120px;
-  height: 120px;
-  top: 65%;
-  right: 5%;
-
-  @include from('small-lg') {
-    width: 150px;
-    height: 150px;
-    top: 60%;
-    right: 10%;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    width: 200px;
-    height: 200px;
-  }
-}
-
-.shape-3 {
-  transform: rotate(45deg);
-  animation-delay: 10s;
-
-  // 📱 MOBILE
-  width: 100px;
-  height: 100px;
-  bottom: 25%;
-  left: 45%;
-
-  @include from('small-lg') {
-    width: 130px;
-    height: 130px;
-    bottom: 20%;
-    left: 50%;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    width: 150px;
-    height: 150px;
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  33% {
-    transform: translateY(-30px) rotate(120deg);
-  }
-  66% {
-    transform: translateY(30px) rotate(240deg);
-  }
-}
-
-/* ==========================================
    CONTENEUR PRINCIPAL
 ========================================== */
 .content-wrapper {
@@ -207,84 +104,6 @@
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-/* ==========================================
-   ICÔNE D'ERREUR
-========================================== */
-.error-icon-wrapper {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 2rem;
-
-  @include small-screens {
-    margin-bottom: 1.5rem;
-  }
-}
-
-.error-icon {
-  animation: bounce 2s infinite;
-
-  // 📱 MOBILE FIRST
-  font-size: 4rem;
-
-  @include from('small-sm') {
-    font-size: 4.5rem;
-  }
-
-  @include from('small-lg') {
-    font-size: 5rem;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    font-size: 5.5rem;
-  }
-
-  // 🖥️ GRANDS ÉCRANS
-  @include from('large-xs') {
-    font-size: 6rem;
-  }
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-.error-code {
-  position: absolute;
-  top: -10px;
-  right: -20px;
-  background: linear-gradient(
-    135deg,
-    css-var(primary-color) 0%,
-    css-var(secondary-color) 100%
-  );
-  color: css-var(background-color);
-  font-weight: bold;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px #{'rgba(#{css-var(primary-color)}, 0.3)'};
-
-  // 📱 MOBILE FIRST
-  font-size: 1rem;
-  padding: 0.25rem 0.6rem;
-
-  @include from('small-lg') {
-    font-size: 1.1rem;
-    padding: 0.3rem 0.7rem;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    font-size: 1.2rem;
-    padding: 0.3rem 0.8rem;
   }
 }
 
@@ -475,65 +294,11 @@
 }
 
 /* ==========================================
-   SECTION D'AIDE
-========================================== */
-.help-section {
-  margin-top: 3rem;
-  padding-top: 2.5rem;
-  border-top: 1px solid rgba(css-var(text-color), 0.1);
-
-  @include small-screens {
-    margin-top: 2rem;
-    padding-top: 2rem;
-  }
-}
-
-.help-text {
-  color: rgba(css-var(text-color), 0.6);
-  line-height: 1.6;
-
-  // 📱 MOBILE FIRST
-  font-size: 0.9rem;
-
-  @include from('small-lg') {
-    font-size: 0.95rem;
-  }
-
-  a {
-    color: css-var(primary-color);
-    text-decoration: none;
-    transition: all 0.3s;
-
-    &:hover {
-      opacity: 0.8;
-      text-decoration: underline;
-    }
-  }
-}
-
-.reference-code {
-  margin-top: 1rem;
-  font-family: monospace;
-  color: rgba(css-var(text-color), 0.4);
-
-  // 📱 MOBILE FIRST
-  font-size: 0.75rem;
-
-  @include from('small-lg') {
-    font-size: 0.8rem;
-  }
-}
-
-/* ==========================================
    OPTIMISATIONS POUR L'ACCESSIBILITÉ
 ========================================== */
 
 // Réduction de mouvement
 @include reduced-motion {
-  .error-icon,
-  .shape-1,
-  .shape-2,
-  .shape-3,
   .content-wrapper {
     animation: none !important;
   }
@@ -568,10 +333,6 @@
   .content-wrapper {
     background: rgba(css-var(text-color), 0.03);
     border-color: rgba(css-var(primary-color), 0.3);
-  }
-
-  .help-section {
-    border-top-color: rgba(css-var(text-color), 0.15);
   }
 }
 
