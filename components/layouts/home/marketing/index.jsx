@@ -1,4 +1,6 @@
 'use client';
+
+import './index.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -26,6 +28,7 @@ const MarketingHome = () => {
         <h2 className="main-title">GÉNÈRES PLUS DE PROFIT,</h2>
         <h2 className="main-title">PAIES MOINS DE CHARGES</h2>
 
+        {/* AJOUTER CE BOUTON ICI */}
         <button onClick={handleBlogClick} className="profit-blog-link">
           En savoir plus
         </button>
