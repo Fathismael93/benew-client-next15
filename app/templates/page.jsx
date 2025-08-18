@@ -1,6 +1,6 @@
 // app/templates/page.jsx
 // Server Component optimisé pour liste des templates e-commerce
-// Next.js 15 + PostgreSQL + Cache simplifié + Monitoring essentiel
+// Next.js 15 + PostgreSQL + Cache simplifié + Monitoring essentiel + Query Timeout
 
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
@@ -17,10 +17,37 @@ const CONFIG = {
   },
   performance: {
     slowQueryThreshold: 1500, // Seuil d'alerte pour queries lentes
+    queryTimeout: 5000, // 5 secondes - timeout pour queries
   },
 };
 
-// Fonction principale simplifiée mais complète
+// 🔥 NOUVELLE FONCTION : Query avec timeout
+async function executeQueryWithTimeout(
+  client,
+  query,
+  timeout = CONFIG.performance.queryTimeout,
+) {
+  return new Promise((resolve, reject) => {
+    // Timer pour le timeout
+    const timeoutId = setTimeout(() => {
+      reject(new Error(`Query timeout après ${timeout}ms`));
+    }, timeout);
+
+    // Exécution de la query
+    client
+      .query(query)
+      .then((result) => {
+        clearTimeout(timeoutId);
+        resolve(result);
+      })
+      .catch((error) => {
+        clearTimeout(timeoutId);
+        reject(error);
+      });
+  });
+}
+
+// Fonction principale avec timeout intégré
 async function getTemplates() {
   const startTime = performance.now();
 
@@ -28,8 +55,8 @@ async function getTemplates() {
     const client = await getClient();
 
     try {
-      // Query directe et simple
-      const result = await client.query(`
+      // Query avec timeout
+      const query = `
         SELECT 
           template_id, 
           template_name, 
@@ -39,11 +66,13 @@ async function getTemplates() {
         FROM catalog.templates 
         WHERE is_active = true 
         ORDER BY template_added DESC
-      `);
+      `;
+
+      const result = await executeQueryWithTimeout(client, query);
 
       const queryDuration = performance.now() - startTime;
 
-      // Log uniquement si vraiment lent
+      // Log pour queries lentes
       if (queryDuration > CONFIG.performance.slowQueryThreshold) {
         captureMessage('Slow templates query detected', {
           level: 'warning',
@@ -51,8 +80,16 @@ async function getTemplates() {
           extra: {
             duration: queryDuration,
             templatesCount: result.rows.length,
+            queryTimeout: CONFIG.performance.queryTimeout,
           },
         });
+      }
+
+      // Log de succès avec durée (en dev seulement)
+      if (process.env.NODE_ENV === 'development') {
+        console.log(
+          `[Templates] Query exécutée en ${Math.round(queryDuration)}ms`,
+        );
       }
 
       return {
@@ -63,11 +100,39 @@ async function getTemplates() {
       client.release();
     }
   } catch (error) {
-    // Capture d'erreur simplifiée mais efficace
+    const queryDuration = performance.now() - startTime;
+
+    // Gestion spécifique des timeouts
+    if (error.message.includes('Query timeout')) {
+      captureMessage('Templates query timeout', {
+        level: 'error',
+        tags: {
+          component: 'templates_page',
+          error_type: 'query_timeout',
+        },
+        extra: {
+          duration: queryDuration,
+          timeout: CONFIG.performance.queryTimeout,
+        },
+      });
+
+      return {
+        templates: [],
+        success: false,
+        error: 'La requête a pris trop de temps. Veuillez réessayer.',
+        isTimeout: true,
+      };
+    }
+
+    // Autres erreurs DB
     captureException(error, {
       tags: {
         component: 'templates_page',
         error_type: 'database_error',
+      },
+      extra: {
+        duration: queryDuration,
+        timeout: CONFIG.performance.queryTimeout,
       },
     });
 
@@ -75,6 +140,7 @@ async function getTemplates() {
       templates: [],
       success: false,
       error: error.message,
+      isTimeout: false,
     };
   }
 }
@@ -83,19 +149,30 @@ async function getTemplates() {
 export default async function TemplatesPage() {
   const data = await getTemplates();
 
-  // Gestion d'erreur simple
+  // Gestion d'erreur avec distinction timeout
   if (!data.success) {
-    // En production, on pourrait logger et afficher une page d'erreur custom
     if (process.env.NODE_ENV === 'production') {
       notFound();
     }
 
-    // En dev, on affiche l'erreur
+    // En dev, affichage différencié selon le type d'erreur
     return (
       <div className="templates-error-fallback">
         <h1>Erreur de chargement</h1>
-        <p>Impossible de charger les templates.</p>
-        {process.env.NODE_ENV !== 'production' && <pre>{data.error}</pre>}
+        {data.isTimeout ? (
+          <div>
+            <p>⏱️ La requête a pris trop de temps.</p>
+            <p>Veuillez rafraîchir la page.</p>
+          </div>
+        ) : (
+          <p>Impossible de charger les templates.</p>
+        )}
+        {process.env.NODE_ENV !== 'production' && (
+          <details>
+            <summary>Détails de l&apos;erreur (dev)</summary>
+            <pre>{data.error}</pre>
+          </details>
+        )}
       </div>
     );
   }
