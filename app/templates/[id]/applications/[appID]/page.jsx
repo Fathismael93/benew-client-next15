@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // app/templates/[id]/applications/[appID]/page.jsx
 // Server Component optimisé pour détail d'une application e-commerce
-// Next.js 15 + PostgreSQL + Monitoring essentiel
+// Next.js 15 + PostgreSQL + Monitoring essentiel + Validation UUID + Timeouts
 
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
@@ -12,41 +12,68 @@ import {
   captureException,
   captureMessage,
 } from '../../../../../instrumentation';
+import { sanitizeAndValidateUUID } from '@/utils/validation';
 import Loading from './loading';
 
-// Configuration simple et efficace
+// Configuration étendue avec timeouts
 const CONFIG = {
   cache: {
     revalidate: 300, // 5 minutes ISR
   },
   performance: {
     slowQueryThreshold: 1500, // Alerte pour queries lentes
+    queryTimeout: 8000, // 8 secondes timeout
   },
 };
 
-// Validation basique des IDs
+/**
+ * Promise avec timeout
+ */
+function withTimeout(promise, timeoutMs, errorMessage = 'Operation timed out') {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => {
+        const timeoutError = new Error(errorMessage);
+        timeoutError.name = 'TimeoutError';
+        reject(timeoutError);
+      }, timeoutMs);
+    }),
+  ]);
+}
+
+/**
+ * Validation robuste des IDs avec UUID
+ */
 function validateIds(appId, templateId) {
-  // Validation simple sans schéma complexe
-  if (!appId || typeof appId !== 'string' || appId.length === 0) {
-    return { isValid: false };
+  // Validation et nettoyage de l'ID application
+  const cleanApplicationId = sanitizeAndValidateUUID(appId);
+  if (!cleanApplicationId) {
+    return {
+      isValid: false,
+      error: 'Application ID format invalide',
+      field: 'applicationId',
+    };
   }
 
-  if (
-    !templateId ||
-    typeof templateId !== 'string' ||
-    templateId.length === 0
-  ) {
-    return { isValid: false };
+  // Validation et nettoyage de l'ID template
+  const cleanTemplateId = sanitizeAndValidateUUID(templateId);
+  if (!cleanTemplateId) {
+    return {
+      isValid: false,
+      error: 'Template ID format invalide',
+      field: 'templateId',
+    };
   }
 
   return {
     isValid: true,
-    applicationId: appId,
-    templateId: templateId,
+    applicationId: cleanApplicationId,
+    templateId: cleanTemplateId,
   };
 }
 
-// Fonction principale épurée
+// Fonction principale avec timeout intégré
 async function getApplicationData(applicationId, templateId) {
   const startTime = performance.now();
 
@@ -54,12 +81,11 @@ async function getApplicationData(applicationId, templateId) {
     const client = await getClient();
 
     try {
-      // Exécuter toutes les requêtes en parallèle pour performance optimale
-      const [applicationResult, relatedAppsResult, platformsResult] =
-        await Promise.all([
-          // 1. Application avec contexte du template
-          client.query(
-            `SELECT 
+      // Exécuter toutes les requêtes en parallèle avec timeout
+      const queryPromise = Promise.all([
+        // 1. Application avec contexte du template
+        client.query(
+          `SELECT 
             -- Application
             a.application_id,
             a.application_name,
@@ -87,12 +113,12 @@ async function getApplicationData(applicationId, templateId) {
             AND a.application_template_id = $2
             AND a.is_active = true 
             AND t.is_active = true`,
-            [applicationId, templateId],
-          ),
+          [applicationId, templateId],
+        ),
 
-          // 2. Applications similaires
-          client.query(
-            `SELECT 
+        // 2. Applications similaires
+        client.query(
+          `SELECT 
             application_id,
             application_name,
             application_category,
@@ -106,35 +132,53 @@ async function getApplicationData(applicationId, templateId) {
             AND is_active = true
           ORDER BY application_level ASC, sales_count DESC
           LIMIT 6`,
-            [templateId, applicationId],
-          ),
+          [templateId, applicationId],
+        ),
 
-          // 3. Plateformes de paiement
-          client.query(
-            `SELECT 
+        // 3. Plateformes de paiement
+        client.query(
+          `SELECT 
             platform_id,
             platform_name,
             platform_number
           FROM admin.platforms 
           WHERE is_active = true 
           ORDER BY platform_name ASC`,
-          ),
-        ]);
+        ),
+      ]);
+
+      const [applicationResult, relatedAppsResult, platformsResult] =
+        await withTimeout(
+          queryPromise,
+          CONFIG.performance.queryTimeout,
+          'Database query timeout',
+        );
 
       const queryDuration = performance.now() - startTime;
 
-      // Log uniquement si lent
+      // Log performance avec timeout info
       if (queryDuration > CONFIG.performance.slowQueryThreshold) {
         captureMessage('Slow application detail query', {
           level: 'warning',
-          tags: { component: 'single_application_page' },
+          tags: {
+            component: 'single_application_page',
+            performance: true,
+          },
           extra: {
             applicationId,
             templateId,
             duration: queryDuration,
+            timeout: CONFIG.performance.queryTimeout,
             relatedAppsCount: relatedAppsResult.rows.length,
           },
         });
+      }
+
+      // Log de succès en dev
+      if (process.env.NODE_ENV === 'development') {
+        console.log(
+          `[Application] Query exécutée en ${Math.round(queryDuration)}ms (timeout: ${CONFIG.performance.queryTimeout}ms)`,
+        );
       }
 
       // Vérifier si l'application existe
@@ -177,17 +221,53 @@ async function getApplicationData(applicationId, templateId) {
         relatedApplications: relatedAppsResult.rows,
         platforms: platformsResult.rows,
         success: true,
+        queryDuration,
       };
     } finally {
       client.release();
     }
   } catch (error) {
+    const queryDuration = performance.now() - startTime;
+
+    // Gestion spécifique des timeouts
+    if (error.name === 'TimeoutError' || error.message.includes('timeout')) {
+      captureMessage('Application query timeout', {
+        level: 'error',
+        tags: {
+          component: 'single_application_page',
+          error_type: 'query_timeout',
+        },
+        extra: {
+          applicationId,
+          templateId,
+          duration: queryDuration,
+          timeout: CONFIG.performance.queryTimeout,
+        },
+      });
+
+      return {
+        application: null,
+        template: null,
+        relatedApplications: [],
+        platforms: [],
+        success: false,
+        error: 'La requête a pris trop de temps. Veuillez réessayer.',
+        isTimeout: true,
+      };
+    }
+
+    // Autres erreurs DB
     captureException(error, {
       tags: {
         component: 'single_application_page',
         error_type: 'database_error',
       },
-      extra: { applicationId, templateId },
+      extra: {
+        applicationId,
+        templateId,
+        duration: queryDuration,
+        timeout: CONFIG.performance.queryTimeout,
+      },
     });
 
     return {
@@ -197,28 +277,81 @@ async function getApplicationData(applicationId, templateId) {
       platforms: [],
       success: false,
       error: error.message,
+      isTimeout: false,
     };
   }
 }
 
-// Composant principal simplifié
+// Composant principal avec validation UUID robuste
 export default async function SingleApplicationPage({ params }) {
   const { id: templateId, appID: appId } = await params;
 
-  // Validation basique
+  // Validation robuste avec UUID
   const validation = validateIds(appId, templateId);
   if (!validation.isValid) {
+    // Log de la tentative d'accès avec ID invalide
+    captureMessage('Invalid ID format in application page', {
+      level: 'info',
+      tags: {
+        component: 'single_application_page',
+        validation: true,
+      },
+      extra: {
+        rawAppId: appId,
+        rawTemplateId: templateId,
+        validationError: validation.error,
+        invalidField: validation.field,
+      },
+    });
+
     notFound();
   }
 
-  // Récupérer les données
+  // Récupérer les données avec gestion d'erreurs et timeout
   const data = await getApplicationData(
     validation.applicationId,
     validation.templateId,
   );
 
   // Gestion des erreurs et application non trouvée
-  if (!data.success || !data.application) {
+  if (!data.success) {
+    // En production, toujours notFound pour les erreurs
+    if (process.env.NODE_ENV === 'production') {
+      notFound();
+    }
+
+    // En dev, affichage différencié selon le type d'erreur
+    return (
+      <div className="application-error-fallback">
+        <h1>Erreur de chargement de l&apos;application</h1>
+        {data.isTimeout ? (
+          <div>
+            <p>
+              ⏱️ La requête a pris trop de temps (timeout:{' '}
+              {CONFIG.performance.queryTimeout}ms).
+            </p>
+            <p>Veuillez rafraîchir la page.</p>
+          </div>
+        ) : (
+          <p>Impossible de charger l&apos;application.</p>
+        )}
+        {process.env.NODE_ENV === 'development' && (
+          <details>
+            <summary>Détails de l&apos;erreur (dev)</summary>
+            <pre>{data.error}</pre>
+            <p>
+              <strong>Application ID:</strong> {validation.applicationId}
+            </p>
+            <p>
+              <strong>Template ID:</strong> {validation.templateId}
+            </p>
+          </details>
+        )}
+      </div>
+    );
+  }
+
+  if (!data.application) {
     notFound();
   }
 
@@ -239,29 +372,29 @@ export default async function SingleApplicationPage({ params }) {
   );
 }
 
-// Génération dynamique des metadata
+// Génération dynamique des metadata avec validation UUID et timeout
 export async function generateMetadata({ params }) {
   const { id: templateId, appID: appId } = await params;
 
-  // Validation basique
+  // Validation robuste avec UUID
   const validation = validateIds(appId, templateId);
   if (!validation.isValid) {
     return {
       title: 'Application non trouvée - Benew',
       description:
-        "L'application demandée n'existe pas ou n'est plus disponible.",
+        "L'application demandée n'existe pas ou l'identifiant est invalide.",
+      robots: { index: false, follow: false },
     };
   }
 
   try {
     const client = await getClient();
     try {
-      const result = await client.query(
+      const queryPromise = client.query(
         `SELECT 
           a.application_name,
           a.application_description,
           a.application_category,
-          a.application_fee,
           a.application_images,
           t.template_name
         FROM catalog.applications a
@@ -270,6 +403,12 @@ export async function generateMetadata({ params }) {
           AND a.application_template_id = $2
           AND a.is_active = true`,
         [validation.applicationId, validation.templateId],
+      );
+
+      const result = await withTimeout(
+        queryPromise,
+        2000, // Timeout plus court pour metadata
+        'Metadata query timeout',
       );
 
       if (result.rows.length > 0) {
@@ -308,7 +447,20 @@ export async function generateMetadata({ params }) {
       client.release();
     }
   } catch (error) {
-    // Fallback metadata si erreur
+    // Log mais pas d'exception pour metadata
+    captureMessage('Metadata generation failed for application', {
+      level: 'warning',
+      tags: {
+        component: 'single_application_metadata',
+        error_type:
+          error.name === 'TimeoutError' ? 'timeout' : 'database_error',
+      },
+      extra: {
+        applicationId: validation.applicationId,
+        templateId: validation.templateId,
+        errorMessage: error.message,
+      },
+    });
   }
 
   // Metadata par défaut

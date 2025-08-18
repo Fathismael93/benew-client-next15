@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 // app/templates/[id]/page.jsx
 // Server Component optimisé pour détail d'un template e-commerce
 // Next.js 15 + PostgreSQL + Monitoring essentiel + Gestion d'erreurs avancée
@@ -218,6 +217,19 @@ async function getTemplateData(templateId) {
       try {
         // Exécuter les requêtes avec timeout
         const queryPromise = Promise.all([
+          // 1. Vérifier que le template existe
+          client.query(
+            `SELECT 
+              template_id,
+              template_name,
+              template_image,
+              template_has_web,
+              template_has_mobile
+            FROM catalog.templates 
+            WHERE template_id = $1 AND is_active = true`,
+            [templateId],
+          ),
+
           // 2. Récupérer les applications du template
           client.query(
             `SELECT 
@@ -250,11 +262,12 @@ async function getTemplateData(templateId) {
           ),
         ]);
 
-        const [applicationsResult, platformsResult] = await withTimeout(
-          queryPromise,
-          CONFIG.performance.queryTimeout,
-          'Database query timeout',
-        );
+        const [templateResult, applicationsResult, platformsResult] =
+          await withTimeout(
+            queryPromise,
+            CONFIG.performance.queryTimeout,
+            'Database query timeout',
+          );
 
         const queryDuration = performance.now() - startTime;
 
@@ -272,8 +285,9 @@ async function getTemplateData(templateId) {
         }
 
         // Template non trouvé (cas normal)
-        if (applicationsResult.rows.length === 0) {
+        if (templateResult.rows.length === 0) {
           return {
+            template: null,
             applications: [],
             platforms: [],
             success: false,
@@ -285,6 +299,7 @@ async function getTemplateData(templateId) {
 
         // Succès
         return {
+          template: templateResult.rows[0],
           applications: applicationsResult.rows,
           platforms: platformsResult.rows,
           success: true,
@@ -315,6 +330,7 @@ async function getTemplateData(templateId) {
     });
 
     return {
+      template: null,
       applications: [],
       platforms: [],
       success: false,
