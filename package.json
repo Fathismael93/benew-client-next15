@@ -30,7 +30,7 @@
     "yup": "^1.6.1"
   },
   "devDependencies": {
-    "@socketsecurity/cli": "^1.0.79",
+    "@socketsecurity/cli": "^1.0.90",
     "eslint": "^9.29.0",
     "eslint-config-next": "^15.4.4",
     "eslint-config-prettier": "^10.1.8",
