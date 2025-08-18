@@ -9,7 +9,6 @@ import { MdMonitor, MdPhoneIphone } from 'react-icons/md';
 import './templatesStyles/index.scss';
 
 import ParallaxSkeleton from '../layouts/parallax/ParallaxSkeleton';
-// Import dynamique des composants
 const Parallax = dynamic(() => import('components/layouts/parallax'), {
   loading: () => <ParallaxSkeleton />,
   ssr: true,
@@ -18,68 +17,62 @@ const Parallax = dynamic(() => import('components/layouts/parallax'), {
 import { trackEvent } from '@/utils/analytics';
 import PageTracker from '../analytics/PageTracker';
 
-// Composant de carte mémorisé pour performance
-const TemplateCard = memo(
-  ({ template, isHovered, onHover, onLeave, onClick }) => {
-    const categoryIcons = [];
-    const categoryLabel = [];
+// Composant de carte simplifié sans hover state
+const TemplateCard = memo(({ template, onClick }) => {
+  const categoryIcons = [];
+  const categoryLabel = [];
 
-    // Déterminer les icônes et labels
-    if (template.template_has_web) {
-      categoryIcons.push(<MdMonitor key="web" size={14} aria-hidden="true" />);
-      categoryLabel.push('Web');
-    }
-    if (template.template_has_mobile) {
-      categoryIcons.push(
-        <MdPhoneIphone key="mobile" size={14} aria-hidden="true" />,
-      );
-      categoryLabel.push('Mobile');
-    }
+  if (template.template_has_web) {
+    categoryIcons.push(<MdMonitor key="web" size={14} aria-hidden="true" />);
+    categoryLabel.push('Web');
+  }
+  if (template.template_has_mobile) {
+    categoryIcons.push(
+      <MdPhoneIphone key="mobile" size={14} aria-hidden="true" />,
+    );
+    categoryLabel.push('Mobile');
+  }
 
-    return (
-      <Link
-        href={`/templates/${template.template_id}`}
-        className="minimalCard"
-        onMouseEnter={() => onHover(template.template_id)}
-        onMouseLeave={onLeave}
-        onClick={() => onClick(template)}
-        aria-label={`Voir le template ${template.template_name}`}
-      >
-        <div className={`minimalCardInner ${isHovered ? 'hovered' : ''}`}>
-          <div className="minimalImageContainer">
-            <CldImage
-              src={template.template_image}
-              alt={`Template ${template.template_name}`}
-              width={800}
-              height={600}
-              className="minimalImage"
-              loading="lazy"
-              quality="auto"
-              format="auto"
-              crop={{ type: 'fill', gravity: 'auto', source: true }}
-            />
-          </div>
-          <div className="minimalContent">
-            <h3 className="minimalTitle">{template.template_name}</h3>
-            <div className="minimalCategory">
-              {categoryIcons}
-              <span>{categoryLabel.join(' & ')}</span>
-            </div>
+  return (
+    <Link
+      href={`/templates/${template.template_id}`}
+      className="minimalCard"
+      onClick={() => onClick(template)}
+      aria-label={`Voir le template ${template.template_name}`}
+    >
+      <div className="minimalCardInner">
+        <div className="minimalImageContainer">
+          <CldImage
+            src={template.template_image}
+            alt={`Template ${template.template_name}`}
+            width={800}
+            height={600}
+            className="minimalImage"
+            loading="lazy"
+            quality="auto"
+            format="auto"
+            crop={{ type: 'fill', gravity: 'auto', source: true }}
+          />
+        </div>
+        <div className="minimalContent">
+          <h3 className="minimalTitle">{template.template_name}</h3>
+          <div className="minimalCategory">
+            {categoryIcons}
+            <span>{categoryLabel.join(' & ')}</span>
           </div>
         </div>
-      </Link>
-    );
-  },
-);
+      </div>
+    </Link>
+  );
+});
 
 TemplateCard.displayName = 'TemplateCard';
 
 // Composant principal simplifié
 const TemplatesList = ({ templates = [] }) => {
-  const [hoveredCard, setHoveredCard] = useState(null);
   const [viewedTemplates, setViewedTemplates] = useState(new Set());
 
-  // Tracking de la page view (une seule fois)
+  // Tracking de la page view
   useEffect(() => {
     if (templates.length > 0) {
       trackEvent('page_view', {
@@ -88,12 +81,11 @@ const TemplatesList = ({ templates = [] }) => {
         templates_count: templates.length,
       });
     }
-  }, []); // Dépendance vide intentionnelle pour une seule exécution
+  }, []);
 
   // Handler pour le clic sur un template
   const handleTemplateClick = useCallback(
     (template) => {
-      // Tracker seulement si pas déjà vu dans cette session
       if (!viewedTemplates.has(template.template_id)) {
         trackEvent('template_click', {
           event_category: 'ecommerce',
@@ -108,11 +100,7 @@ const TemplatesList = ({ templates = [] }) => {
     [viewedTemplates],
   );
 
-  // Handlers simples pour le hover
-  const handleHover = useCallback((id) => setHoveredCard(id), []);
-  const handleLeave = useCallback(() => setHoveredCard(null), []);
-
-  // Gestion des états vides
+  // États vides
   if (!templates || templates.length === 0) {
     return (
       <>
@@ -151,13 +139,7 @@ const TemplatesList = ({ templates = [] }) => {
             className="others projectSection"
             role="listitem"
           >
-            <TemplateCard
-              template={template}
-              isHovered={hoveredCard === template.template_id}
-              onHover={handleHover}
-              onLeave={handleLeave}
-              onClick={handleTemplateClick}
-            />
+            <TemplateCard template={template} onClick={handleTemplateClick} />
           </section>
         ))}
       </div>

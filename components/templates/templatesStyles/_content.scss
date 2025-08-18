@@ -115,7 +115,7 @@
   }
 
   // Effet hover
-  .minimalCardInner.hovered & {
+  .minimalCard:hover & {
     svg {
       opacity: 1;
       transform: translateY(-1px);

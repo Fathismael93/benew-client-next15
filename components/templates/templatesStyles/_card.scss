@@ -94,16 +94,17 @@
   // Ombre subtile
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
-  &.hovered {
-    transform: translateY(-8px);
-    border-color: rgba(css-var(primary-color), 0.3);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  }
-
   // 📱 MOBILE - Effet tactile
   @media (pointer: coarse) {
     &:active {
       transform: translateY(-4px) scale(0.98);
     }
   }
+}
+
+// Remplacer .minimalCardInner.hovered par :hover
+.minimalCard:hover .minimalCardInner {
+  transform: translateY(-8px);
+  border-color: rgba(css-var(primary-color), 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }

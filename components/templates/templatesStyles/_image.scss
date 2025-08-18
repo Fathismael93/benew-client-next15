@@ -82,7 +82,7 @@
   border-radius: 8px;
   transition: transform 0.4s ease;
 
-  .minimalCardInner.hovered & {
+  .minimalCard:hover & {
     transform: scale(1.05);
   }
 }

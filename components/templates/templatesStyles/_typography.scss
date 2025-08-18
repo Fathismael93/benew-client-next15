@@ -68,8 +68,7 @@
     font-size: 1.8rem;
   }
 
-  // Effet hover
-  .minimalCardInner.hovered & {
+  .minimalCard:hover & {
     color: css-var(primary-color);
     transform: translateX(4px);
   }
