@@ -3,240 +3,156 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { captureException } from '@/instrumentation';
-import { trackError } from '@/utils/analytics';
 import './error.scss';
 
 /**
- * Composant de gestion d'erreurs pour la page de détail d'un template
- * Gère les erreurs spécifiques au chargement d'un template et ses applications
- * Production-ready avec retry logic intelligent et monitoring complet
+ * Composant d'erreur simplifié centré sur l'UX
+ * Gère uniquement l'interface utilisateur et les interactions de base
  */
 export default function TemplateDetailError({ error, reset }) {
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
-  const [errorType, setErrorType] = useState('unknown');
   const params = useParams();
   const templateId = params?.id;
   const MAX_RETRIES = 3;
 
+  // Log simple pour suivi des interactions utilisateur
   useEffect(() => {
-    if (error) {
-      const detectedErrorType = determineErrorType(error);
-      setErrorType(detectedErrorType);
-
-      // Capture dans Sentry avec contexte détaillé
-      const errorContext = {
-        tags: {
-          component: 'template_detail_error_boundary',
-          error_type: detectedErrorType,
-          page: 'template_detail',
-          template_id: templateId || 'unknown',
-          severity: detectedErrorType === '404' ? 'info' : 'warning',
-        },
-        level: detectedErrorType === '404' ? 'info' : 'warning',
-        extra: {
-          errorName: error?.name || 'Unknown',
-          errorMessage: error?.message || 'No message',
-          templateId,
-          retryCount,
-          maxRetries: MAX_RETRIES,
-          timestamp: new Date().toISOString(),
-          userAgent:
-            typeof window !== 'undefined'
-              ? window.navigator.userAgent
-              : 'unknown',
-          url: typeof window !== 'undefined' ? window.location.href : 'unknown',
-          referrer:
-            typeof document !== 'undefined' ? document.referrer : 'unknown',
-        },
-      };
-
-      // Capture dans Sentry
-      captureException(error, errorContext);
-
-      // Track dans Analytics
-      trackError(
-        `Template detail error: ${error?.message || 'Unknown'}`,
-        `/templates/${templateId}`,
-        detectedErrorType === '404' ? 'info' : 'warning',
-      );
-
-      // Log en console (dev uniquement)
-      if (process.env.NODE_ENV === 'development') {
-        console.error('[TemplateDetailError] Erreur capturée:', {
-          error,
-          templateId,
-          errorType: detectedErrorType,
-          retryCount,
-        });
-      }
+    if (error && typeof window !== 'undefined' && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'error_boundary_shown',
+        template_id: templateId || 'unknown',
+        error_name: error?.name || 'Unknown',
+      });
     }
-  }, [error, templateId, retryCount]);
+  }, [error, templateId]);
 
   /**
-   * Détermine le type d'erreur pour un meilleur tracking et UX
-   */
-  const determineErrorType = (err) => {
-    if (!err) return 'unknown';
-
-    const message = err.message?.toLowerCase() || '';
-
-    // Erreur 404 - Template non trouvé
-    if (
-      message.includes('not found') ||
-      message.includes('404') ||
-      message.includes('introuvable') ||
-      message.includes('nexiste pas')
-    ) {
-      return '404';
-    }
-
-    // Erreurs réseau
-    if (
-      message.includes('network') ||
-      message.includes('fetch') ||
-      message.includes('connexion')
-    ) {
-      return 'network_error';
-    }
-
-    // Erreurs base de données
-    if (
-      message.includes('database') ||
-      message.includes('postgres') ||
-      message.includes('pool') ||
-      message.includes('query')
-    ) {
-      return 'database_error';
-    }
-
-    // Timeout
-    if (message.includes('timeout')) {
-      return 'timeout_error';
-    }
-
-    // Erreurs d'images Cloudinary
-    if (message.includes('cloudinary') || message.includes('image')) {
-      return 'image_loading_error';
-    }
-
-    // Erreurs de permission
-    if (
-      message.includes('permission') ||
-      message.includes('unauthorized') ||
-      message.includes('forbidden')
-    ) {
-      return 'permission_error';
-    }
-
-    return 'application_loading_error';
-  };
-
-  /**
-   * Handler pour le retry avec backoff exponentiel
+   * Gestion du retry avec délai simple
    */
   const handleRetry = async () => {
-    if (retryCount >= MAX_RETRIES) {
-      // Track max retries atteint
-      if (typeof window !== 'undefined' && window.dataLayer) {
-        window.dataLayer.push({
-          event: 'error_max_retries',
-          error_type: 'template_detail_error',
-          template_id: templateId,
-          retry_count: retryCount,
-        });
-      }
-      return;
-    }
+    if (retryCount >= MAX_RETRIES || isRetrying) return;
 
     setIsRetrying(true);
     setRetryCount((prev) => prev + 1);
 
-    // Track tentative de retry
+    // Track retry attempt
     if (typeof window !== 'undefined' && window.dataLayer) {
       window.dataLayer.push({
         event: 'error_retry_attempt',
-        error_type: 'template_detail_error',
         template_id: templateId,
         retry_number: retryCount + 1,
       });
     }
 
-    // Délai exponentiel (1s, 2s, 4s)
-    const delay = Math.min(1000 * Math.pow(2, retryCount), 4000);
+    // Délai simple (1s, 2s, 3s)
+    const delay = Math.min(1000 * (retryCount + 1), 3000);
 
     setTimeout(() => {
       setIsRetrying(false);
-      reset(); // Réinitialiser l'état d'erreur
+      reset();
     }, delay);
   };
 
-  const canRetry =
-    retryCount < MAX_RETRIES &&
-    errorType !== '404' &&
-    errorType !== 'permission_error';
+  const canRetry = retryCount < MAX_RETRIES;
+  const isMaxRetriesReached = retryCount >= MAX_RETRIES;
 
   return (
     <section className="first">
-      <div className="template-detail-error">
+      <div className="template-error">
         <div className="error-container">
           {/* Icône d'erreur */}
           <div className="error-icon">⚠️</div>
 
-          {/* Titre */}
-          <h2 className="error-title">Erreur de chargement</h2>
+          {/* Titre principal */}
+          <h2 className="error-title">Oops ! Une erreur est survenue</h2>
 
           {/* Message principal */}
           <p className="error-message">
-            Une erreur est survenue lors du chargement du template. Veuillez
-            réessayer ou revenir plus tard.
+            Nous rencontrons des difficultés pour charger ce template.
+            {canRetry
+              ? ' Veuillez réessayer ou revenir plus tard.'
+              : ' Veuillez revenir plus tard ou contacter le support.'}
           </p>
 
-          {/* Détails techniques (dev uniquement) */}
-          {process.env.NODE_ENV === 'development' && error && (
-            <div className="error-details">
-              <strong>Détails techniques:</strong>
-              <br />
-              {error.name}: {error.message?.substring(0, 200)}
+          {/* Indicateur de tentatives */}
+          {retryCount > 0 && (
+            <div className="retry-indicator">
+              {isMaxRetriesReached ? (
+                <span className="max-retries">
+                  Nombre maximum de tentatives atteint ({MAX_RETRIES})
+                </span>
+              ) : (
+                <span className="retry-count">
+                  Tentative {retryCount} sur {MAX_RETRIES}
+                </span>
+              )}
             </div>
           )}
 
-          {/* Info sur les tentatives de retry */}
-          {canRetry && retryCount > 0 && (
-            <div className="retry-info">
-              Tentative {retryCount} sur {MAX_RETRIES}
-              {retryCount >= MAX_RETRIES && ' - Maximum de tentatives atteint'}
-            </div>
-          )}
-
-          {/* Boutons d'action */}
-          <div className="button-group">
+          {/* Actions utilisateur */}
+          <div className="error-actions">
             {canRetry && (
               <button
                 onClick={handleRetry}
                 disabled={isRetrying}
                 className="retry-button"
+                aria-label={`Réessayer${retryCount > 0 ? ` (${MAX_RETRIES - retryCount} tentatives restantes)` : ''}`}
               >
                 {isRetrying ? (
                   <>
-                    <span className="spinner"></span>
+                    <span className="spinner" aria-hidden="true"></span>
                     Nouvelle tentative...
                   </>
                 ) : (
                   <>
                     🔄 Réessayer
-                    {retryCount > 0 &&
-                      ` (${MAX_RETRIES - retryCount} restantes)`}
+                    {retryCount > 0 && ` (${MAX_RETRIES - retryCount})`}
                   </>
                 )}
               </button>
             )}
 
+            <Link href="/templates" className="templates-button">
+              📋 Voir tous les templates
+            </Link>
+
             <Link href="/" className="home-button">
-              🏠 Retour à l&apos;accueil
+              🏠 Accueil
             </Link>
           </div>
+
+          {/* Message d'aide */}
+          <div className="help-text">
+            <p>
+              Si le problème persiste, vous pouvez{' '}
+              <Link href="/contact" className="contact-link">
+                nous contacter
+              </Link>{' '}
+              pour obtenir de l&apos;aide.
+            </p>
+          </div>
+
+          {/* Debug info (dev uniquement) */}
+          {process.env.NODE_ENV === 'development' && error && (
+            <details className="debug-info">
+              <summary>Informations techniques (dev)</summary>
+              <div className="debug-content">
+                <p>
+                  <strong>Erreur :</strong> {error.name}
+                </p>
+                <p>
+                  <strong>Message :</strong> {error.message}
+                </p>
+                <p>
+                  <strong>Template ID :</strong> {templateId}
+                </p>
+                <p>
+                  <strong>Tentatives :</strong> {retryCount}/{MAX_RETRIES}
+                </p>
+              </div>
+            </details>
+          )}
         </div>
       </div>
     </section>

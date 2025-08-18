@@ -5,6 +5,7 @@
 
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 
 import SingleTemplateShops from '@/components/templates/SingleTemplateShops';
 import { getClient } from '@/backend/dbConnect';
@@ -346,53 +347,308 @@ async function getTemplateData(templateId) {
 }
 
 /**
- * Composant d'erreur réutilisable
+ * Composant d'erreur réutilisable avec design cohérent
  */
 function TemplateError({ errorType, userMessage, shouldRetry, templateId }) {
   return (
-    <div>
-      <div>
-        <div>
+    <div className="template-error-page">
+      <section className="first">
+        <div className="error-content">
           {errorType === ERROR_TYPES.NOT_FOUND ? (
-            <>
-              <h1>404</h1>
-              <h2>Template introuvable</h2>
-              <p>
+            <div className="not-found-error">
+              <div className="error-icon">🔍</div>
+              <h1 className="error-code">404</h1>
+              <h2 className="error-title">Template introuvable</h2>
+              <p className="error-message">
                 Le template que vous recherchez n&apos;existe pas ou a été
                 supprimé.
               </p>
-              <a href="/templates">Voir tous les templates</a>
-            </>
+              <div className="error-actions">
+                <Link href="/templates" className="cta-button primary">
+                  📋 Voir tous les templates
+                </Link>
+                <Link href="/" className="cta-button secondary">
+                  🏠 Accueil
+                </Link>
+              </div>
+            </div>
           ) : (
-            <>
-              <h1>{errorType === ERROR_TYPES.TIMEOUT ? '503' : '500'}</h1>
-              <h2>
+            <div className="server-error">
+              <div className="error-icon">
+                {errorType === ERROR_TYPES.TIMEOUT ? '⏱️' : '⚠️'}
+              </div>
+              <h1 className="error-code">
+                {errorType === ERROR_TYPES.TIMEOUT ? '503' : '500'}
+              </h1>
+              <h2 className="error-title">
                 {shouldRetry
                   ? 'Service temporairement indisponible'
                   : 'Erreur technique'}
               </h2>
-              <p>{userMessage}</p>
-              {shouldRetry && (
-                <button onClick={() => window.location.reload()}>
-                  Réessayer
-                </button>
-              )}
-              <a href="/templates">Retour aux templates</a>
-            </>
+              <p className="error-message">{userMessage}</p>
+              <div className="error-actions">
+                {shouldRetry && (
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="cta-button primary"
+                  >
+                    🔄 Réessayer
+                  </button>
+                )}
+                <Link href="/templates" className="cta-button secondary">
+                  📋 Retour aux templates
+                </Link>
+                <Link href="/" className="cta-button outline">
+                  🏠 Accueil
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {process.env.NODE_ENV === 'development' && (
+            <div className="debug-section">
+              <details className="debug-details">
+                <summary className="debug-summary">
+                  Informations de débogage
+                </summary>
+                <div className="debug-content">
+                  <p>
+                    <strong>Type d&apos;erreur:</strong> {errorType}
+                  </p>
+                  <p>
+                    <strong>ID Template:</strong> {templateId}
+                  </p>
+                  <p>
+                    <strong>Peut réessayer:</strong>{' '}
+                    {shouldRetry ? 'Oui' : 'Non'}
+                  </p>
+                </div>
+              </details>
+            </div>
           )}
         </div>
+      </section>
 
-        {process.env.NODE_ENV === 'development' && (
-          <div>
-            <p>
-              <strong>Debug Info:</strong>
-            </p>
-            <p>Error Type: {errorType}</p>
-            <p>Template ID: {templateId}</p>
-            <p>Should Retry: {shouldRetry ? 'Yes' : 'No'}</p>
-          </div>
-        )}
-      </div>
+      <style>{`
+        .template-error-page {
+          min-height: 100vh;
+          background: linear-gradient(135deg, #0c0c1a 0%, #1a1a2e 100%);
+          color: #fae6d1;
+        }
+
+        .error-content {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 2rem 1rem;
+        }
+
+        .not-found-error,
+        .server-error {
+          max-width: 600px;
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(15px);
+          border-radius: 20px;
+          border: 1px solid rgba(246, 160, 55, 0.25);
+          padding: 3rem 2rem;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .error-icon {
+          font-size: 4rem;
+          margin-bottom: 1.5rem;
+          animation: gentle-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes gentle-pulse {
+          0%,
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.8;
+            transform: scale(1.05);
+          }
+        }
+
+        .error-code {
+          font-size: 3rem;
+          font-weight: 700;
+          color: #f6a037;
+          margin-bottom: 1rem;
+          text-shadow: 0 2px 4px rgba(246, 160, 55, 0.3);
+        }
+
+        .error-title {
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: #fae6d1;
+          margin-bottom: 1rem;
+          line-height: 1.3;
+        }
+
+        .error-message {
+          font-size: 1.1rem;
+          color: rgba(250, 230, 209, 0.7);
+          line-height: 1.6;
+          margin-bottom: 2rem;
+        }
+
+        .error-actions {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .cta-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.875rem 1.5rem;
+          font-size: 0.95rem;
+          font-weight: 600;
+          border-radius: 12px;
+          text-decoration: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-height: 48px;
+          border: none;
+        }
+
+        .cta-button.primary {
+          background: linear-gradient(135deg, #f6a037, #f266b0);
+          color: #0c0c1a;
+          box-shadow: 0 4px 15px rgba(246, 160, 55, 0.3);
+        }
+
+        .cta-button.primary:hover {
+          background: linear-gradient(135deg, #f266b0, #9e1f9d);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(242, 102, 176, 0.4);
+        }
+
+        .cta-button.secondary {
+          background: transparent;
+          color: #f6a037;
+          border: 2px solid #f6a037;
+          backdrop-filter: blur(10px);
+        }
+
+        .cta-button.secondary:hover {
+          background: rgba(246, 160, 55, 0.15);
+          border-color: #f266b0;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(246, 160, 55, 0.3);
+        }
+
+        .cta-button.outline {
+          background: transparent;
+          color: rgba(250, 230, 209, 0.8);
+          border: 1px solid rgba(250, 230, 209, 0.3);
+        }
+
+        .cta-button.outline:hover {
+          background: rgba(250, 230, 209, 0.1);
+          color: #fae6d1;
+          border-color: rgba(250, 230, 209, 0.5);
+        }
+
+        .debug-section {
+          margin-top: 2rem;
+          max-width: 500px;
+        }
+
+        .debug-details {
+          background: rgba(246, 160, 55, 0.05);
+          border: 1px solid rgba(246, 160, 55, 0.2);
+          border-radius: 8px;
+          padding: 1rem;
+          text-align: left;
+        }
+
+        .debug-summary {
+          color: #f6a037;
+          cursor: pointer;
+          font-weight: 500;
+          margin-bottom: 0.5rem;
+        }
+
+        .debug-content p {
+          color: rgba(250, 230, 209, 0.8);
+          font-size: 0.85rem;
+          margin: 0.25rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .error-content {
+            padding: 1.5rem 1rem;
+          }
+
+          .not-found-error,
+          .server-error {
+            padding: 2rem 1.5rem;
+          }
+
+          .error-code {
+            font-size: 2.5rem;
+          }
+
+          .error-title {
+            font-size: 1.5rem;
+          }
+
+          .error-actions {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          .cta-button {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .error-icon {
+            font-size: 3rem;
+          }
+
+          .error-code {
+            font-size: 2rem;
+          }
+
+          .error-title {
+            font-size: 1.3rem;
+          }
+
+          .error-message {
+            font-size: 1rem;
+          }
+
+          .cta-button {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+          }
+        }
+
+        /* Accessibilité */
+        @media (prefers-reduced-motion: reduce) {
+          .error-icon {
+            animation: none;
+          }
+
+          .cta-button:hover {
+            transform: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }
@@ -440,20 +696,207 @@ export default async function SingleTemplatePage({ params }) {
   // Cas spécial : template trouvé mais pas d'applications
   if (!data.applications || data.applications.length === 0) {
     return (
-      <div>
-        <div>
-          <h1>{data.template.template_name}</h1>
-          <p>Aucune application disponible pour ce template.</p>
-          <p>Revenez bientôt pour découvrir les nouvelles applications.</p>
-          <a href="/templates">Voir d&apos;autres templates</a>
-        </div>
+      <div className="template-empty-state">
+        <section className="first">
+          <div className="empty-content">
+            <div className="empty-card">
+              <div className="empty-icon">📱</div>
+              <h1 className="empty-title">{data.template.template_name}</h1>
+              <p className="empty-message">
+                Aucune application disponible pour ce template.
+              </p>
+              <p className="empty-submessage">
+                Revenez bientôt pour découvrir les nouvelles applications.
+              </p>
+              <div className="empty-actions">
+                <Link href="/templates" className="cta-button primary">
+                  📋 Voir d&apos;autres templates
+                </Link>
+                <Link href="/" className="cta-button secondary">
+                  🏠 Accueil
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <style>{`
+          .template-empty-state {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c0c1a 0%, #1a1a2e 100%);
+            color: #fae6d1;
+          }
+
+          .empty-content {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+          }
+
+          .empty-card {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(246, 160, 55, 0.25);
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+          }
+
+          .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: gentle-bounce 2s ease-in-out infinite;
+          }
+
+          @keyframes gentle-bounce {
+            0%,
+            100% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-10px);
+            }
+          }
+
+          .empty-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f6a037;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(246, 160, 55, 0.3);
+          }
+
+          .empty-message {
+            font-size: 1.2rem;
+            color: #fae6d1;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+          }
+
+          .empty-submessage {
+            font-size: 1rem;
+            color: rgba(250, 230, 209, 0.7);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+          }
+
+          .empty-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+          }
+
+          .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 48px;
+          }
+
+          .cta-button.primary {
+            background: linear-gradient(135deg, #f6a037, #f266b0);
+            color: #0c0c1a;
+            box-shadow: 0 4px 15px rgba(246, 160, 55, 0.3);
+          }
+
+          .cta-button.primary:hover {
+            background: linear-gradient(135deg, #f266b0, #9e1f9d);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(242, 102, 176, 0.4);
+          }
+
+          .cta-button.secondary {
+            background: transparent;
+            color: #f6a037;
+            border: 2px solid #f6a037;
+            backdrop-filter: blur(10px);
+          }
+
+          .cta-button.secondary:hover {
+            background: rgba(246, 160, 55, 0.15);
+            border-color: #f266b0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(246, 160, 55, 0.3);
+          }
+
+          /* Responsive */
+          @media (max-width: 768px) {
+            .empty-content {
+              padding: 1.5rem 1rem;
+            }
+
+            .empty-card {
+              padding: 2rem 1.5rem;
+            }
+
+            .empty-title {
+              font-size: 1.7rem;
+            }
+
+            .empty-actions {
+              flex-direction: column;
+              width: 100%;
+            }
+
+            .cta-button {
+              width: 100%;
+              justify-content: center;
+            }
+          }
+
+          @media (max-width: 360px) {
+            .empty-icon {
+              font-size: 3rem;
+            }
+
+            .empty-title {
+              font-size: 1.5rem;
+            }
+
+            .empty-message {
+              font-size: 1.1rem;
+            }
+
+            .empty-submessage {
+              font-size: 0.95rem;
+            }
+
+            .cta-button {
+              padding: 0.75rem 1.25rem;
+              font-size: 0.9rem;
+            }
+          }
+
+          /* Accessibilité */
+          @media (prefers-reduced-motion: reduce) {
+            .empty-icon {
+              animation: none;
+            }
+
+            .cta-button:hover {
+              transform: none;
+            }
+          }
+        `}</style>
       </div>
     );
   }
 
-  // Rendu normal avec Suspense et ErrorBoundary
+  // Rendu normal avec Suspense - Error Boundary géré par error.jsx
   return (
-    // <ErrorBoundary>
     <Suspense fallback={<Loading />}>
       <SingleTemplateShops
         templateID={templateId}
@@ -461,7 +904,6 @@ export default async function SingleTemplatePage({ params }) {
         platforms={data.platforms}
       />
     </Suspense>
-    // </ErrorBoundary>
   );
 }
 
