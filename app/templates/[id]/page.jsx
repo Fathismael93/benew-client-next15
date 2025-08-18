@@ -548,5 +548,5 @@ export async function generateMetadata({ params }) {
 }
 
 // Configuration ISR différenciée selon le type de réponse
-export const revalidate = CONFIG.cache.revalidate;
+export const revalidate = 300;
 export const dynamic = 'force-static';
