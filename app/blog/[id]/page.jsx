@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // app/blog/[id]/page.jsx
 // Server Component optimisé pour un article de blog spécifique
 // Next.js 15 + PostgreSQL + Monitoring complet + Gestion d'erreurs avancée + Query Timeout
