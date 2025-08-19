@@ -3,14 +3,12 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { captureException } from '@/instrumentation';
-import { trackError } from '@/utils/analytics';
 import './error.scss';
 
 /**
- * Composant de gestion d'erreurs pour la page d'un article du blog
- * Gère les erreurs spécifiques au chargement d'un article individuel
- * Production-ready avec retry logic et monitoring complet
+ * Error Boundary simplifié pour la page d'un article du blog
+ * Se concentre uniquement sur l'interface utilisateur et les interactions de base
+ * Le monitoring et la classification d'erreurs sont gérés côté server component
  */
 export default function BlogArticleError({ error, reset }) {
   const [retryCount, setRetryCount] = useState(0);
@@ -19,83 +17,39 @@ export default function BlogArticleError({ error, reset }) {
   const articleId = params?.id;
   const MAX_RETRIES = 3;
 
+  // Log simple pour suivi des interactions utilisateur (tracking uniquement)
   useEffect(() => {
-    // Capture dans Sentry avec contexte spécifique article
-    if (error) {
-      const errorContext = {
-        tags: {
-          component: 'blog_article_error_boundary',
-          error_type: 'article_loading_error',
-          page: 'blog_article',
-          article_id: articleId || 'unknown',
-          severity: 'warning',
-        },
-        level: 'warning',
-        extra: {
-          errorName: error?.name || 'Unknown',
-          errorMessage: error?.message || 'No message',
-          articleId,
-          retryCount,
-          maxRetries: MAX_RETRIES,
-          timestamp: new Date().toISOString(),
-          userAgent:
-            typeof window !== 'undefined'
-              ? window.navigator.userAgent
-              : 'unknown',
-          url: typeof window !== 'undefined' ? window.location.href : 'unknown',
-        },
-      };
-
-      // Capture dans Sentry
-      captureException(error, errorContext);
-
-      // Track dans Analytics
-      trackError(
-        `Blog article error: ${error?.message || 'Unknown'}`,
-        `/blog/${articleId}`,
-        'warning',
-      );
-
-      // Log en dev
-      if (process.env.NODE_ENV === 'development') {
-        console.error('[BlogArticleError] Erreur de chargement:', error);
-        console.log('Article ID:', articleId, 'Retry count:', retryCount);
-      }
+    if (error && typeof window !== 'undefined' && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'error_boundary_shown',
+        page: 'blog_article',
+        error_name: error?.name || 'Unknown',
+        article_id: articleId || 'unknown',
+      });
     }
-  }, [error, articleId, retryCount]);
+  }, [error, articleId]);
 
   /**
-   * Handler pour le retry avec logique exponentielle
+   * Gestion du retry avec délai simple
    */
   const handleRetry = async () => {
-    if (retryCount >= MAX_RETRIES) {
-      // Track max retries atteint
-      if (typeof window !== 'undefined' && window.dataLayer) {
-        window.dataLayer.push({
-          event: 'error_max_retries',
-          error_type: 'blog_article_error',
-          article_id: articleId,
-          retry_count: retryCount,
-        });
-      }
-      return;
-    }
+    if (retryCount >= MAX_RETRIES || isRetrying) return;
 
     setIsRetrying(true);
     setRetryCount((prev) => prev + 1);
 
-    // Track tentative de retry
+    // Track retry attempt (analytics uniquement)
     if (typeof window !== 'undefined' && window.dataLayer) {
       window.dataLayer.push({
         event: 'error_retry_attempt',
-        error_type: 'blog_article_error',
+        page: 'blog_article',
         article_id: articleId,
         retry_number: retryCount + 1,
       });
     }
 
-    // Délai exponentiel avant retry (1s, 2s, 4s)
-    const delay = Math.min(1000 * Math.pow(2, retryCount), 4000);
+    // Délai simple (1s, 2s, 3s)
+    const delay = Math.min(1000 * (retryCount + 1), 3000);
 
     setTimeout(() => {
       setIsRetrying(false);
@@ -103,8 +57,8 @@ export default function BlogArticleError({ error, reset }) {
     }, delay);
   };
 
-  // Déterminer si on peut encore réessayer
   const canRetry = retryCount < MAX_RETRIES;
+  const isMaxRetriesReached = retryCount >= MAX_RETRIES;
 
   return (
     <section className="first">
@@ -113,50 +67,57 @@ export default function BlogArticleError({ error, reset }) {
           {/* Icône d'erreur */}
           <div className="error-icon">⚠️</div>
 
-          {/* Titre */}
+          {/* Titre principal */}
           <h2 className="error-title">Erreur de chargement</h2>
 
           {/* Message principal */}
           <p className="error-message">
             Une erreur est survenue lors du chargement de l&apos;article.
-            Veuillez réessayer ou revenir plus tard.
+            {canRetry
+              ? ' Veuillez réessayer ou revenir plus tard.'
+              : ' Veuillez revenir plus tard ou contacter le support.'}
           </p>
 
-          {/* Détails de l'erreur (dev uniquement) */}
-          {process.env.NODE_ENV === 'development' && error && (
-            <div className="error-details">
-              <strong>Détails techniques:</strong>
-              <br />
-              {error.name}: {error.message?.substring(0, 150)}
+          {/* Info sur l'article si disponible */}
+          {articleId && (
+            <div className="article-info">
+              Article demandé : <strong>{articleId}</strong>
             </div>
           )}
 
-          {/* Info sur les tentatives */}
+          {/* Indicateur de tentatives */}
           {retryCount > 0 && (
-            <div className="retry-info">
-              Tentative {retryCount} sur {MAX_RETRIES}
-              {!canRetry && ' - Maximum de tentatives atteint'}
+            <div className="retry-indicator">
+              {isMaxRetriesReached ? (
+                <span className="max-retries">
+                  Nombre maximum de tentatives atteint ({MAX_RETRIES})
+                </span>
+              ) : (
+                <span className="retry-count">
+                  Tentative {retryCount} sur {MAX_RETRIES}
+                </span>
+              )}
             </div>
           )}
 
-          {/* Boutons d'action */}
-          <div className="button-group">
+          {/* Actions utilisateur */}
+          <div className="error-actions">
             {canRetry && (
               <button
                 onClick={handleRetry}
                 disabled={isRetrying}
                 className="retry-button"
+                aria-label={`Réessayer${retryCount > 0 ? ` (${MAX_RETRIES - retryCount} tentatives restantes)` : ''}`}
               >
                 {isRetrying ? (
                   <>
-                    <span className="spinner"></span>
+                    <span className="spinner" aria-hidden="true"></span>
                     Nouvelle tentative...
                   </>
                 ) : (
                   <>
                     🔄 Réessayer
-                    {retryCount > 0 &&
-                      ` (${MAX_RETRIES - retryCount} restantes)`}
+                    {retryCount > 0 && ` (${MAX_RETRIES - retryCount})`}
                   </>
                 )}
               </button>
@@ -167,9 +128,44 @@ export default function BlogArticleError({ error, reset }) {
             </Link>
 
             <Link href="/" className="home-button">
-              🏠 Retour à l&apos;accueil
+              🏠 Accueil
             </Link>
           </div>
+
+          {/* Message d'aide */}
+          <div className="help-text">
+            <p>
+              Si le problème persiste, vous pouvez{' '}
+              <Link href="/contact" className="contact-link">
+                nous contacter
+              </Link>{' '}
+              pour obtenir de l&apos;aide.
+            </p>
+          </div>
+
+          {/* Debug info (dev uniquement) */}
+          {process.env.NODE_ENV === 'development' && error && (
+            <details className="debug-info">
+              <summary>Informations techniques (dev)</summary>
+              <div className="debug-content">
+                <p>
+                  <strong>Erreur :</strong> {error.name}
+                </p>
+                <p>
+                  <strong>Message :</strong> {error.message}
+                </p>
+                <p>
+                  <strong>Article ID :</strong> {articleId || 'Non spécifié'}
+                </p>
+                <p>
+                  <strong>Page :</strong> blog article (individual)
+                </p>
+                <p>
+                  <strong>Tentatives :</strong> {retryCount}/{MAX_RETRIES}
+                </p>
+              </div>
+            </details>
+          )}
         </div>
       </div>
     </section>
