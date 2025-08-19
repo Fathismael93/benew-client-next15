@@ -388,12 +388,7 @@ function BlogError({ errorType, userMessage, shouldRetry }) {
             <p className="error-message">{userMessage}</p>
             <div className="error-actions">
               {shouldRetry && (
-                <button
-                  // onClick={() => window.location.reload()}
-                  className="cta-button primary"
-                >
-                  🔄 Réessayer
-                </button>
+                <button className="cta-button primary">🔄 Réessayer</button>
               )}
               <Link href="/" className="cta-button secondary">
                 🏠 Retour à l&apos;accueil
