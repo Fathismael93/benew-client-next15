@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useCallback, memo } from 'react';
 import { CldImage } from 'next-cloudinary';
