@@ -1,79 +1,75 @@
-// app/presentation/error.scss
+// app/presentation/error.scss - Version simplifiée et épurée
 @use '../styles/abstracts' as *;
 
+/* ==========================================
+   CONTENEUR PRINCIPAL
+========================================== */
 .presentation-error {
-  min-height: 100%;
-  height: 100%;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-
-  // 📱 MOBILE FIRST - Padding avec nouveaux breakpoints
   padding: 1rem;
 
   @include from('small-sm') {
     padding: 1.5rem;
   }
 
-  @include from('small-lg') {
+  @include from('medium-sm') {
     padding: 2rem;
   }
 
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    padding: 2.5rem;
+  // Arrière-plan subtil avec thème présentation
+  background: linear-gradient(
+    135deg,
+    css-var(background-color) 0%,
+    rgba(css-var(background-color), 0.95) 50%,
+    rgba(css-var(primary-color), 0.02) 100%
+  );
+}
+
+.error-container {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(css-var(text-color), 0.03);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(css-var(primary-color), 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  @include from('small-sm') {
+    padding: 2.5rem 2rem;
+    max-width: 580px;
   }
 
-  // 🖥️ GRANDS ÉCRANS
-  @include from('large-xs') {
-    padding: 3rem;
+  @include from('medium-sm') {
+    padding: 3rem 2.5rem;
+    max-width: 620px;
   }
 }
 
 /* ==========================================
-   CONTENEUR PRINCIPAL
+   ÉLÉMENTS VISUELS
 ========================================== */
-.error-container {
-  width: 100%;
-  background: rgba(css-var(text-color), 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  text-align: center;
-  border: 1px solid rgba(css-var(primary-color), 0.2);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-
-  // 📱 MOBILE FIRST - Padding et max-width
-  padding: 2rem 1.5rem;
-  max-width: 90%;
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  animation: gentle-fade 4s ease-in-out infinite;
 
   @include from('small-sm') {
-    padding: 2.5rem 1.8rem;
-    max-width: 500px;
+    font-size: 3.5rem;
   }
+}
 
-  @include from('small-lg') {
-    padding: 2.8rem 2rem;
-    max-width: 550px;
+@keyframes gentle-fade {
+  0%,
+  100% {
+    opacity: 1;
   }
-
-  @include from('small-xl') {
-    padding: 3rem 2.2rem;
-    max-width: 600px;
-  }
-
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    max-width: 650px;
-  }
-
-  @include from('medium-lg') {
-    max-width: 700px;
-  }
-
-  // 🖥️ GRANDS ÉCRANS
-  @include from('large-xs') {
-    max-width: 750px;
+  50% {
+    opacity: 0.7;
   }
 }
 
@@ -82,116 +78,81 @@
 ========================================== */
 .error-title {
   color: css-var(primary-color);
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 1.4rem;
   margin-bottom: 1rem;
-
-  // 📱 MOBILE FIRST
-  font-size: 1.5rem;
+  line-height: 1.3;
 
   @include from('small-sm') {
     font-size: 1.6rem;
   }
 
-  @include from('small-lg') {
-    font-size: 1.7rem;
-  }
-
-  // 📟 MOYENS ÉCRANS
   @include from('medium-sm') {
-    font-size: 1.75rem;
-  }
-
-  // 🖥️ GRANDS ÉCRANS
-  @include from('large-xs') {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
   }
 }
 
 .error-message {
   color: css-var(text-color-muted);
+  font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 2rem;
 
-  // 📱 MOBILE FIRST
-  font-size: 1rem;
-
-  @include from('small-lg') {
+  @include from('small-sm') {
     font-size: 1.05rem;
   }
+}
 
-  // 📟 MOYENS ÉCRANS
-  @include from('medium-sm') {
-    font-size: 1.1rem;
+.retry-indicator {
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+
+  .retry-count {
+    color: rgba(css-var(text-color), 0.7);
+  }
+
+  .max-retries {
+    color: css-var(secondary-color);
+    font-weight: 500;
   }
 }
 
 /* ==========================================
-   BOUTONS - STYLE ORDERMODAL
+   ACTIONS UTILISATEUR
 ========================================== */
-.button-group {
+.error-actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.75rem;
   margin-bottom: 2rem;
 
-  // 📱 MOBILE - Stack vertical
-  @include small-screens {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  @include from('medium-sm') {
+  @include from('small-sm') {
     flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 }
 
-button,
-.home-button {
-  font-weight: 600;
+// Styles de base pour tous les boutons/liens
+%button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  transition: all 0.2s ease;
+  min-height: 44px;
 
-  // 📱 MOBILE FIRST - Zone tactile optimale
-  padding: 1rem 1.5rem;
-  font-size: 1rem;
-  min-height: 48px;
-
-  @include until('small-sm') {
-    padding: 0.875rem 1.25rem;
-    font-size: 0.95rem;
-    min-height: 44px;
-  }
-
-  // 📱 MOBILE - Largeur complète
-  @include small-screens {
-    width: 100%;
-    justify-content: center;
-  }
-
-  // 📟 MOYENS ÉCRANS - Transition
-  @include from('medium-sm') {
-    width: auto;
-    flex: 1;
-    padding: 0.9rem 1.4rem;
-  }
-
-  @include from('medium-lg') {
-    padding: 0.85rem 1.35rem;
-  }
-
-  // 🖥️ DESKTOP - Valeurs optimales
-  @include from('large-xs') {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-    min-height: auto;
-    width: auto;
+  @include from('small-sm') {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
   }
 
   &:disabled {
@@ -200,24 +161,20 @@ button,
   }
 }
 
-// STYLE ORDERMODAL - Bouton Principal (Réessayer)
+// Bouton principal (Réessayer)
 .retry-button {
+  @extend %button-base;
   background: linear-gradient(
     135deg,
     css-var(primary-color),
     css-var(secondary-color)
   );
   color: css-var(background-color);
-  box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.3)'};
+  box-shadow: 0 2px 8px rgba(css-var(primary-color), 0.3);
 
   &:hover:not(:disabled) {
-    background: linear-gradient(
-      135deg,
-      css-var(secondary-color),
-      css-var(accent-color)
-    );
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(css-var(primary-color), 0.4);
   }
 
   &:active {
@@ -225,20 +182,101 @@ button,
   }
 }
 
-// STYLE ORDERMODAL - Bouton Secondaire (Retour à l'accueil)
+// Bouton secondaire (Accueil)
 .home-button {
+  @extend %button-base;
   background-color: transparent;
   color: css-var(primary-color);
   border: 1px solid css-var(primary-color);
 
-  &:hover:not(:disabled) {
-    background-color: #{'rgba(#{css-var(primary-color)}, 0.1)'};
+  &:hover {
+    background-color: rgba(css-var(primary-color), 0.1);
+    border-color: css-var(secondary-color);
+  }
+}
+
+// Bouton tertiaire (Version simplifiée)
+.simple-version-button {
+  @extend %button-base;
+  background-color: rgba(css-var(secondary-color), 0.1);
+  color: css-var(secondary-color);
+  border: 1px solid rgba(css-var(secondary-color), 0.3);
+
+  &:hover {
+    background-color: rgba(css-var(secondary-color), 0.2);
     border-color: css-var(secondary-color);
   }
 }
 
 /* ==========================================
-   SPINNER ET ANIMATIONS
+   CONTENU ALTERNATIF
+========================================== */
+.alternative-content {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(css-var(primary-color), 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(css-var(primary-color), 0.1);
+}
+
+.alternative-title {
+  color: css-var(primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+
+  @include from('small-sm') {
+    font-size: 1.1rem;
+  }
+}
+
+.alternative-links {
+  display: grid;
+  gap: 0.75rem;
+
+  // Mobile : une colonne
+  grid-template-columns: 1fr;
+
+  // Tablette et plus : deux colonnes
+  @include from('small-sm') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // Desktop : trois colonnes
+  @include from('medium-lg') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.alternative-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(css-var(background-color), 0.6);
+  border-radius: 8px;
+  color: css-var(text-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(css-var(primary-color), 0.1);
+
+  &:hover {
+    background: rgba(css-var(primary-color), 0.1);
+    color: css-var(primary-color);
+    border-color: rgba(css-var(primary-color), 0.3);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================
+   SPINNER
 ========================================== */
 .spinner {
   display: inline-block;
@@ -247,7 +285,7 @@ button,
   border: 2px solid transparent;
   border-top-color: currentColor;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -257,29 +295,53 @@ button,
 }
 
 /* ==========================================
-   OPTIMISATIONS POUR L'ACCESSIBILITÉ
+   DEBUG INFO (DEV UNIQUEMENT)
 ========================================== */
+.debug-info {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: rgba(css-var(primary-color), 0.05);
+  border: 1px solid rgba(css-var(primary-color), 0.2);
+  border-radius: 8px;
+  text-align: left;
+  font-size: 0.8rem;
 
-// Réduction de mouvement
-@include reduced-motion {
-  .spinner {
-    animation: none !important;
+  summary {
+    color: css-var(primary-color);
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
   }
 
-  button,
-  .home-button {
-    &:hover {
-      transform: none !important;
+  .debug-content {
+    color: rgba(css-var(text-color), 0.8);
+
+    p {
+      margin: 0.25rem 0;
     }
   }
 }
 
-// Support pour écrans tactiles
+/* ==========================================
+   RESPONSIVE & ACCESSIBILITÉ
+========================================== */
+
+// Écrans tactiles
 @media (pointer: coarse) {
-  button,
-  .home-button {
+  %button-base {
     min-height: 48px;
-    min-width: 44px;
+
+    &:hover {
+      transform: none;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  .alternative-link {
+    padding: 1rem;
 
     &:hover {
       transform: none;
@@ -291,25 +353,111 @@ button,
   }
 }
 
+// Réduction de mouvement
+@include reduced-motion {
+  .error-icon {
+    animation: none !important;
+  }
+
+  .spinner {
+    animation: none !important;
+  }
+
+  %button-base {
+    &:hover {
+      transform: none !important;
+    }
+  }
+
+  .alternative-link {
+    &:hover {
+      transform: none !important;
+    }
+  }
+}
+
 // Mode sombre
 @include dark-mode {
+  .presentation-error {
+    background: linear-gradient(
+      135deg,
+      css-var(background-color) 0%,
+      rgba(css-var(background-color), 0.98) 50%,
+      rgba(css-var(primary-color), 0.01) 100%
+    );
+  }
+
   .error-container {
-    background: rgba(css-var(text-color), 0.03);
-    border-color: rgba(css-var(primary-color), 0.3);
+    background: rgba(css-var(text-color), 0.02);
+    border-color: rgba(css-var(primary-color), 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .alternative-content {
+    background: rgba(css-var(primary-color), 0.05);
+  }
+
+  .alternative-link {
+    background: rgba(css-var(background-color), 0.8);
+    border-color: rgba(css-var(primary-color), 0.15);
+  }
+
+  .debug-info {
+    background: rgba(css-var(primary-color), 0.08);
   }
 }
 
 // Écrans haute densité
 @include high-density {
   .error-container {
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   }
 
   .retry-button {
-    box-shadow: 0 4px 8px #{'rgba(#{css-var(primary-color)}, 0.4)'};
+    box-shadow: 0 2px 8px rgba(css-var(primary-color), 0.4);
 
     &:hover:not(:disabled) {
-      box-shadow: 0 6px 12px #{'rgba(#{css-var(primary-color)}, 0.5)'};
+      box-shadow: 0 4px 12px rgba(css-var(primary-color), 0.5);
     }
+  }
+}
+
+// Petits écrans - optimisations supplémentaires
+@include until('small-sm') {
+  .alternative-content {
+    padding: 1rem;
+  }
+
+  .alternative-links {
+    gap: 0.5rem;
+  }
+
+  .alternative-link {
+    padding: 0.875rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+// Très petits écrans - ajustements finaux
+@include until('small-xs') {
+  .error-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .error-actions {
+    gap: 0.5rem;
+  }
+
+  %button-base {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .alternative-content {
+    padding: 0.875rem;
+  }
+
+  .alternative-title {
+    font-size: 0.95rem;
   }
 }

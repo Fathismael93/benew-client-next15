@@ -2,139 +2,161 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { captureException } from '@/instrumentation';
-import { trackError } from '@/utils/analytics';
 import './error.scss';
 
 /**
- * Composant de gestion d'erreurs pour la page de présentation
- * Gère les erreurs spécifiques au chargement de la page présentation
- * Production-ready avec retry logic et monitoring complet
+ * Error Boundary simplifié pour la page de présentation
+ * Se concentre uniquement sur l'interface utilisateur et les interactions de base
+ * Le monitoring et la classification d'erreurs sont gérés côté server component
  */
 export default function PresentationError({ error, reset }) {
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
   const MAX_RETRIES = 3;
 
+  // Log simple pour suivi des interactions utilisateur (tracking uniquement)
   useEffect(() => {
-    if (error) {
-      // Capture dans Sentry avec contexte spécifique présentation
-      const errorContext = {
-        tags: {
-          component: 'presentation_error_boundary',
-          error_type: 'presentation_loading_error',
-          page: 'presentation',
-          severity: 'warning',
-        },
-        level: 'warning',
-        extra: {
-          errorName: error?.name || 'Unknown',
-          errorMessage: error?.message || 'No message',
-          retryCount,
-          maxRetries: MAX_RETRIES,
-          timestamp: new Date().toISOString(),
-          userAgent:
-            typeof window !== 'undefined'
-              ? window.navigator.userAgent
-              : 'unknown',
-          url: typeof window !== 'undefined' ? window.location.href : 'unknown',
-        },
-      };
-
-      // Capture dans Sentry
-      captureException(error, errorContext);
-
-      // Track dans Analytics
-      trackError(
-        `Presentation error: ${error?.message || 'Unknown'}`,
-        '/presentation',
-        'warning',
-      );
-
-      // Log en console (dev uniquement)
-      if (process.env.NODE_ENV === 'development') {
-        console.error('[PresentationError] Erreur de chargement:', error);
-        console.log('Retry count:', retryCount);
-      }
+    if (error && typeof window !== 'undefined' && window.dataLayer) {
+      window.dataLayer.push({
+        event: 'error_boundary_shown',
+        page: 'presentation',
+        error_name: error?.name || 'Unknown',
+      });
     }
-  }, [error, retryCount]);
+  }, [error]);
 
   /**
-   * Handler pour le retry avec logique exponentielle
+   * Gestion du retry avec délai simple
    */
   const handleRetry = async () => {
-    if (retryCount >= MAX_RETRIES) {
-      // Track max retries atteint
-      if (typeof window !== 'undefined' && window.dataLayer) {
-        window.dataLayer.push({
-          event: 'error_max_retries',
-          error_type: 'presentation_error',
-          retry_count: retryCount,
-        });
-      }
-      return;
-    }
+    if (retryCount >= MAX_RETRIES || isRetrying) return;
 
     setIsRetrying(true);
     setRetryCount((prev) => prev + 1);
 
-    // Track tentative de retry
+    // Track retry attempt (analytics uniquement)
     if (typeof window !== 'undefined' && window.dataLayer) {
       window.dataLayer.push({
         event: 'error_retry_attempt',
-        error_type: 'presentation_error',
+        page: 'presentation',
         retry_number: retryCount + 1,
       });
     }
 
-    // Délai exponentiel avant retry (1s, 2s, 4s)
-    const delay = Math.min(1000 * Math.pow(2, retryCount), 4000);
+    // Délai simple (1s, 2s, 3s)
+    const delay = Math.min(1000 * (retryCount + 1), 3000);
 
     setTimeout(() => {
       setIsRetrying(false);
-      reset(); // Fonction Next.js pour réinitialiser
+      reset();
     }, delay);
   };
 
-  // Déterminer si on peut encore réessayer
   const canRetry = retryCount < MAX_RETRIES;
+  const isMaxRetriesReached = retryCount >= MAX_RETRIES;
 
   return (
     <section className="first">
       <div className="presentation-error">
         <div className="error-container">
-          {/* Titre */}
-          <h2 className="error-title">Erreur de chargement</h2>
+          {/* Icône d'erreur */}
+          <div className="error-icon">📋</div>
+
+          {/* Titre principal */}
+          <h2 className="error-title">Problème de présentation</h2>
 
           {/* Message principal */}
           <p className="error-message">
-            Une erreur est survenue lors du chargement de la page de
-            présentation. Veuillez réessayer ou revenir plus tard.
+            Nous rencontrons des difficultés pour afficher la présentation
+            complète.
+            {canRetry
+              ? ' Veuillez réessayer ou consulter une version simplifiée.'
+              : ' Veuillez consulter une version simplifiée ou revenir plus tard.'}
           </p>
 
-          {/* Boutons d'action */}
-          <div className="button-group">
+          {/* Indicateur de tentatives */}
+          {retryCount > 0 && (
+            <div className="retry-indicator">
+              {isMaxRetriesReached ? (
+                <span className="max-retries">
+                  Nombre maximum de tentatives atteint ({MAX_RETRIES})
+                </span>
+              ) : (
+                <span className="retry-count">
+                  Tentative {retryCount} sur {MAX_RETRIES}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Actions utilisateur */}
+          <div className="error-actions">
             {canRetry && (
               <button
                 onClick={handleRetry}
                 disabled={isRetrying}
                 className="retry-button"
+                aria-label={`Réessayer${retryCount > 0 ? ` (${MAX_RETRIES - retryCount} tentatives restantes)` : ''}`}
               >
                 {isRetrying ? (
                   <>
-                    <span className="spinner"></span>
+                    <span className="spinner" aria-hidden="true"></span>
                     Nouvelle tentative...
                   </>
                 ) : (
-                  'Réessayer'
+                  <>
+                    🔄 Réessayer
+                    {retryCount > 0 && ` (${MAX_RETRIES - retryCount})`}
+                  </>
                 )}
               </button>
             )}
 
             <Link href="/" className="home-button">
-              Retour à l&apos;accueil
+              🏠 Accueil
+            </Link>
+
+            <Link href="/about" className="simple-version-button">
+              📄 Version simplifiée
             </Link>
           </div>
+
+          {/* Informations alternatives */}
+          <div className="alternative-content">
+            <h3 className="alternative-title">En attendant, découvrez :</h3>
+            <div className="alternative-links">
+              <Link href="/templates" className="alternative-link">
+                🎨 Nos Templates
+              </Link>
+              <Link href="/contact" className="alternative-link">
+                📞 Nous Contacter
+              </Link>
+              <Link href="/about" className="alternative-link">
+                ℹ️ À Propos
+              </Link>
+            </div>
+          </div>
+
+          {/* Debug info (dev uniquement) */}
+          {process.env.NODE_ENV === 'development' && error && (
+            <details className="debug-info">
+              <summary>Informations techniques (dev)</summary>
+              <div className="debug-content">
+                <p>
+                  <strong>Erreur :</strong> {error.name}
+                </p>
+                <p>
+                  <strong>Message :</strong> {error.message}
+                </p>
+                <p>
+                  <strong>Page :</strong> presentation
+                </p>
+                <p>
+                  <strong>Tentatives :</strong> {retryCount}/{MAX_RETRIES}
+                </p>
+              </div>
+            </details>
+          )}
         </div>
       </div>
     </section>
