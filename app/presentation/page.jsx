@@ -2,7 +2,6 @@
 // Server Component enrichi pour page de présentation
 // Next.js 15 - Gestion d'erreurs avancée + Monitoring complet + Validation contenu
 
-import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
@@ -252,26 +251,6 @@ function classifyPresentationError(error) {
     httpStatus: 500,
     userMessage: ERROR_MESSAGES[ERROR_TYPES.UNKNOWN_ERROR].user,
   };
-}
-
-/**
- * Promise avec timeout pour composants de présentation
- */
-function withTimeout(
-  promise,
-  timeoutMs,
-  errorMessage = 'Presentation operation timed out',
-) {
-  return Promise.race([
-    promise,
-    new Promise((_, reject) => {
-      setTimeout(() => {
-        const timeoutError = new Error(errorMessage);
-        timeoutError.name = 'TimeoutError';
-        reject(timeoutError);
-      }, timeoutMs);
-    }),
-  ]);
 }
 
 /**
