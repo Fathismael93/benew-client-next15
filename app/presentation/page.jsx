@@ -8,7 +8,6 @@ import Link from 'next/link';
 
 import PresentationComponent from '@/components/presentation';
 import { captureException, captureMessage } from '../../instrumentation';
-import Loading from './loading';
 
 // Configuration étendue avec gestion d'erreurs spécifiques présentation
 const CONFIG = {
@@ -550,9 +549,9 @@ export default async function PresentationPage() {
   }
 
   return (
-    <Suspense fallback={<Loading />}>
-      <PresentationComponent />
-    </Suspense>
+    // <Suspense fallback={<Loading />}>
+    <PresentationComponent />
+    // </Suspense>
   );
 }
 
