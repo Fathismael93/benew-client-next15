@@ -544,4 +544,4 @@ export const metadata = {
 
 // Configuration Next.js 15 pour page statique avec revalidation
 export const dynamic = 'force-static';
-export const revalidate = CONFIG.cache.revalidate;
+export const revalidate = 600;
