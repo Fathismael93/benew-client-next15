@@ -48,7 +48,6 @@ const validateEnv = () => {
     'CLIENT_EXISTENCE',
     'CONNECTION_TIMEOUT',
     'MAXIMUM_CLIENTS',
-    'DOPPLER_TOKEN',
   ];
 
   const ALWAYS_REQUIRED = [
