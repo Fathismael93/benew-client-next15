@@ -61,7 +61,6 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 const nextConfig = {
-  output: 'standalone',
   poweredByHeader: false,
   // ✅ Configurations manquantes critiques
   reactStrictMode: true,
