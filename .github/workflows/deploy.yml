@@ -66,8 +66,7 @@ jobs:
           tar -czf deployment.tar.gz \
             .next/standalone \
             .next/static \
-            public \
-            ecosystem.config.js
+            public
 
           echo "📊 Package size:"
           ls -lh deployment.tar.gz
