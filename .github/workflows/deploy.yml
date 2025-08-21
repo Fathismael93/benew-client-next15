@@ -12,6 +12,24 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    # 🌍 VARIABLES D'ENVIRONNEMENT MINIMALES POUR LE BUILD
+    env:
+      NODE_ENV: production
+      NEXT_PUBLIC_SITE_URL: https://benew-dj.com
+      NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
+      NEXT_PUBLIC_GTM_CONTAINER_ID: ${{ secrets.NEXT_PUBLIC_GTM_CONTAINER_ID }}
+
+      # Variables Sentry (optionnelles pour le build)
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+      SENTRY_PROJECT: benew-client
+      SENTRY_ORG: benew
+      SENTRY_URL: https://sentry.io/
+      SENTRY_RELEASE: ${{ github.sha }}
+      SENTRY_DEBUG: false
+      ANALYZE: false
+      SENTRY_IGNORE_API_RESOLUTION_ERROR: 1
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,16 +51,26 @@ jobs:
       - name: Tests (optional)
         run: npm test -- --passWithNoTests || echo "No tests, skipping"
 
-      - name: Build Next.js (standalone)
-        run: npm run build
+      # 🏗️ BUILD AVEC VALIDATION INTELLIGENTE
+      - name: Build Next.js (standalone) with smart validation
+        run: |
+          echo "🏗️ Starting build with CI environment detection..."
+          echo "NODE_ENV: $NODE_ENV"
+          echo "CI: $CI"
+          echo "GITHUB_ACTIONS: $GITHUB_ACTIONS"
+          npm run build
 
       - name: Package deployment artifact
         run: |
+          echo "📦 Creating deployment package..."
           tar -czf deployment.tar.gz \
             .next/standalone \
             .next/static \
             public \
             ecosystem.config.js
+
+          echo "📊 Package size:"
+          ls -lh deployment.tar.gz
 
       - name: Upload to server (artifact)
         uses: appleboy/scp-action@v0.1.4
@@ -54,7 +82,7 @@ jobs:
           source: 'deployment.tar.gz'
           target: '/var/www/benew/'
 
-      - name: Deploy on server (CORRIGÉ)
+      - name: Deploy on server with runtime validation
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
@@ -65,24 +93,55 @@ jobs:
             set -e
             cd /var/www/benew
 
-            echo "Extracting artifact..."
+            echo "🚀 Starting deployment process..."
+
+            # Extraction de l'artifact
+            echo "📦 Extracting artifact..."
             tar -xzf deployment.tar.gz
             rm -f deployment.tar.gz
 
             # IMPORTANT: Copier les assets au bon endroit pour standalone
-            echo "Copying static assets to standalone directory..."
+            echo "📁 Copying static assets to standalone directory..."
             cp -r .next/static .next/standalone/.next/
             cp -r public .next/standalone/
 
-            echo "Starting/reloading app with PM2..."
+            # Vérification du fichier .env (crucial pour la validation runtime)
+            echo "🔍 Checking .env file..."
+            if [ ! -f .env ]; then
+              echo "❌ ERROR: .env file not found! Please create it on the server."
+              exit 1
+            fi
+
+            echo "✅ .env file found"
+
+            # Démarrage/rechargement de l'application
+            echo "🔄 Starting/reloading app with PM2..."
             pm2 describe benew-app >/dev/null 2>&1 && pm2 reload benew-app || pm2 start ecosystem.config.js
             pm2 save
 
-            echo "Health check..."
+            # Attendre que l'app démarre complètement
+            echo "⏳ Waiting for app to fully start..."
+            sleep 5
+
+            # Health check avec retry
+            echo "🏥 Health check..."
             for i in 1 2 3 4 5; do
-              curl -fsS http://localhost:3000 >/dev/null && break
-              echo "Retry health check ($i)..."
-              sleep 2
+              if curl -fsS http://localhost:3000 >/dev/null; then
+                echo "✅ Health check passed on attempt $i"
+                break
+              fi
+              echo "⚠️ Retry health check ($i/5)..."
+              sleep 3
             done
 
-            curl -f http://localhost:3000 >/dev/null && echo "App healthy" || (pm2 logs benew-app --lines 50; exit 1)
+            # Vérification finale
+            if curl -f http://localhost:3000 >/dev/null; then
+              echo "🎉 Deployment successful! App is healthy."
+              echo "📊 PM2 Status:"
+              pm2 list
+            else
+              echo "❌ Deployment failed! App is not responding."
+              echo "📝 PM2 Logs (last 50 lines):"
+              pm2 logs benew-app --lines 50
+              exit 1
+            fi

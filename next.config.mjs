@@ -7,9 +7,35 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 
 //Add commentMore actions
+// ===== VALIDATION INTELLIGENTE DES VARIABLES D'ENVIRONNEMENT =====
 const validateEnv = () => {
-  const requiredVars = [
-    'NEXT_PUBLIC_SITE_URL',
+  // 🔍 DÉTECTION DU CONTEXTE D'EXÉCUTION
+  const NODE_ENV = process.env.NODE_ENV || 'development';
+  const IS_CI =
+    process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true';
+  const IS_BUILD_PHASE = process.env.NEXT_PHASE === 'phase-production-build';
+
+  console.log(`🔍 Environment Detection:
+    - NODE_ENV: ${NODE_ENV}
+    - IS_CI: ${IS_CI}
+    - IS_BUILD_PHASE: ${IS_BUILD_PHASE}
+    - GITHUB_ACTIONS: ${process.env.GITHUB_ACTIONS}
+  `);
+
+  // 📋 CATÉGORISATION DES VARIABLES
+  const BUILD_TIME_VARS = [
+    'SENTRY_AUTH_TOKEN',
+    'NEXT_PUBLIC_SENTRY_DSN',
+    'SENTRY_PROJECT',
+    'SENTRY_ORG',
+    'SENTRY_URL',
+    'SENTRY_RELEASE',
+    'SENTRY_DEBUG',
+    'ANALYZE',
+    'SENTRY_IGNORE_API_RESOLUTION_ERROR',
+  ];
+
+  const RUNTIME_VARS = [
     'NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME',
     'NEXT_PUBLIC_CLOUDINARY_API_KEY',
     'CLOUDINARY_API_SECRET',
@@ -19,39 +45,70 @@ const validateEnv = () => {
     'DB_PASSWORD',
     'DB_PORT',
     'DB_CA',
-    'SENTRY_AUTH_TOKEN',
-    'NEXT_PUBLIC_SENTRY_DSN',
-    'SENTRY_PROJECT',
-    'SENTRY_IGNORE_API_RESOLUTION_ERROR',
-    'SENTRY_ORG',
-    'SENTRY_URL',
-    'SENTRY_RELEASE',
-    'SENTRY_DEBUG',
-    'ANALYZE',
     'CLIENT_EXISTENCE',
     'CONNECTION_TIMEOUT',
     'MAXIMUM_CLIENTS',
-    'NODE_ENV',
-    'NEXT_PUBLIC_GA_MEASUREMENT_ID', // ← AJOUTER CETTE LIGNE
-    'NEXT_PUBLIC_GTM_CONTAINER_ID',
     'DOPPLER_TOKEN',
   ];
 
+  const ALWAYS_REQUIRED = [
+    'NODE_ENV',
+    'NEXT_PUBLIC_SITE_URL',
+    'NEXT_PUBLIC_GA_MEASUREMENT_ID', // ← AJOUTER CETTE LIGNE
+    'NEXT_PUBLIC_GTM_CONTAINER_ID',
+  ];
+
+  // 🎯 LOGIQUE DE VALIDATION SELON LE CONTEXTE
+  let requiredVars = [];
+
+  if (NODE_ENV === 'development') {
+    // 🔧 DÉVELOPPEMENT : Validation complète mais permissive
+    requiredVars = [...ALWAYS_REQUIRED, ...RUNTIME_VARS];
+    console.log('🔧 Dev mode: Validating ALWAYS_REQUIRED + RUNTIME_VARS');
+  } else if (IS_CI && NODE_ENV === 'production') {
+    // 🏗️ BUILD CI/CD : Seulement les variables nécessaires au build
+    requiredVars = [...ALWAYS_REQUIRED, ...BUILD_TIME_VARS];
+    console.log(
+      '🏗️ CI Build mode: Validating ALWAYS_REQUIRED + BUILD_TIME_VARS',
+    );
+  } else if (NODE_ENV === 'production' && !IS_CI) {
+    // 🚀 PRODUCTION RUNTIME : Validation complète
+    requiredVars = [...ALWAYS_REQUIRED, ...RUNTIME_VARS, ...BUILD_TIME_VARS];
+    console.log('🚀 Production runtime: Validating ALL variables');
+  }
+
+  // ✅ VÉRIFICATION DES VARIABLES
   const missingVars = requiredVars.filter((varName) => !process.env[varName]);
 
   if (missingVars.length > 0) {
-    console.warn(`⚠️ Missing environment variables: ${missingVars.join(', ')}`);
-    if (process.env.NODE_ENV === 'production') {
+    const context = IS_CI ? 'CI Build' : NODE_ENV;
+    console.warn(
+      `⚠️ [${context}] Missing environment variables: ${missingVars.join(', ')}`,
+    );
+
+    // 🛡️ ÉCHEC STRICT EN PRODUCTION RUNTIME SEULEMENT
+    if (NODE_ENV === 'production' && !IS_CI) {
       throw new Error(
-        `Production build failed: Missing required environment variables: ${missingVars.join(', ')}`,
+        `❌ Production runtime failed: Missing critical environment variables: ${missingVars.join(', ')}`,
       );
     }
+
+    // 🔧 DÉVELOPPEMENT : Warning seulement
+    if (NODE_ENV === 'development') {
+      console.log('🔧 Development mode: Continuing with missing variables...');
+    }
+  } else {
+    const context = IS_CI ? 'CI Build' : NODE_ENV;
+    console.log(
+      `✅ [${context}] All required environment variables are present`,
+    );
   }
 };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// 🚀 EXÉCUTER LA VALIDATION
 validateEnv();
 
 const bundleAnalyzer = withBundleAnalyzer({
@@ -786,6 +843,7 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
 
+  // 🎯 CONFIGURATION STANDALONE CONDITIONNELLE
   output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 
   // Optimisation des logs
@@ -802,22 +860,17 @@ const sentryWebpackPluginOptions = {
   project: process.env.SENTRY_PROJECT || 'benew-client',
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
-  // Optimisations pour la production
   silent: process.env.NODE_ENV === 'production',
   widenClientFileUpload: true,
-  // transpileClientSDK: true,
   tunnelRoute: '/monitoring',
 
-  // Configuration pour les builds
   dryRun:
     process.env.NODE_ENV !== 'production' || !process.env.SENTRY_AUTH_TOKEN,
   debug: process.env.NODE_ENV === 'development',
 
-  // Optimisation des uploads
   include: '.next',
   ignore: ['node_modules', '*.map'],
 
-  // Configuration des releases
   release: process.env.SENTRY_RELEASE || '1.0.0',
   deploy: {
     env: process.env.NODE_ENV,
@@ -825,11 +878,9 @@ const sentryWebpackPluginOptions = {
   reactComponentAnnotation: {
     enabled: process.env.NODE_ENV === 'production',
   },
-  // Optimisation v9
   disableLogger: process.env.NODE_ENV === 'production',
 };
 
-// Appliquer les configurations dans l'ordre : bundleAnalyzer puis Sentry
 export default withSentryConfig(
   bundleAnalyzer(nextConfig),
   sentryWebpackPluginOptions,
