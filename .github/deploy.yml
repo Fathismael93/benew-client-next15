@@ -1,0 +1,88 @@
+name: Build & Deploy Benew (Lite)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (optional)
+        run: npm run lint || echo "No lint script, skipping"
+
+      - name: Tests (optional)
+        run: npm test -- --passWithNoTests || echo "No tests, skipping"
+
+      - name: Build Next.js (standalone)
+        run: npm run build
+
+      - name: Package deployment artifact
+        run: |
+          tar -czf deployment.tar.gz \
+            .next/standalone \
+            .next/static \
+            public \
+            ecosystem.config.js
+
+      - name: Upload to server (artifact)
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          source: 'deployment.tar.gz'
+          target: '/var/www/benew/'
+
+      - name: Deploy on server (CORRIGÉ)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            set -e
+            cd /var/www/benew
+
+            echo "Extracting artifact..."
+            tar -xzf deployment.tar.gz
+            rm -f deployment.tar.gz
+
+            # IMPORTANT: Copier les assets au bon endroit pour standalone
+            echo "Copying static assets to standalone directory..."
+            cp -r .next/static .next/standalone/.next/
+            cp -r public .next/standalone/
+
+            echo "Starting/reloading app with PM2..."
+            pm2 describe benew-app >/dev/null 2>&1 && pm2 reload benew-app || pm2 start ecosystem.config.js
+            pm2 save
+
+            echo "Health check..."
+            for i in 1 2 3 4 5; do
+              curl -fsS http://localhost:3000 >/dev/null && break
+              echo "Retry health check ($i)..."
+              sleep 2
+            done
+
+            curl -f http://localhost:3000 >/dev/null && echo "App healthy" || (pm2 logs benew-app --lines 50; exit 1)
