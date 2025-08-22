@@ -52,6 +52,13 @@ const getTimestamp = () => new Date().toISOString();
 // =============================================
 
 function getDatabaseConfig() {
+  console.log(process.env.DB_HOST_NAME);
+  console.log(process.env.DB_PORT);
+  console.log(process.env.DB_NAME);
+  console.log(process.env.DB_USER_NAME);
+  console.log(process.env.DB_PASSWORD);
+  console.log(process.env.DB_CA);
+
   const config = {
     host: process.env.DB_HOST_NAME || process.env.DB_HOST,
     port: Number(process.env.DB_PORT) || 5432,
