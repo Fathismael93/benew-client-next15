@@ -1,10 +1,9 @@
 // backend/dbConnect.js
 // Connection PostgreSQL optimisée pour petites applications (500 visiteurs/jour)
-// Next.js 15 + PostgreSQL + Doppler + Sentry - Version pragmatique
+// Next.js 15 + PostgreSQL + Sentry - Version pragmatique
 
 import { Pool } from 'pg';
 import { captureException, captureMessage } from '../instrumentation.js';
-import { initializeBenewConfig } from '@/utils/doppler';
 
 // Configuration simple et adaptée
 const isProduction = process.env.NODE_ENV === 'production';
@@ -40,8 +39,6 @@ const CONFIG = {
 
 // Variables globales
 let pool;
-let dopplerConfig = null;
-let isConfigLoaded = false;
 let healthCheckInterval;
 
 // 🔥 NOUVELLE VARIABLE : Promise d'initialisation
@@ -51,42 +48,24 @@ let initializationPromise = null;
 const getTimestamp = () => new Date().toISOString();
 
 // =============================================
-// CONFIGURATION DOPPLER SIMPLIFIÉE
+// CONFIGURATION BASE DE DONNÉES SIMPLIFIÉE
 // =============================================
 
-async function loadDopplerConfig() {
-  if (dopplerConfig && isConfigLoaded) return dopplerConfig;
+function getDatabaseConfig() {
+  const config = {
+    host: process.env.DB_HOST_NAME || process.env.DB_HOST,
+    port: Number(process.env.DB_PORT) || 5432,
+    database: process.env.DB_NAME,
+    username: process.env.DB_USER_NAME || process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    ssl: process.env.DB_CA ? { ca: process.env.DB_CA } : false,
+  };
 
-  try {
-    const benewConfig = await initializeBenewConfig();
-    dopplerConfig = benewConfig.database;
-    isConfigLoaded = true;
-
-    if (CONFIG.logging.enabled) {
-      console.log(`[${getTimestamp()}] ✅ Configuration Doppler chargée`);
-    }
-    return dopplerConfig;
-  } catch (error) {
-    if (CONFIG.logging.enabled) {
-      console.warn(
-        `[${getTimestamp()}] ⚠️ Fallback vers variables d'environnement:`,
-        error.message,
-      );
-    }
-
-    // Fallback simple vers les variables d'environnement
-    dopplerConfig = {
-      host: process.env.DB_HOST_NAME || process.env.DB_HOST_NAME,
-      port: Number(process.env.DB_PORT) || Number(process.env.DB_PORT) || 5432,
-      database: process.env.DB_NAME,
-      username: process.env.DB_USER_NAME || process.env.DB_USER_NAME,
-      password: process.env.DB_PASSWORD,
-      ssl: process.env.DB_CA ? { ca: process.env.DB_CA } : false,
-    };
-
-    isConfigLoaded = true;
-    return dopplerConfig;
+  if (CONFIG.logging.enabled) {
+    console.log(`[${getTimestamp()}] ✅ Configuration base de données chargée`);
   }
+
+  return config;
 }
 
 // =============================================
@@ -94,7 +73,7 @@ async function loadDopplerConfig() {
 // =============================================
 
 async function createPool() {
-  const config = await loadDopplerConfig();
+  const config = getDatabaseConfig();
 
   const poolConfig = {
     host: config.host,
@@ -241,10 +220,6 @@ async function reconnectPool(attempt = 1) {
       );
     }
   }
-
-  // Refresh config Doppler
-  isConfigLoaded = false;
-  dopplerConfig = null;
 
   try {
     pool = await createPool();
@@ -524,7 +499,6 @@ export const monitoring = {
   getStats: () => ({
     poolInfo: monitoring.getPoolInfo(),
     config: monitoring.getConfig(),
-    dopplerConfigLoaded: isConfigLoaded,
     timestamp: new Date().toISOString(),
   }),
 };
