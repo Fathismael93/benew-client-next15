@@ -2,12 +2,17 @@
 // Connection PostgreSQL optimisée pour petites applications (500 visiteurs/jour)
 // Next.js 15 + PostgreSQL + Sentry - Version pragmatique
 
+import { promises as fs } from 'fs';
 import { Pool } from 'pg';
 import { captureException, captureMessage } from '../instrumentation.js';
+import path from 'path';
 
 // Configuration simple et adaptée
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
+
+const filePath = path.join(process.cwd(), 'backend', 'ca-certificate.crt');
+const fileContent = await fs.readFile(filePath, 'utf8');
 
 const CONFIG = {
   // Pool adapté pour 500 visiteurs/jour
@@ -52,20 +57,19 @@ const getTimestamp = () => new Date().toISOString();
 // =============================================
 
 function getDatabaseConfig() {
-  console.log(process.env.DB_HOST_NAME);
-  console.log(process.env.DB_PORT);
-  console.log(process.env.DB_NAME);
-  console.log(process.env.DB_USER_NAME);
-  console.log(process.env.DB_PASSWORD);
-  console.log(process.env.DB_CA);
-
   const config = {
     host: process.env.DB_HOST_NAME || process.env.DB_HOST,
     port: Number(process.env.DB_PORT) || 5432,
     database: process.env.DB_NAME,
     username: process.env.DB_USER_NAME || process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    ssl: process.env.DB_CA ? { ca: process.env.DB_CA } : false,
+    ssl:
+      process.env.NODE_ENV === 'production'
+        ? {
+            rejectUnauthorized: false,
+            ca: fileContent,
+          }
+        : false,
   };
 
   if (CONFIG.logging.enabled) {

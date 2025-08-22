@@ -44,7 +44,6 @@ const validateEnv = () => {
     'DB_NAME',
     'DB_PASSWORD',
     'DB_PORT',
-    'DB_CA',
     'CLIENT_EXISTENCE',
     'CONNECTION_TIMEOUT',
     'MAXIMUM_CLIENTS',
