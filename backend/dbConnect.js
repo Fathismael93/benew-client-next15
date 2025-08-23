@@ -11,14 +11,37 @@ import path from 'path';
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-console.log('working dir:', process.cwd());
+// Détection du chemin adaptatif avec fallback
+const workingDir = process.cwd();
+console.log('working dir:', workingDir);
 
-const filePath = path.join(process.cwd(), 'certs', 'ca-certificate.crt');
+let fileContent;
+let filePath;
 
-console.log('filePath:', filePath);
-const fileContent = await fs.readFile(filePath, 'utf8');
+// Essayer d'abord le chemin production
+if (workingDir.includes('.next/standalone')) {
+  filePath = path.join(workingDir, '..', '..', 'certs', 'ca-certificate.crt');
+} else {
+  filePath = path.join(workingDir, 'certs', 'ca-certificate.crt');
+}
 
-console.log('Certificate loaded :', fileContent);
+try {
+  fileContent = await fs.readFile(filePath, 'utf8');
+  console.log('Certificate loaded from:', filePath);
+} catch (error) {
+  console.error('Failed to load certificate from:', filePath);
+  // Fallback : chemin absolu direct
+  try {
+    filePath = '/var/www/benew/certs/ca-certificate.crt';
+    fileContent = await fs.readFile(filePath, 'utf8');
+    console.log('Certificate loaded from fallback:', filePath);
+  } catch (fallbackError) {
+    console.error(
+      'Certificate not found, SSL will work without CA verification',
+    );
+    fileContent = null;
+  }
+}
 
 const CONFIG = {
   // Pool adapté pour 500 visiteurs/jour
@@ -73,7 +96,8 @@ function getDatabaseConfig() {
       process.env.NODE_ENV === 'production'
         ? {
             rejectUnauthorized: false,
-            ca: fileContent,
+            // Utiliser le certificat seulement s'il existe
+            ...(fileContent && { ca: fileContent }),
           }
         : false,
   };
