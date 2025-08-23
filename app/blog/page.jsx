@@ -261,9 +261,6 @@ async function getBlogArticles() {
             article_title, 
             article_image, 
             TO_CHAR(article_created, 'DD/MM/YYYY') as created,
-            article_created as created_raw,
-            COALESCE(NULLIF(TRIM(article_excerpt), ''), 
-                     SUBSTRING(article_title FROM 1 FOR 120) || '...') as excerpt,
             (SELECT COUNT(*) FROM admin.articles WHERE is_active = true) as total_articles
           FROM admin.articles 
           WHERE is_active = true 
