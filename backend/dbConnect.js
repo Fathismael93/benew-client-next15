@@ -11,36 +11,49 @@ import path from 'path';
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-// Détection du chemin adaptatif avec fallback
-const workingDir = process.cwd();
-console.log('working dir:', workingDir);
+// Variable pour le certificat (chargé en lazy loading)
+let cachedCertificate = null;
+let certificateLoadAttempted = false;
 
-let fileContent;
-let filePath;
+// Fonction pour charger le certificat (appelée seulement au runtime)
+async function loadCertificate() {
+  // Ne charger qu'une fois
+  if (certificateLoadAttempted) return cachedCertificate;
+  certificateLoadAttempted = true;
 
-// Essayer d'abord le chemin production
-if (workingDir.includes('.next/standalone')) {
-  filePath = path.join(workingDir, '..', '..', 'certs', 'ca-certificate.crt');
-} else {
-  filePath = path.join(workingDir, 'certs', 'ca-certificate.crt');
-}
-
-try {
-  fileContent = await fs.readFile(filePath, 'utf8');
-  console.log('Certificate loaded from:', filePath);
-} catch (error) {
-  console.error('Failed to load certificate from:', filePath);
-  // Fallback : chemin absolu direct
-  try {
-    filePath = '/var/www/benew/certs/ca-certificate.crt';
-    fileContent = await fs.readFile(filePath, 'utf8');
-    console.log('Certificate loaded from fallback:', filePath);
-  } catch (fallbackError) {
-    console.error(
-      'Certificate not found, SSL will work without CA verification',
-    );
-    fileContent = null;
+  // Skip le chargement pendant le build
+  if (process.env.CI || process.env.GITHUB_ACTIONS) {
+    console.log('Skipping certificate load during CI/build');
+    return null;
   }
+
+  const workingDir = process.cwd();
+
+  // Chemins possibles pour le certificat
+  const certPaths = [
+    // Production: chemin absolu direct
+    '/var/www/benew/certs/ca-certificate.crt',
+    // Production: depuis standalone
+    workingDir.includes('.next/standalone')
+      ? path.join(workingDir, '..', '..', 'certs', 'ca-certificate.crt')
+      : null,
+    // Dev local (si vous avez le certificat localement)
+    path.join(workingDir, 'certs', 'ca-certificate.crt'),
+  ].filter(Boolean);
+
+  for (const certPath of certPaths) {
+    try {
+      const content = await fs.readFile(certPath, 'utf8');
+      console.log(`✅ Certificate loaded from: ${certPath}`);
+      cachedCertificate = content;
+      return content;
+    } catch (error) {
+      // Silencieux, on essaie le suivant
+    }
+  }
+
+  console.log('⚠️ No certificate found, using SSL without CA verification');
+  return null;
 }
 
 const CONFIG = {
@@ -85,7 +98,13 @@ const getTimestamp = () => new Date().toISOString();
 // CONFIGURATION BASE DE DONNÉES SIMPLIFIÉE
 // =============================================
 
-function getDatabaseConfig() {
+async function getDatabaseConfig() {
+  // Charger le certificat en lazy loading (seulement en production)
+  let certificate = null;
+  if (process.env.NODE_ENV === 'production') {
+    certificate = await loadCertificate();
+  }
+
   const config = {
     host: process.env.DB_HOST_NAME || process.env.DB_HOST,
     port: Number(process.env.DB_PORT) || 5432,
@@ -96,8 +115,7 @@ function getDatabaseConfig() {
       process.env.NODE_ENV === 'production'
         ? {
             rejectUnauthorized: false,
-            // Utiliser le certificat seulement s'il existe
-            ...(fileContent && { ca: fileContent }),
+            ...(certificate && { ca: certificate }),
           }
         : false,
   };
@@ -114,7 +132,7 @@ function getDatabaseConfig() {
 // =============================================
 
 async function createPool() {
-  const config = getDatabaseConfig();
+  const config = await getDatabaseConfig(); // Ajouter await
 
   const poolConfig = {
     host: config.host,

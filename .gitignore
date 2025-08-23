@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Certificats SSL (gardés uniquement sur le serveur)
+certs/
+*.crt
+*.pem
+*.key

@@ -15,6 +15,8 @@ jobs:
     # 🌍 VARIABLES D'ENVIRONNEMENT MINIMALES POUR LE BUILD
     env:
       NODE_ENV: production
+      CI: true # Ajouter cette ligne
+      GITHUB_ACTIONS: true # Ajouter cette ligne
       NEXT_PUBLIC_SITE_URL: https://benew-dj.com
       NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
       NEXT_PUBLIC_GTM_CONTAINER_ID: ${{ secrets.NEXT_PUBLIC_GTM_CONTAINER_ID }}
