@@ -11,8 +11,14 @@ import path from 'path';
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
-const filePath = path.join(process.cwd(), 'backend', 'ca-certificate.crt');
+console.log('working dir:', process.cwd());
+
+const filePath = path.join(process.cwd(), 'certs', 'ca-certificate.crt');
+
+console.log('filePath:', filePath);
 const fileContent = await fs.readFile(filePath, 'utf8');
+
+console.log('Certificate loaded :', fileContent);
 
 const CONFIG = {
   // Pool adapté pour 500 visiteurs/jour
