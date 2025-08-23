@@ -41,6 +41,8 @@ async function loadCertificate() {
     path.join(workingDir, 'certs', 'ca-certificate.crt'),
   ].filter(Boolean);
 
+  console.log('🔍 Attempting to load certificate from paths:', certPaths);
+
   for (const certPath of certPaths) {
     try {
       const content = await fs.readFile(certPath, 'utf8');
