@@ -516,16 +516,16 @@ export const metadata = {
     'Benew',
     'Djibouti',
   ],
-  openGraph: {
-    title: 'Blog Benew - Articles et Actualités',
-    description: 'Articles et actualités sur le développement web et mobile',
-    type: 'website',
-    locale: 'fr_FR',
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
-  },
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
-  },
+  // openGraph: {
+  //   title: 'Blog Benew - Articles et Actualités',
+  //   description: 'Articles et actualités sur le développement web et mobile',
+  //   type: 'website',
+  //   locale: 'fr_FR',
+  //   url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
+  // },
+  // alternates: {
+  //   canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
+  // },
   robots: {
     index: true,
     follow: true,

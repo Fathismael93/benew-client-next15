@@ -486,15 +486,15 @@ export const metadata = {
     'Benew',
     'Djibouti',
   ],
-  openGraph: {
-    title: 'Templates E-commerce Benew',
-    description:
-      'Collection de templates professionnels pour votre boutique en ligne.',
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
-  },
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
-  },
+  // openGraph: {
+  //   title: 'Templates E-commerce Benew',
+  //   description:
+  //     'Collection de templates professionnels pour votre boutique en ligne.',
+  //   url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  // },
+  // alternates: {
+  //   canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  // },
 };
 
 // Configuration ISR Next.js 15
