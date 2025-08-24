@@ -624,14 +624,6 @@ const nextConfig = {
     PROJECT_ROOT: __dirname,
   },
 
-  // Configuration publique (accessible côté client)
-  // publicRuntimeConfig: {
-  //   SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
-  //   CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  //   CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-  //   GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-  // },
-
   // ===== REDIRECTIONS SEO =====
   async redirects() {
     return [

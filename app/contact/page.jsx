@@ -293,9 +293,9 @@ async function validateContactServices() {
       // Vérification de la configuration email
       if (CONFIG.contact.emailServiceCheck) {
         const emailConfigured = !!(
-          process.env.SENDGRID_API_KEY ||
-          process.env.SMTP_HOST ||
-          process.env.EMAIL_SERVICE_URL
+          process.env.RESEND_API_KEY ||
+          process.env.RESEND_TO_EMAIL ||
+          process.env.RESEND_FROM_EMAIL
         );
 
         if (!emailConfigured) {

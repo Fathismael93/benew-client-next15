@@ -1,6 +1,7 @@
 // sentry.server.config.js
-// Configuration Sentry pour l'environnement serveur Node.js
+// Configuration Sentry v10 CORRIGÉE pour l'environnement serveur Node.js
 // Next.js 15 + PostgreSQL + Cloudinary + EmailJS
+// ✅ FIX: Suppression de enableLogs et _experiments obsolètes
 
 import * as Sentry from '@sentry/nextjs';
 import {
@@ -36,13 +37,12 @@ if (sentryDSN && isValidDSN(sentryDSN)) {
     tracesSampleRate: isProduction ? 0.1 : 1.0,
     profilesSampleRate: isProduction ? 0.1 : 1.0,
 
-    // ✅ CORRECTION 2: Configuration enableLogs v9
+    // ✅ FIX PRINCIPAL: Configuration logs v10 correcte
     enableLogs: true,
-
-    // Logs expérimentaux v9 (optionnel - peut être retiré si stable)
-    _experiments: {
-      enableLogs: true,
-    },
+    // ❌ SUPPRIMÉ: _experiments (cause du bug "Cannot read properties of undefined")
+    // _experiments: {
+    //   enableLogs: true,
+    // },
 
     // Erreurs à ignorer spécifiques au serveur
     ignoreErrors: [
@@ -175,7 +175,7 @@ if (sentryDSN && isValidDSN(sentryDSN)) {
     },
   });
 
-  console.log('✅ Sentry server initialized successfully');
+  console.log('✅ Sentry server initialized successfully (v10 fixed)');
 } else {
   console.warn('⚠️ Sentry server: Invalid or missing DSN');
 }
