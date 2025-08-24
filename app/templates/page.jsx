@@ -474,6 +474,9 @@ export default async function TemplatesPage() {
 
 // Metadata pour SEO e-commerce avec monitoring en cas d'erreur
 export const metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  ),
   title: 'Templates - Benew | Solutions E-commerce',
   description:
     'Découvrez notre collection de templates e-commerce professionnels. Solutions complètes pour votre boutique en ligne.',
@@ -489,11 +492,11 @@ export const metadata = {
     title: 'Templates E-commerce Benew',
     description:
       'Collection de templates professionnels pour votre boutique en ligne.',
-    // url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
   },
-  // alternates: {
-  //   canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
-  // },
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  },
 };
 
 // Configuration ISR Next.js 15
