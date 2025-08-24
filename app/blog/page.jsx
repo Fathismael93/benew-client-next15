@@ -275,7 +275,7 @@ async function getBlogArticles() {
 
         const queryDuration = performance.now() - startTime;
 
-        console.log('Articles fetched:');
+        // console.log('Articles fetched:');
         // Log performance avec monitoring complet
         if (queryDuration > CONFIG.performance.slowQueryThreshold) {
           captureMessage('Slow blog query detected', {
@@ -299,7 +299,7 @@ async function getBlogArticles() {
           );
         }
 
-        console.log('Enriching articles with optimizations...');
+        // console.log('Enriching articles with optimizations...');
         // Enrichissement des articles avec optimisations
         const enrichedArticles = result.rows.map((article) => ({
           ...article,
@@ -313,7 +313,7 @@ async function getBlogArticles() {
           // reading_time: Math.max(1, Math.ceil(article.excerpt.length / 200)), // Estimation temps de lecture
         }));
 
-        console.log('returning articles data');
+        // console.log('returning articles data');
         // Succès
         return {
           articles: enrichedArticles,
@@ -520,11 +520,11 @@ export const metadata = {
     description: 'Articles et actualités sur le développement web et mobile',
     type: 'website',
     locale: 'fr_FR',
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
+    // url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
   },
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
-  },
+  // alternates: {
+  //   canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
+  // },
   robots: {
     index: true,
     follow: true,
