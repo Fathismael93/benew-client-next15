@@ -275,8 +275,7 @@ async function getBlogArticles() {
 
         const queryDuration = performance.now() - startTime;
 
-        console.log('Blog articles fetched:');
-        console.log(result);
+        console.log('Articles fetched:');
         // Log performance avec monitoring complet
         if (queryDuration > CONFIG.performance.slowQueryThreshold) {
           captureMessage('Slow blog query detected', {
@@ -300,6 +299,7 @@ async function getBlogArticles() {
           );
         }
 
+        console.log('Enriching articles with optimizations...');
         // Enrichissement des articles avec optimisations
         const enrichedArticles = result.rows.map((article) => ({
           ...article,
@@ -313,6 +313,7 @@ async function getBlogArticles() {
           reading_time: Math.max(1, Math.ceil(article.excerpt.length / 200)), // Estimation temps de lecture
         }));
 
+        console.log('returning articles data');
         // Succès
         return {
           articles: enrichedArticles,
