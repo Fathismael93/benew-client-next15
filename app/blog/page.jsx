@@ -275,6 +275,8 @@ async function getBlogArticles() {
 
         const queryDuration = performance.now() - startTime;
 
+        console.log('Blog articles fetched:');
+        console.log(result);
         // Log performance avec monitoring complet
         if (queryDuration > CONFIG.performance.slowQueryThreshold) {
           captureMessage('Slow blog query detected', {
