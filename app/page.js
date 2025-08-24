@@ -5,6 +5,7 @@ import HomeComponent from 'components/home';
 
 // =============================
 export const metadata = {
+  metadataBase: 'https://benew-dj.com',
   title: 'Accueil - Benew | Templates et Applications Web & Mobile',
   description:
     'Découvrez Benew, votre partenaire pour des templates premium et applications web & mobile professionnelles. Solutions sur-mesure pour votre business en ligne.',
