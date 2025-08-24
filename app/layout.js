@@ -10,6 +10,7 @@ import { HydrationFix } from '@/components/layouts/hydrationFix';
 // MÉTADONNÉES GLOBALES
 // =============================
 export const metadata = {
+  metadataBase: 'https://benew-dj.com',
   title: {
     default: 'Benew - Templates et Applications Web & Mobile',
     template: '%s | Benew',

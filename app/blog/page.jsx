@@ -503,9 +503,7 @@ export default async function BlogPage() {
 
 // Metadata pour SEO blog avec gestion d'erreurs
 export const metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-  ),
+  metadataBase: 'https://benew-dj.com',
   title: 'Blog Benew - Articles et Actualités',
   description:
     'Découvrez nos derniers articles sur le développement web, les templates et les applications mobiles.',
