@@ -17,20 +17,12 @@ jobs:
       NODE_ENV: production
       CI: true # Ajouter cette ligne
       GITHUB_ACTIONS: true # Ajouter cette ligne
-      NEXT_PUBLIC_SITE_URL: https://benew-dj.com
+      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
       NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
       NEXT_PUBLIC_GTM_CONTAINER_ID: ${{ secrets.NEXT_PUBLIC_GTM_CONTAINER_ID }}
-
-      # Variables Sentry (optionnelles pour le build)
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
-      SENTRY_PROJECT: benew-client
-      SENTRY_ORG: benew
-      SENTRY_URL: https://sentry.io/
-      SENTRY_RELEASE: ${{ github.sha }}
-      SENTRY_DEBUG: false
-      ANALYZE: false
-      SENTRY_IGNORE_API_RESOLUTION_ERROR: 1
+      NEXT_PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }}
+      NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
 
     steps:
       - name: Checkout
