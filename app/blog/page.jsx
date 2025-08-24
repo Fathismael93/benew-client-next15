@@ -310,7 +310,7 @@ async function getBlogArticles() {
                 '/upload/w_400,h_300,c_fill,q_auto:low,f_auto/',
               )
             : article.article_image,
-          reading_time: Math.max(1, Math.ceil(article.excerpt.length / 200)), // Estimation temps de lecture
+          // reading_time: Math.max(1, Math.ceil(article.excerpt.length / 200)), // Estimation temps de lecture
         }));
 
         console.log('returning articles data');
