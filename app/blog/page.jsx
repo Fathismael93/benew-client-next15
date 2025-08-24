@@ -526,10 +526,10 @@ export const metadata = {
   // alternates: {
   //   canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
   // },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  // robots: {
+  //   index: true,
+  //   follow: true,
+  // },
 };
 
 // Configuration ISR Next.js 15

@@ -19,12 +19,12 @@ export const metadata = {
     'Djibouti',
   ],
 
-  openGraph: {
-    title: 'Benew - Votre partenaire digital',
-    description:
-      'Templates premium et applications web & mobile pour propulser votre business en ligne.',
-    url: process.env.NEXT_PUBLIC_SITE_URL,
-  },
+  // openGraph: {
+  //   title: 'Benew - Votre partenaire digital',
+  //   description:
+  //     'Templates premium et applications web & mobile pour propulser votre business en ligne.',
+  //   url: process.env.NEXT_PUBLIC_SITE_URL,
+  // },
 
   // Données structurées pour le SEO
   other: {
@@ -33,9 +33,9 @@ export const metadata = {
   },
 
   // URL canonique
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL,
-  },
+  // alternates: {
+  //   canonical: process.env.NEXT_PUBLIC_SITE_URL,
+  // },
 };
 
 export default function Home() {

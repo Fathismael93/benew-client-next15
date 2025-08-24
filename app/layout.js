@@ -29,45 +29,45 @@ export const metadata = {
   publisher: 'Benew',
 
   // OpenGraph pour réseaux sociaux
-  openGraph: {
-    type: 'website',
-    locale: 'fr_FR',
-    url: process.env.NEXT_PUBLIC_SITE_URL,
-    siteName: 'Benew',
-    title: 'Benew - Templates et Applications Web & Mobile',
-    description:
-      'Découvrez nos templates premium et applications web & mobile. Solutions professionnelles pour votre business en ligne.',
-    // images: [
-    //   {
-    //     url: '/og-image.png', // Assure-toi d'avoir cette image
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'Benew - Templates et Applications',
-    //   },
-    // ],
-  },
+  // openGraph: {
+  //   type: 'website',
+  //   locale: 'fr_FR',
+  //   url: process.env.NEXT_PUBLIC_SITE_URL,
+  //   siteName: 'Benew',
+  //   title: 'Benew - Templates et Applications Web & Mobile',
+  //   description:
+  //     'Découvrez nos templates premium et applications web & mobile. Solutions professionnelles pour votre business en ligne.',
+  //   // images: [
+  //   //   {
+  //   //     url: '/og-image.png', // Assure-toi d'avoir cette image
+  //   //     width: 1200,
+  //   //     height: 630,
+  //   //     alt: 'Benew - Templates et Applications',
+  //   //   },
+  //   // ],
+  // },
 
   // Twitter Card
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Benew - Templates et Applications Web & Mobile',
-    description:
-      'Découvrez nos templates premium et applications web & mobile.',
-    // images: ['/og-image.png'],
-  },
+  // twitter: {
+  //   card: 'summary_large_image',
+  //   title: 'Benew - Templates et Applications Web & Mobile',
+  //   description:
+  //     'Découvrez nos templates premium et applications web & mobile.',
+  //   // images: ['/og-image.png'],
+  // },
 
   // Métadonnées techniques
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  // robots: {
+  //   index: true,
+  //   follow: true,
+  //   googleBot: {
+  //     index: true,
+  //     follow: true,
+  //     'max-video-preview': -1,
+  //     'max-image-preview': 'large',
+  //     'max-snippet': -1,
+  //   },
+  // },
 
   // Vérification propriétaires (optionnel)
   // verification: {
@@ -81,12 +81,12 @@ export const metadata = {
   referrer: 'origin-when-cross-origin',
 
   // Liens alternatifs
-  alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL,
-    languages: {
-      'fr-FR': process.env.NEXT_PUBLIC_SITE_URL,
-    },
-  },
+  // alternates: {
+  //   canonical: process.env.NEXT_PUBLIC_SITE_URL,
+  //   languages: {
+  //     'fr-FR': process.env.NEXT_PUBLIC_SITE_URL,
+  //   },
+  // },
 
   // Icônes et manifeste
   // icons: {
