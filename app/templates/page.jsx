@@ -473,29 +473,29 @@ export default async function TemplatesPage() {
 }
 
 // Metadata pour SEO e-commerce avec monitoring en cas d'erreur
-// export const metadata = {
-//   // metadataBase: 'https://benew-dj.com',
-//   title: 'Templates - Benew | Solutions E-commerce',
-//   description:
-//     'Découvrez notre collection de templates e-commerce professionnels. Solutions complètes pour votre boutique en ligne.',
-//   keywords: [
-//     'templates e-commerce',
-//     'boutique en ligne',
-//     'solutions e-commerce',
-//     'templates professionnels',
-//     'Benew',
-//     'Djibouti',
-//   ],
-//   // openGraph: {
-//   //   title: 'Templates E-commerce Benew',
-//   //   description:
-//   //     'Collection de templates professionnels pour votre boutique en ligne.',
-//   //   url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
-//   // },
-//   // alternates: {
-//   //   canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
-//   // },
-// };
+export const metadata = {
+  metadataBase: 'https://benew-dj.com',
+  title: 'Templates - Benew | Solutions E-commerce',
+  description:
+    'Découvrez notre collection de templates e-commerce professionnels. Solutions complètes pour votre boutique en ligne.',
+  keywords: [
+    'templates e-commerce',
+    'boutique en ligne',
+    'solutions e-commerce',
+    'templates professionnels',
+    'Benew',
+    'Djibouti',
+  ],
+  openGraph: {
+    title: 'Templates E-commerce Benew',
+    description:
+      'Collection de templates professionnels pour votre boutique en ligne.',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  },
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/templates`,
+  },
+};
 
 // Configuration ISR Next.js 15
 export const revalidate = 300;

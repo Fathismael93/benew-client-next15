@@ -502,35 +502,35 @@ export default async function BlogPage() {
 }
 
 // Metadata pour SEO blog avec gestion d'erreurs
-// export const metadata = {
-//   // metadataBase: 'https://benew-dj.com',
-//   title: 'Blog Benew - Articles et Actualités',
-//   description:
-//     'Découvrez nos derniers articles sur le développement web, les templates et les applications mobiles.',
-//   keywords: [
-//     'blog développement web',
-//     'articles techniques',
-//     'actualités tech',
-//     'templates web',
-//     'applications mobiles',
-//     'Benew',
-//     'Djibouti',
-//   ],
-//   // openGraph: {
-//   //   title: 'Blog Benew - Articles et Actualités',
-//   //   description: 'Articles et actualités sur le développement web et mobile',
-//   //   type: 'website',
-//   //   locale: 'fr_FR',
-//   //   url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
-//   // },
-//   // alternates: {
-//   //   canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
-//   // },
-//   // robots: {
-//   //   index: true,
-//   //   follow: true,
-//   // },
-// };
+export const metadata = {
+  metadataBase: 'https://benew-dj.com',
+  title: 'Blog Benew - Articles et Actualités',
+  description:
+    'Découvrez nos derniers articles sur le développement web, les templates et les applications mobiles.',
+  keywords: [
+    'blog développement web',
+    'articles techniques',
+    'actualités tech',
+    'templates web',
+    'applications mobiles',
+    'Benew',
+    'Djibouti',
+  ],
+  openGraph: {
+    title: 'Blog Benew - Articles et Actualités',
+    description: 'Articles et actualités sur le développement web et mobile',
+    type: 'website',
+    locale: 'fr_FR',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
+  },
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 // Configuration ISR Next.js 15
 export const revalidate = 180; // 3 minutes pour blog (plus dynamique)
