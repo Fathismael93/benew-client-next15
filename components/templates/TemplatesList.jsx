@@ -125,7 +125,7 @@ const TemplatesList = ({ templates = [] }) => {
   return (
     <div className="templates-container">
       <section className="first">
-        <Parallax bgColor="#0c0c1d" title="Nos Modèles" planets="/sun.png" />
+        <Parallax bgColor="#0c0c1d" title="Modeles" planets="/sun.png" />
       </section>
 
       <div className="templates-grid" role="list">
