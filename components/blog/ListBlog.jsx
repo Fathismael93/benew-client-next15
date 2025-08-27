@@ -25,7 +25,7 @@ import PageTracker from '../analytics/PageTracker';
 // Composant de barre de progression mémorisé
 const ProgressBar = memo(({ scaleX }) => (
   <div className="progress">
-    <h1>Les Articles</h1>
+    <h1>Articles</h1>
     <motion.div style={{ scaleX }} className="progressBar" />
   </div>
 ));
@@ -154,7 +154,7 @@ const ListBlog = ({ posts = [], blogMetrics = {} }) => {
       />
 
       <section className="first">
-        <Parallax bgColor="#0c0c1d" title="Notre Blog" planets="/planets.png" />
+        <Parallax bgColor="#0c0c1d" title="Blog" planets="/planets.png" />
       </section>
 
       <div className="portfolio" ref={ref}>

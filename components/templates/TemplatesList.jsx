@@ -107,11 +107,7 @@ const TemplatesList = ({ templates = [] }) => {
         <PageTracker pageName="templates_list_empty" />
         <div className="templates-empty">
           <section className="first">
-            <Parallax
-              bgColor="#0c0c1d"
-              title="Nos Modèles"
-              planets="/sun.png"
-            />
+            <Parallax bgColor="#0c0c1d" title="Modeles" planets="/sun.png" />
           </section>
           <section className="empty-state">
             <h2>Aucun template disponible</h2>

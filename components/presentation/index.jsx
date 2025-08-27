@@ -116,7 +116,7 @@ const PresentationComponent = () => {
       />
 
       <section className="others">
-        <Parallax bgColor="#0c0c1d" title="Présentation" planets="/sun.png" />
+        <Parallax bgColor="#0c0c1d" title="Presentation" planets="/sun.png" />
       </section>
       <section className="others">
         <div className="planets-background" />
