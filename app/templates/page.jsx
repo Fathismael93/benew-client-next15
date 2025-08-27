@@ -323,7 +323,7 @@ async function getTemplates() {
       httpStatus: errorInfo.httpStatus,
       userMessage: errorInfo.userMessage,
       shouldRetry: errorInfo.shouldRetry,
-      error: error.message,
+      error: error,
     };
   }
 }
