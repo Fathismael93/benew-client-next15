@@ -45,3 +45,6 @@ certs/
 *.crt
 *.pem
 *.key
+
+
+deploy.yml

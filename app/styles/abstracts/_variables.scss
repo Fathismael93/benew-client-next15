@@ -25,6 +25,15 @@ $text-color-muted: rgba($text-color, 0.7);
 $background-color-light: color.adjust($background-color, $lightness: 10%);
 
 // =============================
+// POLICES - SYSTÈME 3 POLICES SPÉCIALISÉES
+// =============================
+
+// Polices spécialisées selon usage
+$font-family-parallax: 'Rint Basic', serif; // Uniquement pour parallax
+$font-family-ui: 'Tycho', sans-serif; // Titres, liens, boutons, UI
+$font-family-content: 'Sansation', sans-serif; // Textes, paragraphes, contenu
+
+// =============================
 // CSS CUSTOM PROPERTIES (Runtime)
 // =============================
 :root {
@@ -45,6 +54,25 @@ $background-color-light: color.adjust($background-color, $lightness: 10%);
   // Couleurs dérivées
   --text-color-muted: #{$text-color-muted};
   --background-color-light: #{$background-color-light};
+
+  // Polices spécialisées
+  --font-parallax: #{$font-family-parallax};
+  --font-ui: #{$font-family-ui};
+  --font-content: #{$font-family-content};
+}
+
+// =============================
+// FONCTIONS UTILITAIRES POUR POLICES
+// =============================
+@function font-family($type) {
+  @if $type == 'parallax' {
+    @return $font-family-parallax;
+  } @else if $type == 'ui' {
+    @return $font-family-ui;
+  } @else if $type == 'content' {
+    @return $font-family-content;
+  }
+  @return $font-family-content; // fallback sur Sansation
 }
 
 // =============================

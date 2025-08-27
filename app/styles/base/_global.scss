@@ -2,7 +2,44 @@
 // Styles globaux extraits de app/app.scss
 
 @use '../abstracts' as *;
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+// Import des polices
+@import url('https://fonts.googleapis.com/css2?family=Sansation:wght@400&display=swap');
+
+// Rint Basic - police locale pour parallax
+@font-face {
+  font-family: 'Rint Basic';
+  src:
+    url('/fonts/rint-basic/RintBasic-Regular.woff2') format('woff2'),
+    url('/fonts/rint-basic/RintBasic-Regular.woff') format('woff'),
+    url('/fonts/rint-basic/RintBasic-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rint Basic';
+  src:
+    url('/fonts/rint-basic/RintBasic-Italic.woff2') format('woff2'),
+    url('/fonts/rint-basic/RintBasic-Italic.woff') format('woff'),
+    url('/fonts/rint-basic/RintBasic-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+// Tycho - police locale pour UI
+@font-face {
+  font-family: 'Tycho';
+  src:
+    url('/fonts/tycho/Tycho-Regular.woff2') format('woff2'),
+    url('/fonts/tycho/Tycho-Regular.woff') format('woff'),
+    url('/fonts/tycho/Tycho-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 html {
   scroll-snap-type: y mandatory;
@@ -13,9 +50,77 @@ html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'DM Sans', sans-serif;
+  // Police par défaut : Sansation pour tout le contenu
+  font-family: font-family('content');
+  font-weight: 400; // Seulement regular 400
   font-optical-sizing: auto;
   font-style: normal;
+}
+
+// =============================
+// ATTRIBUTION DES POLICES PAR ÉLÉMENT
+// =============================
+
+// Titres, liens, boutons = Tycho
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: font-family('ui'); // Tycho
+  font-weight: 400;
+}
+
+a,
+.link {
+  font-family: font-family('ui'); // Tycho
+  font-weight: 400;
+}
+
+button,
+.button,
+.btn {
+  font-family: font-family('ui'); // Tycho
+  font-weight: 400;
+}
+
+// Navigation et éléments UI
+nav,
+.nav,
+.navbar,
+.menu {
+  font-family: font-family('ui'); // Tycho
+
+  a,
+  button,
+  span {
+    font-family: inherit; // Hérite de Tycho
+  }
+}
+
+// Contenu textuel = Sansation (déjà par défaut via *)
+p,
+span,
+div,
+li,
+td,
+th {
+  font-family: font-family('content'); // Sansation
+  font-weight: 400; // Seulement regular
+}
+
+// Classes utilitaires
+.font-parallax {
+  font-family: font-family('parallax'); // Rint Basic
+}
+
+.font-ui {
+  font-family: font-family('ui'); // Tycho
+}
+
+.font-content {
+  font-family: font-family('content'); // Sansation
 }
 
 body {

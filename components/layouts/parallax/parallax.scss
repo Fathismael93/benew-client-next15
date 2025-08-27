@@ -10,6 +10,9 @@
   overflow: hidden;
 
   h1 {
+    // 🎯 FORCE L'UTILISATION DE RINT BASIC POUR PARALLAX
+    font-family: font-family('parallax') !important; // Rint Basic
+
     background: linear-gradient(
       45deg,
       css-var(text-color),
@@ -20,7 +23,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 4px 8px rgba(css-var(background-color), 0.3);
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: 0.02em;
 
     // 📱 MOBILE FIRST - Titre adapté aux petits écrans

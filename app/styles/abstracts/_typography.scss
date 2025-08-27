@@ -1,0 +1,94 @@
+// styles/abstracts/_typography.scss
+@use 'variables' as *;
+
+// =============================
+// MIXINS SPÉCIALISÉS PAR USAGE
+// =============================
+
+// Mixin pour les titres (Tycho)
+@mixin heading($size: 1.5rem, $weight: 400) {
+  font-family: font-family('ui'); // Tycho
+  font-weight: $weight;
+  font-size: $size;
+  line-height: 1.2;
+}
+
+// Mixin pour les liens (Tycho)
+@mixin link-style($size: 1rem, $weight: 400) {
+  font-family: font-family('ui'); // Tycho
+  font-weight: $weight;
+  font-size: $size;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Mixin pour les boutons (Tycho)
+@mixin button-style($size: 0.9rem, $weight: 400) {
+  font-family: font-family('ui'); // Tycho
+  font-weight: $weight;
+  font-size: $size;
+  letter-spacing: 0.025em;
+}
+
+// Mixin pour le contenu textuel (Sansation)
+@mixin body-text($size: 1rem) {
+  font-family: font-family('content'); // Sansation
+  font-weight: 400; // Seulement regular
+  font-size: $size;
+  line-height: 1.6;
+}
+
+// Mixin pour le parallax (Rint Basic)
+@mixin parallax-title($size: 4rem) {
+  font-family: font-family('parallax'); // Rint Basic
+  font-weight: 400;
+  font-size: $size;
+  line-height: 1.1;
+}
+
+// =============================
+// STYLES PRÉDÉFINIS
+// =============================
+
+// Titres avec tailles prédéfinies
+@mixin heading-xl {
+  @include heading(clamp(2rem, 5vw, 3rem));
+}
+
+@mixin heading-lg {
+  @include heading(clamp(1.5rem, 4vw, 2rem));
+}
+
+@mixin heading-md {
+  @include heading(clamp(1.25rem, 3vw, 1.5rem));
+}
+
+@mixin heading-sm {
+  @include heading(clamp(1rem, 2vw, 1.25rem));
+}
+
+// Navigation
+@mixin nav-link {
+  @include link-style(0.9rem, 400);
+}
+
+// Boutons
+@mixin button-primary {
+  @include button-style(0.875rem, 400);
+}
+
+@mixin button-secondary {
+  @include button-style(0.8rem, 400);
+}
+
+// Texte de contenu
+@mixin paragraph {
+  @include body-text(1rem);
+}
+
+@mixin small-text {
+  @include body-text(0.875rem);
+}
