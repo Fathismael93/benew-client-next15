@@ -165,7 +165,7 @@ const nextConfig = {
   },
 
   // Timeout pour la génération de pages statiques
-  staticPageGenerationTimeout: 180,
+  staticPageGenerationTimeout: 60,
 
   // Configuration des en-têtes HTTP - AVEC CSP CORRIGÉ POUR NEXT.JS 15
   async headers() {
@@ -180,16 +180,16 @@ const nextConfig = {
         headers: [
           // Protection XSS et injections
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
           {
             key: 'X-Frame-Options',
             value: 'DENY',
+          },
+          {
+            key: 'X-Permitted-Cross-Domain-Policies',
+            value: 'none',
           },
           // Politique de référent
           {
@@ -209,7 +209,7 @@ const nextConfig = {
           {
             key: 'Permissions-Policy',
             value:
-              'geolocation=(), microphone=(), camera=(), payment=(), usb=()',
+              'geolocation=(), microphone=(), camera=(), payment=(self), usb=()',
           },
           // HTTPS STRICT ajouté conditionnellement
           ...(process.env.NODE_ENV === 'production'
@@ -312,10 +312,6 @@ const nextConfig = {
           {
             key: 'X-Frame-Options',
             value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
           },
           // ✅ CSP SPÉCIFIQUE AUX ACTIONS CORRIGÉ
           {
