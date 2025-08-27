@@ -316,17 +316,15 @@ async function getTemplates() {
       },
     });
 
-    throw error;
-
-    // return {
-    //   templates: [],
-    //   success: false,
-    //   errorType: errorInfo.type,
-    //   httpStatus: errorInfo.httpStatus,
-    //   userMessage: errorInfo.userMessage,
-    //   shouldRetry: errorInfo.shouldRetry,
-    //   error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    // };
+    return {
+      templates: [],
+      success: false,
+      errorType: errorInfo.type,
+      httpStatus: errorInfo.httpStatus,
+      userMessage: errorInfo.userMessage,
+      shouldRetry: errorInfo.shouldRetry,
+      error: error.message,
+    };
   }
 }
 
