@@ -1,18 +1,13 @@
 // styles/base/_global.scss
-// Styles globaux extraits de app/app.scss
-
 @use '../abstracts' as *;
 
 // Import des polices
 @import url('https://fonts.googleapis.com/css2?family=Sansation:wght@400&display=swap');
 
-// Rint Basic - police locale pour parallax
+// Rint Basic - seulement TTF
 @font-face {
   font-family: 'Rint Basic';
-  src:
-    url('/fonts/rint-basic/RintBasic-Regular.woff2') format('woff2'),
-    url('/fonts/rint-basic/RintBasic-Regular.woff') format('woff'),
-    url('/fonts/rint-basic/RintBasic-Regular.ttf') format('truetype');
+  src: url('/fonts/rint-basic/RintBasic-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -20,27 +15,22 @@
 
 @font-face {
   font-family: 'Rint Basic';
-  src:
-    url('/fonts/rint-basic/RintBasic-Italic.woff2') format('woff2'),
-    url('/fonts/rint-basic/RintBasic-Italic.woff') format('woff'),
-    url('/fonts/rint-basic/RintBasic-Italic.ttf') format('truetype');
+  src: url('/fonts/rint-basic/RintBasic-Italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
-// Tycho - police locale pour UI
+// Tycho - seulement TTF
 @font-face {
   font-family: 'Tycho';
-  src:
-    url('/fonts/tycho/Tycho-Regular.woff2') format('woff2'),
-    url('/fonts/tycho/Tycho-Regular.woff') format('woff'),
-    url('/fonts/tycho/Tycho-Regular.ttf') format('truetype');
+  src: url('/fonts/tycho/Tycho-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
+// Le reste reste identique...
 html {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
@@ -50,16 +40,11 @@ html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  // Police par défaut : Sansation pour tout le contenu
-  font-family: font-family('content');
-  font-weight: 400; // Seulement regular 400
+  font-family: font-family('content'); // Sansation par défaut
+  font-weight: 400;
   font-optical-sizing: auto;
   font-style: normal;
 }
-
-// =============================
-// ATTRIBUTION DES POLICES PAR ÉLÉMENT
-// =============================
 
 // Titres, liens, boutons = Tycho
 h1,
@@ -85,46 +70,45 @@ button,
   font-weight: 400;
 }
 
-// Navigation et éléments UI
+// Navigation = Tycho
 nav,
 .nav,
 .navbar,
 .menu {
-  font-family: font-family('ui'); // Tycho
+  font-family: font-family('ui');
 
   a,
   button,
   span {
-    font-family: inherit; // Hérite de Tycho
+    font-family: inherit;
   }
 }
 
-// Contenu textuel = Sansation (déjà par défaut via *)
+// Contenu = Sansation (déjà par défaut)
 p,
 span,
 div,
 li,
 td,
 th {
-  font-family: font-family('content'); // Sansation
-  font-weight: 400; // Seulement regular
+  font-family: font-family('content');
+  font-weight: 400;
 }
 
 // Classes utilitaires
 .font-parallax {
-  font-family: font-family('parallax'); // Rint Basic
+  font-family: font-family('parallax') !important;
 }
 
 .font-ui {
-  font-family: font-family('ui'); // Tycho
+  font-family: font-family('ui') !important;
 }
 
 .font-content {
-  font-family: font-family('content'); // Sansation
+  font-family: font-family('content') !important;
 }
 
 body {
-  // Utilisation des CSS custom properties pour les couleurs
   background-color: css-var(background-color);
   color: css-var(text-color-muted);
 }
