@@ -128,13 +128,13 @@ jobs:
             done
 
             # Vérification finale
-            # if curl -f http://localhost:3000 >/dev/null; then
-            #   echo "🎉 Deployment successful! App is healthy."
-            #   echo "📊 PM2 Status:"
-            #   pm2 list
-            # else
-            #   echo "❌ Deployment failed! App is not responding."
-            #   echo "📝 PM2 Logs (last 50 lines):"
-            #   pm2 logs benew-app --lines 50
-            #   exit 1
-            # fi
+            if curl -f http://localhost:3000 >/dev/null; then
+              echo "🎉 Deployment successful! App is healthy."
+              echo "📊 PM2 Status:"
+              pm2 list
+            else
+              echo "❌ Deployment failed! App is not responding."
+              echo "📝 PM2 Logs (last 50 lines):"
+              pm2 logs benew-app --lines 50
+              exit 1
+            fi
