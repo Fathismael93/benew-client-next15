@@ -21,6 +21,23 @@
   font-display: swap;
 }
 
+// Rint Basic - seulement TTF
+@font-face {
+  font-family: 'Trench';
+  src: url('/fonts/trench/TrenchThin-16R0.otf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Trench';
+  src: url('/fonts/trench/TrenchThin-aZ1J.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 // Tycho - seulement TTF
 // @font-face {
 //   font-family: 'Tycho';
