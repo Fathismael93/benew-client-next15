@@ -187,9 +187,7 @@ const AudioPlayer = ({ isOpen, onClose }) => {
             {/* Track info */}
             <div className="audio-track-info">
               <div className="audio-track-title">Ce Soir</div>
-              <div className="audio-track-artist">
-                Piste Audio - Session Persistante
-              </div>
+              <div className="audio-track-artist">Dertay</div>
             </div>
 
             {/* Controls */}
@@ -240,8 +238,8 @@ const AudioPlayer = ({ isOpen, onClose }) => {
                   : !hasInteracted
                     ? "Cliquez n'importe où pour démarrer la musique"
                     : isPlaying
-                      ? 'Lecture en cours - Continue entre les pages'
-                      : 'En pause - Reprendra sur les autres pages'}
+                      ? 'Lecture en cours'
+                      : 'En pause'}
               </div>
 
               <div className="audio-indicators">
