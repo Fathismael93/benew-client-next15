@@ -2,55 +2,48 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MdClose, MdVolumeUp } from 'react-icons/md';
+import { useAudio } from '../../../contexts/AudioContext';
 import './index.scss';
 
-const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
-  // États du composant
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.3); // Volume par défaut à 30%
-  const [isVisible, setIsVisible] = useState(true);
-  const [hasInteracted, setHasInteracted] = useState(false);
+const AudioPlayer = ({ isOpen, onClose }) => {
+  // États locaux pour la modal uniquement
   const [showNotification, setShowNotification] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Références
-  const audioRef = useRef(null);
+  // États globaux depuis le context
+  const {
+    isPlaying,
+    volume,
+    hasInteracted,
+    isLoading,
+    error,
+    isVisible,
+    togglePlay,
+    setVolume,
+    initializeAudio,
+  } = useAudio();
+
+  // Références locales
   const notificationTimeoutRef = useRef(null);
   const modalRef = useRef(null);
   const volumeSliderRef = useRef(null);
+  const audioRef = useRef(null);
 
   // Fonction pour mettre à jour le gradient du slider
   const updateVolumeSliderGradient = (volumeValue) => {
     if (volumeSliderRef.current) {
       const percentage = volumeValue * 100;
-      // Utilisation des couleurs exactes du système
       const gradient = `linear-gradient(to right, #f6a037 0%, #f6a037 ${percentage}%, rgba(250, 230, 209, 0.3) ${percentage}%, rgba(250, 230, 209, 0.3) 100%)`;
       volumeSliderRef.current.style.background = gradient;
     }
   };
 
-  // Hook pour détecter la visibilité de la page
+  // Initialiser l'audio une seule fois
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      const visible = !document.hidden;
-      setIsVisible(visible);
-
-      // Si la page devient visible et qu'on a déjà eu une interaction, reprendre l'audio
-      if (visible && hasInteracted && audioRef.current) {
-        tryPlayAudio();
-      }
-      // Si la page devient cachée, mettre en pause
-      else if (!visible && audioRef.current && !audioRef.current.paused) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () =>
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [hasInteracted]);
+    if (audioRef.current) {
+      const cleanup = initializeAudio(audioRef.current);
+      return cleanup;
+    }
+  }, [initializeAudio]);
 
   // Fermer la modal avec Escape
   useEffect(() => {
@@ -62,7 +55,6 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
 
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
-      // Empêcher le scroll du body
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -74,132 +66,43 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
     };
   }, [isOpen, onClose]);
 
-  // Focus management pour accessibilité
+  // Focus management
   useEffect(() => {
     if (isOpen && modalRef.current) {
       modalRef.current.focus();
     }
   }, [isOpen]);
 
-  // Notifier le parent des changements d'état de lecture
+  // Notification pour l'autoplay
   useEffect(() => {
-    if (onPlayStateChange) {
-      onPlayStateChange(isPlaying);
-    }
-  }, [isPlaying, onPlayStateChange]);
+    if (!hasInteracted && isVisible && isOpen) {
+      setShowNotification(true);
 
-  // Fonction pour tenter de lancer l'audio
-  const tryPlayAudio = async () => {
-    if (!audioRef.current) return;
-
-    try {
-      await audioRef.current.play();
-      setIsPlaying(true);
-      setError(null);
-    } catch (error) {
-      console.log('Autoplay bloqué:', error.message);
-      setIsPlaying(false);
-
-      // Afficher une notification pour inviter l'utilisateur à cliquer
-      if (!hasInteracted) {
-        setShowNotification(true);
-
-        // Masquer la notification après 5 secondes
-        if (notificationTimeoutRef.current) {
-          clearTimeout(notificationTimeoutRef.current);
-        }
-        notificationTimeoutRef.current = setTimeout(() => {
-          setShowNotification(false);
-        }, 5000);
-      }
-    }
-  };
-
-  // Gestionnaire pour la première interaction utilisateur
-  const handleFirstInteraction = () => {
-    if (!hasInteracted) {
-      setHasInteracted(true);
+      notificationTimeoutRef.current = setTimeout(() => {
+        setShowNotification(false);
+      }, 5000);
+    } else {
       setShowNotification(false);
+    }
+
+    return () => {
       if (notificationTimeoutRef.current) {
         clearTimeout(notificationTimeoutRef.current);
       }
+    };
+  }, [hasInteracted, isVisible, isOpen]);
 
-      // Tenter de lancer l'audio après la première interaction
-      if (isVisible) {
-        tryPlayAudio();
-      }
-    }
-  };
-
-  // Initialisation de l'audio
+  // Mettre à jour le gradient du slider
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    // Événements audio
-    const handleLoadedData = () => {
-      setIsLoading(false);
-      // Tenter l'autoplay initial seulement si la modal est ouverte
-      if (isVisible) {
-        tryPlayAudio();
-      }
-    };
-
-    const handleError = (e) => {
-      setError("Impossible de charger l'audio");
-      setIsLoading(false);
-      console.error('Erreur audio:', e);
-    };
-
-    // Ajouter les écouteurs
-    audio.addEventListener('loadeddata', handleLoadedData);
-    audio.addEventListener('error', handleError);
-
-    // Configuration de l'audio
-    audio.volume = volume;
-    audio.preload = 'auto';
-
-    return () => {
-      audio.removeEventListener('loadeddata', handleLoadedData);
-      audio.removeEventListener('error', handleError);
-    };
-  }, [volume, isVisible, hasInteracted, isOpen]);
-
-  // Gérer les changements de volume
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-    // Mettre à jour le gradient du slider quand le volume change
     updateVolumeSliderGradient(volume);
   }, [volume]);
-
-  // Fonctions de contrôle
-  const togglePlay = () => {
-    if (!audioRef.current) return;
-
-    // Première interaction automatique
-    if (!hasInteracted) {
-      handleFirstInteraction();
-    }
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      tryPlayAudio();
-    }
-  };
 
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
-
-    // Mettre à jour le gradient du slider
     updateVolumeSliderGradient(newVolume);
   };
 
-  // Masquer la notification
   const dismissNotification = () => {
     setShowNotification(false);
     if (notificationTimeoutRef.current) {
@@ -216,12 +119,11 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
     };
   }, []);
 
-  // Ne pas rendre si erreur ou modal fermée
   if (error) {
     return null;
   }
 
-  // Toujours rendre l'élément audio, mais conditionner l'interface
+  // Élément audio toujours présent
   const audioElement = (
     <audio ref={audioRef} preload="auto" loop={true}>
       <source src="/ce-soir.mp3" type="audio/mpeg" />
@@ -237,9 +139,8 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
     <>
       {audioElement}
 
-      {/* Overlay de la modal - uniquement si ouverte */}
+      {/* Modal UI */}
       <div className="audio-modal-overlay" onClick={onClose}>
-        {/* Contenu de la modal */}
         <div
           ref={modalRef}
           className="audio-modal-content"
@@ -247,9 +148,8 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
           tabIndex={-1}
           role="dialog"
           aria-labelledby="audio-modal-title"
-          aria-describedby="audio-modal-description"
         >
-          {/* Header de la modal */}
+          {/* Header */}
           <div className="audio-modal-header">
             <div className="audio-modal-title-section">
               <MdVolumeUp className="audio-modal-icon" />
@@ -266,9 +166,9 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
             </button>
           </div>
 
-          {/* Body de la modal */}
+          {/* Body */}
           <div className="audio-modal-body">
-            {/* Notification d'activation audio */}
+            {/* Notification */}
             {showNotification && (
               <div className="audio-notification" onClick={dismissNotification}>
                 <div className="audio-notification-content">
@@ -290,15 +190,14 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
               </div>
             )}
 
-            {/* Informations sur la piste */}
+            {/* Track info */}
             <div className="audio-track-info">
               <div className="audio-track-title">Ce Soir</div>
               <div className="audio-track-artist">Piste Audio</div>
             </div>
 
-            {/* Contrôles principaux */}
+            {/* Controls */}
             <div className="audio-controls">
-              {/* Bouton Play/Pause */}
               <button
                 onClick={togglePlay}
                 disabled={isLoading}
@@ -316,7 +215,7 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
                 )}
               </button>
 
-              {/* Contrôle de volume */}
+              {/* Volume control */}
               <div className="audio-volume-control">
                 <span className="audio-volume-icon">🔊</span>
                 <input
@@ -337,7 +236,7 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
               </div>
             </div>
 
-            {/* Indicateurs d'état */}
+            {/* Status */}
             <div className="audio-status">
               <div className="audio-status-text">
                 {isLoading
@@ -349,19 +248,14 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
                       : 'En pause'}
               </div>
 
-              {/* Indicateurs visuels */}
               <div className="audio-indicators">
                 <div
                   className={`audio-indicator ${isVisible ? 'active' : 'inactive'}`}
                   title={isVisible ? 'Page visible' : 'Page masquée'}
-                  aria-label={isVisible ? 'Page visible' : 'Page masquée'}
                 ></div>
                 <div
                   className={`audio-indicator ${hasInteracted ? 'active' : 'inactive'}`}
                   title={hasInteracted ? 'Audio activé' : 'Audio en attente'}
-                  aria-label={
-                    hasInteracted ? 'Audio activé' : 'Audio en attente'
-                  }
                 ></div>
               </div>
             </div>

@@ -8,11 +8,12 @@ import Sidebar from '../sidebar';
 import AudioPlayer from '../audio';
 import Image from 'next/image';
 import { MdKeyboardArrowDown, MdMusicNote } from 'react-icons/md';
+import { useAudio } from '../../../contexts/AudioContext';
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAudioPlayerOpen, setIsAudioPlayerOpen] = useState(false);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const { isPlaying } = useAudio();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -61,10 +62,10 @@ function Navbar() {
             {/* Bouton Audio Player - AVANT Facebook */}
             <button
               onClick={openAudioPlayer}
-              className={`music-button ${isAudioPlaying ? 'audio-playing' : ''}`}
+              className={`music-button ${isPlaying ? 'audio-playing' : ''}`}
               aria-label="Ouvrir le lecteur audio"
               title={
-                isAudioPlaying
+                isPlaying
                   ? 'Musique en cours - Ouvrir lecteur'
                   : 'Lecteur audio'
               }
@@ -217,11 +218,7 @@ function Navbar() {
       </div>
 
       {/* Modal AudioPlayer */}
-      <AudioPlayer
-        isOpen={isAudioPlayerOpen}
-        onClose={closeAudioPlayer}
-        onPlayStateChange={setIsAudioPlaying}
-      />
+      <AudioPlayer isOpen={isAudioPlayerOpen} onClose={closeAudioPlayer} />
     </div>
   );
 }

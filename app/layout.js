@@ -5,6 +5,7 @@ import Navbar from '../components/layouts/navbar';
 import AnalyticsInitializer from '../components/analytics/AnalyticsInitializer';
 // import AudioPlayer from '../components/layouts/audio'; // 🎵 NOUVEAU
 import { HydrationFix } from '@/components/layouts/hydrationFix';
+import { AudioProvider } from 'contexts/AudioContext';
 
 // =============================
 // MÉTADONNÉES GLOBALES
@@ -127,16 +128,18 @@ export default function RootLayout({ children }) {
         )}
       </head>
       <body>
-        {/* GTM EN PREMIER - CRITIQUE */}
-        {/* {gtmId && <GoogleTagManager gtmId={gtmId} />} */}
-        <Navbar />
-        {children}
-        {/* AnalyticsInitializer peut rester après */}
-        {gtmId && (
-          <AnalyticsInitializer
-            isDevelopment={process.env.NODE_ENV === 'development'}
-          />
-        )}
+        <AudioProvider>
+          {/* GTM EN PREMIER - CRITIQUE */}
+          {/* {gtmId && <GoogleTagManager gtmId={gtmId} />} */}
+          <Navbar />
+          {children}
+          {/* AnalyticsInitializer peut rester après */}
+          {gtmId && (
+            <AnalyticsInitializer
+              isDevelopment={process.env.NODE_ENV === 'development'}
+            />
+          )}
+        </AudioProvider>
       </body>
     </html>
   );
