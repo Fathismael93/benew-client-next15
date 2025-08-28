@@ -26,7 +26,7 @@ const AudioPlayer = ({ isOpen, onClose }) => {
   const notificationTimeoutRef = useRef(null);
   const modalRef = useRef(null);
   const volumeSliderRef = useRef(null);
-  const audioRef = useRef(null);
+  const initOnceRef = useRef(false); // NOUVEAU: Éviter la double initialisation
 
   // Fonction pour mettre à jour le gradient du slider
   const updateVolumeSliderGradient = (volumeValue) => {
@@ -37,10 +37,11 @@ const AudioPlayer = ({ isOpen, onClose }) => {
     }
   };
 
-  // Initialiser l'audio une seule fois
+  // MODIFIÉ: Initialiser l'audio une seule fois par session
   useEffect(() => {
-    if (audioRef.current) {
-      const cleanup = initializeAudio(audioRef.current);
+    if (!initOnceRef.current) {
+      const cleanup = initializeAudio(null); // On passe null car on utilise l'instance globale
+      initOnceRef.current = true;
       return cleanup;
     }
   }, [initializeAudio]);
@@ -73,7 +74,7 @@ const AudioPlayer = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  // Notification pour l'autoplay
+  // MODIFIÉ: Notification uniquement si l'utilisateur n'a jamais interagi
   useEffect(() => {
     if (!hasInteracted && isVisible && isOpen) {
       setShowNotification(true);
@@ -123,23 +124,16 @@ const AudioPlayer = ({ isOpen, onClose }) => {
     return null;
   }
 
-  // Élément audio toujours présent
-  const audioElement = (
-    <audio ref={audioRef} preload="auto" loop={true}>
-      <source src="/ce-soir.mp3" type="audio/mpeg" />
-      Votre navigateur ne supporte pas l&apos;audio HTML5.
-    </audio>
-  );
+  // SUPPRIMÉ: Plus besoin de l'élément audio local
+  // L'instance globale gère tout
 
   if (!isOpen) {
-    return audioElement;
+    return null; // Plus d'élément audio à retourner
   }
 
   return (
     <>
-      {audioElement}
-
-      {/* Modal UI */}
+      {/* Modal UI uniquement */}
       <div className="audio-modal-overlay" onClick={onClose}>
         <div
           ref={modalRef}
@@ -193,7 +187,9 @@ const AudioPlayer = ({ isOpen, onClose }) => {
             {/* Track info */}
             <div className="audio-track-info">
               <div className="audio-track-title">Ce Soir</div>
-              <div className="audio-track-artist">Piste Audio</div>
+              <div className="audio-track-artist">
+                Piste Audio - Session Persistante
+              </div>
             </div>
 
             {/* Controls */}
@@ -240,12 +236,12 @@ const AudioPlayer = ({ isOpen, onClose }) => {
             <div className="audio-status">
               <div className="audio-status-text">
                 {isLoading
-                  ? 'Chargement...'
+                  ? 'Initialisation...'
                   : !hasInteracted
-                    ? 'Cliquez sur lecture pour commencer'
+                    ? "Cliquez n'importe où pour démarrer la musique"
                     : isPlaying
-                      ? 'Lecture en cours'
-                      : 'En pause'}
+                      ? 'Lecture en cours - Continue entre les pages'
+                      : 'En pause - Reprendra sur les autres pages'}
               </div>
 
               <div className="audio-indicators">
@@ -256,6 +252,10 @@ const AudioPlayer = ({ isOpen, onClose }) => {
                 <div
                   className={`audio-indicator ${hasInteracted ? 'active' : 'inactive'}`}
                   title={hasInteracted ? 'Audio activé' : 'Audio en attente'}
+                ></div>
+                <div
+                  className={`audio-indicator ${isPlaying ? 'active' : 'inactive'}`}
+                  title={isPlaying ? 'En lecture' : 'En pause'}
                 ></div>
               </div>
             </div>

@@ -1,8 +1,33 @@
 'use client';
 
-import { createContext, useContext, useState, useRef, useEffect } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from 'react';
 
 const AudioContext = createContext();
+
+// Clés pour le stockage en mémoire (pas localStorage dans artifacts)
+const AUDIO_STATE_KEY = 'benew_audio_state';
+const AUDIO_INSTANCE_KEY = 'benew_audio_instance';
+
+// Stockage en mémoire global (simule sessionStorage)
+const memoryStorage = {
+  data: {},
+  setItem(key, value) {
+    this.data[key] = value;
+  },
+  getItem(key) {
+    return this.data[key];
+  },
+  removeItem(key) {
+    delete this.data[key];
+  },
+};
 
 export const useAudio = () => {
   const context = useContext(AudioContext);
@@ -13,20 +38,134 @@ export const useAudio = () => {
 };
 
 export const AudioProvider = ({ children }) => {
-  // États globaux de l'audio
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.3);
-  const [hasInteracted, setHasInteracted] = useState(false);
+  // États globaux de l'audio avec restauration depuis le stockage
+  const [isPlaying, setIsPlaying] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = memoryStorage.getItem(AUDIO_STATE_KEY);
+      return saved ? JSON.parse(saved).isPlaying : false;
+    }
+    return false;
+  });
+
+  const [volume, setVolume] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = memoryStorage.getItem(AUDIO_STATE_KEY);
+      return saved ? JSON.parse(saved).volume : 0.3;
+    }
+    return 0.3;
+  });
+
+  const [hasInteracted, setHasInteracted] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = memoryStorage.getItem(AUDIO_STATE_KEY);
+      return saved ? JSON.parse(saved).hasInteracted : false;
+    }
+    return false;
+  });
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [autoStartEnabled, setAutoStartEnabled] = useState(true); // NOUVEAU
+  const [autoStartEnabled, setAutoStartEnabled] = useState(true);
 
-  // Référence globale à l'élément audio
+  // Référence globale à l'élément audio PERSISTANT
   const audioRef = useRef(null);
-  const listenersAttached = useRef(false); // NOUVEAU
+  const listenersAttached = useRef(false);
+  const isInitialized = useRef(false);
 
-  // NOUVEAU : Détection de première interaction globale
+  // NOUVEAU: Sauvegarder l'état à chaque changement
+  const saveAudioState = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      const state = {
+        isPlaying,
+        volume,
+        hasInteracted,
+        timestamp: Date.now(),
+      };
+      memoryStorage.setItem(AUDIO_STATE_KEY, JSON.stringify(state));
+    }
+  }, [isPlaying, volume, hasInteracted]);
+
+  // NOUVEAU: Récupérer l'instance audio globale ou la créer
+  const getOrCreateGlobalAudio = useCallback(() => {
+    if (typeof window === 'undefined') return null;
+
+    // Vérifier si une instance globale existe déjà
+    let globalAudio = window[AUDIO_INSTANCE_KEY];
+
+    if (!globalAudio) {
+      // Créer une nouvelle instance globale
+      globalAudio = new Audio('/ce-soir.mp3');
+      globalAudio.loop = true;
+      globalAudio.preload = 'auto';
+
+      // Stocker globalement
+      window[AUDIO_INSTANCE_KEY] = globalAudio;
+
+      console.log('✅ Instance audio globale créée');
+    } else {
+      console.log('♻️ Instance audio globale récupérée');
+    }
+
+    return globalAudio;
+  }, []);
+
+  // Sauvegarder l'état à chaque changement
+  useEffect(() => {
+    saveAudioState();
+  }, [saveAudioState]);
+
+  // NOUVEAU: Gestion de la visibilité avec persistance
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const visible = !document.hidden;
+      setIsVisible(visible);
+
+      // La musique continue même si la page n'est pas visible
+      // On ne fait rien ici contrairement à avant
+      console.log('Page visibility changed:', visible ? 'visible' : 'hidden');
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () =>
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  // NOUVEAU: Restauration de l'état audio au montage
+  useEffect(() => {
+    if (typeof window === 'undefined' || isInitialized.current) return;
+
+    const globalAudio = getOrCreateGlobalAudio();
+    if (!globalAudio) return;
+
+    const savedState = memoryStorage.getItem(AUDIO_STATE_KEY);
+
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      console.log("🔄 Restoration de l'état audio:", state);
+
+      // Restaurer le volume
+      globalAudio.volume = state.volume;
+
+      // Si la musique était en cours, la reprendre
+      if (state.isPlaying && state.hasInteracted) {
+        globalAudio
+          .play()
+          .then(() => {
+            console.log('🎵 Musique reprise après navigation');
+            setIsPlaying(true);
+          })
+          .catch((e) => {
+            console.log('Erreur reprise audio:', e);
+            setIsPlaying(false);
+          });
+      }
+    }
+
+    isInitialized.current = true;
+  }, [getOrCreateGlobalAudio]);
+
+  // NOUVEAU: Détection de première interaction globale (améliorée)
   useEffect(() => {
     if (!autoStartEnabled || hasInteracted || listenersAttached.current) return;
 
@@ -36,21 +175,21 @@ export const AudioProvider = ({ children }) => {
         return;
       }
 
-      console.log('Première interaction détectée:', event.type);
+      console.log('🎯 Première interaction détectée:', event.type);
 
-      if (audioRef.current && !hasInteracted) {
+      const globalAudio = getOrCreateGlobalAudio();
+      if (globalAudio && !hasInteracted) {
         try {
           setHasInteracted(true);
 
           // Auto-démarrage de la musique
-          await audioRef.current.play();
+          await globalAudio.play();
           setIsPlaying(true);
           setError(null);
 
-          console.log('Audio démarré automatiquement');
+          console.log('🚀 Audio démarré automatiquement');
         } catch (error) {
-          console.log('Auto-start failed:', error);
-          // En cas d'échec, on laisse l'utilisateur contrôler manuellement
+          console.log('Échec auto-start:', error);
         }
       }
 
@@ -75,60 +214,45 @@ export const AudioProvider = ({ children }) => {
         document.addEventListener(eventType, handleFirstInteraction, true);
       });
       listenersAttached.current = true;
+      console.log("👂 Listeners d'interaction ajoutés");
     };
 
-    // Attendre que l'audio soit prêt avant d'ajouter les listeners
-    if (audioRef.current && !isLoading) {
+    // Attendre que l'audio soit prêt
+    if (!isLoading) {
       addInteractionListeners();
     }
 
     return removeInteractionListeners;
-  }, [autoStartEnabled, hasInteracted, isLoading]);
+  }, [autoStartEnabled, hasInteracted, isLoading, getOrCreateGlobalAudio]);
 
-  // Gestion de la visibilité de la page
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      const visible = !document.hidden;
-      setIsVisible(visible);
-
-      if (audioRef.current) {
-        if (visible && hasInteracted && isPlaying) {
-          audioRef.current.play().catch((e) => console.log('Play error:', e));
-        } else if (!visible && !audioRef.current.paused) {
-          audioRef.current.pause();
-        }
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () =>
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [hasInteracted, isPlaying]);
-
-  // Fonctions de contrôle
+  // Fonctions de contrôle utilisant l'instance globale
   const play = async () => {
-    if (!audioRef.current) return;
+    const globalAudio = getOrCreateGlobalAudio();
+    if (!globalAudio) return;
 
     try {
-      await audioRef.current.play();
+      await globalAudio.play();
       setIsPlaying(true);
       setError(null);
 
-      // Première interaction
       if (!hasInteracted) {
         setHasInteracted(true);
       }
+
+      console.log('▶️ Lecture démarrée');
     } catch (error) {
-      console.log('Play failed:', error);
+      console.log('Erreur lecture:', error);
       setIsPlaying(false);
     }
   };
 
   const pause = () => {
-    if (!audioRef.current) return;
+    const globalAudio = getOrCreateGlobalAudio();
+    if (!globalAudio) return;
 
-    audioRef.current.pause();
+    globalAudio.pause();
     setIsPlaying(false);
+    console.log('⏸️ Lecture mise en pause');
   };
 
   const togglePlay = () => {
@@ -141,41 +265,67 @@ export const AudioProvider = ({ children }) => {
 
   const setAudioVolume = (newVolume) => {
     setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
+    const globalAudio = getOrCreateGlobalAudio();
+    if (globalAudio) {
+      globalAudio.volume = newVolume;
     }
   };
 
-  // NOUVEAU : Permettre de désactiver/activer l'auto-start
   const toggleAutoStart = (enabled) => {
     setAutoStartEnabled(enabled);
   };
 
-  // Initialisation de l'audio
+  // MODIFIÉ: Initialisation utilisant l'instance globale
   const initializeAudio = (audioElement) => {
-    audioRef.current = audioElement;
+    // On utilise l'instance globale au lieu de l'élément local
+    const globalAudio = getOrCreateGlobalAudio();
+
+    if (!globalAudio) {
+      setError("Impossible d'initialiser l'audio");
+      return;
+    }
+
+    // Connecter la référence à l'instance globale
+    audioRef.current = globalAudio;
 
     const handleLoadedData = () => {
       setIsLoading(false);
+      console.log('📻 Audio globale chargée');
     };
 
     const handleError = (e) => {
       setError("Impossible de charger l'audio");
       setIsLoading(false);
-      console.error('Audio error:', e);
+      console.error('Erreur audio globale:', e);
     };
 
-    if (audioElement) {
-      audioElement.addEventListener('loadeddata', handleLoadedData);
-      audioElement.addEventListener('error', handleError);
-      audioElement.volume = volume;
+    // Écouter les événements de l'instance globale
+    globalAudio.addEventListener('loadeddata', handleLoadedData);
+    globalAudio.addEventListener('error', handleError);
+    globalAudio.volume = volume;
 
-      return () => {
-        audioElement.removeEventListener('loadeddata', handleLoadedData);
-        audioElement.removeEventListener('error', handleError);
-      };
+    // Si déjà chargé
+    if (globalAudio.readyState >= 2) {
+      handleLoadedData();
     }
+
+    return () => {
+      // NE PAS supprimer les listeners de l'instance globale
+      // car elle persiste entre les pages
+      console.log('🔄 Nettoyage local (instance globale préservée)');
+    };
   };
+
+  // NOUVEAU: Nettoyage au démontage de l'app (optionnel)
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Sauvegarder une dernière fois avant fermeture du navigateur
+      saveAudioState();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [saveAudioState]);
 
   const value = {
     // États
@@ -185,14 +335,14 @@ export const AudioProvider = ({ children }) => {
     isLoading,
     error,
     isVisible,
-    autoStartEnabled, // NOUVEAU
+    autoStartEnabled,
 
     // Fonctions
     play,
     pause,
     togglePlay,
     setVolume: setAudioVolume,
-    toggleAutoStart, // NOUVEAU
+    toggleAutoStart,
     initializeAudio,
     audioRef,
   };
