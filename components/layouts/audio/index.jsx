@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MdClose, MdVolumeUp } from 'react-icons/md';
 import './index.scss';
 
-const AudioPlayer = ({ isOpen, onClose }) => {
+const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
   // États du composant
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.3); // Volume par défaut à 30%
@@ -80,6 +80,13 @@ const AudioPlayer = ({ isOpen, onClose }) => {
       modalRef.current.focus();
     }
   }, [isOpen]);
+
+  // Notifier le parent des changements d'état de lecture
+  useEffect(() => {
+    if (onPlayStateChange) {
+      onPlayStateChange(isPlaying);
+    }
+  }, [isPlaying, onPlayStateChange]);
 
   // Fonction pour tenter de lancer l'audio
   const tryPlayAudio = async () => {
@@ -178,14 +185,6 @@ const AudioPlayer = ({ isOpen, onClose }) => {
     updateVolumeSliderGradient(volume);
   }, [volume]);
 
-  // Arrêter l'audio quand la modal se ferme
-  useEffect(() => {
-    if (!isOpen && audioRef.current && !audioRef.current.paused) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    }
-  }, [isOpen]);
-
   // Fonctions de contrôle
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -229,8 +228,16 @@ const AudioPlayer = ({ isOpen, onClose }) => {
   }, []);
 
   // Ne pas rendre si erreur ou modal fermée
-  if (error || !isOpen) {
+  if (error) {
     return null;
+  }
+  if (!isOpen) {
+    return (
+      <audio ref={audioRef} preload="auto" loop={false}>
+        <source src="/ce-soir.mp3" type="audio/mpeg" />
+        Votre navigateur ne supporte pas l&apos;audio HTML5.
+      </audio>
+    );
   }
 
   return (

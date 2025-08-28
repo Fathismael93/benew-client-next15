@@ -12,6 +12,7 @@ import { MdKeyboardArrowDown, MdMusicNote } from 'react-icons/md';
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAudioPlayerOpen, setIsAudioPlayerOpen] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -60,9 +61,13 @@ function Navbar() {
             {/* Bouton Audio Player - AVANT Facebook */}
             <button
               onClick={openAudioPlayer}
-              className="music-button"
+              className={`music-button ${isAudioPlaying ? 'audio-playing' : ''}`}
               aria-label="Ouvrir le lecteur audio"
-              title="Lecteur audio"
+              title={
+                isAudioPlaying
+                  ? 'Musique en cours - Ouvrir lecteur'
+                  : 'Lecteur audio'
+              }
             >
               <MdMusicNote className="music-icon" />
             </button>
@@ -212,7 +217,11 @@ function Navbar() {
       </div>
 
       {/* Modal AudioPlayer */}
-      <AudioPlayer isOpen={isAudioPlayerOpen} onClose={closeAudioPlayer} />
+      <AudioPlayer
+        isOpen={isAudioPlayerOpen}
+        onClose={closeAudioPlayer}
+        onPlayStateChange={setIsAudioPlaying}
+      />
     </div>
   );
 }
