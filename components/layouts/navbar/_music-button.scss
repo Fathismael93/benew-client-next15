@@ -93,6 +93,27 @@
 }
 
 // =============================
+// BOUTON DE MUSIQUE - STRUCTURE MOBILE
+// =============================
+.mobile-structure {
+  .mobile-music-container {
+    .mobile-music-button {
+      // Styles déjà définis dans _mobile-structure.scss
+      // Ajout d'overrides spécifiques si nécessaire
+
+      // Zone tactile optimisée pour mobile
+      min-width: 44px;
+      min-height: 44px;
+
+      .mobile-music-icon {
+        // L'icône mobile est plus grande pour une meilleure utilisabilité tactile
+        // Taille déjà définie dans _mobile-structure.scss (2.2rem)
+      }
+    }
+  }
+}
+
+// =============================
 // ANIMATIONS POUR LE BOUTON MUSIQUE
 // =============================
 @keyframes musicPulse {
@@ -118,13 +139,24 @@
   }
 }
 
+// Mode paysage mobile - ajustements pour le bouton mobile
+@include mobile-landscape {
+  .mobile-structure .mobile-music-container .mobile-music-button {
+    .mobile-music-icon {
+      width: 1.8rem; // Légèrement réduit en paysage
+      height: 1.8rem;
+    }
+  }
+}
+
 // =============================
 // ACCESSIBILITÉ ET UX
 // =============================
 
 // Zone tactile minimale recommandée (44px) pour écrans tactiles
 @media (pointer: coarse) {
-  .desktop-structure .social .music-button {
+  .desktop-structure .social .music-button,
+  .mobile-structure .mobile-music-container .mobile-music-button {
     min-width: 44px;
     min-height: 44px;
     padding: 0.6rem;
@@ -133,12 +165,14 @@
 
 // Réduction de mouvement
 @include reduced-motion {
-  .desktop-structure .social .music-button {
+  .desktop-structure .social .music-button,
+  .mobile-structure .mobile-music-container .mobile-music-button {
     &:hover {
       transform: none !important;
     }
 
-    .music-icon {
+    .music-icon,
+    .mobile-music-icon {
       &.audio-playing {
         animation: none !important;
       }
@@ -148,7 +182,8 @@
 
 // Mode contraste élevé
 @include high-contrast {
-  .desktop-structure .social .music-button {
+  .desktop-structure .social .music-button,
+  .mobile-structure .mobile-music-container .mobile-music-button {
     border: 1px solid rgba(css-var(text-color), 0.2);
 
     &:hover {

@@ -132,6 +132,22 @@ function Navbar() {
             </Link>
           </motion.div>
 
+          {/* Bouton Audio Player Mobile - NOUVEAU */}
+          <div className="mobile-music-container">
+            <button
+              onClick={openAudioPlayer}
+              className={`mobile-music-button ${isPlaying ? 'audio-playing' : ''}`}
+              aria-label="Ouvrir le lecteur audio"
+              title={
+                isPlaying
+                  ? 'Musique en cours - Ouvrir lecteur'
+                  : 'Lecteur audio'
+              }
+            >
+              <MdMusicNote className="mobile-music-icon" />
+            </button>
+          </div>
+
           <div className="mobile-social-container">
             <button
               className="social-dropdown-trigger"
