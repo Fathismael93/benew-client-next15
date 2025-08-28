@@ -151,19 +151,9 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
       console.error('Erreur audio:', e);
     };
 
-    const handleEnded = () => {
-      setIsPlaying(false);
-      // Recommencer l'audio (loop)
-      if (hasInteracted && isVisible) {
-        audio.currentTime = 0;
-        tryPlayAudio();
-      }
-    };
-
     // Ajouter les écouteurs
     audio.addEventListener('loadeddata', handleLoadedData);
     audio.addEventListener('error', handleError);
-    audio.addEventListener('ended', handleEnded);
 
     // Configuration de l'audio
     audio.volume = volume;
@@ -172,7 +162,6 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
     return () => {
       audio.removeEventListener('loadeddata', handleLoadedData);
       audio.removeEventListener('error', handleError);
-      audio.removeEventListener('ended', handleEnded);
     };
   }, [volume, isVisible, hasInteracted, isOpen]);
 
@@ -234,7 +223,7 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
 
   // Toujours rendre l'élément audio, mais conditionner l'interface
   const audioElement = (
-    <audio ref={audioRef} preload="auto" loop={false}>
+    <audio ref={audioRef} preload="auto" loop={true}>
       <source src="/ce-soir.mp3" type="audio/mpeg" />
       Votre navigateur ne supporte pas l&apos;audio HTML5.
     </audio>
