@@ -11,11 +11,11 @@ import {
 
 const AudioContext = createContext();
 
-// Clés pour le stockage en mémoire (pas localStorage dans artifacts)
-const AUDIO_STATE_KEY = 'benew_audio_state';
+// Clés pour le stockage global
 const AUDIO_INSTANCE_KEY = 'benew_audio_instance';
+const AUDIO_STATE_KEY = 'benew_audio_state';
 
-// Stockage en mémoire global (simule sessionStorage)
+// Stockage en mémoire global
 const memoryStorage = {
   data: {},
   setItem(key, value) {
@@ -29,6 +29,20 @@ const memoryStorage = {
   },
 };
 
+// ⭐ NOUVELLE APPROCHE : États globaux persistants
+const globalAudioState = {
+  isPlaying: false,
+  volume: 0.3,
+  hasInteracted: false,
+  isVisible: true,
+  listeners: new Set(), // Pour notifier les composants
+};
+
+// Fonction pour notifier tous les listeners des changements d'état
+const notifyStateChange = () => {
+  globalAudioState.listeners.forEach((callback) => callback(globalAudioState));
+};
+
 export const useAudio = () => {
   const context = useContext(AudioContext);
   if (!context) {
@@ -38,139 +52,198 @@ export const useAudio = () => {
 };
 
 export const AudioProvider = ({ children }) => {
-  // États globaux de l'audio avec restauration depuis le stockage
-  const [isPlaying, setIsPlaying] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = memoryStorage.getItem(AUDIO_STATE_KEY);
-      return saved ? JSON.parse(saved).isPlaying : false;
-    }
-    return false;
-  });
-
-  const [volume, setVolume] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = memoryStorage.getItem(AUDIO_STATE_KEY);
-      return saved ? JSON.parse(saved).volume : 0.3;
-    }
-    return 0.3;
-  });
-
-  const [hasInteracted, setHasInteracted] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = memoryStorage.getItem(AUDIO_STATE_KEY);
-      return saved ? JSON.parse(saved).hasInteracted : false;
-    }
-    return false;
-  });
+  // ⭐ CRITIQUE : États synchronisés avec l'état global
+  const [isPlaying, setIsPlayingLocal] = useState(globalAudioState.isPlaying);
+  const [volume, setVolumeLocal] = useState(globalAudioState.volume);
+  const [hasInteracted, setHasInteractedLocal] = useState(
+    globalAudioState.hasInteracted,
+  );
+  const [isVisible, setIsVisibleLocal] = useState(globalAudioState.isVisible);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isVisible, setIsVisible] = useState(true);
   const [autoStartEnabled, setAutoStartEnabled] = useState(true);
 
-  // Référence globale à l'élément audio PERSISTANT
   const audioRef = useRef(null);
   const listenersAttached = useRef(false);
   const isInitialized = useRef(false);
+  const stateListenerRef = useRef(null);
 
-  // NOUVEAU: Sauvegarder l'état à chaque changement
-  const saveAudioState = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      const state = {
-        isPlaying,
-        volume,
-        hasInteracted,
+  // ⭐ SYNCHRONISATION AVEC L'ÉTAT GLOBAL
+  useEffect(() => {
+    // Créer un listener pour les changements d'état global
+    const stateListener = (newState) => {
+      setIsPlayingLocal(newState.isPlaying);
+      setVolumeLocal(newState.volume);
+      setHasInteractedLocal(newState.hasInteracted);
+      setIsVisibleLocal(newState.isVisible);
+    };
+
+    // Ajouter le listener à la liste globale
+    globalAudioState.listeners.add(stateListener);
+    stateListenerRef.current = stateListener;
+
+    // Synchroniser avec l'état actuel
+    stateListener(globalAudioState);
+
+    return () => {
+      // Nettoyer le listener au démontage
+      if (stateListenerRef.current) {
+        globalAudioState.listeners.delete(stateListenerRef.current);
+      }
+    };
+  }, []);
+
+  // Fonctions pour mettre à jour l'état global
+  const updateGlobalState = useCallback((updates) => {
+    Object.assign(globalAudioState, updates);
+    notifyStateChange();
+
+    // Sauvegarder en mémoire
+    memoryStorage.setItem(
+      AUDIO_STATE_KEY,
+      JSON.stringify({
+        isPlaying: globalAudioState.isPlaying,
+        volume: globalAudioState.volume,
+        hasInteracted: globalAudioState.hasInteracted,
         timestamp: Date.now(),
-      };
-      memoryStorage.setItem(AUDIO_STATE_KEY, JSON.stringify(state));
-    }
-  }, [isPlaying, volume, hasInteracted]);
+      }),
+    );
+  }, []);
 
-  // NOUVEAU: Récupérer l'instance audio globale ou la créer
+  // ⭐ RÉCUPÉRATION DE L'INSTANCE AUDIO GLOBALE
   const getOrCreateGlobalAudio = useCallback(() => {
     if (typeof window === 'undefined') return null;
 
-    // Vérifier si une instance globale existe déjà
     let globalAudio = window[AUDIO_INSTANCE_KEY];
 
     if (!globalAudio) {
-      // Créer une nouvelle instance globale
       globalAudio = new Audio('/ce-soir.mp3');
       globalAudio.loop = true;
       globalAudio.preload = 'auto';
+      globalAudio.volume = globalAudioState.volume;
 
       // Stocker globalement
       window[AUDIO_INSTANCE_KEY] = globalAudio;
 
-      console.log('✅ Instance audio globale créée');
+      console.log('🎵 Instance audio globale créée');
     } else {
-      console.log('♻️ Instance audio globale récupérée');
+      console.log('🔄 Instance audio globale récupérée - État:', {
+        paused: globalAudio.paused,
+        volume: globalAudio.volume,
+        currentTime: globalAudio.currentTime,
+      });
     }
 
     return globalAudio;
   }, []);
 
-  // Sauvegarder l'état à chaque changement
-  useEffect(() => {
-    saveAudioState();
-  }, [saveAudioState]);
+  // ⭐ INITIALISATION ÉVITANT LA DOUBLE INITIALISATION
+  const initializeAudio = useCallback(() => {
+    if (isInitialized.current) {
+      console.log("🚫 Audio déjà initialisé, récupération de l'état...");
+      // Synchroniser avec l'instance existante
+      const globalAudio = getOrCreateGlobalAudio();
+      if (globalAudio) {
+        audioRef.current = globalAudio;
+        setIsLoading(false);
 
-  // NOUVEAU: Gestion de la visibilité avec persistance
+        // ⭐ CRITIQUE : Synchroniser les états React avec l'instance globale
+        updateGlobalState({
+          isPlaying: !globalAudio.paused,
+          volume: globalAudio.volume,
+        });
+      }
+      return () => {};
+    }
+
+    const globalAudio = getOrCreateGlobalAudio();
+    if (!globalAudio) {
+      setError("Impossible d'initialiser l'audio");
+      return () => {};
+    }
+
+    audioRef.current = globalAudio;
+
+    // Restaurer l'état sauvegardé
+    const savedState = memoryStorage.getItem(AUDIO_STATE_KEY);
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      console.log('🔄 Restauration état audio:', state);
+
+      globalAudio.volume = state.volume;
+      updateGlobalState({
+        volume: state.volume,
+        hasInteracted: state.hasInteracted,
+      });
+
+      // ⭐ CRITIQUE : Reprendre la lecture si elle était active
+      if (state.isPlaying && state.hasInteracted && globalAudio.paused) {
+        globalAudio
+          .play()
+          .then(() => {
+            console.log('🎵 Musique reprise automatiquement');
+            updateGlobalState({ isPlaying: true });
+          })
+          .catch((e) => {
+            console.log('Erreur reprise auto:', e);
+            updateGlobalState({ isPlaying: false });
+          });
+      }
+    }
+
+    const handleLoadedData = () => {
+      setIsLoading(false);
+      console.log('📻 Audio globale prête');
+    };
+
+    const handleError = (e) => {
+      setError("Impossible de charger l'audio");
+      setIsLoading(false);
+      console.error('Erreur audio:', e);
+    };
+
+    // ⭐ ÉVÉNEMENTS AUDIO GLOBAUX (Une seule fois)
+    if (!globalAudio.hasEventListeners) {
+      globalAudio.addEventListener('loadeddata', handleLoadedData);
+      globalAudio.addEventListener('error', handleError);
+      globalAudio.hasEventListeners = true; // Flag pour éviter la duplication
+    }
+
+    if (globalAudio.readyState >= 2) {
+      handleLoadedData();
+    }
+
+    isInitialized.current = true;
+
+    return () => {
+      console.log('🧹 Nettoyage local (instance préservée)');
+    };
+  }, [getOrCreateGlobalAudio, updateGlobalState]);
+
+  // Initialisation au montage
+  useEffect(() => {
+    return initializeAudio();
+  }, [initializeAudio]);
+
+  // Gestion de la visibilité
   useEffect(() => {
     const handleVisibilityChange = () => {
       const visible = !document.hidden;
-      setIsVisible(visible);
-
-      // La musique continue même si la page n'est pas visible
-      // On ne fait rien ici contrairement à avant
-      console.log('Page visibility changed:', visible ? 'visible' : 'hidden');
+      updateGlobalState({ isVisible: visible });
+      console.log('👁️ Visibilité:', visible ? 'visible' : 'masquée');
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () =>
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
+  }, [updateGlobalState]);
 
-  // NOUVEAU: Restauration de l'état audio au montage
-  useEffect(() => {
-    if (typeof window === 'undefined' || isInitialized.current) return;
-
-    const globalAudio = getOrCreateGlobalAudio();
-    if (!globalAudio) return;
-
-    const savedState = memoryStorage.getItem(AUDIO_STATE_KEY);
-
-    if (savedState) {
-      const state = JSON.parse(savedState);
-      console.log("🔄 Restoration de l'état audio:", state);
-
-      // Restaurer le volume
-      globalAudio.volume = state.volume;
-
-      // Si la musique était en cours, la reprendre
-      if (state.isPlaying && state.hasInteracted) {
-        globalAudio
-          .play()
-          .then(() => {
-            console.log('🎵 Musique reprise après navigation');
-            setIsPlaying(true);
-          })
-          .catch((e) => {
-            console.log('Erreur reprise audio:', e);
-            setIsPlaying(false);
-          });
-      }
-    }
-
-    isInitialized.current = true;
-  }, [getOrCreateGlobalAudio]);
-
-  // NOUVEAU: Détection de première interaction globale (améliorée)
+  // ⭐ DÉTECTION DE PREMIÈRE INTERACTION (Améliorée)
   useEffect(() => {
     if (!autoStartEnabled || hasInteracted || listenersAttached.current) return;
 
     const handleFirstInteraction = async (event) => {
-      // Éviter le déclenchement sur les contrôles audio eux-mêmes
       if (event.target.closest('.audio-modal-content, .music-button')) {
         return;
       }
@@ -180,20 +253,19 @@ export const AudioProvider = ({ children }) => {
       const globalAudio = getOrCreateGlobalAudio();
       if (globalAudio && !hasInteracted) {
         try {
-          setHasInteracted(true);
-
-          // Auto-démarrage de la musique
           await globalAudio.play();
-          setIsPlaying(true);
+          updateGlobalState({
+            hasInteracted: true,
+            isPlaying: true,
+          });
           setError(null);
-
           console.log('🚀 Audio démarré automatiquement');
         } catch (error) {
           console.log('Échec auto-start:', error);
+          updateGlobalState({ hasInteracted: true }); // Marquer comme interagi quand même
         }
       }
 
-      // Retirer les listeners après la première interaction
       removeInteractionListeners();
     };
 
@@ -205,7 +277,6 @@ export const AudioProvider = ({ children }) => {
       listenersAttached.current = false;
     };
 
-    // Ajouter les listeners d'interaction
     const addInteractionListeners = () => {
       if (listenersAttached.current) return;
 
@@ -217,32 +288,35 @@ export const AudioProvider = ({ children }) => {
       console.log("👂 Listeners d'interaction ajoutés");
     };
 
-    // Attendre que l'audio soit prêt
     if (!isLoading) {
       addInteractionListeners();
     }
 
     return removeInteractionListeners;
-  }, [autoStartEnabled, hasInteracted, isLoading, getOrCreateGlobalAudio]);
+  }, [
+    autoStartEnabled,
+    hasInteracted,
+    isLoading,
+    getOrCreateGlobalAudio,
+    updateGlobalState,
+  ]);
 
-  // Fonctions de contrôle utilisant l'instance globale
+  // ⭐ FONCTIONS DE CONTRÔLE UTILISANT L'ÉTAT GLOBAL
   const play = async () => {
     const globalAudio = getOrCreateGlobalAudio();
     if (!globalAudio) return;
 
     try {
       await globalAudio.play();
-      setIsPlaying(true);
+      updateGlobalState({
+        isPlaying: true,
+        hasInteracted: true,
+      });
       setError(null);
-
-      if (!hasInteracted) {
-        setHasInteracted(true);
-      }
-
       console.log('▶️ Lecture démarrée');
     } catch (error) {
       console.log('Erreur lecture:', error);
-      setIsPlaying(false);
+      updateGlobalState({ isPlaying: false });
     }
   };
 
@@ -251,7 +325,7 @@ export const AudioProvider = ({ children }) => {
     if (!globalAudio) return;
 
     globalAudio.pause();
-    setIsPlaying(false);
+    updateGlobalState({ isPlaying: false });
     console.log('⏸️ Lecture mise en pause');
   };
 
@@ -264,71 +338,15 @@ export const AudioProvider = ({ children }) => {
   };
 
   const setAudioVolume = (newVolume) => {
-    setVolume(newVolume);
     const globalAudio = getOrCreateGlobalAudio();
     if (globalAudio) {
       globalAudio.volume = newVolume;
     }
+    updateGlobalState({ volume: newVolume });
   };
-
-  const toggleAutoStart = (enabled) => {
-    setAutoStartEnabled(enabled);
-  };
-
-  // MODIFIÉ: Initialisation utilisant l'instance globale
-  const initializeAudio = (audioElement) => {
-    // On utilise l'instance globale au lieu de l'élément local
-    const globalAudio = getOrCreateGlobalAudio();
-
-    if (!globalAudio) {
-      setError("Impossible d'initialiser l'audio");
-      return;
-    }
-
-    // Connecter la référence à l'instance globale
-    audioRef.current = globalAudio;
-
-    const handleLoadedData = () => {
-      setIsLoading(false);
-      console.log('📻 Audio globale chargée');
-    };
-
-    const handleError = (e) => {
-      setError("Impossible de charger l'audio");
-      setIsLoading(false);
-      console.error('Erreur audio globale:', e);
-    };
-
-    // Écouter les événements de l'instance globale
-    globalAudio.addEventListener('loadeddata', handleLoadedData);
-    globalAudio.addEventListener('error', handleError);
-    globalAudio.volume = volume;
-
-    // Si déjà chargé
-    if (globalAudio.readyState >= 2) {
-      handleLoadedData();
-    }
-
-    return () => {
-      // NE PAS supprimer les listeners de l'instance globale
-      // car elle persiste entre les pages
-      console.log('🔄 Nettoyage local (instance globale préservée)');
-    };
-  };
-
-  // NOUVEAU: Nettoyage au démontage de l'app (optionnel)
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Sauvegarder une dernière fois avant fermeture du navigateur
-      saveAudioState();
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [saveAudioState]);
 
   const value = {
-    // États
+    // États (maintenant synchronisés avec l'état global)
     isPlaying,
     volume,
     hasInteracted,
@@ -342,7 +360,7 @@ export const AudioProvider = ({ children }) => {
     pause,
     togglePlay,
     setVolume: setAudioVolume,
-    toggleAutoStart,
+    toggleAutoStart: setAutoStartEnabled,
     initializeAudio,
     audioRef,
   };
