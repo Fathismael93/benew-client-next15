@@ -24,7 +24,8 @@ const AudioPlayer = ({ isOpen, onClose }) => {
   const updateVolumeSliderGradient = (volumeValue) => {
     if (volumeSliderRef.current) {
       const percentage = volumeValue * 100;
-      const gradient = `linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) ${percentage}%, rgba(var(--text-color-muted), 0.3) ${percentage}%, rgba(var(--text-color-muted), 0.3) 100%)`;
+      // Utilisation des couleurs exactes du système
+      const gradient = `linear-gradient(to right, #f6a037 0%, #f6a037 ${percentage}%, rgba(250, 230, 209, 0.3) ${percentage}%, rgba(250, 230, 209, 0.3) 100%)`;
       volumeSliderRef.current.style.background = gradient;
     }
   };
