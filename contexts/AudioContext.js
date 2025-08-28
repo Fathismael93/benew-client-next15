@@ -20,9 +20,70 @@ export const AudioProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
+  const [autoStartEnabled, setAutoStartEnabled] = useState(true); // NOUVEAU
 
   // Référence globale à l'élément audio
   const audioRef = useRef(null);
+  const listenersAttached = useRef(false); // NOUVEAU
+
+  // NOUVEAU : Détection de première interaction globale
+  useEffect(() => {
+    if (!autoStartEnabled || hasInteracted || listenersAttached.current) return;
+
+    const handleFirstInteraction = async (event) => {
+      // Éviter le déclenchement sur les contrôles audio eux-mêmes
+      if (event.target.closest('.audio-modal-content, .music-button')) {
+        return;
+      }
+
+      console.log('Première interaction détectée:', event.type);
+
+      if (audioRef.current && !hasInteracted) {
+        try {
+          setHasInteracted(true);
+
+          // Auto-démarrage de la musique
+          await audioRef.current.play();
+          setIsPlaying(true);
+          setError(null);
+
+          console.log('Audio démarré automatiquement');
+        } catch (error) {
+          console.log('Auto-start failed:', error);
+          // En cas d'échec, on laisse l'utilisateur contrôler manuellement
+        }
+      }
+
+      // Retirer les listeners après la première interaction
+      removeInteractionListeners();
+    };
+
+    const removeInteractionListeners = () => {
+      const events = ['click', 'touchstart', 'keydown'];
+      events.forEach((eventType) => {
+        document.removeEventListener(eventType, handleFirstInteraction, true);
+      });
+      listenersAttached.current = false;
+    };
+
+    // Ajouter les listeners d'interaction
+    const addInteractionListeners = () => {
+      if (listenersAttached.current) return;
+
+      const events = ['click', 'touchstart', 'keydown'];
+      events.forEach((eventType) => {
+        document.addEventListener(eventType, handleFirstInteraction, true);
+      });
+      listenersAttached.current = true;
+    };
+
+    // Attendre que l'audio soit prêt avant d'ajouter les listeners
+    if (audioRef.current && !isLoading) {
+      addInteractionListeners();
+    }
+
+    return removeInteractionListeners;
+  }, [autoStartEnabled, hasInteracted, isLoading]);
 
   // Gestion de la visibilité de la page
   useEffect(() => {
@@ -85,6 +146,11 @@ export const AudioProvider = ({ children }) => {
     }
   };
 
+  // NOUVEAU : Permettre de désactiver/activer l'auto-start
+  const toggleAutoStart = (enabled) => {
+    setAutoStartEnabled(enabled);
+  };
+
   // Initialisation de l'audio
   const initializeAudio = (audioElement) => {
     audioRef.current = audioElement;
@@ -119,12 +185,14 @@ export const AudioProvider = ({ children }) => {
     isLoading,
     error,
     isVisible,
+    autoStartEnabled, // NOUVEAU
 
     // Fonctions
     play,
     pause,
     togglePlay,
     setVolume: setAudioVolume,
+    toggleAutoStart, // NOUVEAU
     initializeAudio,
     audioRef,
   };
