@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { MdClose, MdVolumeUp } from 'react-icons/md';
+import './index.scss';
 
-const AudioPlayer = () => {
+const AudioPlayer = ({ isOpen, onClose }) => {
   // États du composant
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.3); // Volume par défaut à 30%
@@ -15,6 +17,17 @@ const AudioPlayer = () => {
   // Références
   const audioRef = useRef(null);
   const notificationTimeoutRef = useRef(null);
+  const modalRef = useRef(null);
+  const volumeSliderRef = useRef(null);
+
+  // Fonction pour mettre à jour le gradient du slider
+  const updateVolumeSliderGradient = (volumeValue) => {
+    if (volumeSliderRef.current) {
+      const percentage = volumeValue * 100;
+      const gradient = `linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) ${percentage}%, rgba(var(--text-color-muted), 0.3) ${percentage}%, rgba(var(--text-color-muted), 0.3) 100%)`;
+      volumeSliderRef.current.style.background = gradient;
+    }
+  };
 
   // Hook pour détecter la visibilité de la page
   useEffect(() => {
@@ -37,6 +50,35 @@ const AudioPlayer = () => {
     return () =>
       document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [hasInteracted]);
+
+  // Fermer la modal avec Escape
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      // Empêcher le scroll du body
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  // Focus management pour accessibilité
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [isOpen]);
 
   // Fonction pour tenter de lancer l'audio
   const tryPlayAudio = async () => {
@@ -81,25 +123,6 @@ const AudioPlayer = () => {
     }
   };
 
-  // Ajouter l'écouteur de première interaction
-  useEffect(() => {
-    if (!hasInteracted) {
-      const events = ['click', 'touchstart', 'keydown'];
-
-      events.forEach((event) => {
-        document.addEventListener(event, handleFirstInteraction, {
-          once: true,
-        });
-      });
-
-      return () => {
-        events.forEach((event) => {
-          document.removeEventListener(event, handleFirstInteraction);
-        });
-      };
-    }
-  }, [hasInteracted]);
-
   // Initialisation de l'audio
   useEffect(() => {
     const audio = audioRef.current;
@@ -108,8 +131,8 @@ const AudioPlayer = () => {
     // Événements audio
     const handleLoadedData = () => {
       setIsLoading(false);
-      // Tenter l'autoplay initial
-      if (isVisible) {
+      // Tenter l'autoplay initial seulement si la modal est ouverte
+      if (isVisible && isOpen) {
         tryPlayAudio();
       }
     };
@@ -123,7 +146,7 @@ const AudioPlayer = () => {
     const handleEnded = () => {
       setIsPlaying(false);
       // Recommencer l'audio (loop)
-      if (hasInteracted && isVisible) {
+      if (hasInteracted && isVisible && isOpen) {
         audio.currentTime = 0;
         tryPlayAudio();
       }
@@ -143,18 +166,33 @@ const AudioPlayer = () => {
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('ended', handleEnded);
     };
-  }, [volume, isVisible, hasInteracted]);
+  }, [volume, isVisible, hasInteracted, isOpen]);
 
   // Gérer les changements de volume
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
+    // Mettre à jour le gradient du slider quand le volume change
+    updateVolumeSliderGradient(volume);
   }, [volume]);
+
+  // Arrêter l'audio quand la modal se ferme
+  useEffect(() => {
+    if (!isOpen && audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [isOpen]);
 
   // Fonctions de contrôle
   const togglePlay = () => {
-    if (!audioRef.current || !hasInteracted) return;
+    if (!audioRef.current) return;
+
+    // Première interaction automatique
+    if (!hasInteracted) {
+      handleFirstInteraction();
+    }
 
     if (isPlaying) {
       audioRef.current.pause();
@@ -167,6 +205,9 @@ const AudioPlayer = () => {
   const handleVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
     setVolume(newVolume);
+
+    // Mettre à jour le gradient du slider
+    updateVolumeSliderGradient(newVolume);
   };
 
   // Masquer la notification
@@ -186,8 +227,9 @@ const AudioPlayer = () => {
     };
   }, []);
 
-  if (error) {
-    return null; // Masquer le composant en cas d'erreur
+  // Ne pas rendre si erreur ou modal fermée
+  if (error || !isOpen) {
+    return null;
   }
 
   return (
@@ -202,105 +244,135 @@ const AudioPlayer = () => {
         Votre navigateur ne supporte pas l&apos;audio HTML5.
       </audio>
 
-      {/* Notification d'activation audio */}
-      {showNotification && (
+      {/* Overlay de la modal */}
+      <div className="audio-modal-overlay" onClick={onClose}>
+        {/* Contenu de la modal */}
         <div
-          className="fixed top-4 right-4 bg-black bg-opacity-80 text-white px-4 py-3 rounded-lg shadow-lg z-50 max-w-sm cursor-pointer transition-opacity duration-300"
-          onClick={dismissNotification}
+          ref={modalRef}
+          className="audio-modal-content"
+          onClick={(e) => e.stopPropagation()}
+          tabIndex={-1}
+          role="dialog"
+          aria-labelledby="audio-modal-title"
+          aria-describedby="audio-modal-description"
         >
-          <div className="flex items-center gap-3">
-            <div className="flex-shrink-0">🔊</div>
-            <div className="flex-1">
-              <p className="text-sm font-medium">Audio disponible</p>
-              <p className="text-xs opacity-75">
-                Cliquez n&apos;importe où pour activer
-              </p>
+          {/* Header de la modal */}
+          <div className="audio-modal-header">
+            <div className="audio-modal-title-section">
+              <MdVolumeUp className="audio-modal-icon" />
+              <h3 id="audio-modal-title" className="audio-modal-title">
+                Lecteur Audio
+              </h3>
             </div>
             <button
-              onClick={dismissNotification}
-              className="flex-shrink-0 text-white hover:text-gray-300 ml-2"
-              aria-label="Fermer"
+              className="audio-modal-close"
+              onClick={onClose}
+              aria-label="Fermer le lecteur audio"
             >
-              ✕
+              <MdClose />
             </button>
           </div>
-        </div>
-      )}
 
-      {/* Contrôles audio */}
-      <div className="fixed bottom-4 right-4 bg-white bg-opacity-90 backdrop-blur-sm rounded-lg shadow-lg p-3 z-40 min-w-[200px]">
-        <div className="flex items-center gap-3">
-          {/* Bouton Play/Pause */}
-          <button
-            onClick={togglePlay}
-            disabled={isLoading || !hasInteracted}
-            className={`
-              flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200
-              ${
-                isLoading || !hasInteracted
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-orange-500 hover:bg-orange-600 text-white cursor-pointer shadow-md hover:shadow-lg'
-              }
-            `}
-            aria-label={isPlaying ? 'Mettre en pause' : 'Lire'}
-          >
-            {isLoading ? (
-              <div className="animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full"></div>
-            ) : isPlaying ? (
-              '⏸'
-            ) : (
-              '▶'
+          {/* Body de la modal */}
+          <div className="audio-modal-body">
+            {/* Notification d'activation audio */}
+            {showNotification && (
+              <div className="audio-notification" onClick={dismissNotification}>
+                <div className="audio-notification-content">
+                  <div className="audio-notification-icon">🔊</div>
+                  <div className="audio-notification-text">
+                    <p className="audio-notification-title">Audio disponible</p>
+                    <p className="audio-notification-subtitle">
+                      Cliquez sur lecture pour activer
+                    </p>
+                  </div>
+                  <button
+                    onClick={dismissNotification}
+                    className="audio-notification-dismiss"
+                    aria-label="Fermer"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
             )}
-          </button>
 
-          {/* Contrôle de volume */}
-          <div className="flex-1 flex items-center gap-2">
-            <span className="text-xs text-gray-600 flex-shrink-0">🔊</span>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.1"
-              value={volume}
-              onChange={handleVolumeChange}
-              disabled={!hasInteracted}
-              className={`
-                flex-1 h-2 rounded-lg outline-none transition-all duration-200
-                ${
-                  !hasInteracted
-                    ? 'bg-gray-200 cursor-not-allowed'
-                    : 'bg-gray-200 cursor-pointer'
-                }
-              `}
-              style={{
-                background: hasInteracted
-                  ? `linear-gradient(to right, #f97316 0%, #f97316 ${volume * 100}%, #e5e7eb ${volume * 100}%, #e5e7eb 100%)`
-                  : '#e5e7eb',
-              }}
-            />
-            <span className="text-xs text-gray-600 min-w-[30px] text-right">
-              {Math.round(volume * 100)}%
-            </span>
+            {/* Informations sur la piste */}
+            <div className="audio-track-info">
+              <div className="audio-track-title">Ce Soir</div>
+              <div className="audio-track-artist">Piste Audio</div>
+            </div>
+
+            {/* Contrôles principaux */}
+            <div className="audio-controls">
+              {/* Bouton Play/Pause */}
+              <button
+                onClick={togglePlay}
+                disabled={isLoading}
+                className={`audio-play-button ${isLoading ? 'loading' : ''} ${
+                  isPlaying ? 'playing' : 'paused'
+                }`}
+                aria-label={isPlaying ? 'Mettre en pause' : 'Lire'}
+              >
+                {isLoading ? (
+                  <div className="audio-loading-spinner"></div>
+                ) : isPlaying ? (
+                  '⏸'
+                ) : (
+                  '▶'
+                )}
+              </button>
+
+              {/* Contrôle de volume */}
+              <div className="audio-volume-control">
+                <span className="audio-volume-icon">🔊</span>
+                <input
+                  ref={volumeSliderRef}
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  disabled={!hasInteracted && !isLoading}
+                  className="audio-volume-slider"
+                  aria-label="Contrôle du volume"
+                />
+                <span className="audio-volume-value">
+                  {Math.round(volume * 100)}%
+                </span>
+              </div>
+            </div>
+
+            {/* Indicateurs d'état */}
+            <div className="audio-status">
+              <div className="audio-status-text">
+                {isLoading
+                  ? 'Chargement...'
+                  : !hasInteracted
+                    ? 'Cliquez sur lecture pour commencer'
+                    : isPlaying
+                      ? 'Lecture en cours'
+                      : 'En pause'}
+              </div>
+
+              {/* Indicateurs visuels */}
+              <div className="audio-indicators">
+                <div
+                  className={`audio-indicator ${isVisible ? 'active' : 'inactive'}`}
+                  title={isVisible ? 'Page visible' : 'Page masquée'}
+                  aria-label={isVisible ? 'Page visible' : 'Page masquée'}
+                ></div>
+                <div
+                  className={`audio-indicator ${hasInteracted ? 'active' : 'inactive'}`}
+                  title={hasInteracted ? 'Audio activé' : 'Audio en attente'}
+                  aria-label={
+                    hasInteracted ? 'Audio activé' : 'Audio en attente'
+                  }
+                ></div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Indicateur d'état */}
-        <div className="mt-2 flex items-center justify-between text-xs text-gray-500">
-          <span>
-            {isLoading
-              ? 'Chargement...'
-              : !hasInteracted
-                ? 'En attente...'
-                : isPlaying
-                  ? 'Lecture en cours'
-                  : 'En pause'}
-          </span>
-
-          {/* Indicateur de visibilité */}
-          <div
-            className={`w-2 h-2 rounded-full ${isVisible ? 'bg-green-400' : 'bg-gray-400'}`}
-            title={isVisible ? 'Page visible' : 'Page masquée'}
-          ></div>
         </div>
       </div>
     </>

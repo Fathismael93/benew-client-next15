@@ -1,0 +1,316 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _controls.scss - Contrôles audio
+// ================================
+
+// =============================
+// CONTENEUR DES CONTRÔLES
+// =============================
+.audio-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+
+  // 📱 MOBILE FIRST - Gap adaptatif
+  @include from('medium-sm') {
+    gap: 2rem;
+  }
+}
+
+// =============================
+// BOUTON PLAY/PAUSE PRINCIPAL
+// =============================
+.audio-play-button {
+  background: linear-gradient(
+    135deg,
+    css-var(primary-color),
+    darken(css-var(primary-color), 10%)
+  );
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  font-family: font-family('ui');
+  color: css-var(background-color);
+  box-shadow: 0 8px 24px rgba(css-var(primary-color), 0.3);
+
+  // 📱 MOBILE FIRST - Taille adaptative
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.5rem;
+
+  @include from('small-lg') {
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 1.75rem;
+  }
+
+  @include from('medium-sm') {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2rem;
+  }
+
+  @include from('large-lg') {
+    width: 5.5rem;
+    height: 5.5rem;
+    font-size: 2.25rem;
+  }
+
+  // États du bouton
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 12px 32px rgba(css-var(primary-color), 0.4);
+    background: linear-gradient(
+      135deg,
+      lighten(css-var(primary-color), 5%),
+      css-var(primary-color)
+    );
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+
+    &:hover {
+      transform: none;
+      box-shadow: 0 8px 24px rgba(css-var(primary-color), 0.3);
+    }
+  }
+
+  // État de chargement
+  &.loading {
+    cursor: default;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  // États visuels selon le statut
+  &.playing {
+    background: linear-gradient(
+      135deg,
+      css-var(secondary-color),
+      darken(css-var(secondary-color), 10%)
+    );
+    box-shadow: 0 8px 24px rgba(css-var(secondary-color), 0.3);
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(
+        135deg,
+        lighten(css-var(secondary-color), 5%),
+        css-var(secondary-color)
+      );
+      box-shadow: 0 12px 32px rgba(css-var(secondary-color), 0.4);
+    }
+  }
+
+  &:focus {
+    outline: 2px solid css-var(primary-color);
+    outline-offset: 4px;
+  }
+}
+
+// =============================
+// SPINNER DE CHARGEMENT
+// =============================
+.audio-loading-spinner {
+  border: 2px solid rgba(css-var(background-color), 0.3);
+  border-top: 2px solid css-var(background-color);
+  border-radius: 50%;
+  animation: audioSpinnerRotate 1s linear infinite;
+
+  // 📱 MOBILE FIRST
+  width: 1.25rem;
+  height: 1.25rem;
+
+  @include from('medium-sm') {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  @include from('large-lg') {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+@keyframes audioSpinnerRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// =============================
+// CONTRÔLE DE VOLUME
+// =============================
+.audio-volume-control {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 300px;
+
+  // 📱 MOBILE FIRST - Gap adaptatif
+  @include from('medium-sm') {
+    gap: 1.25rem;
+    max-width: 350px;
+  }
+
+  @include from('large-lg') {
+    max-width: 400px;
+  }
+
+  .audio-volume-icon {
+    flex-shrink: 0;
+
+    // 📱 MOBILE FIRST
+    font-size: 1rem;
+
+    @include from('medium-sm') {
+      font-size: 1.125rem;
+    }
+
+    @include from('large-lg') {
+      font-size: 1.25rem;
+    }
+  }
+
+  .audio-volume-value {
+    flex-shrink: 0;
+    font-family: font-family('content');
+    color: css-var(text-color-muted);
+    min-width: 3rem;
+    text-align: right;
+
+    // 📱 MOBILE FIRST
+    font-size: 0.8rem;
+
+    @include from('medium-sm') {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// =============================
+// SLIDER DE VOLUME PERSONNALISÉ
+// =============================
+.audio-volume-slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  // Arrière-plan de base
+  background: rgba(css-var(text-color-muted), 0.3);
+
+  // Le gradient sera appliqué via JavaScript avec la variable CSS --volume-percent
+
+  // Styles pour WebKit (Chrome, Safari)
+  &::-webkit-slider-thumb {
+    appearance: none;
+    border-radius: 50%;
+    background: css-var(primary-color);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(css-var(primary-color), 0.3);
+    transition: all 0.2s ease;
+
+    // 📱 MOBILE FIRST - Thumb plus grande sur mobile pour faciliter l'usage
+    width: 18px;
+    height: 18px;
+
+    @include from('medium-sm') {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background: lighten(css-var(primary-color), 10%);
+      transform: scale(1.2);
+      box-shadow: 0 4px 12px rgba(css-var(primary-color), 0.4);
+    }
+  }
+
+  // Styles pour Firefox
+  &::-moz-range-thumb {
+    border: none;
+    border-radius: 50%;
+    background: css-var(primary-color);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(css-var(primary-color), 0.3);
+    transition: all 0.2s ease;
+
+    // 📱 MOBILE FIRST
+    width: 18px;
+    height: 18px;
+
+    @include from('medium-sm') {
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background: lighten(css-var(primary-color), 10%);
+      transform: scale(1.2);
+      box-shadow: 0 4px 12px rgba(css-var(primary-color), 0.4);
+    }
+  }
+
+  // Track pour Firefox
+  &::-moz-range-track {
+    background: transparent;
+  }
+
+  // États
+  &:hover {
+    // Le hover sera aussi géré par JavaScript si nécessaire
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: rgba(css-var(text-color-muted), 0.2);
+
+    &::-webkit-slider-thumb {
+      cursor: not-allowed;
+      background: rgba(css-var(text-color-muted), 0.5);
+
+      &:hover {
+        transform: none;
+        background: rgba(css-var(text-color-muted), 0.5);
+      }
+    }
+
+    &::-moz-range-thumb {
+      cursor: not-allowed;
+      background: rgba(css-var(text-color-muted), 0.5);
+
+      &:hover {
+        transform: none;
+        background: rgba(css-var(text-color-muted), 0.5);
+      }
+    }
+  }
+
+  &:focus {
+    outline: 2px solid css-var(primary-color);
+    outline-offset: 2px;
+  }
+}

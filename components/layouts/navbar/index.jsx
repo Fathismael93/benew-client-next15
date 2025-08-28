@@ -5,11 +5,13 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import './index.scss';
 import Sidebar from '../sidebar';
+import AudioPlayer from '../audio';
 import Image from 'next/image';
-import { MdKeyboardArrowDown } from 'react-icons/md';
+import { MdKeyboardArrowDown, MdMusicNote } from 'react-icons/md';
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isAudioPlayerOpen, setIsAudioPlayerOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -17,6 +19,16 @@ function Navbar() {
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
+  };
+
+  const openAudioPlayer = () => {
+    setIsAudioPlayerOpen(true);
+    // Fermer le dropdown si ouvert
+    setIsDropdownOpen(false);
+  };
+
+  const closeAudioPlayer = () => {
+    setIsAudioPlayerOpen(false);
   };
 
   return (
@@ -45,6 +57,16 @@ function Navbar() {
           </motion.div>
 
           <div className="social">
+            {/* Bouton Audio Player - AVANT Facebook */}
+            <button
+              onClick={openAudioPlayer}
+              className="music-button"
+              aria-label="Ouvrir le lecteur audio"
+              title="Lecteur audio"
+            >
+              <MdMusicNote className="music-icon" />
+            </button>
+
             <Link href="#">
               <Image
                 src="/facebook.png"
@@ -188,6 +210,9 @@ function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Modal AudioPlayer */}
+      <AudioPlayer isOpen={isAudioPlayerOpen} onClose={closeAudioPlayer} />
     </div>
   );
 }

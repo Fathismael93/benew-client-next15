@@ -1,0 +1,133 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _notification.scss - Notification d'activation audio
+// ================================
+
+// =============================
+// CONTENEUR DE LA NOTIFICATION
+// =============================
+.audio-notification {
+  background: rgba(css-var(background-color), 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(css-var(primary-color), 0.3);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: notificationSlideIn 0.4s ease-out;
+
+  // 📱 MOBILE FIRST
+  padding: 1rem;
+
+  @include from('medium-sm') {
+    padding: 1.25rem;
+  }
+
+  &:hover {
+    background: rgba(css-var(background-color), 0.95);
+    border-color: rgba(css-var(primary-color), 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(css-var(primary-color), 0.2);
+  }
+}
+
+// =============================
+// CONTENU DE LA NOTIFICATION
+// =============================
+.audio-notification-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .audio-notification-icon {
+    flex-shrink: 0;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.5rem;
+
+    @include from('medium-sm') {
+      font-size: 1.75rem;
+    }
+  }
+
+  .audio-notification-text {
+    flex: 1;
+
+    .audio-notification-title {
+      font-family: font-family('ui');
+      font-weight: 400;
+      color: css-var(text-color);
+      margin: 0 0 0.25rem 0;
+
+      // 📱 MOBILE FIRST
+      font-size: 0.9rem;
+
+      @include from('medium-sm') {
+        font-size: 1rem;
+      }
+    }
+
+    .audio-notification-subtitle {
+      font-family: font-family('content');
+      color: css-var(text-color-muted);
+      margin: 0;
+
+      // 📱 MOBILE FIRST
+      font-size: 0.8rem;
+
+      @include from('medium-sm') {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .audio-notification-dismiss {
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: css-var(text-color-muted);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    // 📱 MOBILE FIRST - Zone tactile optimale
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+
+    @include from('medium-sm') {
+      width: 2.25rem;
+      height: 2.25rem;
+      font-size: 1.125rem;
+    }
+
+    &:hover {
+      background: rgba(css-var(primary-color), 0.1);
+      color: css-var(primary-color);
+      transform: scale(1.1);
+    }
+
+    &:focus {
+      outline: 2px solid css-var(primary-color);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// =============================
+// ANIMATIONS
+// =============================
+@keyframes notificationSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

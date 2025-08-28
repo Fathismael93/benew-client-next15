@@ -1,0 +1,462 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _responsive.scss - Adaptations responsive pour AudioPlayer
+// ================================
+
+// =============================
+// ÉCRANS TRÈS PETITS (< 360px)
+// =============================
+@media (max-width: 359px) {
+  .audio-modal-content {
+    max-width: 280px;
+  }
+
+  .audio-modal-header {
+    padding: 0.75rem 1rem;
+
+    .audio-modal-title-section {
+      gap: 0.5rem;
+
+      .audio-modal-icon {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .audio-modal-title {
+        font-size: 1rem;
+      }
+    }
+
+    .audio-modal-close {
+      width: 2rem;
+      height: 2rem;
+      font-size: 1rem;
+    }
+  }
+
+  .audio-modal-body {
+    padding: 1rem;
+  }
+
+  .audio-play-button {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.25rem;
+  }
+
+  .audio-volume-control {
+    gap: 0.75rem;
+
+    .audio-volume-icon {
+      font-size: 0.9rem;
+    }
+
+    .audio-volume-value {
+      font-size: 0.75rem;
+      min-width: 2.5rem;
+    }
+  }
+}
+
+// =============================
+// ÉCRANS PAYSAGE SUR MOBILE
+// =============================
+@include mobile-landscape {
+  .audio-modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .audio-modal-content {
+    max-height: calc(100vh - 1rem);
+  }
+
+  .audio-modal-header {
+    padding: 0.75rem 1rem;
+
+    .audio-modal-title {
+      font-size: 1rem;
+    }
+  }
+
+  .audio-modal-body {
+    padding: 1rem;
+  }
+
+  .audio-track-info {
+    margin-bottom: 1.5rem;
+
+    .audio-track-title {
+      font-size: 1.125rem;
+    }
+
+    .audio-track-artist {
+      font-size: 0.85rem;
+    }
+  }
+
+  .audio-controls {
+    gap: 1.25rem;
+  }
+
+  .audio-play-button {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.5rem;
+  }
+
+  .audio-status {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+  }
+}
+
+// =============================
+// TABLETTES EN PORTRAIT
+// =============================
+@include device('ipad-air-11-2024', 'portrait') {
+  .audio-modal-content {
+    max-width: 500px;
+  }
+
+  .audio-play-button {
+    width: 6rem;
+    height: 6rem;
+    font-size: 2.5rem;
+  }
+
+  .audio-volume-control {
+    max-width: 450px;
+    gap: 1.5rem;
+  }
+}
+
+// =============================
+// TABLETTES EN PAYSAGE
+// =============================
+@include device('ipad-air-11-2024', 'landscape') {
+  .audio-modal-overlay {
+    padding: 1rem;
+  }
+
+  .audio-modal-content {
+    max-width: 480px;
+    max-height: calc(100vh - 2rem);
+  }
+}
+
+// =============================
+// GRANDS ÉCRANS (Desktop)
+// =============================
+@include from('large-xxl') {
+  .audio-modal-content {
+    max-width: 520px;
+  }
+
+  .audio-modal-header {
+    padding: 2rem 2.5rem;
+
+    .audio-modal-title-section {
+      .audio-modal-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+
+      .audio-modal-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    .audio-modal-close {
+      width: 3rem;
+      height: 3rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  .audio-modal-body {
+    padding: 2.5rem;
+  }
+
+  .audio-track-info {
+    margin-bottom: 2.5rem;
+
+    .audio-track-title {
+      font-size: 1.75rem;
+    }
+
+    .audio-track-artist {
+      font-size: 1.125rem;
+    }
+  }
+
+  .audio-controls {
+    gap: 2.5rem;
+  }
+
+  .audio-play-button {
+    width: 6rem;
+    height: 6rem;
+    font-size: 2.5rem;
+  }
+
+  .audio-volume-control {
+    max-width: 480px;
+    gap: 1.5rem;
+
+    .audio-volume-icon {
+      font-size: 1.375rem;
+    }
+
+    .audio-volume-value {
+      font-size: 1rem;
+    }
+  }
+
+  .audio-status {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+
+    .audio-status-text {
+      font-size: 1rem;
+    }
+
+    .audio-indicators .audio-indicator {
+      width: 0.625rem;
+      height: 0.625rem;
+    }
+  }
+}
+
+// =============================
+// ÉCRANS ULTRA-LARGES
+// =============================
+@include from('large-xxxl') {
+  .audio-modal-content {
+    max-width: 600px;
+  }
+
+  .audio-play-button {
+    width: 7rem;
+    height: 7rem;
+    font-size: 3rem;
+  }
+
+  .audio-volume-control {
+    max-width: 550px;
+  }
+}
+
+// =============================
+// ÉCRANS COURTS (hauteur limitée)
+// =============================
+@include short-screen {
+  .audio-modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .audio-modal-content {
+    max-height: calc(100vh - 1rem);
+  }
+
+  .audio-modal-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .audio-modal-body {
+    padding: 1rem;
+  }
+
+  .audio-track-info {
+    margin-bottom: 1rem;
+
+    .audio-track-title {
+      font-size: 1.125rem;
+    }
+  }
+
+  .audio-controls {
+    gap: 1rem;
+  }
+
+  .audio-play-button {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.5rem;
+  }
+
+  .audio-status {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+  }
+}
+
+// =============================
+// ÉCRANS HAUTS (beaucoup d'espace vertical)
+// =============================
+@include tall-screen {
+  .audio-modal-body {
+    padding: 2rem;
+  }
+
+  .audio-track-info {
+    margin-bottom: 3rem;
+  }
+
+  .audio-controls {
+    gap: 3rem;
+  }
+
+  .audio-status {
+    margin-top: 2.5rem;
+  }
+}
+
+// =============================
+// DENSITÉ D'ÉCRAN ÉLEVÉE (Retina, etc.)
+// =============================
+@include high-density {
+  .audio-modal-content {
+    border-width: 0.5px;
+  }
+
+  .audio-volume-slider {
+    &::-webkit-slider-thumb {
+      border: 0.5px solid rgba(css-var(background-color), 0.2);
+    }
+
+    &::-moz-range-thumb {
+      border: 0.5px solid rgba(css-var(background-color), 0.2);
+    }
+  }
+}
+
+// =============================
+// PRÉFÉRENCES UTILISATEUR
+// =============================
+
+// Réduction de mouvement
+@include reduced-motion {
+  .audio-modal-overlay {
+    animation: none !important;
+  }
+
+  .audio-modal-content {
+    animation: none !important;
+  }
+
+  .audio-notification {
+    animation: none !important;
+  }
+
+  .audio-play-button {
+    &:hover {
+      transform: none !important;
+    }
+
+    &:active {
+      transform: none !important;
+    }
+  }
+
+  .audio-modal-close {
+    &:hover {
+      transform: none !important;
+    }
+  }
+
+  .audio-volume-slider {
+    &::-webkit-slider-thumb {
+      &:hover {
+        transform: none !important;
+      }
+    }
+
+    &::-moz-range-thumb {
+      &:hover {
+        transform: none !important;
+      }
+    }
+  }
+}
+
+// Contraste élevé
+@include high-contrast {
+  .audio-modal-content {
+    border-width: 2px;
+    border-color: css-var(primary-color);
+  }
+
+  .audio-notification {
+    border-width: 2px;
+  }
+
+  .audio-play-button {
+    border: 2px solid css-var(background-color);
+  }
+
+  .audio-volume-slider {
+    border: 1px solid css-var(text-color);
+
+    &::-webkit-slider-thumb {
+      border: 2px solid css-var(background-color);
+    }
+
+    &::-moz-range-thumb {
+      border: 2px solid css-var(background-color);
+    }
+  }
+}
+
+// =============================
+// OPTIMISATIONS POUR ÉCRANS TACTILES
+// =============================
+@media (pointer: coarse) {
+  // Zones tactiles plus grandes
+  .audio-modal-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .audio-notification-dismiss {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .audio-play-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  // Thumbs plus grandes pour slider
+  .audio-volume-slider {
+    height: 8px;
+
+    &::-webkit-slider-thumb {
+      width: 20px;
+      height: 20px;
+    }
+
+    &::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Pas d'effet hover sur tactile
+  .audio-play-button:hover {
+    transform: none;
+  }
+
+  .audio-modal-close:hover {
+    transform: none;
+  }
+
+  .audio-volume-slider::-webkit-slider-thumb:hover {
+    transform: none;
+  }
+
+  .audio-volume-slider::-moz-range-thumb:hover {
+    transform: none;
+  }
+}

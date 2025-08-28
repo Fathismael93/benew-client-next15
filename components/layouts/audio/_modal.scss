@@ -1,0 +1,284 @@
+@use '../../../app/styles/abstracts' as *;
+
+// ================================
+// 📄 _modal.scss - Structure de la modal
+// ================================
+
+// =============================
+// OVERLAY DE LA MODAL
+// =============================
+.audio-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(css-var(background-color), 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modalOverlayFadeIn 0.3s ease-out;
+
+  // 📱 MOBILE FIRST - Padding pour éviter les bords d'écran
+  padding: 1rem;
+
+  @include from('medium-sm') {
+    padding: 1.5rem;
+  }
+
+  @include from('large-lg') {
+    padding: 2rem;
+  }
+}
+
+// =============================
+// CONTENU DE LA MODAL
+// =============================
+.audio-modal-content {
+  background: rgba(css-var(background-color), 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(css-var(primary-color), 0.2);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(css-var(background-color), 0.6);
+  animation: modalContentSlideIn 0.3s ease-out;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+
+  // 📱 MOBILE FIRST - Largeur adaptative
+  width: 100%;
+  max-width: 320px;
+
+  @include from('small-lg') {
+    max-width: 380px;
+  }
+
+  @include from('medium-sm') {
+    max-width: 420px;
+  }
+
+  @include from('large-lg') {
+    max-width: 480px;
+  }
+
+  // Focus pour accessibilité
+  &:focus {
+    outline: 2px solid css-var(primary-color);
+    outline-offset: 2px;
+  }
+}
+
+// =============================
+// HEADER DE LA MODAL
+// =============================
+.audio-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(css-var(text-color), 0.1);
+
+  // 📱 MOBILE FIRST
+  padding: 1rem 1.25rem;
+
+  @include from('medium-sm') {
+    padding: 1.25rem 1.5rem;
+  }
+
+  @include from('large-lg') {
+    padding: 1.5rem 2rem;
+  }
+
+  .audio-modal-title-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .audio-modal-icon {
+      color: css-var(primary-color);
+
+      // 📱 MOBILE FIRST
+      width: 1.25rem;
+      height: 1.25rem;
+
+      @include from('medium-sm') {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    .audio-modal-title {
+      font-family: font-family('ui');
+      font-weight: 400;
+      color: css-var(text-color);
+      margin: 0;
+
+      // 📱 MOBILE FIRST
+      font-size: 1.1rem;
+
+      @include from('medium-sm') {
+        font-size: 1.25rem;
+      }
+
+      @include from('large-lg') {
+        font-size: 1.375rem;
+      }
+    }
+  }
+
+  .audio-modal-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    color: css-var(text-color-muted);
+
+    // 📱 MOBILE FIRST - Zone tactile optimale
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+
+    @include from('medium-sm') {
+      width: 2.75rem;
+      height: 2.75rem;
+      font-size: 1.375rem;
+    }
+
+    &:hover {
+      background: rgba(css-var(primary-color), 0.1);
+      color: css-var(primary-color);
+      transform: scale(1.05);
+    }
+
+    &:focus {
+      outline: 2px solid css-var(primary-color);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// =============================
+// BODY DE LA MODAL
+// =============================
+.audio-modal-body {
+  // 📱 MOBILE FIRST
+  padding: 1.25rem;
+
+  @include from('medium-sm') {
+    padding: 1.5rem;
+  }
+
+  @include from('large-lg') {
+    padding: 2rem;
+  }
+}
+
+// =============================
+// INFORMATIONS SUR LA PISTE
+// =============================
+.audio-track-info {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .audio-track-title {
+    font-family: font-family('ui');
+    font-weight: 400;
+    color: css-var(text-color);
+    margin-bottom: 0.5rem;
+
+    // 📱 MOBILE FIRST
+    font-size: 1.25rem;
+
+    @include from('medium-sm') {
+      font-size: 1.375rem;
+    }
+
+    @include from('large-lg') {
+      font-size: 1.5rem;
+    }
+  }
+
+  .audio-track-artist {
+    font-family: font-family('content');
+    color: css-var(text-color-muted);
+
+    // 📱 MOBILE FIRST
+    font-size: 0.9rem;
+
+    @include from('medium-sm') {
+      font-size: 1rem;
+    }
+  }
+}
+
+// =============================
+// INDICATEURS D'ÉTAT
+// =============================
+.audio-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(css-var(text-color), 0.1);
+
+  .audio-status-text {
+    font-family: font-family('content');
+    color: css-var(text-color-muted);
+
+    // 📱 MOBILE FIRST
+    font-size: 0.8rem;
+
+    @include from('medium-sm') {
+      font-size: 0.875rem;
+    }
+  }
+
+  .audio-indicators {
+    display: flex;
+    gap: 0.5rem;
+
+    .audio-indicator {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+
+      &.active {
+        background-color: css-var(primary-color);
+        box-shadow: 0 0 8px rgba(css-var(primary-color), 0.4);
+      }
+
+      &.inactive {
+        background-color: rgba(css-var(text-color-muted), 0.3);
+      }
+    }
+  }
+}
+
+// =============================
+// ANIMATIONS
+// =============================
+@keyframes modalOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalContentSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
