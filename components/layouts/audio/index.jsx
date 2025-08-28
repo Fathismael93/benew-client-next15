@@ -140,7 +140,7 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
     const handleLoadedData = () => {
       setIsLoading(false);
       // Tenter l'autoplay initial seulement si la modal est ouverte
-      if (isVisible && isOpen) {
+      if (isVisible) {
         tryPlayAudio();
       }
     };
@@ -154,7 +154,7 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
     const handleEnded = () => {
       setIsPlaying(false);
       // Recommencer l'audio (loop)
-      if (hasInteracted && isVisible && isOpen) {
+      if (hasInteracted && isVisible) {
         audio.currentTime = 0;
         tryPlayAudio();
       }
@@ -231,28 +231,24 @@ const AudioPlayer = ({ isOpen, onClose, onPlayStateChange }) => {
   if (error) {
     return null;
   }
+
+  // Toujours rendre l'élément audio, mais conditionner l'interface
+  const audioElement = (
+    <audio ref={audioRef} preload="auto" loop={false}>
+      <source src="/ce-soir.mp3" type="audio/mpeg" />
+      Votre navigateur ne supporte pas l&apos;audio HTML5.
+    </audio>
+  );
+
   if (!isOpen) {
-    return (
-      <audio ref={audioRef} preload="auto" loop={false}>
-        <source src="/ce-soir.mp3" type="audio/mpeg" />
-        Votre navigateur ne supporte pas l&apos;audio HTML5.
-      </audio>
-    );
+    return audioElement;
   }
 
   return (
     <>
-      {/* Élément audio caché */}
-      <audio
-        ref={audioRef}
-        preload="auto"
-        loop={false} // Géré manuellement pour plus de contrôle
-      >
-        <source src="/ce-soir.mp3" type="audio/mpeg" />
-        Votre navigateur ne supporte pas l&apos;audio HTML5.
-      </audio>
+      {audioElement}
 
-      {/* Overlay de la modal */}
+      {/* Overlay de la modal - uniquement si ouverte */}
       <div className="audio-modal-overlay" onClick={onClose}>
         {/* Contenu de la modal */}
         <div
