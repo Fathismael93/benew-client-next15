@@ -747,47 +747,18 @@ const nextConfig = {
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          minSize: 20000,
-          maxSize: 244000,
-          minChunks: 1,
-          maxAsyncRequests: 30,
-          maxInitialRequests: 30,
-          automaticNameDelimiter: '~',
           cacheGroups: {
-            framework: {
-              chunks: 'all',
-              name: 'framework',
-              test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-              priority: 40,
-              enforce: true,
-            },
-            lib: {
-              test(module) {
-                return (
-                  module.size() > 160000 &&
-                  /node_modules[/\\]/.test(module.identifier())
-                );
-              },
-              name(module) {
-                const hash = createHash('sha1');
-                hash.update(module.identifier());
-                return hash.digest('hex').substring(0, 8);
-              },
-              priority: 30,
-              minChunks: 1,
+            // Groupe 1: Vendor (toutes les dépendances)
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendor',
+              priority: 10,
               reuseExistingChunk: true,
             },
-            commons: {
-              name: 'commons',
+            // Groupe 2: Commons (code partagé)
+            default: {
               minChunks: 2,
-              priority: 20,
-            },
-            shared: {
-              name(module, chunks) {
-                return `shared-${chunks.map((c) => c.name).join('~')}.${buildId}`;
-              },
-              priority: 10,
-              minChunks: 2,
+              priority: 5,
               reuseExistingChunk: true,
             },
           },
